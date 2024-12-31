@@ -1,5 +1,5 @@
 package gestorAplicacion.Enumeraciones;
 
-public enum Aptitud {
+public enum Asiento {
     
 }

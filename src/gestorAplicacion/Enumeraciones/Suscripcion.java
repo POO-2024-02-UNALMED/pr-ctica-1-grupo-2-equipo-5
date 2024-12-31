@@ -1,5 +1,5 @@
 package gestorAplicacion.Enumeraciones;
 
-public class Suscripcion {
+public enum Suscripcion {
     
 }
