@@ -8,6 +8,7 @@ public class Empleado {
     int metaSemanal;
     int puntosPositivos;
     String Ocupacion;
+    CuentaBancaria Cuenta;
     float Deuda;
     ArrayList<Float> trabajoNoPagado = new ArrayList<>();
     ArrayList<Empleado> EmpleadosPorRendimiento = new ArrayList<>();
