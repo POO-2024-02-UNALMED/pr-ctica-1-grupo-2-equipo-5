@@ -4,16 +4,16 @@ import java.util.ArrayList;
 
 public class Empleado {
     int TrabajoRealizado;
-    Boolean trabajoCorrecto;
+    boolean trabajoCorrecto;
     int metaSemanal;
     int puntosPositivos;
     String Ocupacion;
-    Float Deuda;
+    float Deuda;
     ArrayList<Float> trabajoNoPagado = new ArrayList<>();
     ArrayList<Empleado> EmpleadosPorRendimiento = new ArrayList<>();
     ArrayList<ArrayList<String>> Horario = new ArrayList<>();
 
-    public Boolean ifTrabajoCorrecto(){
+    public boolean ifTrabajoCorrecto(){
         return this.trabajoCorrecto;
     }
     public void setTrabajoCorrecto(){

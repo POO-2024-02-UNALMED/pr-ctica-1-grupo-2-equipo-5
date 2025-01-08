@@ -1,7 +1,7 @@
 package gestorAplicacion.gestionFinanciera;
 
 public class CuentaBancaria {
-    Long idTitular;
+    long idTitular;
     double Saldo;
 
     public void ingresar (double cant){
