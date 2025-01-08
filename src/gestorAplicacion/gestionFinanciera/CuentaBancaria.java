@@ -1,7 +1,7 @@
 package gestorAplicacion.gestionFinanciera;
 
 public class CuentaBancaria {
-    Object Titular;
+    Long idTitular;
     double Saldo;
 
     public void ingresar (double cant){
@@ -24,11 +24,11 @@ public class CuentaBancaria {
         }
     }
 
-    public Object getTitular(){
-        return this.Titular;
+    public long getTitular(){
+        return this.idTitular;
     }
-    public void setTitular(Object newTitular){
-        this.Titular = newTitular;
+    public void setTitular(long newTitular){
+        this.idTitular = newTitular;
     }
     public double getSaldo(){
         return this.Saldo;
