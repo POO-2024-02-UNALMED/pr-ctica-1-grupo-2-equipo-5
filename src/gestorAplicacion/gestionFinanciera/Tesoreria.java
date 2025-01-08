@@ -6,13 +6,6 @@ public class Tesoreria {
     Float MetaTotal;
     Float Total;
 
-    public Float calcularIngresoDia(){
-
-    }
-    public void pagoEfectivo(){
-
-    }
-
     public CuentaBancaria getCuenta() {
         return Cuenta;
     }
