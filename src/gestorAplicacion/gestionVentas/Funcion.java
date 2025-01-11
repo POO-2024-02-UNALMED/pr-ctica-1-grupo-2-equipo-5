@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import gestorAplicacion.gestionObras.Obra;
 
 public class Funcion {
-    Obra obra;
-    Tiquete tiquetesVendidos;
-    ArrayList<ArrayList<Integer>> horario = new ArrayList<>();
-    Sala Sala;
-    boolean calificador;
-    long audienciaEsperada;
+    private Obra obra;
+    private Tiquete tiquetesVendidos;
+    private ArrayList<ArrayList<Integer>> horario = new ArrayList<>();
+    private Sala Sala;
+    private boolean calificador;
+    private long audienciaEsperada;
 
 
 
