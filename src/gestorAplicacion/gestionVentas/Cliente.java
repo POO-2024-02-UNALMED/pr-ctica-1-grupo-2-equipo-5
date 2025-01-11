@@ -6,13 +6,13 @@ import gestorAplicacion.Enumeraciones.*;
 import gestorAplicacion.gestionObras.Actor;
 
 public class Cliente {
-    long id;
-    Funcion funcion;
-    Genero generoFavorito;
-    Actor actorFavorito;
-    ArrayList<Tiquete> ultimasCompras = new ArrayList<>();
-    String correo;
-    String tipo;
+    private long id;
+    private Funcion funcion;
+    private Genero generoFavorito;
+    private Actor actorFavorito;
+    private ArrayList<Tiquete> ultimasCompras = new ArrayList<>();
+    private String correo;
+    private String tipo;
 
     public long getId() {
         return id;
