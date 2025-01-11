@@ -14,42 +14,55 @@ public class Cliente {
     private String correo;
     private String tipo;
 
+    //ID
     public long getId() {
         return id;
     }
     public void setId(long id) {
         this.id = id;
     }
+
+    //FUNCION
     public Funcion getFuncion() {
         return funcion;
     }
     public void setFuncion(Funcion funcion) {
         this.funcion = funcion;
     }
+
+    //GENERO FAVORITO
     public Genero getGeneroFavorito() {
         return generoFavorito;
     }
     public void setGeneroFavorito(Genero generoFavorito) {
         this.generoFavorito = generoFavorito;
     }
+
+    //ACTOR FAVORITO
     public Actor getActorFavorito() {
         return actorFavorito;
     }
     public void setActorFavorito(Actor actorFavorito) {
         this.actorFavorito = actorFavorito;
     }
+
+    //ULTIMAS COMPRAS
     public ArrayList<Tiquete> getUltimasCompras() {
         return ultimasCompras;
     }
     public void setUltimasCompras(ArrayList<Tiquete> ultimasCompras) {
         this.ultimasCompras = ultimasCompras;
     }
+
+    //CORREO
     public String getCorreo() {
         return correo;
     }
     public void setCorreo(String correo) {
         this.correo = correo;
     }
+
+    //TIPO
     public String getTipo() {
         return tipo;
     }
