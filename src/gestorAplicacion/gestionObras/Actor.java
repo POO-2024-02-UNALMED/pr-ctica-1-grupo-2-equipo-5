@@ -23,9 +23,9 @@ public class Actor {
     public void setPromedio(float promedio){ this.promedio = promedio; }
 
     public List<Float> getNotas(){ return this.notas; }
-    public void setNotas(ArrayList<Float> notas){ this.notas = notas;}
+    public void setNotas(List<Float> notas){ this.notas = notas;}
 
     public List<String> getGeneros(){ return this.generos; }
-    public void setGeneros(ArrayList<String> generos){ this.generos = generos; }
+    public void setGeneros(List<String> generos){ this.generos = generos; }
     
 }

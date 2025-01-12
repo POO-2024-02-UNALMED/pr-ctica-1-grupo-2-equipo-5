@@ -1,6 +1,7 @@
 package uiMain;
 
 import java.util.List;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -15,10 +16,10 @@ public class AlquilerActores {
     static Scanner in = new Scanner(System.in);
 
     //lista con todos los actores para hacer selección, se importa del atributo de clase Actors
-    private  List<Actor> actorsForRental;
+    public List<Actor> actorsForRental;
 
     public AlquilerActores(){
-        this.actorsForRental = new ArrayList<>(Actor.getActors();)
+        this.actorsForRental = new ArrayList<>(Actor.getActors());
     }
 
     //metodo sobrecargado para uso con cadenas y enteros que pregunta y escanea respuesta
@@ -53,9 +54,43 @@ public class AlquilerActores {
         return false;
     }
 
+    public boolean isIn(List<String> list, String value){
+        for (int i = 0; i < list.size(); i++){
+            if (value.equals(list.get(i))){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    
+
 
 //main para ejecutar la lógica del código y revisar fallos
     public static void main(String[] args){
+
+
+        //sujetos de prueba -------------------------
+        Actor actor1 = new Actor();
+        List<String> genres = new ArrayList<String>();
+        genres.add("Comedia");
+        genres.add("Tragicomedia");
+        actor1.setGeneros(genres);
+        actor1.setPromedio(4.1f);
+
+        genres.add("Comedia");
+        Actor actor2 = new Actor();
+        actor2.setGeneros(genres);
+        actor2.setPromedio(2.5f);
+
+        genres.add("Romance");
+        Actor actor3 = new Actor();
+        actor3.setGeneros(genres);
+        actor3.setPromedio(4.8f);
+        //--------------------------------------------
+
+        System.out.println(Actor.getActors());
 
         //primera ronda de preguntas
         int[] options = new int[4];
@@ -68,9 +103,9 @@ public class AlquilerActores {
 
         //reservar los de promedio alto solo para roles principales
         if (rolActor == 1){ 
-            actorsForRental.removeIf(actor -> actor.getPromedio() < PROMEDIO_ALTO); 
+            alquiler.actorsForRental.removeIf(actor -> actor.getPromedio() < PROMEDIO_ALTO); 
         } else {
-            actorsForRental.removeIf(actor -> actor.getPromedio() > PROMEDIO_ALTO);}
+            alquiler.actorsForRental.removeIf(actor -> actor.getPromedio() > PROMEDIO_ALTO);}
 
         options[2] = 3; options[3] = 4;
 
@@ -81,19 +116,19 @@ public class AlquilerActores {
         switch(tipoObra){
 
             case 1:
-            actorsForRental.removeIf(actor -> !isIn(actor.getGeneros(), "Tragedia"));
+            alquiler.actorsForRental.removeIf(actor -> !alquiler.isIn(actor.getGeneros(), "Tragedia"));
             break;
 
             case 2:
-            actorsForRental.removeIf(actor -> !isIn(actor.getGeneros(), "Comedia"));
+            alquiler.actorsForRental.removeIf(actor -> !alquiler.isIn(actor.getGeneros(), "Comedia"));
             break;
 
             case 3:
-            actorsForRental.removeIf(actor -> !isIn(actor.getGeneros(), "Romance"));
+            alquiler.actorsForRental.removeIf(actor -> !alquiler.isIn(actor.getGeneros(), "Romance"));
             break;
 
             case 4:
-            actorsForRental.removeIf(actor -> !isIn(actor.getGeneros(), "Tragicomedia"));
+            alquiler.actorsForRental.removeIf(actor -> !alquiler.isIn(actor.getGeneros(), "Tragicomedia"));
             break;
         }
         
@@ -105,6 +140,9 @@ public class AlquilerActores {
         String horarioCliente = alquiler.ask("\n¿En qué horario necesita el actor? (Responda en formato 24 horas HH:MM)");
 
         //pendiente: diseñar lógica para revisar el horario
+
+        //preseleccionados
+        System.err.println(alquiler.actorsForRental);
     }
 }
 
