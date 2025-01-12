@@ -5,7 +5,7 @@ import gestorAplicacion.gestionFinanciera.CuentaBancaria;
 public abstract class Artista {
     float calificacion;
     long id;
-    long promedio;
+    float promedio;
     CuentaBancaria cuenta;
     
 }

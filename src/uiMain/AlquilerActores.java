@@ -142,7 +142,14 @@ public class AlquilerActores {
         //pendiente: diseñar lógica para revisar el horario
 
         //preseleccionados
-        System.err.println(alquiler.actorsForRental);
+
+        if (alquiler.actorsForRental.size() == 0){ 
+            System.out.println("\nNo hay artistas disponibles con los requerimientos pedidos."); return;
+        } else {
+            System.out.println("\n" + alquiler.actorsForRental.size() + " actores encontrados durante la preselección.");
+        }
+
+        //pendiente: logica de revision de historial de empresa y prioridad de actores contratados
     }
 }
 
