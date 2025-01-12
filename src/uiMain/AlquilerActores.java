@@ -1,12 +1,12 @@
 package uiMain;
 
 import java.util.List;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import gestorAplicacion.gestionFinanciera.Tesoreria;
 import gestorAplicacion.gestionObras.Actor;
+import uiMain.Contador;
 
 public class AlquilerActores {
 
@@ -22,7 +22,7 @@ public class AlquilerActores {
         this.actorsForRental = new ArrayList<>(Actor.getActors());
     }
 
-    //metodo sobrecargado para uso con cadenas y enteros que pregunta y escanea respuesta
+    //metodo sobrecargado para uso con diferentes tipos que pregunta y escanea respuesta
     public String ask(String question){
         System.out.println(question);
         String answer = in.nextLine();
@@ -40,6 +40,12 @@ public class AlquilerActores {
             answer = in.nextInt();
         }
 
+        return answer;
+    }
+
+    public long longAsk(String question){
+        System.out.println(question);
+        long answer = in.nextLong();
         return answer;
     }
 
@@ -64,8 +70,15 @@ public class AlquilerActores {
         return false;
     }
 
-    
+    public boolean isIn(List<Actor> list, Actor value){
 
+        for (int i = 0; i < list.size(); i++){
+            if (value.equals(list.get(i))){
+                return true;
+            }
+        }
+        return false;       
+    }
 
 //main para ejecutar la lógica del código y revisar fallos
     public static void main(String[] args){
@@ -88,6 +101,8 @@ public class AlquilerActores {
         Actor actor3 = new Actor();
         actor3.setGeneros(genres);
         actor3.setPromedio(4.8f);
+        actor3.setEdad(22);
+        actor3.setSexo("F");
         //--------------------------------------------
 
         System.out.println(Actor.getActors());
@@ -150,6 +165,99 @@ public class AlquilerActores {
         }
 
         //pendiente: logica de revision de historial de empresa y prioridad de actores contratados
+    
+        //búsqueda avanzada
+
+        int[] two = {1, 2};
+        int advancedSearch = alquiler.ask("¿Deseas hacer búsqueda avanzada? (incluye filtros por edad, sexo y  cantidad de obras actuadas).\n1. Sí\n2. No.\n", two);
+
+        if (advancedSearch == 1){
+
+            List<Contador> contadores = new ArrayList<Contador>();
+
+            for (Actor actor : alquiler.actorsForRental){
+                contadores.add(new Contador(actor, 0));
+            }
+
+            int edad = alquiler.ask("¿Qué tipo de edad busca?\n1. Infantil\n2. Juvenil.\n3. Adulto.\n4. Adulto mayor", options);
+
+            switch (edad){
+
+                case 1: //infantil
+                alquiler.actorsForRental.removeIf(actor -> actor.getEdad() >= 15);
+                break;
+
+                case 2: //juvenil
+                alquiler.actorsForRental.removeIf(actor -> actor.getEdad() < 15);
+                alquiler.actorsForRental.removeIf(actor -> actor.getEdad() >= 24);
+                break;
+
+                case 3: //adulto
+                alquiler.actorsForRental.removeIf(actor -> actor.getEdad() < 24 );
+                alquiler.actorsForRental.removeIf(actor -> actor.getEdad() >= 70);
+                break;
+
+                case 4: //adulto mayor
+                alquiler.actorsForRental.removeIf(actor -> actor.getEdad() < 70);
+                break;
+            }
+
+            for (Contador contador : contadores){
+
+                if (alquiler.isIn(alquiler.actorsForRental, contador.getActor())){ contador.numero ++; }
+
+            }
+
+            in.nextLine();
+
+            int sexo = alquiler.ask("¿Qué sexo debe tener el actor?\n1. Masculino.\n2. Femenino.\n", two);
+
+            if (sexo == 1){ //si es masculino, remueve el sexo femenino y viceversa
+                alquiler.actorsForRental.removeIf(actor -> actor.getSexo().equals("F"));
+            } else {
+                alquiler.actorsForRental.removeIf(actor -> actor.getSexo().equals("M"));
+            }
+
+            for (Contador contador : contadores){
+
+                if (alquiler.isIn(alquiler.actorsForRental, contador.getActor())){ contador.numero ++; }
+
+            }
+
+            in.nextLine();
+
+            //pendiente: agregar cantidad de obras actuadas
+
+            contadores.removeIf(contador -> contador.numero < 2);
+
+            if (contadores.size() == 0){
+                System.out.println("No se encontraron actores que se ajusten bien a las características."); return;}
+
+            List<Actor> advancedList = new ArrayList<Actor>();
+
+            for (Contador contador : contadores){
+                advancedList.add(contador.getActor());
+            }
+            
+            alquiler.actorsForRental = advancedList;
+            
+            System.out.println(alquiler.actorsForRental.size() + " actores se ajustaron a dos o más características avanzadas.");
+
+            }
+
+        long presupuesto = alquiler.longAsk("¿Cuál es el presupuesto máximo para el actor?");
+
+        alquiler.actorsForRental.removeIf(actor -> actor.getPrecioContrato() > presupuesto);
+
+        if (alquiler.actorsForRental.size() == 0){
+            System.out.println("No se hallaron actores para el presupuesto");
+        } else {
+
+            //pendiente: imprimir lista de a 5 actores con todos los atributos.
+            System.out.println(alquiler.actorsForRental);
+
+        }
+    
     }
 }
 
