@@ -8,6 +8,7 @@ import gestorAplicacion.gestionVentas.*;
 
 public class Obra {
     private int audienciaEsperada;
+    private String nombre;
     private float calificacion;
     private ArrayList<Actor> reparto;
     private Director director;
@@ -91,8 +92,7 @@ public class Obra {
         this.estadoCriticoA = estadoCriticoA;
     }
     
-    public void createFunciones(Obra obra, int numero, float calificacion) {
-
+    public void createFunciones(String nombre, int numero, float calificacion) {
         Scanner sc = new Scanner(System.in);
         byte co;
         if (numero > obra.funcionesRecomendadas(calificacion) + 2){
@@ -102,7 +102,8 @@ public class Obra {
             switch (co) {
                 case 1:
                 for (int i = 0; i < numero; i++){
-                    Funcion funcion = new Funcion(Obra obra, 0, ArrayList, , i + 1);
+                    Funcion funcion = new Funcion(this, ArrayList<ArrayList<Integer>> horario,
+                    gestorAplicacion.gestionVentas.Sala sala, boolean calificador, int audienciaEsperada);
                 }
                     break;
             
@@ -125,5 +126,11 @@ public class Obra {
         else{
             return 10;
         }
+    }
+
+    public void calcAudienciaEsperada(float calificacion){
+        int u;
+        u = (int) calificacion * 12;
+        this.setAudienciaEsperada(u);
     }
 }

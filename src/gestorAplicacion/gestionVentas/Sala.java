@@ -1,6 +1,8 @@
 package gestorAplicacion.gestionVentas;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Sala {
     private static ArrayList <Sala> salas = new ArrayList<>();
@@ -10,6 +12,7 @@ public class Sala {
     private Boolean aseado;
     private Boolean ocupado;
     private boolean aseador;
+    private List<List<LocalDateTime[]>> horario;
 
 
     //SILLAS
@@ -43,7 +46,7 @@ public class Sala {
     public void setMetrosCuadrados(int newMetros){
         this.metrosCuadrados = newMetros;
     }
-   
+
     //Numero de la Sala
     public int getNumeroSala(){
         return this.numeroSala;
@@ -66,6 +69,12 @@ public class Sala {
     }
     public void setAseador(boolean aseador) {
         this.aseador = aseador;
+    }
+    public List<List<LocalDateTime[]>> getHorario() {
+        return horario;
+    }
+    public void setHorario(List<List<LocalDateTime[]>> horario) {
+        this.horario = horario;
     }
     
 }

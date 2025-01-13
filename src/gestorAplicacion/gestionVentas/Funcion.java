@@ -1,12 +1,15 @@
 package gestorAplicacion.gestionVentas;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
+
 import gestorAplicacion.gestionObras.Obra;
 
 public class Funcion {
     private Obra obra;
     private int tiquetesVendidos;
-    private ArrayList<ArrayList<Integer>> horario = new ArrayList<>();
+    private List<LocalDateTime[]> horario;
     private Sala Sala;
     private boolean calificador;
     private int audienciaEsperada;
@@ -29,10 +32,10 @@ public class Funcion {
     }
 
     //HORARIO
-    public ArrayList<ArrayList<Integer>> getHorario() {
+    public List<LocalDateTime[]> getHorario() {
         return horario;
     }
-    public void setHorario(ArrayList<ArrayList<Integer>> horario) {
+    public void setHorario(List<LocalDateTime[]> horario) {
         this.horario = horario;
     }
 
@@ -59,15 +62,22 @@ public class Funcion {
     public void setAudienciaEsperada(int audienciaEsperada) {
         this.audienciaEsperada = audienciaEsperada;
     }
-    public Funcion(Obra obra, ArrayList<ArrayList<Integer>> horario,
-            gestorAplicacion.gestionVentas.Sala sala, boolean calificador, int audienciaEsperada) {
+
+    public Sala salaDisponible(int audienciaEsperada, Sala sala){
+        return sala;
+    }
+    public Funcion(Obra obra, gestorAplicacion.gestionVentas.Sala sala, boolean calificador, int audienciaEsperada) {
         this.obra = obra;
         this.tiquetesVendidos = 0;
-        this.horario = horario;
-        Sala = sala;
+        this.horario = createHorario(sala);
+        Sala = salaDisponible(audienciaEsperada, sala);
         this.calificador = calificador;
         this.audienciaEsperada = audienciaEsperada;
     }
     
+    public List<LocalDateTime[]> createHorario(Sala sala){
+        for ((int) s = 0, s = (sala.getHorario().size()), s++){
 
+        }
+    }
 }
