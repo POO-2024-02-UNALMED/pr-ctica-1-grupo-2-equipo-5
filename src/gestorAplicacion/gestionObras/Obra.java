@@ -1,6 +1,8 @@
 package gestorAplicacion.gestionObras;
 
 import java.util.ArrayList;
+import java.util.Scanner;
+
 import gestorAplicacion.Enumeraciones.*;
 import gestorAplicacion.gestionVentas.*;
 
@@ -89,5 +91,39 @@ public class Obra {
         this.estadoCriticoA = estadoCriticoA;
     }
     
-    
+    public void createFunciones(Obra obra, int numero, float calificacion) {
+
+        Scanner sc = new Scanner(System.in);
+        byte co;
+        if (numero > obra.funcionesRecomendadas(calificacion) + 2){
+            System.out.println("ALERTA, DEMASIADAS FUNCIONES");
+            System.out.println("¿DESEA CONTINUAR?");
+            co = sc.nextByte();
+            switch (co) {
+                case 1:
+                for (int i = 0; i < numero; i++){
+                    Funcion funcion = new Funcion(Obra obra, 0, ArrayList, , i + 1);
+                }
+                    break;
+            
+                default:
+                    break;
+            }
+        }
+    }
+
+    public int funcionesRecomendadas(float calificacion){
+        if (calificacion < 2){
+            return 3;
+        }
+        if (calificacion >= 2 && calificacion < 3) {
+            return 5;
+        }
+        if (calificacion >= 3 && calificacion < 4){
+            return 7;
+        }
+        else{
+            return 10;
+        }
+    }
 }

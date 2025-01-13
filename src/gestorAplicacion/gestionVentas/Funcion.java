@@ -5,11 +5,11 @@ import gestorAplicacion.gestionObras.Obra;
 
 public class Funcion {
     private Obra obra;
-    private Tiquete tiquetesVendidos;
+    private int tiquetesVendidos;
     private ArrayList<ArrayList<Integer>> horario = new ArrayList<>();
     private Sala Sala;
     private boolean calificador;
-    private long audienciaEsperada;
+    private int audienciaEsperada;
 
 
     //OBRA
@@ -21,10 +21,10 @@ public class Funcion {
     }
 
     //TIQUETES VENDIDOS
-    public Tiquete getTiquetesVendidos() {
+    public int getTiquetesVendidos() {
         return tiquetesVendidos;
     }
-    public void setTiquetesVendidos(Tiquete tiquetesVendidos) {
+    public void setTiquetesVendidos(int tiquetesVendidos) {
         this.tiquetesVendidos = tiquetesVendidos;
     }
 
@@ -53,11 +53,21 @@ public class Funcion {
     }
 
     //AUDIENCIA ESPERADA
-    public long getAudienciaEsperada() {
+    public int getAudienciaEsperada() {
         return audienciaEsperada;
     }
-    public void setAudienciaEsperada(long audienciaEsperada) {
+    public void setAudienciaEsperada(int audienciaEsperada) {
         this.audienciaEsperada = audienciaEsperada;
     }
+    public Funcion(Obra obra, ArrayList<ArrayList<Integer>> horario,
+            gestorAplicacion.gestionVentas.Sala sala, boolean calificador, int audienciaEsperada) {
+        this.obra = obra;
+        this.tiquetesVendidos = 0;
+        this.horario = horario;
+        Sala = sala;
+        this.calificador = calificador;
+        this.audienciaEsperada = audienciaEsperada;
+    }
+    
 
 }

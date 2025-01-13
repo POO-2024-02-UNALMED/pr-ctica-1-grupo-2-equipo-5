@@ -9,5 +9,4 @@ public abstract class Artista {
     private long id;
     private float promedio;
     private CuentaBancaria cuenta;
-    private ArrayList<ArrayL
 }
