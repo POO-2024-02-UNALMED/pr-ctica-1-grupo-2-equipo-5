@@ -1,19 +1,20 @@
 package uiMain;
 
+import java.util.List;
+import java.util.Scanner;
+import java.util.Locale;
 import java.util.ArrayList;
+
 import gestorAplicacion.gestionFinanciera.Empleado;
 import gestorAplicacion.gestionFinanciera.Tesoreria;
 import gestorAplicacion.gestionVentas.Sala;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Scanner;
 
-import gestorAplicacion.gestionFinanciera.Tesoreria;
+import gestorAplicacion.herramientas.input;
+
 import gestorAplicacion.gestionObras.Actor;
 import gestorAplicacion.herramientas.Contador;
+
 import java.text.NumberFormat;
-import java.util.Locale;
-import gestorAplicacion.herramientas.input;
 
 public class Main {
 
