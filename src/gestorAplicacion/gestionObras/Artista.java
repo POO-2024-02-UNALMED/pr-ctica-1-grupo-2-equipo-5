@@ -21,7 +21,7 @@ public abstract class Artista {
         this.id = id;
         this.promedio = promedio;
         this.cuenta = cuenta;
-        this.horario = new ArrayList<>();
+        this.horario = new ArrayList<>(); //Lista donde se guarda el horario del artista
         this.clase = clase;
     }
     
