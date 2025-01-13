@@ -1,11 +1,10 @@
-package uiMain;
+package gestorAplicacion.herramientas;
 import gestorAplicacion.gestionObras.Actor;
-
 
 public class Contador {
     
     private Actor actor;
-    protected int numero; 
+    public int numero; 
     
     public Contador(Actor actor, int Numero){
     this.actor = actor;

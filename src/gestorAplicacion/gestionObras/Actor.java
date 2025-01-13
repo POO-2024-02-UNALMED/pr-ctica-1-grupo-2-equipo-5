@@ -15,14 +15,20 @@ public class Actor extends Artista{
     private boolean reevaluacion = false;
     private double precioContrato;
     private int edad;
-    private String sexo;
+    private char sexo;
+    private String nombre;
+    private long id;
 
     //falta agregar personaje/(?)
 
-    public Actor(){ 
+    public Actor(String nombre, long id){ 
+        this.nombre = nombre;
+        this.id = id;
         actors.add(this); 
-        this.calificacion = 2.5f;
-        getPrecioContrato();
+    }
+
+    public String toString(){
+        return "Nombre: " + this.nombre + "\nId: " + this.id + "\nEdad: " + this.edad + "\nCalificación: " + this.calificacion;
     }
 
 
@@ -49,7 +55,13 @@ public class Actor extends Artista{
     public int getEdad(){ return this.edad; }
     public void setEdad(int edad){ this.edad = edad; }
 
-    public String getSexo(){ return this.sexo; }
-    public void setSexo(String sexo){ this.sexo = sexo; }
+    public char getSexo(){ return this.sexo; }
+    public void setSexo(char sexo){ this.sexo = sexo; }
+
+    public String getNombre(){ return this.nombre; }
+    public void setNombre(String nombre){ this.nombre = nombre; }
+
+    public long getId(){ return this.id; }
+    public void setId(long id){ this.id = id; }
     
 }
