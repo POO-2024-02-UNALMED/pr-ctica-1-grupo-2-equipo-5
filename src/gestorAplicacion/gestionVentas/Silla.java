@@ -1,6 +1,6 @@
 package gestorAplicacion.gestionVentas;
 
-import gestorAplicacion.Enumeraciones.Asiento;
+import gestorAplicacion.herramientas.Asiento;
 
 public class Silla {
 

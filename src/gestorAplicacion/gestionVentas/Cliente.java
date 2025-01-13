@@ -2,8 +2,8 @@ package gestorAplicacion.gestionVentas;
 
 import java.util.ArrayList;
 
-import gestorAplicacion.Enumeraciones.*;
-import gestorAplicacion.gestionObras.Actor;
+import gestorAplicacion.herramientas.*;
+import gestorAplicacion.gestionObras.*;
 
 public class Cliente {
     private long id;
@@ -69,5 +69,13 @@ public class Cliente {
     public void setTipo(String tipo) {
         this.tipo = tipo;
     } 
+
+    public void calificar(float calificacion, Artista objeto){
+        objeto.agregarCalificacion(calificacion);
+    }
+
+    public void calificar(float calificacion, Obra obra){
+        obra.agregarCalificacion(calificacion);
+    }
 }
 

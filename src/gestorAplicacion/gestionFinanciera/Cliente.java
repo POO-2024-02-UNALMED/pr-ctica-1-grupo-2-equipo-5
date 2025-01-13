@@ -1,9 +1,11 @@
 package gestorAplicacion.gestionFinanciera;
+
 import gestorAplicacion.gestionObras.Actor;
 import gestorAplicacion.gestionVentas.Funcion;
 import gestorAplicacion.gestionVentas.Tiquete;
 import gestorAplicacion.herramientas.Genero;
 import java.util.ArrayList;
+import java.util.List;
 import uiMain.Main.isIn;
 import gestorAplicacion.gestionFinanciera.CuentaBancaria;
 
