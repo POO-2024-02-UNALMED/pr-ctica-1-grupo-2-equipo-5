@@ -2,7 +2,6 @@ package test;
 
 import gestorAplicacion.gestionObras.Actor;
 import uiMain.Main;
-import uiMain.Main.AlquilarActor;
 import java.util.List;
 import java.util.ArrayList;
 import gestorAplicacion.herramientas.input;

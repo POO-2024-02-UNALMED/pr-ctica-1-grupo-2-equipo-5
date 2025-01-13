@@ -38,17 +38,6 @@ public class input{
         return answer;
     }
 
-    //revisa si un entero/byte está en una lista del mismo tipo
-    public static boolean isIn(int[] list, int value){
-        for (int i = 0; i < list.length; i++){
-            if (value == list[i]){
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public static boolean isIn(byte[] list, byte value){
         for (int i = 0; i < list.length; i++){
             if (value == list[i]){
@@ -59,17 +48,7 @@ public class input{
         return false;
     }
 
-    public static boolean isIn(List<String> list, String value){
-        for (int i = 0; i < list.size(); i++){
-            if (value.equals(list.get(i))){
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public static boolean isIn(List<Actor> list, Actor value){
+    public static <T> boolean isIn(List<T> list, T value){
 
         for (int i = 0; i < list.size(); i++){
             if (value.equals(list.get(i))){

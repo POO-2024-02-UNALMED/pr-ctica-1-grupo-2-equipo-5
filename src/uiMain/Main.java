@@ -5,6 +5,7 @@ import java.util.Scanner;
 import java.util.Locale;
 import java.util.ArrayList;
 
+import gestorAplicacion.gestionFinanciera.Cliente;
 import gestorAplicacion.gestionFinanciera.Empleado;
 import gestorAplicacion.gestionFinanciera.Tesoreria;
 import gestorAplicacion.gestionVentas.Sala;
@@ -74,7 +75,7 @@ public class Main {
     }
 
 
-    public static void AlquilarActor(){
+    public static void AlquilarActor(Cliente empresa){
 
         final float CALIFICACION_ALTA = 4.0f; //por ahora
         List<Actor> actorsForRental = new ArrayList<>(Actor.getActors());
@@ -134,8 +135,26 @@ public class Main {
             System.out.println("\n" + actorsForRental.size() + " actores encontrados durante la preselección.\n");
         }
 
-        //pendiente: logica de revision de historial de empresa y prioridad de actores contratados
-    
+        boolean firstElementAdded = false;
+
+        List<Actor> historialEmpresa = empresa.getHistorial();
+
+        List<Actor> reorderedActors = new ArrayList<>();
+
+        for (Actor actor : actorsForRental){
+            if (!firstElementAdded){
+                reorderedActors.add(0, actor);
+            } else if (isIn(historialEmpresa, actor)){
+                reorderedActors.add(0, actor);
+            } else{
+                reorderedActors.add(actor);
+            }
+
+        }
+
+        actorsForRental = reorderedActors;
+        reorderedActors = null;
+
         //búsqueda avanzada
 
         byte[] two = {1, 2};
