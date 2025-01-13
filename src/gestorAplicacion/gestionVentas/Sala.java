@@ -12,7 +12,7 @@ public class Sala {
     private Boolean aseado;
     private Boolean ocupado;
     private boolean aseador;
-    private List<List<LocalDateTime[]>> horario;
+    private ArrayList<List<LocalDateTime[]>> horario;
 
 
     //SILLAS
@@ -70,11 +70,19 @@ public class Sala {
     public void setAseador(boolean aseador) {
         this.aseador = aseador;
     }
-    public List<List<LocalDateTime[]>> getHorario() {
+    public ArrayList<List<LocalDateTime[]>> getHorario() {
         return horario;
     }
-    public void setHorario(List<List<LocalDateTime[]>> horario) {
+    public void setHorario(ArrayList<List<LocalDateTime[]>> horario) {
         this.horario = horario;
     }
-    
+    public boolean estaDisponible(LocalDateTime inicio, LocalDateTime fin) {
+        for (List<LocalDateTime[]> full : horario) {
+            for (LocalDateTime[] evento : full)
+                if (inicio.isBefore(evento[1]) && fin.isAfter(evento[0])) {
+                    return false; // Horario ocupado
+            }
+        }
+        return true; // Horario disponible
+    }
 }

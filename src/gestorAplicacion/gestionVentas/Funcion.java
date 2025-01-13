@@ -9,7 +9,7 @@ import gestorAplicacion.gestionObras.Obra;
 public class Funcion {
     private Obra obra;
     private int tiquetesVendidos;
-    private List<LocalDateTime[]> horario;
+    private LocalDateTime[] horario;
     private Sala Sala;
     private boolean calificador;
     private int audienciaEsperada;
@@ -35,7 +35,7 @@ public class Funcion {
     public List<LocalDateTime[]> getHorario() {
         return horario;
     }
-    public void setHorario(List<LocalDateTime[]> horario) {
+    public void setHorario(LocalDateTime[] horario) {
         this.horario = horario;
     }
 
@@ -75,9 +75,9 @@ public class Funcion {
         this.audienciaEsperada = audienciaEsperada;
     }
     
-    public List<LocalDateTime[]> createHorario(Sala sala){
-        for ((int) s = 0, s = (sala.getHorario().size()), s++){
-
+    public LocalDateTime[] createHorario(Sala sala){
+        for (int a = 0; a < (sala.getHorario().size()); a++){
+            
         }
     }
 }
