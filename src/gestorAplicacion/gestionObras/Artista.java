@@ -1,11 +1,13 @@
 package gestorAplicacion.gestionObras;
 
+import java.util.ArrayList;
+
 import gestorAplicacion.gestionFinanciera.CuentaBancaria;
 
 public abstract class Artista {
-    float calificacion;
-    long id;
-    float promedio;
-    CuentaBancaria cuenta;
-    
+    private float calificacion;
+    private long id;
+    private float promedio;
+    private CuentaBancaria cuenta;
+    private ArrayList<ArrayL
 }
