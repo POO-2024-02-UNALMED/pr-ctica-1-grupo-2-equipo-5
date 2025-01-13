@@ -27,19 +27,6 @@ public class Main {
         //     }
         // }
 
-        // public String pagarNomina(){
-        //     String msg = "";
-        //     int totalNomina = 0;
-        //     ArrayList<Empleado> Empleados = Empleado.getEmpleadosPorRendimiento();
-        //     for (Empleado Elemento : Empleados){
-        //         totalNomina = totalNomina + Elemento.calcularSueldo();
-        //     }
-        //     if (totalNomina > Tesoreria.getCuenta().getSaldo()){
-                
-        //     }
-
-
-        //     return msg;
         // }
 
 }
