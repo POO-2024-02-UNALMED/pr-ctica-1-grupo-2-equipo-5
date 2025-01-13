@@ -22,6 +22,9 @@ public class CuentaBancaria {
             this.retirar(cant);
             Destino.ingresar(cant);
         }
+        else{
+            System.out.println("Saldo insuficiente");
+        }
     }
 
     public long getTitular(){
