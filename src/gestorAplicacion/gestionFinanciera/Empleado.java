@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 public class Empleado {
     private final int salarioSeguridad = 6500;
-    private final int salarioAseador = 20300;
+    private final int salarioAseador = 5500;
+    private final int salarioProfesor = 5500;
     private static ArrayList<Empleado> EmpleadosPorRendimiento = new ArrayList<>();
     private int TrabajoRealizado;
     private boolean trabajoCorrecto;
@@ -43,6 +44,8 @@ public class Empleado {
             return Sueldo;
         }
     }
+
+    //Setter and Getters
     //Trabajo
     public int getTrabajoRealizado() {
         return TrabajoRealizado;
@@ -147,5 +150,8 @@ public class Empleado {
     }
     public int getSalarioAseador(){
         return this.salarioAseador;
+    }
+    public int getSalarioProfesor(){
+        return this.salarioProfesor;
     }
 }
