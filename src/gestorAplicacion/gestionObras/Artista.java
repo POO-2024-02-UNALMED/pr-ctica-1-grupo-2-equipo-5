@@ -12,7 +12,7 @@ public abstract class Artista {
     private long id;
     private float promedio;
     private CuentaBancaria cuenta;
-    private List<LocalDateTime[]> horario;
+    private ArrayList<ArrayList<LocalDateTime>> horario;
     private Clase clase;
     private String nombre;
     private ArrayList<Float> calificaciones = new ArrayList<>();
@@ -67,10 +67,10 @@ public abstract class Artista {
     }
 
     //Horario
-    public List<LocalDateTime[]> getHorario() {
+    public ArrayList<ArrayList<LocalDateTime>> getHorario() {
         return horario;
     }
-    public void setHorario(List<LocalDateTime[]> horario) {
+    public void setHorario(ArrayList<ArrayList<LocalDateTime>> horario) {
         this.horario = horario;
     }
 

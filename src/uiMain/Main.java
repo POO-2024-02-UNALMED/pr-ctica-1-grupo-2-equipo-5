@@ -469,7 +469,7 @@ public class Main {
         System.out.print("Ingrese la hora de fin de la clase (formato: yyyy-MM-ddTHH:mm): ");
         LocalDateTime fin = LocalDateTime.parse(scanner.nextLine());
 
-        LocalDateTime[] horario = {inicio, fin};
+        ArrayList<LocalDateTime> horario = {inicio, fin};
         double costo = calcularCosto(nivel);
         if (!artista.getCuentaBancaria().pagar(costo)) {
             System.out.println("Saldo insuficiente para pagar la clase.");
