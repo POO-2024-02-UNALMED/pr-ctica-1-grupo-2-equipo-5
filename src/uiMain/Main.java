@@ -109,8 +109,8 @@ public class Main {
     System.out.println("Sistema de administración del Teatro Carlos Mayolo");
     System.out.println(dash.repeat(50));
 
-    byte[] options = {1, 2, 3, 4, 5};
-    byte task = ask("Seleccione la tarea a realizar: \n1. Venta de tiquetes.\n2. Gestión de empleados.\n3. Gestión de obras.\n4. Gestión de clases.\n5. Alquiler de actores.", options);
+    byte[] options = {1, 2, 3, 4, 5, 6};
+    byte task = ask("Seleccione la tarea a realizar: \n1. Venta de tiquetes.\n2. Gestión de empleados.\n3. Gestión de obras.\n4. Gestión de clases.\n5. Alquiler de actores.\n6. Cerrar el programa.", options);
 
     switch (task){
 
@@ -127,7 +127,10 @@ public class Main {
         case 4:
         {}break;
 
-        case 5: AlquilarActor();
+        case 5: AlquilarActor(); break;
+
+        case 6:
+        {}break;
     }
     
     }
@@ -284,8 +287,10 @@ public class Main {
 
     byte[] two = {1, 2};
     byte menuLog = ask("\nSeleccione:\n1. Empresa registrada.\n2. Empresa nueva.", two);
+    byte ACTORES_POR_PAGINA = 5;
 
     List<Actor> historialEmpresa = new ArrayList<>();
+    Cliente empresa = new Cliente("auxiliar", 0);
 
     menuSwitch:
     switch (menuLog){
@@ -299,6 +304,7 @@ public class Main {
             if (cliente.getId() == idEntrada){
                 System.out.println("\nCliente confirmado en base de datos.");
                 historialEmpresa = cliente.getHistorial();
+                empresa = cliente;
                 idFlag = true;
                 break menuSwitch;
             }
@@ -319,7 +325,7 @@ public class Main {
             }
         }
 
-        Cliente empresa = new Cliente("Empresa", newId);
+        empresa = new Cliente("Empresa", newId);
         System.out.println("\nCliente creado:\n" + empresa);
         
     }
@@ -473,6 +479,7 @@ public class Main {
             }
             
             actorsForRental = advancedList;
+            advancedList = null;
             
             System.out.println("\n" + actorsForRental.size() + " actores se ajustaron a dos o más características avanzadas.");
 
@@ -500,15 +507,10 @@ public class Main {
             System.out.println("\nNo se hallaron actores para el presupuesto");
         } else {
 
-            //pendiente: imprimir lista de a 5 actores con todos los atributos.
         NumberFormat intToCop = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
-            
-        for (Actor actor : actorsForRental){
-            String precio = intToCop.format((int) actor.getPrecioContrato());
-            System.out.println(actor); System.out.println("Precio de contratación: " + precio); System.out.println();}
 
             int lastIdx = 0;
-            int paginasCompletas = (int) (actorsForRental.size() / 5);
+            int paginasCompletas = (int) (actorsForRental.size() / ACTORES_POR_PAGINA);
             int paginasTotales = 0;
             boolean paginasResiduales = false;
             boolean continuar = true;
@@ -518,12 +520,17 @@ public class Main {
             int lastResidualIdx = 0;
             Actor actorEscogido = new Actor("auxiliar", 0);
 
-            if (actorsForRental.size()%5 != 0){
+            if (actorsForRental.size()%ACTORES_POR_PAGINA != 0){
                 paginasResiduales = true;
                 paginasTotales = paginasCompletas + 1;
             }
 
-            byte[] five = {0, 1, 2, 3, 4, 5};
+
+            byte[] byteActores = new byte[ACTORES_POR_PAGINA + 1];
+            for (int i = 0; i < byteActores.length; i++){
+                byteActores[i] = (byte) i;
+            }
+
             byte seguirBuscando = 0;
             
             while (continuar){
@@ -535,10 +542,10 @@ public class Main {
                 residualTimes = 0;
 
                 // 5(x+1) = 5x + 5, que es el final del rango de 5 valores que se va a imprimir
-                while( (5*(x+1) <= actorsForRental.size()) && continuar ){ //mientras exista el ultimo valor del rango de la pagina dentro de la lista
-                    for (int i = 5*x; i < 5*(x+1); i ++){//por cada rango de 5 valores que tiene pagina
-                        idx = (i+1)%5;
-                        if(idx == 0){ idx = 5; }
+                while( (ACTORES_POR_PAGINA*(x+1) <= actorsForRental.size()) && continuar ){ //mientras exista el ultimo valor del rango de la pagina dentro de la lista
+                    for (int i = ACTORES_POR_PAGINA*x; i < ACTORES_POR_PAGINA*(x+1); i ++){//por cada rango de 5 valores que tiene pagina
+                        idx = (i+1)%ACTORES_POR_PAGINA;
+                        if(idx == 0){ idx = ACTORES_POR_PAGINA; }
                         
                         if (x != 1){
                             idx ++;
@@ -552,7 +559,7 @@ public class Main {
                 System.out.println("Página " + x + "/" + paginasTotales);
                 System.out.println();
 
-                seguirBuscando = ask("Ingrese 0 para ver la siguiente página\nSi ya decidió el actor, presione su número", five);
+                seguirBuscando = ask("Ingrese 0 para ver la siguiente página\nSi ya decidió el actor, presione su número", byteActores);
 
                 System.out.println();
                 
@@ -561,7 +568,7 @@ public class Main {
                     continuar = false;
                     //para conseguir el indice, se le debe restar al ultimo indice del intervalo la diferencia entre 5 y la opcion escogida
                     //si la opcion fue la 1, seria ultimoIndice - 4, si fue la 5, ultimoIndice - 0, o sea, el mismo.
-                    actorEscogido = actorsForRental.get(lastIdx - (5 - seguirBuscando));
+                    actorEscogido = actorsForRental.get(lastIdx - (ACTORES_POR_PAGINA - seguirBuscando));
                 }
 
             }
@@ -580,13 +587,14 @@ public class Main {
                 System.out.println("Página " + (paginasCompletas + 1) + "/" + (paginasTotales));
                 System.out.println();
 
-                seguirBuscando = ask("Ingrese 0 para ver la siguiente página\nSi ya decidió el actor, presione su número", five);
+                seguirBuscando = ask("Ingrese 0 para ver la siguiente página\nSi ya decidió el actor, presione su número", byteActores);
                 System.out.println();
                 
                 if (seguirBuscando != 0){
                     
                     continuar = false;
-                    //para conseguir el indice, se le debe restar al ultimo indice del intervalo la diferencia entre 5 y la opcion escogida
+                    //para conseguir el indice, se le debe restar al ultimo indice del intervalo 
+                    //la diferencia entre la cantidad de actores en la ultima pagina (menor a 5) y la opcion escogida
                     //si la opcion fue la 1, seria ultimoIndice - 4, si fue la 5, ultimoIndice - 0, o sea, el mismo.
                     actorEscogido = actorsForRental.get((lastIdx + lastResidualIdx) - (residualTimes - seguirBuscando));
                 }
@@ -594,9 +602,11 @@ public class Main {
             }
         }
 
-        System.out.println("\nSu actor escogido fue " + actorEscogido.getNombre() + " por un precio de " +  Actor.formatoPrecio(actorEscogido.getPrecioContrato()));
+        System.out.println("Su actor escogido fue " + actorEscogido.getNombre() + " por un precio de " +  Actor.formatoPrecio(actorEscogido.getPrecioContrato()));
+        empresa.pagarAlquilerActor(actorEscogido);
+        System.out.println("Pago recibido!");
+        System.out.println("Saldo disponible: " + Actor.formatoPrecio(empresa.getCuenta().getSaldo()));
 
-        //pendiente: procesar pago
                 
         }
 
