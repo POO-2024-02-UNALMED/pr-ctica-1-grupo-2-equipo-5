@@ -2,7 +2,9 @@ package gestorAplicacion.gestionVentas;
 
 import java.util.ArrayList;
 import java.util.List;
-import gestorAplicacion.herramientas.input;
+
+import uiMain.Main;
+import uiMain.Main.isIn;
 
 import gestorAplicacion.herramientas.*;
 import gestorAplicacion.gestionObras.*;
@@ -23,12 +25,14 @@ public class Cliente {
     private ArrayList<Actor> historial = new ArrayList<>();
     private String correo;
     private String tipo;
+    private CuentaBancaria cuenta;
     public static ArrayList<Cliente> clientes = new ArrayList<>();
 
     //constructor solo con tipo de cliente y id
     public Cliente(String tipo, long id){
         this.tipo = tipo;
         this.id = id;
+        this.cuenta = new CuentaBancaria(id, 0);
         clientes.add(this);
     }    
 
@@ -106,15 +110,17 @@ public class Cliente {
 
         if (tipo != "Empresa"){ return; }
         
-        if (!input.isIn(this.historial, actor)){
+        if (!Main.isIn(this.historial, actor)){
             historial.add(actor);
         }
 
-        int precio = (int) actor.getPrecioContrato();
-        CuentaBancaria.transferencia(Tesoreria.getCuenta(), precio);
+        double precio = actor.getPrecioContrato();
+        this.cuenta.transferencia(Tesoreria.getCuenta(), precio);
     }
 
     public List<Actor> getHistorial(){ return historial; }
     public void setHistorial(List<Actor> historial){ this.historial = historial; }
+
+    public CuentaBancaria getCuenta(){ return this.cuenta; }
 }
 
