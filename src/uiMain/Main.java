@@ -2,9 +2,11 @@ package uiMain;
 
 import java.util.List;
 import java.util.Scanner;
-import java.util.Locale;
 import java.util.ArrayList;
+import java.util.Locale;
+
 import java.time.LocalDateTime;
+import java.text.NumberFormat;
 
 import gestorAplicacion.gestionVentas.Cliente;
 import gestorAplicacion.gestionClases.Clase;
@@ -12,8 +14,6 @@ import gestorAplicacion.gestionClases.Profesor;
 import gestorAplicacion.gestionFinanciera.Empleado;
 import gestorAplicacion.gestionFinanciera.Tesoreria;
 import gestorAplicacion.gestionVentas.Sala;
-
-import gestorAplicacion.herramientas.input;
 
 import gestorAplicacion.gestionObras.Actor;
 import gestorAplicacion.gestionObras.Artista;
@@ -23,17 +23,65 @@ import gestorAplicacion.herramientas.Contador;
 import gestorAplicacion.herramientas.Genero;
 import gestorAplicacion.gestionObras.Director;
 
-import java.text.NumberFormat;
+
 
 public class Main {
 
     public static Scanner op;
+    public static Scanner in = new Scanner(System.in);
+
+    //------------------HERRAMIENTAS-------------------------//
+    //pregunta y devuelve cadena respuesta
+    public static String ask(String question){
+        System.out.println(question);
+        String answer = in.nextLine();
+        return answer;
+    }
+
+    //para el método que acepta bytes se revisa si el numero hace parte de las opciones disponibles
+    public static byte ask(String question, byte[] answers){
+        System.out.println(question);
+        byte answer = in.nextByte();
+        
+        while (!isIn(answers, answer)){
+            System.out.println("\n\nLa respuesta introducida no hace parte de las opciones. Intente de nuevo:\n\n");
+            System.out.println(question);
+            answer = in.nextByte();
+        }
+
+        return answer;
+    }
+
+    //pregunta y devuelve long
+    public static long longAsk(String question){
+        System.out.println(question);
+        long answer = in.nextLong();
+        return answer;
+    }
+
+    public static boolean isIn(byte[] list, byte value){
+        for (int i = 0; i < list.length; i++){
+            if (value == list[i]){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static <T> boolean isIn(List<T> list, T value){
+        for (int i = 0; i < list.size(); i++){
+            if (value.equals(list.get(i))){
+                return true;
+            }
+        }
+        return false;       
+    }       
+    //---------------------------------------------------------//
+
+
     public static void main(String args[]){
-
-    input.setScanner( new Scanner(System.in) );
     
-
-
     //Inicio Funcionalidad 2
         // public void AsearSalas(){
         //     ArrayList<Sala> totalSalas = Sala.getSalas();
@@ -62,9 +110,7 @@ public class Main {
     System.out.println(dash.repeat(50));
 
     byte[] options = {1, 2, 3, 4, 5};
-    byte task = input.ask("Seleccione la tarea a realizar: \n1. Venta de tiquetes.\n2. Gestión de empleados.\n3. Gestión de obras.\n4. Gestión de clases.\n5. Alquiler de actores.\n", options);
-
-    Cliente empresa = new Cliente("Empresa"); //temporal
+    byte task = ask("Seleccione la tarea a realizar: \n1. Venta de tiquetes.\n2. Gestión de empleados.\n3. Gestión de obras.\n4. Gestión de clases.\n5. Alquiler de actores.", options);
 
     switch (task){
 
@@ -81,7 +127,7 @@ public class Main {
         case 4:
         {}break;
 
-        case 5: AlquilarActor(empresa);
+        case 5: AlquilarActor();
     }
     
     }
@@ -234,7 +280,49 @@ public class Main {
             }
     }
 
-    public static void AlquilarActor(Cliente empresa){
+    public static void AlquilarActor(){
+
+    byte[] two = {1, 2};
+    byte menuLog = ask("\nSeleccione:\n1. Empresa registrada.\n2. Empresa nueva.", two);
+
+    List<Actor> historialEmpresa = new ArrayList<>();
+
+    menuSwitch:
+    switch (menuLog){
+
+        case 1:
+        long idEntrada = longAsk("\nIngrese el número de identificación:");
+        boolean idFlag = false;
+        
+        for (Cliente cliente : Cliente.clientes){
+
+            if (cliente.getId() == idEntrada){
+                System.out.println("\nCliente confirmado en base de datos.");
+                historialEmpresa = cliente.getHistorial();
+                idFlag = true;
+                break menuSwitch;
+            }
+
+        }
+
+        if (!idFlag){
+            System.out.println("\nEl número de identificación no existe en la base de datos."); return;
+        }
+
+        case 2:
+        long newId = longAsk("\nGenere un nuevo número de identificación.");
+        
+        for (Cliente cliente : Cliente.clientes){
+            while (cliente.getId() == newId){
+                System.out.println("\nEsta identificación ya existe en la base de datos, intente con una diferente.");
+                newId = longAsk("\nGenere un nuevo número de identificación, si está en uso, este será automáticamente actualizado.");
+            }
+        }
+
+        Cliente empresa = new Cliente("Empresa", newId);
+        System.out.println("\nCliente creado:\n" + empresa);
+        
+    }
 
         final float CALIFICACION_ALTA = 4.0f; //por ahora
         List<Actor> actorsForRental = new ArrayList<>(Actor.getActors());
@@ -244,8 +332,7 @@ public class Main {
         options[0] = 1; options[1] = 2;
         
         //PREGUNTA NO. 1
-        byte rolActor = input.ask("¿Qué tipo de papel desempeñará el actor?\n1. Rol principal.\n2. Rol secundario.", options);
-
+        byte rolActor = ask("\n¿Qué tipo de papel desempeñará el actor?\n1. Rol principal.\n2. Rol secundario.", options);
 
         //reservar los de calificacion alta solo para roles principales
         if (rolActor == 1){ 
@@ -256,33 +343,33 @@ public class Main {
         options[2] = 3; options[3] = 4;
 
         //PREGUNTA NO. 2
-        byte tipoObra = input.ask("\n¿Qué tipo de obra es?\n1. Tragedia.\n2. Comedia.\n3. Romance.\n4. Tragicomedia.", options);
+        byte tipoObra = ask("\n¿Qué tipo de obra es?\n1. Tragedia.\n2. Comedia.\n3. Romance.\n4. Tragicomedia.", options);
         
         //que se borren los actores que no tengan el género buscado en sus atributos
         switch(tipoObra){
 
             case 1:
-            actorsForRental.removeIf(actor -> !input.isIn(actor.getGeneros(), "Tragedia"));
+            actorsForRental.removeIf(actor -> !isIn(actor.getGeneros(), "Tragedia"));
             break;
 
             case 2:
-            actorsForRental.removeIf(actor -> !input.isIn(actor.getGeneros(), "Comedia"));
+            actorsForRental.removeIf(actor -> !isIn(actor.getGeneros(), "Comedia"));
             break;
 
             case 3:
-            actorsForRental.removeIf(actor -> !input.isIn(actor.getGeneros(), "Romance"));
+            actorsForRental.removeIf(actor -> !isIn(actor.getGeneros(), "Romance"));
             break;
 
             case 4:
-            actorsForRental.removeIf(actor -> !input.isIn(actor.getGeneros(), "Tragicomedia"));
+            actorsForRental.removeIf(actor -> !isIn(actor.getGeneros(), "Tragicomedia"));
             break;
         }
         
         //para que la entrada de horarioCliente no se omita
-        input.getScanner().nextLine();
+        in.nextLine();
 
         //PREGUNTA NO. 3
-        String horarioCliente = input.ask("\n¿En qué horario necesita el actor? (Responda en formato 24 horas HH:MM)");
+        String horarioCliente = ask("\n¿En qué horario necesita el actor? (Responda en formato 24 horas HH:MM)");
 
         //pendiente: diseñar lógica para revisar el horario
 
@@ -291,33 +378,33 @@ public class Main {
         if (actorsForRental.size() == 0){ 
             System.out.println("\nNo hay artistas disponibles con los requerimientos pedidos."); return;
         } else {
-            System.out.println("\n" + actorsForRental.size() + " actores encontrados durante la preselección.\n");
+            System.out.println("\n" + actorsForRental.size() + " actores encontrados durante la preselección.");
         }
 
-        boolean firstElementAdded = false;
-
-        List<Actor> historialEmpresa = empresa.getHistorial();
+        boolean firstElementAdded = true;
 
         List<Actor> reorderedActors = new ArrayList<>();
 
+        //reordenacion de actores si aparecen en el historial de empresa
+        //si han sido contratados, agregar en nueva lista al principio, sino, al final
         for (Actor actor : actorsForRental){
             if (!firstElementAdded){
                 reorderedActors.add(0, actor);
-            } else if (input.isIn(historialEmpresa, actor)){
+                firstElementAdded = false;
+            } else if (isIn(historialEmpresa, actor)){
                 reorderedActors.add(0, actor);
             } else{
-                reorderedActors.add(actor);
+               reorderedActors.add(actor);
             }
 
         }
 
+        //convertir nueva lista reordenada en lista de actores
         actorsForRental = reorderedActors;
         reorderedActors = null;
 
         //búsqueda avanzada
-
-        byte[] two = {1, 2};
-        byte advancedSearch = input.ask("¿Deseas hacer búsqueda avanzada? (incluye filtros por edad, sexo y  cantidad de obras actuadas).\n1. Sí\n2. No.\n", two);
+        byte advancedSearch = ask("\n¿Deseas hacer búsqueda avanzada? (incluye filtros por edad, sexo y  cantidad de obras actuadas).\n1. Sí\n2. No.", two);
 
         if (advancedSearch == 1){
 
@@ -327,7 +414,7 @@ public class Main {
                 contadores.add(new Contador(actor, 0));
             }
 
-            byte edad = input.ask("¿Qué tipo de edad busca?\n1. Infantil\n2. Juvenil.\n3. Adulto.\n4. Adulto mayor", options);
+            byte edad = ask("\n¿Qué tipo de edad busca?\n1. Infantil\n2. Juvenil.\n3. Adulto.\n4. Adulto mayor", options);
 
             switch (edad){
 
@@ -352,13 +439,13 @@ public class Main {
 
             for (Contador contador : contadores){
 
-                if (input.isIn(actorsForRental, contador.getActor())){ contador.numero ++; }
+                if (isIn(actorsForRental, contador.getActor())){ contador.numero ++; }
 
             }
 
-            input.getScanner().nextLine();
+            in.nextLine();
 
-    byte sexo = input.ask("¿Qué sexo debe tener el actor?\n1. Masculino.\n2. Femenino.\n", two);
+            byte sexo = ask("\n¿Qué sexo debe tener el actor?\n1. Masculino.\n2. Femenino.", two);
 
             if (sexo == 1){ //si es masculino, remueve el sexo femenino y viceversa
                 actorsForRental.removeIf(actor -> actor.getSexo() == 'F');
@@ -368,18 +455,16 @@ public class Main {
 
             for (Contador contador : contadores){
 
-                if (input.isIn(actorsForRental, contador.getActor())){ contador.numero ++; }
+                if (isIn(actorsForRental, contador.getActor())){ contador.numero ++; }
 
             }
 
-            input.getScanner().nextLine();
-
-            //pendiente: agregar cantidad de obras actuadas
+            in.nextLine();
 
             contadores.removeIf(contador -> contador.numero < 2);
 
             if (contadores.size() == 0){
-                System.out.println("No se encontraron actores que se ajusten bien a las características."); return;}
+                System.out.println("\nNo se encontraron actores que se ajusten bien a las características."); return;}
 
             List<Actor> advancedList = new ArrayList<Actor>();
 
@@ -389,16 +474,30 @@ public class Main {
             
             actorsForRental = advancedList;
             
-            System.out.println(actorsForRental.size() + " actores se ajustaron a dos o más características avanzadas.");
+            System.out.println("\n" + actorsForRental.size() + " actores se ajustaron a dos o más características avanzadas.");
 
             }
 
-        long presupuesto = input.longAsk("¿Cuál es el presupuesto máximo para el actor?\n");
+        double minActorPrecio = actorsForRental.get(0).getPrecioContrato();
+        double maxActorPrecio = actorsForRental.get(0).getPrecioContrato();
+
+        //conseguir precio de contrato min y max para que el usuario sepa el rango
+        for (Actor actor : actorsForRental){
+
+            if (actor.getPrecioContrato() > maxActorPrecio){
+                maxActorPrecio = actor.getPrecioContrato();
+            } else if (actor.getPrecioContrato() < minActorPrecio){
+                minActorPrecio = actor.getPrecioContrato();
+            }
+
+        }    
+
+        long presupuesto = longAsk("\n¿Cuál es el presupuesto máximo para el actor?" + "\nTenga en cuenta que el rango de los precios es de " + Actor.formatoPrecio(minActorPrecio) + " a " + Actor.formatoPrecio(maxActorPrecio) + "\n");
 
         actorsForRental.removeIf(actor -> actor.getPrecioContrato() > presupuesto);
 
         if (actorsForRental.size() == 0){
-            System.out.println("No se hallaron actores para el presupuesto");
+            System.out.println("\nNo se hallaron actores para el presupuesto");
         } else {
 
             //pendiente: imprimir lista de a 5 actores con todos los atributos.
@@ -407,10 +506,100 @@ public class Main {
         for (Actor actor : actorsForRental){
             String precio = intToCop.format((int) actor.getPrecioContrato());
             System.out.println(actor); System.out.println("Precio de contratación: " + precio); System.out.println();}
+
+            int lastIdx = 0;
+            int paginasCompletas = (int) (actorsForRental.size() / 5);
+            int paginasTotales = 0;
+            boolean paginasResiduales = false;
+            boolean continuar = true;
+            int x = 0;
+            int idx = 0;
+            int lastResidualIdx = 0;
+            Actor actorEscogido = new Actor("auxiliar", 0);
+
+            if (actorsForRental.size()%5 != 0){
+                paginasResiduales = true;
+                paginasTotales = paginasCompletas + 1;
+            }
+
+            byte[] five = {0, 1, 2, 3, 4, 5};
+            byte seguirBuscando = 0;
             
+            while (continuar){
+
+                lastIdx = 0;
+                x = 0;
+                idx = 0;
+
+                // 5(x+1) = 5x + 5, que es el final del rango de 5 valores que se va a imprimir
+                while( (5*(x+1) <= actorsForRental.size()) && continuar ){ //mientras exista el ultimo valor del rango de la pagina dentro de la lista
+                    for (int i = 5*x; i < 5*(x+1); i ++){//por cada rango de 5 valores que tiene pagina
+                        idx = (i+1)%5;
+                        if(idx == 0){ idx = 5; }
+                        
+                        if (x != 1){
+                            idx ++;
+                        }
+
+                        System.out.println((idx-1) + ". " + actorsForRental.get(i));
+                        lastIdx = i;
+                        System.out.println();
                 }
+                x++;
+                System.out.println("Página " + x + "/" + paginasTotales);
+                System.out.println();
+
+                seguirBuscando = ask("Ingrese 0 para ver la siguiente página\nSi ya decidió el actor, presione su número", five);
+
+                System.out.println();
+                
+                if (seguirBuscando != 0){
+
+                    continuar = false;
+                    //para conseguir el indice, se le debe restar al ultimo indice del intervalo la diferencia entre 5 y la opcion escogida
+                    //si la opcion fue la 1, seria ultimoIndice - 4, si fue la 5, ultimoIndice - 0, o sea, el mismo.
+                    actorEscogido = actorsForRental.get(lastIdx - (5 - seguirBuscando));
+                }
+
+            }
+
+            //si el tamaño de la lista no es múltiplo de 5, sobran valores por mostrar y se desea continuar       
+            if (paginasResiduales && continuar){
+
+                for (int i = lastIdx+1; i < actorsForRental.size(); i++){
+                    System.out.println((i - lastIdx) + ". " + actorsForRental.get(i));
+                    System.out.println();
+                    lastResidualIdx = i;
+                    
+                }
+
+                System.out.println("Página " + (paginasCompletas + 1) + "/" + (paginasTotales));
+                System.out.println();
+
+                seguirBuscando = ask("Ingrese 0 para ver la siguiente página\nSi ya decidió el actor, presione su número", five);
+                System.out.println();
+                
+                if (seguirBuscando != 0){
+                    
+                    continuar = false;
+                    //para conseguir el indice, se le debe restar al ultimo indice del intervalo la diferencia entre 5 y la opcion escogida
+                    //si la opcion fue la 1, seria ultimoIndice - 4, si fue la 5, ultimoIndice - 0, o sea, el mismo.
+                    actorEscogido = actorsForRental.get(lastResidualIdx);
+                }
+
+            }
+        }
+
+        System.out.println("\nSu actor escogido fue " + actorEscogido.getNombre() + " por un precio de " +  Actor.formatoPrecio(actorEscogido.getPrecioContrato()));
+
+        //pendiente: procesar pago
+                
+        }
+
     }
-}  
+}
+            
+
 /* 
  ///BASE PARA FUNCIONALIDAD 4
 

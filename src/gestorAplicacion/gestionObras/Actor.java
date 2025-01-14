@@ -2,6 +2,10 @@ package gestorAplicacion.gestionObras;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
+import java.text.NumberFormat;
+
 import gestorAplicacion.gestionClases.Clase;
 import gestorAplicacion.gestionFinanciera.CuentaBancaria;
 
@@ -18,6 +22,7 @@ public class Actor extends Artista{
     private double precioContrato;
     private int edad;
     private char sexo;
+    public static NumberFormat intToCop = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
 
     public Actor(String nombre, long id){ 
         super(nombre, id);
@@ -25,7 +30,7 @@ public class Actor extends Artista{
     }
 
     public String toString(){
-        return "Nombre: " + super.getNombre() + "\nId: " + super.getId() + "\nEdad: " + this.edad + "\nCalificación: " + super.getCalificacion();
+        return super.getNombre() + "\nId: " + super.getId() + "\nEdad: " + this.edad + "\nCalificación: " + super.getCalificacion() + "\nPrecio de contratación: " +  formatoPrecio(this.getPrecioContrato());
     }
 
 
@@ -47,6 +52,10 @@ public class Actor extends Artista{
     public double getPrecioContrato(){
         this.precioContrato = ((Math.pow(super.getCalificacion(), 2)) / 5 ) * TASA;
         return this.precioContrato;
+    }
+
+    public static String formatoPrecio(double cantidad){
+        return intToCop.format(cantidad);
     }
 
     public int getEdad(){ return this.edad; }

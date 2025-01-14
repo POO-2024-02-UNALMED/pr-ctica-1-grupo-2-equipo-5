@@ -5,12 +5,13 @@ import gestorAplicacion.gestionVentas.Cliente;
 import uiMain.Main;
 import java.util.List;
 import java.util.ArrayList;
-import gestorAplicacion.herramientas.input;
 import java.util.Scanner;
 
 public class funcionalidad5 {
+
+    public static Scanner in = new Scanner(System.in);
        public static void main(String[] args){
-            //sujetos de prueba -------------------------
+            //sujetos de prueba -------------------------//
             Actor actor1 = new Actor("Pedro Pascal", 10292122);
             List<String> genres = new ArrayList<String>();
             genres.add("Comedia");
@@ -33,12 +34,48 @@ public class funcionalidad5 {
             actor3.setCalificacion(4.8f);
             actor3.setSexo('F');
             actor3.setEdad(36);
+
+            Actor actor4 = new Actor("Antonio Banderas", 90234263);
+            actor4.setGeneros(genres);
+            actor4.setCalificacion(4.8f);
+            actor4.setSexo('M');
+            actor4.setEdad(36);
+
+            Actor actor5= new Actor("Samuel L. Jackson", 91234203);
+            actor5.setGeneros(genres);
+            actor5.setCalificacion(4.8f);
+            actor5.setSexo('M');
+            actor5.setEdad(36);
+
+            Actor actor6 = new Actor("Orson Welles", 90230543);
+            actor3.setGeneros(genres);
+            actor3.setCalificacion(4.8f);
+            actor3.setSexo('M');
+            actor3.setEdad(36);
+
+            Actor actor7 = new Actor("John Travolta", 60234243);
+            actor7.setGeneros(genres);
+            actor7.setCalificacion(4.8f);
+            actor7.setSexo('M');
+            actor7.setEdad(36);
+
+            Actor actor8 = new Actor("Carmen Maura", 90456243);
+            actor8.setGeneros(genres);
+            actor8.setCalificacion(4.8f);
+            actor8.setSexo('F');
+            actor8.setEdad(36);
             
-            Cliente warner = new Cliente("Empresa");
+            Actor actor9 = new Actor("Florina Lemaitre", 9076243);
+            actor9.setGeneros(genres);
+            actor9.setCalificacion(4.8f);
+            actor9.setSexo('F');
+            actor9.setEdad(36);
 
-            //--------------------------------------------
+            Cliente warner = new Cliente("Empresa", 246);
+            warner.getHistorial().add(actor3);
 
-            input.setScanner( new Scanner(System.in) );
-            Main.AlquilarActor(warner);
+            //--------------------------------------------//
+
+            Main.AlquilarActor();
         }
     }

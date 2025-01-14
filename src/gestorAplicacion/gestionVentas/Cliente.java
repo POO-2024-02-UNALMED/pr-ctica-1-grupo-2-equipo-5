@@ -20,14 +20,21 @@ public class Cliente {
     private Genero generoFavorito;
     private Actor actorFavorito;
     private ArrayList<Tiquete> ultimasCompras = new ArrayList<>();
-    private List<Actor> historial = new ArrayList<>();
+    private ArrayList<Actor> historial = new ArrayList<>();
     private String correo;
     private String tipo;
+    public static ArrayList<Cliente> clientes = new ArrayList<>();
 
-    //constructor solo con tipo de cliente
-    public Cliente(String tipo){
+    //constructor solo con tipo de cliente y id
+    public Cliente(String tipo, long id){
         this.tipo = tipo;
+        this.id = id;
+        clientes.add(this);
     }    
+
+    public String toString(){
+        return "Identificación: " + this.id + "\n" + "Tipo: " + this.tipo;
+    }
 
     //ID
     public long getId() {
