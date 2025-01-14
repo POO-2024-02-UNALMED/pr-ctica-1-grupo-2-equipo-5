@@ -3,7 +3,7 @@ package gestorAplicacion.gestionFinanciera;
 public class Tesoreria {
     private static float DineroEnCaja;
     private static float metaSemanal;
-    private static CuentaBancaria Cuenta;
+    private static CuentaBancaria Cuenta = new CuentaBancaria(100, 0);
     private float Total;
 
     //Metodo para verificacion de fondos
