@@ -5,7 +5,7 @@ import java.util.Scanner;
 import java.util.Locale;
 import java.util.ArrayList;
 
-import gestorAplicacion.gestionFinanciera.Cliente;
+import gestorAplicacion.gestionVentas.Cliente;
 import gestorAplicacion.gestionFinanciera.Empleado;
 import gestorAplicacion.gestionFinanciera.Tesoreria;
 import gestorAplicacion.gestionVentas.Sala;
@@ -55,6 +55,8 @@ public class Main {
     byte[] options = {1, 2, 3, 4, 5};
     byte task = input.ask("Seleccione la tarea a realizar: \n1. Venta de tiquetes.\n2. Gestión de empleados.\n3. Gestión de obras.\n4. Gestión de clases.\n5. Alquiler de actores.\n", options);
 
+    Cliente empresa = new Cliente("Empresa"); //temporal
+
     switch (task){
 
         case 1:
@@ -69,7 +71,7 @@ public class Main {
         case 4:
         {}break;
 
-        case 5: AlquilarActor();
+        case 5: AlquilarActor(empresa);
     }
     
     }
@@ -144,7 +146,7 @@ public class Main {
         for (Actor actor : actorsForRental){
             if (!firstElementAdded){
                 reorderedActors.add(0, actor);
-            } else if (isIn(historialEmpresa, actor)){
+            } else if (input.isIn(historialEmpresa, actor)){
                 reorderedActors.add(0, actor);
             } else{
                 reorderedActors.add(actor);

@@ -1,6 +1,7 @@
 package test;
 
 import gestorAplicacion.gestionObras.Actor;
+import gestorAplicacion.gestionVentas.Cliente;
 import uiMain.Main;
 import java.util.List;
 import java.util.ArrayList;
@@ -32,9 +33,12 @@ public class funcionalidad5 {
             actor3.setCalificacion(4.8f);
             actor3.setSexo('F');
             actor3.setEdad(36);
+            
+            Cliente warner = new Cliente("Empresa");
+
             //--------------------------------------------
 
             input.setScanner( new Scanner(System.in) );
-            Main.AlquilarActor();
+            Main.AlquilarActor(warner);
         }
     }

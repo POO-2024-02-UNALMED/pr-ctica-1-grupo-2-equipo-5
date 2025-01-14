@@ -1,9 +1,16 @@
 package gestorAplicacion.gestionVentas; 
 
 import java.util.ArrayList;
+import java.util.List;
+import gestorAplicacion.herramientas.input;
 
 import gestorAplicacion.herramientas.*;
 import gestorAplicacion.gestionObras.*;
+import gestorAplicacion.gestionFinanciera.CuentaBancaria;
+import gestorAplicacion.gestionObras.Actor;
+import gestorAplicacion.gestionVentas.Funcion;
+import gestorAplicacion.gestionVentas.Tiquete;
+import gestorAplicacion.herramientas.Genero;
 
 public class Cliente {
     private long id;
@@ -11,8 +18,14 @@ public class Cliente {
     private Genero generoFavorito;
     private Actor actorFavorito;
     private ArrayList<Tiquete> ultimasCompras = new ArrayList<>();
+    private List<Actor> historial = new ArrayList<>();
     private String correo;
     private String tipo;
+
+    //constructor solo con tipo de cliente
+    public Cliente(String tipo){
+        this.tipo = tipo;
+    }    
 
     //ID
     public long getId() {
@@ -77,5 +90,22 @@ public class Cliente {
     public void calificar(float calificacion, Obra obra){
         obra.agregarCalificacion(calificacion);
     }
+
+
+    //metodo para contratar actor y enviar dinero a tesorería
+    public void pagarAlquilerActor(Actor actor){
+
+        if (tipo != "Empresa"){ return; }
+        
+        if (!input.isIn(this.historial, actor)){
+            historial.add(actor);
+        }
+
+        int precio = (int) actor.getPrecioContrato();
+        CuentaBancaria.transferencia(Tesoreria.getCuenta(), precio);
+    }
+
+    public List<Actor> getHistorial(){ return historial; }
+    public void setHistorial(List<Actor> historial){ this.historial = historial; }
 }
 
