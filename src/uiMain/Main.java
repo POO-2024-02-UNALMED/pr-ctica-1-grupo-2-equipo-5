@@ -546,12 +546,8 @@ public class Main {
                     for (int i = ACTORES_POR_PAGINA*x; i < ACTORES_POR_PAGINA*(x+1); i ++){//por cada rango de 5 valores que tiene pagina
                         idx = (i+1)%ACTORES_POR_PAGINA;
                         if(idx == 0){ idx = ACTORES_POR_PAGINA; }
-                        
-                        if (x != 1){
-                            idx ++;
-                        }
 
-                        System.out.println((idx-1) + ". " + actorsForRental.get(i));
+                        System.out.println((idx) + ". " + actorsForRental.get(i));
                         lastIdx = i;
                         System.out.println();
                 }
