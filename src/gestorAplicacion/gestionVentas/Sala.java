@@ -12,7 +12,8 @@ public class Sala {
     private Boolean aseado;
     private Boolean ocupado;
     private boolean aseador;
-    private ArrayList<List<LocalDateTime[]>> horario;
+    private ArrayList<ArrayList<LocalDateTime>> horario;
+    private int capacidad;
 
 
     //SILLAS
@@ -70,19 +71,40 @@ public class Sala {
     public void setAseador(boolean aseador) {
         this.aseador = aseador;
     }
-    public ArrayList<List<LocalDateTime[]>> getHorario() {
+    public ArrayList<ArrayList<LocalDateTime>> getHorario() {
         return horario;
     }
-    public void setHorario(ArrayList<List<LocalDateTime[]>> horario) {
+    public void setHorario(ArrayList<ArrayList<LocalDateTime>> horario) {
         this.horario = horario;
     }
-    public boolean estaDisponible(LocalDateTime inicio, LocalDateTime fin) {
-        for (List<LocalDateTime[]> full : horario) {
-            for (LocalDateTime[] evento : full)
-                if (inicio.isBefore(evento[1]) && fin.isAfter(evento[0])) {
-                    return false; // Horario ocupado
+    public boolean isDisponible(LocalDateTime inicio, LocalDateTime fin) {
+        for (ArrayList<LocalDateTime> evento : horario) {
+            if (inicio.isBefore(evento.get(1)) && fin.isAfter(evento.get(0))) {
+                return false; // Horario ocupado
             }
         }
         return true; // Horario disponible
+    }
+    public int getCapacidad() {
+        return capacidad;
+    }
+    public void setCapacidad(int capacidad) {
+        this.capacidad = capacidad;
+    }
+
+    public void calcCapacidad(ArrayList<Silla> sillas){
+        int u;
+        u = 0;
+        for (int i = 0; i == sillas.size(); i++){
+            u = u + 1;
+        }
+        this.setCapacidad(u);    
+    }
+
+    public void anadirHorario(ArrayList<LocalDateTime> a){
+        ArrayList<ArrayList<LocalDateTime>> y;
+        y = getHorario();
+        y.add(a);
+        setHorario(y);
     }
 }

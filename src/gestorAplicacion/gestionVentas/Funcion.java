@@ -5,13 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.time.LocalTime;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 
 import gestorAplicacion.gestionObras.Obra;
 
 public class Funcion {
     private Obra obra;
     private int tiquetesVendidos;
-    private ArrayList<LocalDateTime> horario;
+    private ArrayList<LocalDateTime> horario = new ArrayList<>();
     private Sala sala;
     private boolean calificador;
     private int audienciaEsperada;
@@ -35,10 +37,10 @@ public class Funcion {
     }
 
     //HORARIO
-    public LocalDateTime[] getHorario() {
+    public ArrayList<LocalDateTime> getHorario() {
         return horario;
     }
-    public void setHorario(LocalDateTime[] horario) {
+    public void setHorario(ArrayList<LocalDateTime> horario) {
         this.horario = horario;
     }
 
@@ -66,26 +68,44 @@ public class Funcion {
         this.audienciaEsperada = audienciaEsperada;
     }
 
-    public Sala salaDisponible(int audienciaEsperada){
+    public Sala salaDisponible(Sala sala){
         return sala;
     }
     public Funcion(Obra obra, boolean calificador, int audienciaEsperada) {
         this.obra = obra;
         this.tiquetesVendidos = 0;
-        this.horario = createHorario(sala);
-        sala = salaDisponible(audienciaEsperada);
+        this.horario = createHorario(Sala.getSalas());
+        this.sala = salaDisponible(sala);
         this.calificador = calificador;
         this.audienciaEsperada = audienciaEsperada;
     }
     public Funcion(){
 
     }
-    public Funcion()
+    public Funcion(LocalDateTime hora){
+        horario.add(hora);
+        horario.add(hora);
+    }
     
-    public ArrayList<LocalDateTime> createHorario(Sala sala){
-        for (int a = 0; a < (sala.getHorario().size()); a++){
-            
+    public ArrayList<LocalDateTime> createHorario(ArrayList<Sala> salas){
+        ArrayList<LocalDateTime> horario = new ArrayList<>();
+        LocalDateTime v;
+        for (Sala sala : salas){
+            if (sala.getCapacidad() > this.obra.getAudienciaEsperada()){
+                for (LocalDateTime i = LocalDateTime.of(LocalDate.now(), this.obra.getFranjaHoraria().get(0)); 
+                i == LocalDateTime.of(LocalDate.now().with(DayOfWeek.SUNDAY), this.obra.getFranjaHoraria().get(1)); 
+                i.plusMinutes(30)) {
+                    v = i.plusSeconds(this.obra.getDuracionFormatoS());
+                    if(sala.isDisponible(i, v)){
+                        horario.add(i);
+                        horario.add(v);
+                        this.setSala(sala);
+                    };
+                }
+            }
         }
+        this.getSala().anadirHorario(horario);
+        return horario;
     }
 
         public void createFunciones(Obra obra, int numero, float calificacion) {

@@ -23,7 +23,7 @@ public class Obra {
     private static ArrayList<Obra> estadoCriticoS;
     private ArrayList<Float> calificaciones;
     private ArrayList<Obra> obras;
-    private ArrayList<LocalDateTime> franjaHoraria;
+    private ArrayList<LocalTime> franjaHoraria;
     private Duration duracion;
     private Funcion funcionEstelar;
     private ArrayList<Funcion> funciones;
@@ -153,10 +153,11 @@ public class Obra {
     }
     public void franjaHoraria(Genero genero){
         Genero u;
-        Funcion a;
-        ArrayList<LocalTime> franja;
+        Funcion a = new Funcion(LocalDateTime.of(2025, 1, 00, 00, 00));
+        ArrayList<LocalTime> franja = a.extraerHora(a.getHorario());
+        ArrayList<LocalTime> i = new ArrayList<>();
         franja.add(LocalTime.of(24,00));
-        franja.add(LocalTime.of(00,00)));
+        franja.add(LocalTime.of(00,00));
         ArrayList<Obra> obrasGenero = new ArrayList<>();
         for (Obra obra : obras){
             u = obra.getGenero();
@@ -166,8 +167,15 @@ public class Obra {
         }
         for (Obra obra: obrasGenero){
             a = obra.funcionEstelar;
-            a.extraerHora(franjaHoraria);
+            i = a.extraerHora(a.getHorario());
+            if (i.get( 0).isBefore(franja.get(0))){
+                franja.set(0, i.get(0));
+            }
+            if (i.get(1).isAfter(franja.get(1))){
+                franja.set(1, i.get(1));
+            }
         }
+        setFranjaHoraria(franja);
     }
     public String getDuracionFormato() {
         long horas = duracion.toHours();
@@ -180,10 +188,10 @@ public class Obra {
     public void setObras(ArrayList<Obra> obras) {
         this.obras = obras;
     }
-    public ArrayList<LocalDateTime> getFranjaHoraria() {
+    public ArrayList<LocalTime> getFranjaHoraria() {
         return franjaHoraria;
     }
-    public void setFranjaHoraria(ArrayList<LocalDateTime> franjaHoraria) {
+    public void setFranjaHoraria(ArrayList<LocalTime> franjaHoraria) {
         this.franjaHoraria = franjaHoraria;
     }
     public Duration getDuracion() {
@@ -220,5 +228,11 @@ public class Obra {
     }
     public void setFunciones(ArrayList<Funcion> funciones) {
         this.funciones = funciones;
+    }
+
+    public long getDuracionFormatoS(){
+        long seconds;
+        seconds = duracion.toSeconds();
+        return seconds;
     }
 }

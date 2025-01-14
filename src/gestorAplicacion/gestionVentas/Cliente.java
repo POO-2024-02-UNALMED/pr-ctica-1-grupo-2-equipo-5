@@ -12,6 +12,8 @@ import gestorAplicacion.gestionVentas.Funcion;
 import gestorAplicacion.gestionVentas.Tiquete;
 import gestorAplicacion.herramientas.Genero;
 
+import gestorAplicacion.gestionFinanciera.Tesoreria;
+
 public class Cliente {
     private long id;
     private Funcion funcion;
