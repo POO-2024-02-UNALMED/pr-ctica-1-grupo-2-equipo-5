@@ -122,5 +122,16 @@ public class Cliente {
     public void setHistorial(List<Actor> historial){ this.historial = historial; }
 
     public CuentaBancaria getCuenta(){ return this.cuenta; }
+
+    public static boolean verificar(long elemento){
+        for (int i=0; i < clientes.size();i++){
+            if (clientes.get(i).getId()==elemento) {
+                return true;
+                
+            }
+            
+        }
+        return false;
+    }
 }
 

@@ -76,11 +76,14 @@ public class Main {
             }
         }
         return false;       
-    }       
+    }
+    
     //---------------------------------------------------------//
 
 
     public static void main(String args[]){
+    
+        
     
     //Inicio Funcionalidad 2
         // public void AsearSalas(){
@@ -116,7 +119,8 @@ public class Main {
     switch (task){
 
         case 1:
-        {}break;
+        gestionVentas();
+        break;
 
         case 2:
         {}break;
@@ -136,6 +140,76 @@ public class Main {
     
     }
 
+    public static void gestionVentas(){
+        ArrayList <Integer> lista = new ArrayList<>();
+        System.out.println("Ingrese la opcion correspondiente");
+        System.out.println("Eres cliente nuevo?");
+        System.out.println("1. SI");
+        System.out.println("2. NO");
+
+        byte [] opciones = {1,2};
+        byte a = in.nextByte();
+
+        while (!isIn(opciones, a)){
+            System.out.println("\n\nLa respuesta introducida no hace parte de las opciones. Intente de nuevo:\n\n");
+            System.out.println("Eres cliente nuevo?");
+            a = in.nextByte();
+        }
+        Cliente c1 = new Cliente("null", 1);
+
+        boolean salir = false;
+    
+        while (!salir) {
+        switch (a) {
+            case 1:
+                System.out.print("Ingresa tu id :");
+                int code = in.nextInt();
+                
+               
+
+                if (Cliente.verificar(code)) {
+                    System.out.println("Iniciando sesion...");
+                try {
+                    // Pausa de 2 segundos (2000 milisegundos)
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    System.out.println("La pausa fue interrumpida.");
+                }
+                System.out.println("Sesion Iniciada");
+        
+                salir = true;
+                break;
+                    
+
+                }else {
+                    System.out.println("Codigo no encontrado");
+                    System.out.print("Tienes un codigo existente? :");
+                    String pregunta = in.nextLine();
+
+                    break;
+                    
+                }
+            
+                
+            case 2:
+                System.out.println("Creando Nuevo Codigo...");
+                try {
+                    // Pausa de 2 segundos (2000 milisegundos)
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    System.out.println("La pausa fue interrumpida.");
+                    
+                }
+                System.out.println("Codigo creado");
+                
+                salir = true;
+                break;
+            }
+        }
+
+        
+
+    }
 
     public static void gestionObras(){
         int i;
