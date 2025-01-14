@@ -14,6 +14,7 @@ public class Obra {
     private String nombre;
     private float calificacion;
     private ArrayList<Actor> reparto;
+    private ArrayList<Aptitud> papeles;
     private Director director;
     private float costoProduccion;
     private ArrayList<Funcion> funcionesSemana;
@@ -22,7 +23,7 @@ public class Obra {
     private boolean estadoCriticoA;
     private static ArrayList<Obra> estadoCriticoS;
     private ArrayList<Float> calificaciones;
-    private ArrayList<Obra> obras;
+    private static ArrayList<Obra> obras;
     private ArrayList<LocalTime> franjaHoraria;
     private Duration duracion;
     private Funcion funcionEstelar;
@@ -100,6 +101,26 @@ public class Obra {
         this.genero = genero;
         this.tiquetesTotales = tiquetesTotales;
         this.estadoCriticoA = estadoCriticoA;
+    }
+
+    public Obra(String nombre, ArrayList<Actor> reparto, ArrayList<Aptitud> papeles, Director director, float costoProduccion, Genero genero, 
+    Duration duracion){
+        audienciaEsperada = getAudienciaEsperada();
+        this.nombre = nombre;
+        calificacion = 0;
+        this.reparto = reparto;
+        this.papeles = papeles;
+        this.director = director;
+        this.costoProduccion = costoProduccion;
+        funcionesSemana = new ArrayList<>();
+        this.genero = genero;
+        tiquetesTotales = 0;
+        this.estadoCriticoA = checkEstadoCritico();
+        calificaciones = new ArrayList<>();
+        this.franjaHoraria = new ArrayList<>();
+        this.duracion = duracion;
+        funcionEstelar = null;
+        funciones = new ArrayList<>();
     }
     
 
@@ -182,11 +203,11 @@ public class Obra {
         long minutos = duracion.toMinutes() % 60;
         return String.valueOf(horas) + String.valueOf(minutos);
     }
-    public ArrayList<Obra> getObras() {
+    public static ArrayList<Obra> getObras() {
         return obras;
     }
     public void setObras(ArrayList<Obra> obras) {
-        this.obras = obras;
+        Obra.obras = obras;
     }
     public ArrayList<LocalTime> getFranjaHoraria() {
         return franjaHoraria;
@@ -234,5 +255,20 @@ public class Obra {
         long seconds;
         seconds = duracion.toSeconds();
         return seconds;
+    }
+
+    public boolean checkEstadoCritico(){
+        if(this.calificacion < 1){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public ArrayList<Aptitud> getPapeles() {
+        return papeles;
+    }
+    public void setPapeles(ArrayList<Aptitud> papeles) {
+        this.papeles = papeles;
     }
 }

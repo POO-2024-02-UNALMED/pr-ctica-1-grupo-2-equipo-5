@@ -17,12 +17,15 @@ import gestorAplicacion.herramientas.input;
 
 import gestorAplicacion.gestionObras.Actor;
 import gestorAplicacion.gestionObras.Artista;
+import gestorAplicacion.gestionObras.Obra;
+import gestorAplicacion.herramientas.Aptitud;
 import gestorAplicacion.herramientas.Contador;
 
 import java.text.NumberFormat;
 
 public class Main {
 
+    public static Scanner op;
     public static void main(String args[]){
 
     input.setScanner( new Scanner(System.in) );
@@ -70,7 +73,8 @@ public class Main {
         {}break;
 
         case 3:
-        {}break;
+            gestionObras();
+        º   break;
 
         case 4:
         {}break;
@@ -81,6 +85,74 @@ public class Main {
     }
 
 
+    public static void gestionObras(){
+        int i;
+        i = 0;
+        Obra eleccion;
+        Obra nuevaObra;
+
+        for (Obra obra : Obra.getObras()){          
+            i = i + 1;
+            System.out.println(String.valueOf(i) + "." + obra.getNombre());
+        }
+        System.out.println(String.valueOf(i + 1) + ". Crear nueva obra");
+        System.out.println("¿Qué obra desea consultar? Por favor indique el número sin punto");
+        String answer = op.nextLine();
+        if (Integer.parseInt(answer) <= i)
+            eleccion = Obra.getObras().get(Integer.parseInt(answer) - 1);
+        else if (Integer.parseInt(answer) > i){
+            System.out.println("Por favor ingrese el nombre de la nueva obra");
+            String nombre = op.nextLine();
+            System.out.println("Por favor seleccione uno por uno el reparto de la nueva obra");
+            int f;
+            f = 0;
+            for (Actor actor : Actor.getActors()){
+                f = f + 1;
+                System.out.println(String.valueOf(f) + "."+ actor.getNombre());
+            }
+            int s;
+            s = 1;
+            ArrayList<Actor> reparto = new ArrayList<>();
+            ArrayList<Aptitud> papeles = new ArrayList<>()
+            while (s != 0){
+                System.out.println("Digita el número del actor que desea agregar sin punto, si ya terminaste de añadir el reparto por favor ingresa 0");
+                String d = op.nextLine();
+                s = Integer.parseInt(d);
+                if (s == 0){
+                    break;
+                }
+                else;
+                    Actor elegido = Actor.getActors().get(s - 1);
+                    reparto.add(elegido);
+                    }
+                    System.out.println("Por favor indica en qué se debe enfocar el actor (Solo puedes seleccionar una opción, sin embargo, varios actores pueden enfocarse en la misma opción) recuerde digitar solo el número de la opción");
+                    System.out.println("1. Canto");
+                    System.out.println("2. Baile");
+                    System.out.println("3. Discurso");
+                    System.out.println("4. Emocionalidad");
+                    System.out.println("5. Improvisación")
+                    byte u = op.nextByte();
+                    switch (u){
+                        case 1:
+                            papeles.add(Aptitud.CANTO);
+                            break;
+                        case 2:
+                            papeles.add(Aptitud.BAILE);
+                            break;
+                        case 3:
+                            papeles.add(Aptitud.DISCURSO);
+                            break;
+                        case 4:
+                            papeles.add(Aptitud.EMOCIONALIDAD);
+                            break;
+                        case 5: 
+                            papeles.add(Aptitud.IMPROVISACION)
+                    }
+            }
+            nuevaObra = new Obra(nombre, ArrayList<Actor> reparto, ArrayList<Aptitud> papeles, Director director, 
+            float costoProduccion, Genero genero, Duration duracion);
+        }
+    }
     public static void AlquilarActor(Cliente empresa){
 
         final float CALIFICACION_ALTA = 4.0f; //por ahora

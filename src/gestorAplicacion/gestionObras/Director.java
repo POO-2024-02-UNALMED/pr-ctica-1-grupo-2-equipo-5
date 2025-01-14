@@ -1,5 +1,5 @@
 package gestorAplicacion.gestionObras;
 
-public class Director {
+public class Director extends Artista {
     
 }
