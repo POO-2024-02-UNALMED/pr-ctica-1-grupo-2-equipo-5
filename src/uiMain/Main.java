@@ -512,6 +512,7 @@ public class Main {
             int paginasTotales = 0;
             boolean paginasResiduales = false;
             boolean continuar = true;
+            int residualTimes = 0;
             int x = 0;
             int idx = 0;
             int lastResidualIdx = 0;
@@ -530,6 +531,8 @@ public class Main {
                 lastIdx = 0;
                 x = 0;
                 idx = 0;
+                lastResidualIdx = 0;
+                residualTimes = 0;
 
                 // 5(x+1) = 5x + 5, que es el final del rango de 5 valores que se va a imprimir
                 while( (5*(x+1) <= actorsForRental.size()) && continuar ){ //mientras exista el ultimo valor del rango de la pagina dentro de la lista
@@ -569,7 +572,8 @@ public class Main {
                 for (int i = lastIdx+1; i < actorsForRental.size(); i++){
                     System.out.println((i - lastIdx) + ". " + actorsForRental.get(i));
                     System.out.println();
-                    lastResidualIdx = i;
+                    lastResidualIdx = i - lastIdx;
+                    residualTimes ++;
                     
                 }
 
@@ -584,7 +588,7 @@ public class Main {
                     continuar = false;
                     //para conseguir el indice, se le debe restar al ultimo indice del intervalo la diferencia entre 5 y la opcion escogida
                     //si la opcion fue la 1, seria ultimoIndice - 4, si fue la 5, ultimoIndice - 0, o sea, el mismo.
-                    actorEscogido = actorsForRental.get(lastResidualIdx);
+                    actorEscogido = actorsForRental.get((lastIdx + lastResidualIdx) - (residualTimes - seguirBuscando));
                 }
 
             }
