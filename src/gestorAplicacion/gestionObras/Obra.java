@@ -27,6 +27,7 @@ public class Obra {
     private Duration duracion;
     private Funcion funcionEstelar;
     private ArrayList<Funcion> funciones;
+    private int funcionesRecomendadas;
 
     public int getAudienciaEsperada() {
         return audienciaEsperada;
@@ -120,6 +121,7 @@ public class Obra {
         this.duracion = createDuration(duracion);
         funcionEstelar = null;
         funciones = new ArrayList<>();
+        funcionesRecomendadas = funcionesRecomendadas(calificacion);
     }
     
 
@@ -277,5 +279,11 @@ public class Obra {
         long segundos = (format % 10000) % 100;
         Duration duracion = Duration.ofHours(horas).plusMinutes(minutos).plusSeconds(segundos);
         return duracion;
+    }
+    public int getFuncionesRecomendadas() {
+        return funcionesRecomendadas;
+    }
+    public void setFuncionesRecomendadas(int funcionesRecomendadas) {
+        this.funcionesRecomendadas = funcionesRecomendadas;
     }
 }

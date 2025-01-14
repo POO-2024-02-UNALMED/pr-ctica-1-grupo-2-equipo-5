@@ -111,4 +111,13 @@ public abstract class Artista {
     public void agregarCalificacion(float calificacion){
         this.calificaciones.add(calificacion);
     }
+    
+    public boolean isDisponible(LocalDateTime inicio, LocalDateTime fin) {
+        for (ArrayList<LocalDateTime> evento : horario) {
+            if (inicio.isBefore(evento.get(1)) && fin.isAfter(evento.get(0))) {
+                return false; // Horario ocupado
+            }
+        }
+        return true; // Horario disponible
+    }
 }

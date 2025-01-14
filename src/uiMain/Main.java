@@ -91,7 +91,7 @@ public class Main {
         int i;
         i = 0;
         Obra eleccion;
-        Obra nuevaObra;
+        eleccion = null;
 
         for (Obra obra : Obra.getObras()){          
             i = i + 1;
@@ -208,9 +208,30 @@ public class Main {
             long dur = op.nextLong();
             
 
-            nuevaObra = new Obra(nombre, reparto, papeles, director, costoProduccion, genero, dur);  
+            eleccion = new Obra(nombre, reparto, papeles, director, costoProduccion, genero, dur);  
             }
-            
+        
+            System.out.println("Has seleccionado" + " " + eleccion.getNombre());
+            System.out.println("¿Cuántas funciones te gustaría crear para esta obra?");
+            int a = eleccion.getFuncionesRecomendadas();
+            int rut = op.nextInt();
+            if (a + 2 > rut){
+                System.out.println("ALERTA, PUEDEN SER DEMASIADAS FUNCIONES PARA ESTA OBRA");
+                System.out.println("¿DESEA CONTINUAR?");
+                System.out.println("1. Sí");
+                System.out.println("2. No");
+                byte sc = op.nextByte();
+                switch (sc) {
+                    case 1:
+                        
+                        break;
+                    case 2:
+                        
+                
+                    default:
+                        break;
+                }
+            }
     }
 
     public static void AlquilarActor(Cliente empresa){
