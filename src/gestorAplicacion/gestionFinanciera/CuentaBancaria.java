@@ -4,6 +4,11 @@ public class CuentaBancaria {
     long idTitular;
     double Saldo;
 
+    public CuentaBancaria(long id, double saldo){
+        this.idTitular = id;
+        this.Saldo = saldo;
+    }
+
     public void ingresar (double cant){
         this.Saldo += cant;
     }
