@@ -107,4 +107,17 @@ public class Clase{
     public void setSala(Sala sala) {
         this.sala = sala;
     }
+    public void agregarHorario(LocalDateTime inicio, LocalDateTime fin) {
+        horario.add(new LocalDateTime[]{inicio, fin});
+    }
+
+    public boolean verificarDisponibilidad(LocalDateTime inicio, LocalDateTime fin) {
+        for (LocalDateTime[] intervalo : horario) {
+            if (inicio.isBefore(intervalo[1]) && fin.isAfter(intervalo[0])) {
+                return false; // Hay un choque de horarios
+            }
+        }
+        return true; // No hay conflictos
+    }
 }
+

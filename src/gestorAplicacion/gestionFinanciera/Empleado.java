@@ -1,5 +1,8 @@
 package gestorAplicacion.gestionFinanciera;
 import java.util.Random;
+
+import gestorAplicacion.gestionObras.Artista;
+
 import java.util.ArrayList;
 
 public class Empleado {
@@ -171,5 +174,9 @@ public class Empleado {
     }
     public int getSalarioProfesor(){
         return this.salarioProfesor;
+    }
+    
+    public void casting(Artista artista) {
+        artista.agregarCalificacion((int) (Math.random() * 5) + 1); // Inicializa calificaciones aleatorias
     }
 }

@@ -1,5 +1,8 @@
 package gestorAplicacion.gestionClases;
 
-public class Profesor {
-    
+import gestorAplicacion.gestionFinanciera.Empleado;
+
+public class Profesor extends Empleado {
+
 }
+    
