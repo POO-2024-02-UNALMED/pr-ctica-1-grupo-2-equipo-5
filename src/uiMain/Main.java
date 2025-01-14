@@ -4,8 +4,11 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Locale;
 import java.util.ArrayList;
+import java.time.LocalDateTime;
 
 import gestorAplicacion.gestionVentas.Cliente;
+import gestorAplicacion.gestionClases.Clase;
+import gestorAplicacion.gestionClases.Profesor;
 import gestorAplicacion.gestionFinanciera.Empleado;
 import gestorAplicacion.gestionFinanciera.Tesoreria;
 import gestorAplicacion.gestionVentas.Sala;
@@ -13,6 +16,7 @@ import gestorAplicacion.gestionVentas.Sala;
 import gestorAplicacion.herramientas.input;
 
 import gestorAplicacion.gestionObras.Actor;
+import gestorAplicacion.gestionObras.Artista;
 import gestorAplicacion.herramientas.Contador;
 
 import java.text.NumberFormat;
@@ -253,5 +257,124 @@ public class Main {
             
                 }
     }
+}  
+/* 
+ ///BASE PARA FUNCIONALIDAD 4
 
+    Scanner scanner = new Scanner(System.in);
+    List<Artista> artistas = new ArrayList<>(); // Lista de artistas registrados
+    List<Clase> clases = new ArrayList<>(); // Lista de clases programadas
+
+    System.out.println("Bienvenido a la gestión de clases.");
+    System.out.println("Ingrese el ID del artista: ");
+    int idArtista = scanner.nextInt();
+    scanner.nextLine(); 
+
+    Artista artista = buscarArtistaPorId(artistas, idArtista);
+    if (artista == null) {
+        System.out.println("Artista no encontrado. Creando un nuevo artista.");
+        System.out.print("Ingrese el nombre del nuevo artista: ");
+        String nombreArtista = scanner.nextLine();
+        artista = new Artista(idArtista, nombreArtista);
+        artistas.add(artista);
+        Profesor profesor = new Profesor("Profesor Inicial", true); //ORGANIZAR CLASE PROFESOR
+        profesor.casting(artista);
+    }
+
+    System.out.println("Calificaciones actuales del artista " + artista.getNombre() + ":");
+    artista.mostrarCalificaciones();
+
+    System.out.println("Obras en estado crítico:");
+    listarObrasCriticas();
+
+    System.out.print("¿Desea programar una clase? (s/n): ");
+    String respuesta = scanner.nextLine();
+    if (respuesta.equalsIgnoreCase("s")) {
+            programarClase(scanner, artista, clases);
+    }
+
+    System.out.println("Fin de la gestión de clases.");
+    scanner.close();
+    
+
+    private static Artista buscarArtistaPorId(List<Artista> artistas, int id) {
+        for (Artista artista : artistas) {
+            if (artista.getId() == id) {
+                return artista;
+            }
+        }
+        return null;
+    }
+
+    private static void listarObrasCriticas() {
+       // Simulación de obras críticas en el sistema                            //CREAR ESTE MÉTODO PARA FUN4
+        System.out.println("Obra 1: Muy mala calificación en Actuación.");
+        System.out.println("Obra 2: Muy mala calificación en Dirección.");
+    } 
+
+    private static void programarClase(Scanner scanner, Artista artista, List<Clase> clases) {
+        System.out.print("Ingrese la materia de la clase: ");
+        String materia = scanner.nextLine();
+
+        System.out.print("Ingrese el nivel de la clase (1 = Introducción, 2 = Profundización, 3 = Perfeccionamiento): ");
+        int nivel = scanner.nextInt();
+        scanner.nextLine();
+
+        Sala sala = estaDisponible();
+        if (sala == null) {
+            System.out.println("No hay salas disponibles y aseadas.");
+            return;
+        }
+
+        Profesor profesor = buscarProfesorDisponible();
+        if (profesor == null) {
+            System.out.println("No hay profesores disponibles.");
+            return;
+        }
+
+        System.out.print("Ingrese la hora de inicio de la clase (formato: yyyy-MM-ddTHH:mm): ");
+        LocalDateTime inicio = LocalDateTime.parse(scanner.nextLine());
+        System.out.print("Ingrese la hora de fin de la clase (formato: yyyy-MM-ddTHH:mm): ");
+        LocalDateTime fin = LocalDateTime.parse(scanner.nextLine());
+
+        LocalDateTime[] horario = {inicio, fin};
+        double costo = calcularCosto(nivel);
+        if (!artista.getCuentaBancaria().pagar(costo)) {
+            System.out.println("Saldo insuficiente para pagar la clase.");
+            return;
+        }
+
+        Tesoreria.recibirPago(costo);
+        Clase nuevaClase = new Clase(materia, nivel, sala, profesor, costo, horario);
+        clases.add(nuevaClase);
+        System.out.println("Clase programada exitosamente para el artista " + artista.getNombre() + ".");
+    }
+
+    private static Sala buscarSalaDisponible(List<Sala> salas) {
+    for (Sala sala : salas) {
+        if (sala.isDisponible() && sala.isAseada()) {
+            return sala;                                        //AGREAGAR MÉTODOS
+            }
+        }
+    return null; // No se encontró una sala disponible y aseada
+    }*  
+
+    private static Profesor buscarProfesorDisponible(List<Profesor> profesores) {
+    for (Profesor profesor : profesores) {
+        if (profesor.isDisponible()) {
+            return profesor;
+            }
+        }
+    return null; // No se encontró un profesor disponible
+    }
+
+    private static double calcularCosto(int nivel) {
+    switch (nivel) {
+        case 1: return 50.0; // Costo para nivel Introducción
+        case 2: return 75.0; // Costo para nivel Profundización
+        case 3: return 100.0; // Costo para nivel Perfeccionamiento
+        default: return 0.0;
+        }
+    }
 }
+*/
