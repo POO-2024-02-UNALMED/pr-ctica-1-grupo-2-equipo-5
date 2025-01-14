@@ -103,6 +103,7 @@ public class Main {
         // }
 
 
+    Tesoreria tesoreria = new Tesoreria();
     String dash = "~";
 
     System.out.println(dash.repeat(50));

@@ -25,50 +25,50 @@ public class funcionalidad5 {
             genres.add("Comedia");
             Actor actor2 = new Actor("Eddie Muprhy", 9032723);
             actor2.setGeneros(genres);
-            actor2.setCalificacion(2.8f);
+            actor2.setCalificacion(3.8f);
             actor2.setSexo('M');
             actor2.setEdad(62);
     
             genres.add("Romance");
             Actor actor3 = new Actor("Emma Stone", 90234243);
             actor3.setGeneros(genres);
-            actor3.setCalificacion(4.8f);
+            actor3.setCalificacion(4.6f);
             actor3.setSexo('F');
             actor3.setEdad(36);
 
             Actor actor4 = new Actor("Antonio Banderas", 90234263);
             actor4.setGeneros(genres);
-            actor4.setCalificacion(4.8f);
+            actor4.setCalificacion(4.7f);
             actor4.setSexo('M');
-            actor4.setEdad(36);
+            actor4.setEdad(64);
 
             Actor actor5= new Actor("Samuel L. Jackson", 91234203);
             actor5.setGeneros(genres);
-            actor5.setCalificacion(4.8f);
+            actor5.setCalificacion(5.0f);
             actor5.setSexo('M');
-            actor5.setEdad(36);
+            actor5.setEdad(76);
 
             Actor actor6 = new Actor("Orson Welles", 90230543);
             actor3.setGeneros(genres);
-            actor3.setCalificacion(4.8f);
+            actor3.setCalificacion(4.2f);
             actor3.setSexo('M');
-            actor3.setEdad(36);
+            actor3.setEdad(85);
 
             Actor actor7 = new Actor("John Travolta", 60234243);
             actor7.setGeneros(genres);
-            actor7.setCalificacion(4.8f);
+            actor7.setCalificacion(4.5f);
             actor7.setSexo('M');
-            actor7.setEdad(36);
+            actor7.setEdad(70);
 
             Actor actor8 = new Actor("Carmen Maura", 90456243);
             actor8.setGeneros(genres);
-            actor8.setCalificacion(4.8f);
+            actor8.setCalificacion(4.3f);
             actor8.setSexo('F');
-            actor8.setEdad(36);
+            actor8.setEdad(79);
             
             Actor actor9 = new Actor("Florina Lemaitre", 9076243);
             actor9.setGeneros(genres);
-            actor9.setCalificacion(4.8f);
+            actor9.setCalificacion(3.9f);
             actor9.setSexo('F');
             actor9.setEdad(36);
 
