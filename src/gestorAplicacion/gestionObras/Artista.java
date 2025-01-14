@@ -14,6 +14,8 @@ public abstract class Artista {
     private CuentaBancaria cuenta;
     private List<LocalDateTime[]> horario;
     private Clase clase;
+    private String nombre;
+    private ArrayList<Float> calificaciones = new ArrayList<>();
 
     //Constructor
     public Artista(float calificacion, long id, float promedio, CuentaBancaria cuenta, Clase clase) {
@@ -23,6 +25,11 @@ public abstract class Artista {
         this.cuenta = cuenta;
         this.horario = new ArrayList<>(); //Lista donde se guarda el horario del artista
         this.clase = clase;
+    }
+
+    public Artista(String nombre, long id){
+        this.nombre = nombre;
+        this.id = id;
     }
     
     //GETTERS Y SETTERS
@@ -73,5 +80,35 @@ public abstract class Artista {
     }
     public void setClase(Clase clase) {
         this.clase = clase;
+    }
+
+    //nombre
+    public String getNombre(){ return this.nombre; }
+    public void setNombre(String nombre){ this.nombre = nombre; }
+    
+
+    public void calcularCalificacion(ArrayList<Float> calificaciones){
+        float u;
+        int t;
+        float v;
+        u = 0;
+        t = 0;
+        for (float calificacion : calificaciones){
+            u = u + calificacion;
+            t ++;
+        }
+        v = u / t;
+        setCalificacion(v);
+    }
+
+    public ArrayList<Float> getCalificaciones() {
+        return calificaciones;
+    }
+
+    public void setCalificaciones(ArrayList<Float> calificaciones) {
+        this.calificaciones = calificaciones;
+    }
+    public void agregarCalificacion(float calificacion){
+        this.calificaciones.add(calificacion);
     }
 }

@@ -6,7 +6,7 @@ public class Empleado {
     private final int salarioSeguridad = 6500;
     private final int salarioAseador = 5500;
     private final int salarioProfesor = 5500;
-    private static ArrayList<Empleado> EmpleadosPorRendimiento = new ArrayList<>();
+    private static ArrayList<Empleado> empleadosPorRendimiento = new ArrayList<>();
     private int TrabajoRealizado;
     private boolean trabajoCorrecto;
     private int metaSemanal;
@@ -15,8 +15,13 @@ public class Empleado {
     private boolean disponible;
     private CuentaBancaria Cuenta;
     private float Deuda;
-    private ArrayList<Float> trabajoNoPagado = new ArrayList<>();
+    private ArrayList<Float> trabajos = new ArrayList<>();
     private ArrayList<ArrayList<String>> Horario = new ArrayList<>();
+
+    //Metodo para establecer el horario
+    public void establecerHorario(){
+        
+    }
 
     //Metodo para verificar si se hizo el trabajo bien
     public void VerificacionTrabajo(){
@@ -34,14 +39,27 @@ public class Empleado {
     }
 
     //Calcular sueldo
-    public int calcularSueldo(){
+    public double calcularSueldo(){
         if(this.Ocupacion == "Seguridad"){
-            int Sueldo = this.TrabajoRealizado * salarioSeguridad;
+            double Sueldo = this.TrabajoRealizado * salarioSeguridad;
             return Sueldo;
         }
-        else{
-            int Sueldo = this.TrabajoRealizado * salarioAseador;
+        else if (this.Ocupacion == "Aseador"){
+            double Sueldo = this.TrabajoRealizado * salarioAseador;
             return Sueldo;
+        }
+        else {
+            double Sueldo = this.TrabajoRealizado * salarioProfesor;
+            return Sueldo;
+        }
+    }
+
+    public boolean verificacionMeta(){
+        if (this.TrabajoRealizado >= metaSemanal) {
+            return true;
+        }
+        else{
+            return false;
         }
     }
 
@@ -117,22 +135,22 @@ public class Empleado {
         Deuda = deuda;
     }
 
-    //Trabajo no Pago
-    public ArrayList<Float> getTrabajoNoPagado() {
-        return trabajoNoPagado;
+    //Trabajos
+    public ArrayList<Float> getTrabajos() {
+        return this.trabajos;
     }
 
-    public void setTrabajoNoPagado(ArrayList<Float> trabajoNoPagado) {
-        this.trabajoNoPagado = trabajoNoPagado;
+    public void setTrabajos(ArrayList<Float> trabajos) {
+        this.trabajos = trabajos;
     }
 
     //Empleados
     public static ArrayList<Empleado> getEmpleadosPorRendimiento() {
-        return EmpleadosPorRendimiento;
+        return empleadosPorRendimiento;
     }
 
-    public static void setEmpleadosPorRendimiento(ArrayList<Empleado> empleadosPorRendimiento) {
-        EmpleadosPorRendimiento = empleadosPorRendimiento;
+    public static void setEmpleadosPorRendimiento(ArrayList<Empleado> newEmpleadosPorRendimiento) {
+        empleadosPorRendimiento = newEmpleadosPorRendimiento;
     }
 
     //Horario

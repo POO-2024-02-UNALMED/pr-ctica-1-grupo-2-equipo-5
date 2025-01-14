@@ -2,8 +2,11 @@ package gestorAplicacion.gestionObras;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.time.LocalDateTime;
+import java.time.Duration;
+import java.time.LocalTime;
 
-import gestorAplicacion.Enumeraciones.*;
+import gestorAplicacion.herramientas.*;
 import gestorAplicacion.gestionVentas.*;
 
 public class Obra {
@@ -18,6 +21,13 @@ public class Obra {
     private int tiquetesTotales;
     private boolean estadoCriticoA;
     private static ArrayList<Obra> estadoCriticoS;
+    private ArrayList<Float> calificaciones;
+    private ArrayList<Obra> obras;
+    private ArrayList<LocalDateTime> franjaHoraria;
+    private Duration duracion;
+    private Funcion funcionEstelar;
+    private ArrayList<Funcion> funciones;
+
     public int getAudienciaEsperada() {
         return audienciaEsperada;
     }
@@ -92,26 +102,6 @@ public class Obra {
         this.estadoCriticoA = estadoCriticoA;
     }
     
-    public void createFunciones(String nombre, int numero, float calificacion) {
-        Scanner sc = new Scanner(System.in);
-        byte co;
-        if (numero > obra.funcionesRecomendadas(calificacion) + 2){
-            System.out.println("ALERTA, DEMASIADAS FUNCIONES");
-            System.out.println("¿DESEA CONTINUAR?");
-            co = sc.nextByte();
-            switch (co) {
-                case 1:
-                for (int i = 0; i < numero; i++){
-                    Funcion funcion = new Funcion(this, ArrayList<ArrayList<Integer>> horario,
-                    gestorAplicacion.gestionVentas.Sala sala, boolean calificador, int audienciaEsperada);
-                }
-                    break;
-            
-                default:
-                    break;
-            }
-        }
-    }
 
     public int funcionesRecomendadas(float calificacion){
         if (calificacion < 2){
@@ -132,5 +122,103 @@ public class Obra {
         int u;
         u = (int) calificacion * 12;
         this.setAudienciaEsperada(u);
+    }
+    public void calcularCalificacion(ArrayList<Float> calificaciones){
+        float u;
+        int t;
+        float v;
+        u = 0;
+        t = 0;
+        for (float calificacion : calificaciones){
+            u = u + calificacion;
+            t ++;
+        }
+        v = u / t;
+        setCalificacion(v);
+    }
+    public void agregarCalificacion(float calificacion){
+        this.calificaciones.add(calificacion);
+    }
+    public String getNombre() {
+        return nombre;
+    }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    public ArrayList<Float> getCalificaciones() {
+        return calificaciones;
+    }
+    public void setCalificaciones(ArrayList<Float> calificaciones) {
+        this.calificaciones = calificaciones;
+    }
+    public void franjaHoraria(Genero genero){
+        Genero u;
+        Funcion a;
+        ArrayList<LocalTime> franja;
+        franja.add(LocalTime.of(24,00));
+        franja.add(LocalTime.of(00,00)));
+        ArrayList<Obra> obrasGenero = new ArrayList<>();
+        for (Obra obra : obras){
+            u = obra.getGenero();
+            if (u == genero){
+                obrasGenero.add(obra);
+            }
+        }
+        for (Obra obra: obrasGenero){
+            a = obra.funcionEstelar;
+            a.extraerHora(franjaHoraria);
+        }
+    }
+    public String getDuracionFormato() {
+        long horas = duracion.toHours();
+        long minutos = duracion.toMinutes() % 60;
+        return String.valueOf(horas) + String.valueOf(minutos);
+    }
+    public ArrayList<Obra> getObras() {
+        return obras;
+    }
+    public void setObras(ArrayList<Obra> obras) {
+        this.obras = obras;
+    }
+    public ArrayList<LocalDateTime> getFranjaHoraria() {
+        return franjaHoraria;
+    }
+    public void setFranjaHoraria(ArrayList<LocalDateTime> franjaHoraria) {
+        this.franjaHoraria = franjaHoraria;
+    }
+    public Duration getDuracion() {
+        return duracion;
+    }
+    public void setDuracion(Duration duracion) {
+        this.duracion = duracion;
+    }
+
+    public void calcFuncionEstelar(ArrayList<Funcion> funciones){
+        Funcion u = new Funcion();
+        Funcion v = new Funcion();
+        int s;
+        u.setTiquetesVendidos(0);
+        s = u.getTiquetesVendidos();
+        int d;
+        for (Funcion funcion : funciones){
+            d = funcion.getTiquetesVendidos();
+            if (s < d){
+                d = s;
+                v = funcion;
+            }
+        }
+        this.setFuncionEstelar(v);
+    }
+    public Funcion getFuncionEstelar() {
+        return funcionEstelar;
+    }
+    public void setFuncionEstelar(Funcion funcionEstelar) {
+        this.funcionEstelar = funcionEstelar;
+    }
+    public ArrayList<Funcion> getFunciones() {
+        return funciones;
+    }
+    public void setFunciones(ArrayList<Funcion> funciones) {
+        this.funciones = funciones;
     }
 }

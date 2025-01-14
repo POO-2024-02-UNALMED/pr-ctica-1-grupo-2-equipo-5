@@ -2,6 +2,8 @@ package gestorAplicacion.gestionObras;
 
 import java.util.ArrayList;
 import java.util.List;
+import gestorAplicacion.gestionClases.Clase;
+import gestorAplicacion.gestionFinanciera.CuentaBancaria;
 
 public class Actor extends Artista{
 
@@ -15,25 +17,26 @@ public class Actor extends Artista{
     private boolean reevaluacion = false;
     private double precioContrato;
     private int edad;
-    private String sexo;
+    private char sexo;
 
-    //falta agregar personaje/(?)
-
-    public Actor(){ 
+    public Actor(String nombre, long id){ 
+        super(nombre, id);
         actors.add(this); 
-        this.calificacion = 2.5f;
-        getPrecioContrato();
+    }
+
+    public String toString(){
+        return "Nombre: " + super.getNombre() + "\nId: " + super.getId() + "\nEdad: " + this.edad + "\nCalificación: " + super.getCalificacion();
     }
 
 
     // get/set
     public static List<Actor> getActors(){ return actors; }
 
-    public float getPromedio(){ return this.promedio; }
-    public void setPromedio(float promedio){ this.promedio = promedio; }
+    public float getPromedio(){ return super.getPromedio(); }
+    public void setPromedio(float promedio){ super.setPromedio(promedio); }
 
-    public float getCalificacion(){ return this.calificacion; }
-    public void setCalificacion(float calificacion){ this.calificacion = calificacion; }
+    public float getCalificacion(){ return super.getCalificacion(); }
+    public void setCalificacion(float calificacion){ super.setCalificacion(calificacion); }
 
     public List<Float> getNotas(){ return this.notas; }
     public void setNotas(List<Float> notas){ this.notas = notas;}
@@ -42,14 +45,14 @@ public class Actor extends Artista{
     public void setGeneros(List<String> generos){ this.generos = generos; }
 
     public double getPrecioContrato(){
-        this.precioContrato = ((Math.pow(calificacion, 2)) / 5 ) * TASA;
+        this.precioContrato = ((Math.pow(super.getCalificacion(), 2)) / 5 ) * TASA;
         return this.precioContrato;
     }
 
     public int getEdad(){ return this.edad; }
     public void setEdad(int edad){ this.edad = edad; }
 
-    public String getSexo(){ return this.sexo; }
-    public void setSexo(String sexo){ this.sexo = sexo; }
-    
+    public char getSexo(){ return this.sexo; }
+    public void setSexo(char sexo){ this.sexo = sexo; }
+
 }
