@@ -1,7 +1,6 @@
 package gestorAplicacion.gestionObras;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.time.LocalDateTime;
 import java.time.Duration;
 import java.time.LocalTime;
@@ -104,7 +103,7 @@ public class Obra {
     }
 
     public Obra(String nombre, ArrayList<Actor> reparto, ArrayList<Aptitud> papeles, Director director, float costoProduccion, Genero genero, 
-    Duration duracion){
+    long duracion){
         audienciaEsperada = getAudienciaEsperada();
         this.nombre = nombre;
         calificacion = 0;
@@ -118,7 +117,7 @@ public class Obra {
         this.estadoCriticoA = checkEstadoCritico();
         calificaciones = new ArrayList<>();
         this.franjaHoraria = new ArrayList<>();
-        this.duracion = duracion;
+        this.duracion = createDuration(duracion);
         funcionEstelar = null;
         funciones = new ArrayList<>();
     }
@@ -270,5 +269,13 @@ public class Obra {
     }
     public void setPapeles(ArrayList<Aptitud> papeles) {
         this.papeles = papeles;
+    }
+
+    public Duration createDuration(long format){
+        long horas = format / 10000;
+        long minutos = (format % 10000) / 100;
+        long segundos = (format % 10000) % 100;
+        Duration duracion = Duration.ofHours(horas).plusMinutes(minutos).plusSeconds(segundos);
+        return duracion;
     }
 }

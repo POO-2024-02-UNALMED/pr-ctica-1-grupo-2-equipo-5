@@ -20,6 +20,8 @@ import gestorAplicacion.gestionObras.Artista;
 import gestorAplicacion.gestionObras.Obra;
 import gestorAplicacion.herramientas.Aptitud;
 import gestorAplicacion.herramientas.Contador;
+import gestorAplicacion.herramientas.Genero;
+import gestorAplicacion.gestionObras.Director;
 
 import java.text.NumberFormat;
 
@@ -74,7 +76,7 @@ public class Main {
 
         case 3:
             gestionObras();
-        º   break;
+            break;
 
         case 4:
         {}break;
@@ -113,7 +115,7 @@ public class Main {
             int s;
             s = 1;
             ArrayList<Actor> reparto = new ArrayList<>();
-            ArrayList<Aptitud> papeles = new ArrayList<>()
+            ArrayList<Aptitud> papeles = new ArrayList<>();
             while (s != 0){
                 System.out.println("Digita el número del actor que desea agregar sin punto, si ya terminaste de añadir el reparto por favor ingresa 0");
                 String d = op.nextLine();
@@ -130,7 +132,7 @@ public class Main {
                     System.out.println("2. Baile");
                     System.out.println("3. Discurso");
                     System.out.println("4. Emocionalidad");
-                    System.out.println("5. Improvisación")
+                    System.out.println("5. Improvisación");
                     byte u = op.nextByte();
                     switch (u){
                         case 1:
@@ -146,13 +148,71 @@ public class Main {
                             papeles.add(Aptitud.EMOCIONALIDAD);
                             break;
                         case 5: 
-                            papeles.add(Aptitud.IMPROVISACION)
+                            papeles.add(Aptitud.IMPROVISACION);
+                            break;
                     }
+            
+            System.out.println("Por favor, elige el género de la obra, recuerda solo ingresar el número sin punto.");
+            System.out.println("1. Drama");
+            System.out.println("2. Comedia");
+            System.out.println("3. Musical");
+            System.out.println("4. Fantasía");
+            System.out.println("5. Terror");
+            System.out.println("6. Romace");
+            System.out.println("7. Circo");
+            System.out.println("8. Experimental");
+            byte l = op.nextByte();
+            Genero genero;
+            genero = null;
+            switch (l) {
+                case 1:
+                    genero = Genero.DRAMA;
+                    break;
+                case 2:
+                    genero = Genero.COMEDIA;
+                    break;
+                case 3:
+                    genero = Genero.MUSICAL;
+                    break;
+                case 4:
+                    genero = Genero.FANTASIA;
+                    break;
+                case 5:
+                    genero = Genero.TERROR;
+                    break;
+                case 6:
+                    genero = Genero.ROMANCE;
+                    break;
+                case 7: 
+                    genero = Genero.CIRCO;
+                    break;
+                case 8:
+                    genero = Genero.EXPERIMENTAL;
+                    break;
             }
-            nuevaObra = new Obra(nombre, ArrayList<Actor> reparto, ArrayList<Aptitud> papeles, Director director, 
-            float costoProduccion, Genero genero, Duration duracion);
-        }
+
+            System.out.println("Por favor, elige al director que se encarga de la obra");
+            int x;
+            x = 0;
+            for (Director director : genero.getDirectores()){
+                x = x + 1;
+                System.out.println(String.valueOf(x) + "."+ director.getNombre());
+            }
+            int dir = op.nextInt();
+            Director director = genero.getDirectores().get(dir);
+
+            System.out.println("Por favor, ingresa el costo de producción");
+            float costoProduccion = op.nextFloat();
+
+            System.out.println("Por favor ingresa la duración de la obra, usa el formato HHmmSS, no separes con :,- ni otro símbolo similar.");
+            long dur = op.nextLong();
+            
+
+            nuevaObra = new Obra(nombre, reparto, papeles, director, costoProduccion, genero, dur);  
+            }
+            
     }
+
     public static void AlquilarActor(Cliente empresa){
 
         final float CALIFICACION_ALTA = 4.0f; //por ahora
