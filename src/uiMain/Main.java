@@ -362,24 +362,51 @@ public class Main {
             System.out.println("Has seleccionado" + " " + eleccion.getNombre());
             System.out.println("¿Cuántas funciones te gustaría crear para esta obra?");
             int a = eleccion.getFuncionesRecomendadas();
-            int rut = op.nextInt();
-            if (a + 2 > rut){
-                System.out.println("ALERTA, PUEDEN SER DEMASIADAS FUNCIONES PARA ESTA OBRA");
-                System.out.println("¿DESEA CONTINUAR?");
-                System.out.println("1. Sí");
-                System.out.println("2. No");
-                byte sc = op.nextByte();
-                switch (sc) {
-                    case 1:
-                        
-                        break;
-                    case 2:
-                        
-                
-                    default:
-                        break;
+            boolean continuar = false;
+            do {
+                int rut = op.nextInt();
+    
+                if (a + 2 > rut) {
+                    System.out.println("ALERTA, PUEDEN SER DEMASIADAS FUNCIONES PARA ESTA OBRA");
+                    System.out.println("¿DESEA CONTINUAR?");
+                    System.out.println("1. Sí");
+                    System.out.println("2. No");
+    
+                    byte sc = op.nextByte();
+    
+                    switch (sc) {
+                        case 1:
+                            continuar = true; // Acepta y sale del ciclo
+                            break;
+                        case 2:
+                            System.out.println("¿Cuántas funciones te gustaría crear para esta obra?");
+                            break; // Repite el ciclo para pedir de nuevo el dato
+                        default:
+                            System.out.println("Opción no válida, intente nuevamente.");
+                            break;
+                    }
                 }
-            }
+                else if (a - 2 < rut){
+                    System.out.println("ALERTA, PUEDEN SER MUY POCAS FUNCIONES PARA ESTA OBRA");
+                    System.out.println("¿DESEA CONTINUAR?");
+                    System.out.println("1. Sí");
+                    System.out.println("2. No");
+                    byte sc = op.nextByte();
+    
+                    switch (sc) {
+                        case 1:
+                            continuar = true; // Acepta y sale del ciclo
+                            break;
+                        case 2:
+                            System.out.println("¿Cuántas funciones te gustaría crear para esta obra?");
+                            break; // Repite el ciclo para pedir de nuevo el dato
+                    }
+                }
+                else {
+                    continuar = true; // Acepta si la cantidad es adecuada
+                }
+            } while (!continuar);
+        
     }
 
     public static void AlquilarActor(){
@@ -499,7 +526,7 @@ public class Main {
             } else if (isIn(historialEmpresa, actor)){
                 reorderedActors.add(0, actor);
             } else{
-               reorderedActors.add(actor);
+                reorderedActors.add(actor);
             }
 
         }

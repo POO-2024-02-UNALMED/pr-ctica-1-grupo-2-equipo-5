@@ -2,8 +2,6 @@ package gestorAplicacion.gestionVentas;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 import java.time.LocalTime;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -108,26 +106,6 @@ public class Funcion {
         return horario;
     }
 
-        public void createFunciones(Obra obra, int numero, float calificacion) {
-        Scanner sc = new Scanner(System.in);
-        byte co;
-        if (numero > obra.funcionesRecomendadas(calificacion) + 2){
-            System.out.println("ALERTA, DEMASIADAS FUNCIONES");
-            System.out.println("¿DESEA CONTINUAR?");
-            co = sc.nextByte();
-            switch (co) {
-                case 1:
-                for (int i = 0; i < numero; i++){
-                    Funcion funcion = new Funcion(this.obra, calificador, audienciaEsperada);
-                }
-                
-                    break;
-            
-                default:
-                    break;
-            }
-        }
-    }
     public ArrayList<LocalTime> extraerHora(ArrayList<LocalDateTime> horario){
         ArrayList<LocalTime> a = new ArrayList<>();
         for (LocalDateTime tiempo : horario){

@@ -2,8 +2,6 @@ package gestorAplicacion.gestionVentas;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
-
 public class Sala {
     private static ArrayList <Sala> salas = new ArrayList<>();
     private ArrayList <Silla> sillas = new ArrayList<>();
