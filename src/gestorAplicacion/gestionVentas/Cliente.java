@@ -2,9 +2,11 @@ package gestorAplicacion.gestionVentas;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import uiMain.Main;
 import uiMain.Main.isIn;
+
 
 import gestorAplicacion.herramientas.*;
 import gestorAplicacion.gestionObras.*;
@@ -132,6 +134,41 @@ public class Cliente {
             
         }
         return false;
+    }
+    
+    public static Cliente asignar(long id){
+        Cliente Asig = null;
+        for(int i = 0;i < clientes.size();i++){
+            if (clientes.get(i).getId()==id) {
+                Asig = clientes.get(i);
+                
+                    
+            }
+                    
+        }
+        return Asig;
+                
+         
+    }
+    public static long IdRandom(){
+        boolean salir = false;
+        long codigo = 0;
+        Random random = new Random();
+
+
+
+        while (!salir) {
+            codigo = random.nextInt(999);
+
+            if (verificar(codigo)) {
+                
+            
+            }else{
+                
+                salir = true;
+            } 
+        }
+        return codigo;
     }
 }
 

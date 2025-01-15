@@ -141,6 +141,7 @@ public class Main {
     }
 
     public static void gestionVentas(){
+        Cliente cliente= null;
         ArrayList <Integer> lista = new ArrayList<>();
         System.out.println("Ingrese la opcion correspondiente");
         System.out.println("Eres cliente nuevo?");
@@ -153,6 +154,8 @@ public class Main {
         while (!isIn(opciones, a)){
             System.out.println("\n\nLa respuesta introducida no hace parte de las opciones. Intente de nuevo:\n\n");
             System.out.println("Eres cliente nuevo?");
+            System.out.println("1. NO");
+            System.out.println("2. SI");
             a = in.nextByte();
         }
         Cliente c1 = new Cliente("null", 1);
@@ -163,12 +166,14 @@ public class Main {
         switch (a) {
             case 1:
                 System.out.print("Ingresa tu id :");
-                int code = in.nextInt();
+                long code = in.nextLong();
                 
                
 
                 if (Cliente.verificar(code)) {
                     System.out.println("Iniciando sesion...");
+                    cliente=Cliente.asignar(code);
+                    
                 try {
                     // Pausa de 2 segundos (2000 milisegundos)
                     Thread.sleep(2000);
@@ -216,11 +221,15 @@ public class Main {
                     
                 }
                 System.out.println("Codigo creado");
+                code= Cliente.IdRandom();
+                cliente = new Cliente(null, code);
+
                 
                 salir = true;
                 break;
             }
         }
+        System.out.println(cliente.getId());
 
         
 
