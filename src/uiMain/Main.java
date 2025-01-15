@@ -144,8 +144,8 @@ public class Main {
         ArrayList <Integer> lista = new ArrayList<>();
         System.out.println("Ingrese la opcion correspondiente");
         System.out.println("Eres cliente nuevo?");
-        System.out.println("1. SI");
-        System.out.println("2. NO");
+        System.out.println("1. NO");
+        System.out.println("2. SI");
 
         byte [] opciones = {1,2};
         byte a = in.nextByte();
@@ -183,10 +183,25 @@ public class Main {
 
                 }else {
                     System.out.println("Codigo no encontrado");
-                    System.out.print("Tienes un codigo existente? :");
-                    String pregunta = in.nextLine();
+                    System.out.println("Tienes un codigo existente? :");
+                    System.out.println("1. SI");
+                    System.out.println("2. NO");
+                    byte [] opcion = {1,2};
+                    byte b = in.nextByte();
 
-                    break;
+                    while (!isIn(opciones, a)){
+                        System.out.println("\n\nLa respuesta introducida no hace parte de las opciones. Intente de nuevo:\n\n");
+                        System.out.println("Tienes un codigo existente? :");
+                        b = in.nextByte();
+                    }
+                    if (b == 1) {
+                        break;
+                        
+                    }
+
+                    
+
+                    
                     
                 }
             
