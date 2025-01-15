@@ -697,51 +697,54 @@ public class Main {
         }
 
     }
-}
+
             
 
-/* 
+ 
  ///BASE PARA FUNCIONALIDAD 4
 
     Scanner scanner = new Scanner(System.in);
-    List<Artista> artistas = new ArrayList<>(); // Lista de artistas registrados
-    List<Clase> clases = new ArrayList<>(); // Lista de clases programadas
+    List<Artista> artistas = new ArrayList<>(); // Lista de artistas registrados, puede ser un atributo estático
+    List<Clase> clases = new ArrayList<>(); // Lista de clases programadas, puede ser un atributo estático
 
     System.out.println("Bienvenido a la gestión de clases.");
     System.out.println("Ingrese el ID del artista: ");
-    int idArtista = scanner.nextInt();
+    long idArtista = scanner.nextLong();
     scanner.nextLine(); 
 
-    Artista artista = buscarArtistaPorId(artistas, idArtista);
+    Artista artista = buscarArtistaPorId(artistas, idArtista); //Crear método de  busca de artista
     if (artista == null) {
         System.out.println("Artista no encontrado. Creando un nuevo artista.");
         System.out.print("Ingrese el nombre del nuevo artista: ");
         String nombreArtista = scanner.nextLine();
-        artista = new Artista(idArtista, nombreArtista);
-        artistas.add(artista);
+        artista = new Artista(idArtista, nombreArtista); //Crea un artista, ahora bien, preguntar a Danna
+                                                        //si el tipo de artista, ya sea actor, director, etc, se crea random
+
+        artistas.add(artista);// Se podría crear un arraylist que almacene todos los artista, si es que no existe aún
+
         Profesor profesor = new Profesor("Profesor Inicial", true); //ORGANIZAR CLASE PROFESOR
         profesor.casting(artista);
     }
 
     System.out.println("Calificaciones actuales del artista " + artista.getNombre() + ":");
-    artista.mostrarCalificaciones();
+    artista.mostrarCalificaciones(); //Crear este método
 
     System.out.println("Obras en estado crítico:");
-    listarObrasCriticas();
+    listarObrasCriticas();// Crear este método, no sin antes preguntarle a Danna específicamente sobre las "Obras críticas"
 
     System.out.print("¿Desea programar una clase? (s/n): ");
     String respuesta = scanner.nextLine();
     if (respuesta.equalsIgnoreCase("s")) {
-            programarClase(scanner, artista, clases);
+            programarClase(scanner, artista, clases); //Crear método para programar clase
     }
 
     System.out.println("Fin de la gestión de clases.");
     scanner.close();
     
 
-    private static Artista buscarArtistaPorId(List<Artista> artistas, int id) {
-        for (Artista artista : artistas) {
-            if (artista.getId() == id) {
+    private static Artista buscarArtistaPorId(List<Artista> artistas, long idArtista2) {
+            for (Artista artista : artistas) {
+                if (artista.getId() == idArtista2) {
                 return artista;
             }
         }
@@ -762,7 +765,7 @@ public class Main {
         int nivel = scanner.nextInt();
         scanner.nextLine();
 
-        Sala sala = estaDisponible();
+        Sala sala = estaDisponible(); //Adpatar método de sala
         if (sala == null) {
             System.out.println("No hay salas disponibles y aseadas.");
             return;
@@ -786,7 +789,7 @@ public class Main {
             return;
         }
 
-        Tesoreria.recibirPago(costo);
+        Tesoreria.recibirPago(costo); //Crear método o adaptar otros para esta función
         Clase nuevaClase = new Clase(materia, nivel, sala, profesor, costo, horario);
         clases.add(nuevaClase);
         System.out.println("Clase programada exitosamente para el artista " + artista.getNombre() + ".");
@@ -794,13 +797,13 @@ public class Main {
 
     private static Sala buscarSalaDisponible(List<Sala> salas) {
     for (Sala sala : salas) {
-        if (sala.isDisponible() && sala.isAseada()) {
+        if (sala.isDisponible(null, null) && sala.isAseada()) {
             return sala;                                        //AGREAGAR MÉTODOS
             }
         }
     return null; // No se encontró una sala disponible y aseada
     }*  
-
+                                                
     private static Profesor buscarProfesorDisponible(List<Profesor> profesores) {
     for (Profesor profesor : profesores) {
         if (profesor.isDisponible()) {
@@ -819,4 +822,4 @@ public class Main {
         }
     }
 }
-*/
+
