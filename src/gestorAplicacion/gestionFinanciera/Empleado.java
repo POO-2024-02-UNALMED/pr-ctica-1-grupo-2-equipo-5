@@ -14,7 +14,7 @@ public class Empleado {
     private static ArrayList<Empleado> tipoSeguridad = new ArrayList<>();
     private static ArrayList<Empleado> tipoAseador = new ArrayList<>();
     private static ArrayList<Empleado> tipoProfesor = new ArrayList<>();
-    private int TrabajoRealizado;
+    private int TrabajoRealizado; //Es el total del trabajo realizado Pago
     private boolean trabajoCorrecto;
     private int metaSemanal;
     private int puntosPositivos;
@@ -22,7 +22,7 @@ public class Empleado {
     private boolean disponible;
     private CuentaBancaria Cuenta;
     private float Deuda;
-    private ArrayList<Float> trabajos = new ArrayList<>();
+    private ArrayList<Float> trabajos = new ArrayList<>(); //Aqui se almacenan los trabajos que realizo ya sea que lo halla realizado o no.
     private ArrayList<ArrayList<LocalDateTime>> Horario = new ArrayList<>();
 
     //Metodo para establecer el horario
@@ -37,11 +37,10 @@ public class Empleado {
         if (randomValue > 5.0){
             this.setTrabajoCorrecto(true);
             this.puntosPositivos += 1;
-            System.out.println("Se realizo el trabajo correctamente");
         }
         else{
             this.setTrabajoCorrecto(false);
-            System.out.println("No se realizo el trabajo correctamente");
+            
         }
     }
 
