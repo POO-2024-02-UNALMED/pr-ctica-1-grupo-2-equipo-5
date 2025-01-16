@@ -78,7 +78,7 @@ public class funcionalidad5 {
             Tesoreria tesoreria = new Tesoreria();
 
             //--------------------------------------------//
-
+            Main.formatPrint("hola", false);
             Main.AlquilarActor();
         }
     }

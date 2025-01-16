@@ -77,6 +77,41 @@ public class Main {
         }
         return false;       
     }
+
+    public static int LARGO_LINEAS = 170;
+    public static char separador = '|';
+    public static String vacio = " ";
+
+    public static String formatString(String cadena, boolean isCentrado){
+        vacio = " ";
+        int largo_vacio = LARGO_LINEAS - cadena.length();
+        String cadenaConFormato = "";
+
+        if (largo_vacio == 0){
+            return separador + cadenaConFormato + separador;
+        } else { //supongamos que la cadena siempre será menor o igual al largo de lineas
+
+            if (!isCentrado){
+                vacio = vacio.repeat(largo_vacio);
+                cadenaConFormato =  separador + cadena + vacio + separador;
+                return cadenaConFormato;
+
+            } else{ // si se va a centrar el texto
+
+                if (largo_vacio % 2 == 0){ //si es par, se pueden dividir los vacios a los lados en iguales partes
+                        vacio = vacio.repeat( (largo_vacio)/2 );
+                        cadenaConFormato = separador + vacio + cadena + vacio + separador;
+                        return cadenaConFormato; 
+                } else {//espacio vacio impar
+                        vacio = vacio.repeat( ((largo_vacio)/2) + 1);
+                        cadenaConFormato = separador + vacio + cadena + (vacio.substring(0, vacio.length() - 1)) + separador;
+                        return cadenaConFormato;
+                        //sea el vacio total 9, se suma 1 (10) y se divide entre dos (5), se coloca un vacio normal y otro cortado por un caracter
+                }
+
+            }
+        } 
+    }
     
     //---------------------------------------------------------//
 
@@ -105,16 +140,20 @@ public class Main {
 
         // }
 
+    byte task = -1;
+
+    while (task != 6){
 
     Tesoreria tesoreria = new Tesoreria();
     String dash = "~";
-
-    System.out.println(dash.repeat(50));
-    System.out.println("Sistema de administración del Teatro Carlos Mayolo");
-    System.out.println(dash.repeat(50));
+    System.out.println("-".repeat(LARGO_LINEAS + 2));
+    System.out.println(separador + " ".repeat(LARGO_LINEAS)+ separador);
+    System.out.println( formatString(dash.repeat(50), true) );
+    System.out.println( formatString("Sistema de administración del Teatro Carlos Mayolo", true) );
+    System.out.println( formatString (dash.repeat(50), true) );
 
     byte[] options = {1, 2, 3, 4, 5, 6};
-    byte task = ask("Seleccione la tarea a realizar: \n1. Venta de tiquetes.\n2. Gestión de empleados.\n3. Gestión de obras.\n4. Gestión de clases.\n5. Alquiler de actores.\n6. Cerrar el programa.", options);
+    task = ask("Seleccione la tarea a realizar: \n1. Venta de tiquetes.\n2. Gestión de empleados.\n3. Gestión de obras.\n4. Gestión de clases.\n5. Alquiler de actores.\n6. Cerrar el programa.", options);
 
     switch (task){
 
@@ -138,6 +177,7 @@ public class Main {
         {}break;
     }
     
+    }
     }
 
     public static void gestionVentas(){
