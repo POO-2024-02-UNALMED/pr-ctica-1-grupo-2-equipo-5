@@ -78,6 +78,16 @@ public class Main {
         return false;       
     }
 
+    //revisa si hay superposición de horarios dado dos argumentos 
+    public static boolean isDisponible(LocalDateTime inicio, LocalDateTime fin) {
+        for (ArrayList<LocalDateTime> evento : horario) {
+            if (inicio.isBefore(evento.get(1)) && fin.isAfter(evento.get(0))) {
+                return false; // Horario ocupado
+            }
+        }
+        return true; // Horario disponible
+    }
+
     public static int LARGO_LINEAS = 170;
     public static char separador = '|';
     public static String vacio = " ";
