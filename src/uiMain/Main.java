@@ -727,7 +727,7 @@ public class Main {
         System.out.println("Su actor escogido fue " + actorEscogido.getNombre() + " por un precio de " +  Actor.formatoPrecio(actorEscogido.getPrecioContrato()));
         empresa.pagarAlquilerActor(actorEscogido);
         System.out.println("Pago recibido!");
-        System.out.println("Saldo disponible: " + Actor.formatoPrecio(empresa.getCuenta().getSaldo()));
+        System.out.println("Saldo disponible: " + Actor.formatoPrecio(empresa.getCuentaBancaria().getSaldo()));
 
                 
         }

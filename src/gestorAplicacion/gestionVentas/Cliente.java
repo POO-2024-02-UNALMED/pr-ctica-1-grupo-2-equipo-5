@@ -27,18 +27,14 @@ public class Cliente {
     private ArrayList<Actor> historial = new ArrayList<>();
     private String correo;
     private String tipo;
-<<<<<<< Updated upstream
-    private CuentaBancaria cuenta;
-=======
     private CuentaBancaria cuentaBancaria;
->>>>>>> Stashed changes
     public static ArrayList<Cliente> clientes = new ArrayList<>();
 
     //constructor solo con tipo de cliente y id
     public Cliente(String tipo, long id){
         this.tipo = tipo;
         this.id = id;
-        this.cuenta = new CuentaBancaria(id, 0);
+        this.cuentaBancaria = new CuentaBancaria(id, 0);
         clientes.add(this);
     }    
 
@@ -120,15 +116,12 @@ public class Cliente {
             historial.add(actor);
         }
 
-<<<<<<< Updated upstream
         double precio = actor.getPrecioContrato();
-        this.cuenta.transferencia(Tesoreria.getCuenta(), precio);
+        this.cuentaBancaria.transferencia(Tesoreria.getCuenta(), precio);
     }
 
     public List<Actor> getHistorial(){ return historial; }
     public void setHistorial(List<Actor> historial){ this.historial = historial; }
-
-    public CuentaBancaria getCuenta(){ return this.cuenta; }
 
     public static boolean verificar(long elemento){
         for (int i=0; i < clientes.size();i++){
@@ -174,9 +167,6 @@ public class Cliente {
             } 
         }
         return codigo;
-=======
-        int precio = (int) actor.getPrecioContrato();
-        this.getCuentaBancaria().transferencia(Tesoreria.getCuenta(), precio);
     }
 
     public List<Actor> getHistorial(){ return historial; }
@@ -197,7 +187,6 @@ public class Cliente {
 
     public static void setClientes(ArrayList<Cliente> clientes) {
         Cliente.clientes = clientes;
->>>>>>> Stashed changes
     }
 }
 

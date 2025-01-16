@@ -74,7 +74,7 @@ public class funcionalidad5 {
 
             Cliente warner = new Cliente("Empresa", 246);
             warner.getHistorial().add(actor3);
-            warner.getCuenta().ingresar( (double) 6_000_000 );
+            warner.getCuentaBancaria().ingresar( (double) 6_000_000 );
             Tesoreria tesoreria = new Tesoreria();
 
             //--------------------------------------------//
