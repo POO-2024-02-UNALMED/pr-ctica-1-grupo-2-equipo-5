@@ -1,5 +1,6 @@
 package gestorAplicacion.gestionFinanciera;
 import java.util.Random;
+import java.time.LocalDateTime;
 
 import gestorAplicacion.gestionObras.Artista;
 
@@ -19,7 +20,7 @@ public class Empleado {
     private CuentaBancaria Cuenta;
     private float Deuda;
     private ArrayList<Float> trabajos = new ArrayList<>();
-    private ArrayList<ArrayList<String>> Horario = new ArrayList<>();
+    private ArrayList<ArrayList<LocalDateTime>> Horario = new ArrayList<>();
 
     //Metodo para establecer el horario
     public void establecerHorario(){

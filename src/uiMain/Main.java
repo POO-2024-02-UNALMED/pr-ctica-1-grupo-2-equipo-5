@@ -79,7 +79,7 @@ public class Main {
     }
 
     //revisa si hay superposición de horarios dado dos argumentos 
-    public static boolean isDisponible(LocalDateTime inicio, LocalDateTime fin) {
+    public static boolean isDisponible(LocalDateTime inicio, LocalDateTime fin, ArrayList<ArrayList<LocalDateTime>> horario) {
         for (ArrayList<LocalDateTime> evento : horario) {
             if (inicio.isBefore(evento.get(1)) && fin.isAfter(evento.get(0))) {
                 return false; // Horario ocupado
@@ -128,28 +128,6 @@ public class Main {
 
     public static void main(String args[]){
     
-        
-    
-    //Inicio Funcionalidad 2
-        // public void AsearSalas(){
-        //     ArrayList<Sala> totalSalas = Sala.getSalas();
-        //     ArrayList<Empleado> Empleados = Empleado.getEmpleadosPorRendimiento();
-        //     for(Sala Elemento : totalSalas){
-        //         if (Elemento.getAseado() == false && Elemento.isAseador() == false && Elemento.getOcupado() == false){
-        //             for(Empleado Aseador : Empleados){
-        //                 if(Aseador.getOcupacion() == "Aseador" && Aseador.isDisponible() == true){
-        //                         Elemento.setAseador(true);
-        //                         Elemento.setOcupado(true);
-        //                         Aseador.setDisponible(false);
-        //                         break;
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-
-        // }
-
     byte task = -1;
 
     while (task != 6){
