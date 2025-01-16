@@ -11,6 +11,9 @@ public class Empleado {
     private final int salarioAseador = 5500;
     private final int salarioProfesor = 5500;
     private static ArrayList<Empleado> empleadosPorRendimiento = new ArrayList<>();
+    private static ArrayList<Empleado> tipoSeguridad = new ArrayList<>();
+    private static ArrayList<Empleado> tipoAseador = new ArrayList<>();
+    private static ArrayList<Empleado> tipoProfesor = new ArrayList<>();
     private int TrabajoRealizado;
     private boolean trabajoCorrecto;
     private int metaSemanal;
@@ -156,13 +159,37 @@ public class Empleado {
     public static void setEmpleadosPorRendimiento(ArrayList<Empleado> newEmpleadosPorRendimiento) {
         empleadosPorRendimiento = newEmpleadosPorRendimiento;
     }
+    
+    public static ArrayList<Empleado> getTipoSeguridad() {
+        return tipoSeguridad;
+    }
+
+    public static void setTipoSeguridad(ArrayList<Empleado> tipoSeguridad) {
+        Empleado.tipoSeguridad = tipoSeguridad;
+    }
+
+    public static ArrayList<Empleado> getTipoAseador() {
+        return tipoAseador;
+    }
+
+    public static void setTipoAseador(ArrayList<Empleado> tipoAseador) {
+        Empleado.tipoAseador = tipoAseador;
+    }
+
+    public static ArrayList<Empleado> getTipoProfesor() {
+        return tipoProfesor;
+    }
+
+    public static void setTipoProfesor(ArrayList<Empleado> tipoProfesor) {
+        Empleado.tipoProfesor = tipoProfesor;
+    }
 
     //Horario
-    public ArrayList<ArrayList<String>> getHorario() {
+    public ArrayList<ArrayList<LocalDateTime>> getHorario() {
         return Horario;
     }
 
-    public void setHorario(ArrayList<ArrayList<String>> horario) {
+    public void setHorario(ArrayList<ArrayList<LocalDateTime>> horario) {
         Horario = horario;
     }
 
@@ -180,4 +207,5 @@ public class Empleado {
     public void casting(Artista artista) {
         artista.agregarCalificacion((int) (Math.random() * 5) + 1); // Inicializa calificaciones aleatorias
     }
+
 }
