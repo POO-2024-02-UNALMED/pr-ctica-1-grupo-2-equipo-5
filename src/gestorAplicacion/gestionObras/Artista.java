@@ -29,6 +29,7 @@ public abstract class Artista {
 
     public Artista(String nombre, long id){
         this.nombre = nombre;
+        this.horario = new ArrayList<>();
         this.id = id;
     }
     

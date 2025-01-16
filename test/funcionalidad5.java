@@ -49,10 +49,10 @@ public class funcionalidad5 {
             actor5.setEdad(76);
 
             Actor actor6 = new Actor("Orson Welles", 90230543);
-            actor3.setGeneros(genres);
-            actor3.setCalificacion(4.2f);
-            actor3.setSexo('M');
-            actor3.setEdad(85);
+            actor6.setGeneros(genres);
+            actor6.setCalificacion(4.2f);
+            actor6.setSexo('M');
+            actor6.setEdad(85);
 
             Actor actor7 = new Actor("John Travolta", 60234243);
             actor7.setGeneros(genres);
