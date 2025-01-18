@@ -30,22 +30,24 @@ public class Main {
     public static Scanner op;
     public static Scanner in = new Scanner(System.in);
 
+    public static boolean supportsColor = (System.console() != null && System.getenv().get("TERM") != null);
+
     //------------------HERRAMIENTAS-------------------------//
     //pregunta y devuelve cadena respuesta
     public static String ask(String question){
-        System.out.println(question);
+        customPrint(question, true);
         String answer = in.nextLine();
         return answer;
     }
 
     //para el método que acepta bytes se revisa si el numero hace parte de las opciones disponibles
-    public static byte ask(String question, byte[] answers){
-        System.out.println(question);
+    public static byte ask(String question, byte[] answers, String color){
+        customPrint(question, true, color);
         byte answer = in.nextByte();
         
         while (!isIn(answers, answer)){
-            System.out.println("\n\nLa respuesta introducida no hace parte de las opciones. Intente de nuevo:\n\n");
-            System.out.println(question);
+            customPrint("La respuesta introducida no hace parte de las opciones. Intente de nuevo:", true, "red");
+            customPrint(question);
             answer = in.nextByte();
         }
 
@@ -54,7 +56,7 @@ public class Main {
 
     //pregunta y devuelve long
     public static long longAsk(String question){
-        System.out.println(question);
+        customPrint(question);
         long answer = in.nextLong();
         return answer;
     }
@@ -88,8 +90,8 @@ public class Main {
         return true; // Horario disponible
     }
 
-    public static int LARGO_LINEAS = 170;
-    public static char separador = '|';
+    public static int LARGO_LINEAS = 100;
+    public static char separador = '│';
     public static String vacio = " ";
 
     public static String formatString(String cadena, boolean isCentrado){
@@ -123,25 +125,64 @@ public class Main {
         } 
     }
     
+    public static void customPrint(String cadena){
+        customPrint(cadena, true, "");
+    }
+
+    public static void customPrint(String cadena, boolean isCentrado){
+        customPrint(cadena, true, "");
+    }
+
+    public static void customPrint(String cadena, boolean isCentrado, String color){
+        String red = "\u001B[31m";
+        String green = "\u001B[32m";
+        String blue = "\u001B[34m";
+        String reset = "\u001B[0m";
+        String chosenColor = null;
+
+        switch(color){
+            case "red":
+            chosenColor = red; break;
+
+            case "green":
+            chosenColor = green; break;
+
+            case "blue":
+            chosenColor = blue; break;
+
+            default:
+            chosenColor = reset; break;
+        }
+
+        if(!supportsColor){
+            chosenColor = reset;
+        }
+
+        System.out.println(chosenColor + "╭" + "─".repeat(LARGO_LINEAS) + "╮" + reset);
+        if (cadena.contains("\n")){
+            String[] cadenas = cadena.split("\n");
+            for (String linea : cadenas){
+                System.out.println(chosenColor + formatString(linea, isCentrado) + reset);
+            }
+        } else {
+            System.out.println(chosenColor + formatString(cadena, isCentrado) + reset);
+        }
+        System.out.println(chosenColor + "╰" + "─".repeat(LARGO_LINEAS ) + "╯" + reset);
+    }
     //---------------------------------------------------------//
 
 
-    public static void main(String args[]){
-    
+    public static void main(String args[]){    
     byte task = -1;
 
     while (task != 6){
 
     Tesoreria tesoreria = new Tesoreria();
     String dash = "~";
-    System.out.println("-".repeat(LARGO_LINEAS + 2));
-    System.out.println(separador + " ".repeat(LARGO_LINEAS)+ separador);
-    System.out.println( formatString(dash.repeat(50), true) );
-    System.out.println( formatString("Sistema de administración del Teatro Carlos Mayolo", true) );
-    System.out.println( formatString (dash.repeat(50), true) );
+    customPrint("Sistema de administración del Teatro Carlos Mayolo", true);
 
     byte[] options = {1, 2, 3, 4, 5, 6};
-    task = ask("Seleccione la tarea a realizar: \n1. Venta de tiquetes.\n2. Gestión de empleados.\n3. Gestión de obras.\n4. Gestión de clases.\n5. Alquiler de actores.\n6. Cerrar el programa.", options);
+    task = ask("Seleccione la tarea a realizar: \n1. Venta de tiquetes.\n2. Gestión de empleados.\n3. Gestión de obras.\n4. Gestión de clases.\n5. Alquiler de actores.\n6. Cerrar el programa.", options, "");
 
     switch (task){
 
@@ -440,7 +481,7 @@ public class Main {
     public static void AlquilarActor(){
 
     byte[] two = {1, 2};
-    byte menuLog = ask("\nSeleccione:\n1. Empresa registrada.\n2. Empresa nueva.", two);
+    byte menuLog = ask("Seleccione:\n1. Empresa registrada.\n2. Empresa nueva.", two, "");
     byte ACTORES_POR_PAGINA = 5;
 
     List<Actor> historialEmpresa = new ArrayList<>();
@@ -450,13 +491,13 @@ public class Main {
     switch (menuLog){
 
         case 1:
-        long idEntrada = longAsk("\nIngrese el número de identificación:");
+        long idEntrada = longAsk("Ingrese el número de identificación:");
         boolean idFlag = false;
         
         for (Cliente cliente : Cliente.clientes){
 
             if (cliente.getId() == idEntrada){
-                System.out.println("\nCliente confirmado en base de datos.");
+                customPrint("Cliente confirmado en base de datos.", true, "green");
                 historialEmpresa = cliente.getHistorial();
                 empresa = cliente;
                 idFlag = true;
@@ -466,21 +507,21 @@ public class Main {
         }
 
         if (!idFlag){
-            System.out.println("\nEl número de identificación no existe en la base de datos."); return;
+            customPrint("El número de identificación no existe en la base de datos.", true, "red"); return;
         }
 
         case 2:
-        long newId = longAsk("\nGenere un nuevo número de identificación.");
+        long newId = longAsk("Genere un nuevo número de identificación.");
         
         for (Cliente cliente : Cliente.clientes){
             while (cliente.getId() == newId){
-                System.out.println("\nEsta identificación ya existe en la base de datos, intente con una diferente.");
-                newId = longAsk("\nGenere un nuevo número de identificación, si está en uso, este será automáticamente actualizado.");
+                customPrint("Esta identificación ya existe en la base de datos, intente con una diferente.", true, "red");
+                newId = longAsk("Genere un nuevo número de identificación, si está en uso, este será automáticamente actualizado.");
             }
         }
 
         empresa = new Cliente("Empresa", newId);
-        System.out.println("\nCliente creado:\n" + empresa);
+        customPrint("Cliente creado:\n" + empresa, true, "green");
         
     }
 
@@ -492,7 +533,7 @@ public class Main {
         options[0] = 1; options[1] = 2;
         
         //PREGUNTA NO. 1
-        byte rolActor = ask("\n¿Qué tipo de papel desempeñará el actor?\n1. Rol principal.\n2. Rol secundario.", options);
+        byte rolActor = ask("¿Qué tipo de papel desempeñará el actor?\n1. Rol principal.\n 2. Rol secundario.", options, "");
 
         //reservar los de calificacion alta solo para roles principales
         if (rolActor == 1){ 
@@ -503,7 +544,7 @@ public class Main {
         options[2] = 3; options[3] = 4;
 
         //PREGUNTA NO. 2
-        byte tipoObra = ask("\n¿Qué tipo de obra es?\n1. Tragedia.\n2. Comedia.\n3. Romance.\n4. Tragicomedia.", options);
+        byte tipoObra = ask("¿Qué tipo de obra es?\n1. Tragedia.\n2. Comedia.\n3. Romance.\n4. Tragicomedia.", options, "");
         
         //que se borren los actores que no tengan el género buscado en sus atributos
         switch(tipoObra){
@@ -529,16 +570,16 @@ public class Main {
         in.nextLine();
 
         //PREGUNTA NO. 3
-        String horarioCliente = ask("\n¿En qué horario necesita el actor? (Responda en formato 24 horas HH:MM)");
+        String horarioCliente = ask("¿En qué horario necesita el actor? (Responda en formato HH:MM)");
 
         //pendiente: diseñar lógica para revisar el horario
 
         //preseleccionados
 
         if (actorsForRental.size() == 0){ 
-            System.out.println("\nNo hay artistas disponibles con los requerimientos pedidos."); return;
+            customPrint("No hay artistas disponibles con los requerimientos pedidos.", true, "red"); return;
         } else {
-            System.out.println("\n" + actorsForRental.size() + " actores encontrados durante la preselección.");
+            customPrint(actorsForRental.size() + " actores encontrados durante la preselección.", true, "green");
         }
 
         boolean firstElementAdded = true;
@@ -564,7 +605,7 @@ public class Main {
         reorderedActors = null;
 
         //búsqueda avanzada
-        byte advancedSearch = ask("\n¿Deseas hacer búsqueda avanzada? (incluye filtros por edad, sexo y  cantidad de obras actuadas).\n1. Sí\n2. No.", two);
+        byte advancedSearch = ask("¿Deseas hacer búsqueda avanzada? (incluye filtros por edad, sexo y cantidad de obras actuadas).\n1. Sí.\n2. No.", two, "blue");
 
         if (advancedSearch == 1){
 
@@ -574,7 +615,7 @@ public class Main {
                 contadores.add(new Contador(actor, 0));
             }
 
-            byte edad = ask("\n¿Qué tipo de edad busca?\n1. Infantil\n2. Juvenil.\n3. Adulto.\n4. Adulto mayor", options);
+            byte edad = ask("¿Qué tipo de edad busca?\n1. Infantil\n2. Juvenil.\n3. Adulto.\n4. Adulto mayor", options, "");
 
             switch (edad){
 
@@ -605,7 +646,7 @@ public class Main {
 
             in.nextLine();
 
-            byte sexo = ask("\n¿Qué sexo debe tener el actor?\n1. Masculino.\n2. Femenino.", two);
+            byte sexo = ask("¿Qué sexo debe tener el actor?\n1. Masculino.\n2. Femenino.", two, "");
 
             if (sexo == 1){ //si es masculino, remueve el sexo femenino y viceversa
                 actorsForRental.removeIf(actor -> actor.getSexo() == 'F');
@@ -624,7 +665,7 @@ public class Main {
             contadores.removeIf(contador -> contador.numero < 2);
 
             if (contadores.size() == 0){
-                System.out.println("\nNo se encontraron actores que se ajusten bien a las características."); return;}
+                customPrint("No se encontraron actores que se ajusten bien a las características.", true, "red"); return;}
 
             List<Actor> advancedList = new ArrayList<Actor>();
 
@@ -635,7 +676,7 @@ public class Main {
             actorsForRental = advancedList;
             advancedList = null;
             
-            System.out.println("\n" + actorsForRental.size() + " actores se ajustaron a dos o más características avanzadas.");
+            customPrint(actorsForRental.size() + " actores se ajustaron a dos o más características avanzadas.", true, "green");
 
             }
 
@@ -653,12 +694,12 @@ public class Main {
 
         }    
 
-        long presupuesto = longAsk("\n¿Cuál es el presupuesto máximo para el actor?" + "\nTenga en cuenta que el rango de los precios es de " + Actor.formatoPrecio(minActorPrecio) + " a " + Actor.formatoPrecio(maxActorPrecio) + "\n");
+        long presupuesto = longAsk("¿Cuál es el presupuesto máximo para el actor?" + "\nTenga en cuenta que el rango de los precios es de " + Actor.formatoPrecio(minActorPrecio) + " a " + Actor.formatoPrecio(maxActorPrecio));
 
         actorsForRental.removeIf(actor -> actor.getPrecioContrato() > presupuesto);
 
         if (actorsForRental.size() == 0){
-            System.out.println("\nNo se hallaron actores para el presupuesto");
+            customPrint("No se hallaron actores para el presupuesto");
         } else {
 
         NumberFormat intToCop = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
@@ -672,7 +713,7 @@ public class Main {
             int x = 0;
             int idx = 0;
             int lastResidualIdx = 0;
-            Actor actorEscogido = new Actor("auxiliar", 0);
+            Actor actorEscogido = null;//new Actor("auxiliar", 0);
 
             if (actorsForRental.size()%ACTORES_POR_PAGINA != 0){
                 paginasResiduales = true;
@@ -709,7 +750,7 @@ public class Main {
                 System.out.println("Página " + x + "/" + paginasTotales);
                 System.out.println();
 
-                seguirBuscando = ask("Ingrese 0 para ver la siguiente página\nSi ya decidió el actor, presione su número", byteActores);
+                seguirBuscando = ask("Ingrese 0 para ver la siguiente página\nSi ya decidió el actor, presione su número", byteActores, "");
 
                 System.out.println();
                 
@@ -737,7 +778,7 @@ public class Main {
                 System.out.println("Página " + (paginasCompletas + 1) + "/" + (paginasTotales));
                 System.out.println();
 
-                seguirBuscando = ask("Ingrese 0 para ver la siguiente página\nSi ya decidió el actor, presione su número", byteActores);
+                seguirBuscando = ask("Ingrese 0 para ver la siguiente página\nSi ya decidió el actor, presione su número", byteActores, "");
                 System.out.println();
                 
                 if (seguirBuscando != 0){
@@ -752,10 +793,10 @@ public class Main {
             }
         }
 
-        System.out.println("Su actor escogido fue " + actorEscogido.getNombre() + " por un precio de " +  Actor.formatoPrecio(actorEscogido.getPrecioContrato()));
+        customPrint("El actor escogido fue " + actorEscogido.getNombre() + " por un precio de " +  Actor.formatoPrecio(actorEscogido.getPrecioContrato()));
         empresa.pagarAlquilerActor(actorEscogido);
-        System.out.println("Pago recibido!");
-        System.out.println("Saldo disponible: " + Actor.formatoPrecio(empresa.getCuentaBancaria().getSaldo()));
+        customPrint("Pago recibido!", true, "green");
+        customPrint("Saldo disponible: " + Actor.formatoPrecio(empresa.getCuentaBancaria().getSaldo()));
 
                 
         }
