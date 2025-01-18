@@ -605,7 +605,7 @@ public class Main {
         reorderedActors = null;
 
         //búsqueda avanzada
-        byte advancedSearch = ask("¿Deseas hacer búsqueda avanzada? (incluye filtros por edad, sexo y cantidad de obras actuadas).\n1. Sí.\n2. No.", two, "blue");
+        byte advancedSearch = ask("¿Deseas hacer búsqueda avanzada? (incluye filtros por edad y sexo).\n1. Sí.\n2. No.", two, "blue");
 
         if (advancedSearch == 1){
 
@@ -714,7 +714,7 @@ public class Main {
             int idx = 0;
             int lastResidualIdx = 0;
             Actor actorEscogido = null;//new Actor("auxiliar", 0);
-            String page = null;
+            String page = "";
 
             if (actorsForRental.size()%ACTORES_POR_PAGINA != 0){
                 paginasResiduales = true;
@@ -753,6 +753,7 @@ public class Main {
                 customPrint(page);;
 
                 seguirBuscando = ask("Ingrese 0 para ver la siguiente página\nSi ya decidió el actor, presione su número", byteActores, "");
+                page = "";
 
                 System.out.println();
                 
@@ -797,8 +798,12 @@ public class Main {
         }
 
         customPrint("El actor escogido fue " + actorEscogido.getNombre() + " por un precio de " +  Actor.formatoPrecio(actorEscogido.getPrecioContrato()));
-        empresa.pagarAlquilerActor(actorEscogido);
-        customPrint("Pago recibido!", true, "green");
+        byte codigoCompra = empresa.pagarAlquilerActor(actorEscogido);
+        if (codigoCompra == -1){
+            customPrint("Saldo insuficiente", true, "red");
+        } else{
+            customPrint("Pago recibido!", true, "green");
+        }
         customPrint("Saldo disponible: " + Actor.formatoPrecio(empresa.getCuentaBancaria().getSaldo()));
 
                 

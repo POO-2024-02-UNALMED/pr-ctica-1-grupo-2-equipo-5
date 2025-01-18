@@ -108,16 +108,17 @@ public class Cliente {
 
 
     //metodo para contratar actor y enviar dinero a tesorería
-    public void pagarAlquilerActor(Actor actor){
+    public byte pagarAlquilerActor(Actor actor){
 
-        if (tipo != "Empresa"){ return; }
-        
+        if (tipo != "Empresa" || this.cuentaBancaria.getSaldo() < actor.getPrecioContrato()){ return -1; }
+
         if (!Main.isIn(this.historial, actor)){
             historial.add(actor);
         }
 
         double precio = actor.getPrecioContrato();
         this.cuentaBancaria.transferencia(Tesoreria.getCuenta(), precio);
+        return 1;
     }
 
     public List<Actor> getHistorial(){ return historial; }
