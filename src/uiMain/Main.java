@@ -179,7 +179,7 @@ public class Main {
 
     Tesoreria tesoreria = new Tesoreria();
     String dash = "~";
-    customPrint("Sistema de administración del Teatro Carlos Mayolo", true);
+    customPrint("Teatro Carlos Mayolo", true);
 
     byte[] options = {1, 2, 3, 4, 5, 6};
     task = ask("Seleccione la tarea a realizar: \n1. Venta de tiquetes.\n2. Gestión de empleados.\n3. Gestión de obras.\n4. Gestión de clases.\n5. Alquiler de actores.\n6. Cerrar el programa.", options, "");
@@ -714,6 +714,7 @@ public class Main {
             int idx = 0;
             int lastResidualIdx = 0;
             Actor actorEscogido = null;//new Actor("auxiliar", 0);
+            String page = null;
 
             if (actorsForRental.size()%ACTORES_POR_PAGINA != 0){
                 paginasResiduales = true;
@@ -736,19 +737,20 @@ public class Main {
                 lastResidualIdx = 0;
                 residualTimes = 0;
 
+
                 // 5(x+1) = 5x + 5, que es el final del rango de 5 valores que se va a imprimir
                 while( (ACTORES_POR_PAGINA*(x+1) <= actorsForRental.size()) && continuar ){ //mientras exista el ultimo valor del rango de la pagina dentro de la lista
                     for (int i = ACTORES_POR_PAGINA*x; i < ACTORES_POR_PAGINA*(x+1); i ++){//por cada rango de 5 valores que tiene pagina
                         idx = (i+1)%ACTORES_POR_PAGINA;
                         if(idx == 0){ idx = ACTORES_POR_PAGINA; }
 
-                        System.out.println((idx) + ". " + actorsForRental.get(i));
+                        page += (idx) + ". " + actorsForRental.get(i) + "\n";
                         lastIdx = i;
-                        System.out.println();
+                        page += "\n";
                 }
                 x++;
-                System.out.println("Página " + x + "/" + paginasTotales);
-                System.out.println();
+                page += "\n" + "Página " + x + "/" + paginasTotales;
+                customPrint(page);;
 
                 seguirBuscando = ask("Ingrese 0 para ver la siguiente página\nSi ya decidió el actor, presione su número", byteActores, "");
 
@@ -764,22 +766,23 @@ public class Main {
 
             }
 
+            page = "";
             //si el tamaño de la lista no es múltiplo de 5, sobran valores por mostrar y se desea continuar       
             if (paginasResiduales && continuar){
 
                 for (int i = lastIdx+1; i < actorsForRental.size(); i++){
-                    System.out.println((i - lastIdx) + ". " + actorsForRental.get(i));
-                    System.out.println();
+                    page += (i - lastIdx) + ". " + actorsForRental.get(i) + "\n\n";
+                    //System.out.println();
                     lastResidualIdx = i - lastIdx;
                     residualTimes ++;
                     
                 }
 
-                System.out.println("Página " + (paginasCompletas + 1) + "/" + (paginasTotales));
-                System.out.println();
+                page += "Página " + (paginasCompletas + 1) + "/" + (paginasTotales);
+                customPrint(page);
 
                 seguirBuscando = ask("Ingrese 0 para ver la siguiente página\nSi ya decidió el actor, presione su número", byteActores, "");
-                System.out.println();
+                //System.out.println();
                 
                 if (seguirBuscando != 0){
                     
