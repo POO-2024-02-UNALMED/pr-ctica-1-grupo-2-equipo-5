@@ -210,6 +210,13 @@ public class Main {
     }
 
     public static void gestionVentas(){
+        Obra obra1 = new Obra("El gran show", Genero.CIRCO, "1h 30min");
+        Obra obra2 = new Obra("La tragedia de Romeo", Genero.DRAMA, "2h");
+        Obra obra3 = new Obra("Risas aseguradas", Genero.COMEDIA, "45min");
+        Obra obra4 = new Obra("El misterio en la mansión", Genero.TERROR, "1h 15min");
+        Obra obra5 = new Obra("Bailando en el escenario", Genero.MUSICAL, "2h 20min");
+
+        System.out.println(Obra.obras);
         byte [] opciones_2 = {1,2};
         Cliente cliente= null;
         ArrayList <Integer> lista = new ArrayList<>();
@@ -305,21 +312,35 @@ public class Main {
 
                 
                 salir = true;
-                break;
+                
             }
         }
-        
-        while (!isIn(opciones_2, a)){
-
-            customPrint("Que desea hacer\n\n"+
+        customPrint("Que desea hacer\n\n"+
             "Ingrese la opcion correspondiente\n"+
             "1. Consultar obra y comprar tiquete\n"+ 
             "2. Mejorar Suscripcion"
+            
             );
-            a = in.nextByte();
+        
+        int d = in.nextByte();
+        while (d !=2 & d != 1){
+
+            customPrint("La respuesta introducida no hace parte de las opciones. \n"+
+            "Intente de nuevo:\n"+
+            "Que desea hacer\n\n"+
+            "Ingrese la opcion correspondiente\n"+
+            "1. Consultar obra y comprar tiquete\n"+ 
+            "2. Mejorar Suscripcion"
+            
+            );
+            d = in.nextByte();
         }
-        switch (a) {
+        switch (d) {
             case 1:
+            customPrint(String.format("%30s %15s %10s", "Nombre Obra", "Genero", "Duracion")+"\n"+Obra.generarTabla());
+
+            
+            
                 
                 break;
             case 2:
@@ -329,7 +350,8 @@ public class Main {
             
                 
         }
-        System.out.println(cliente.getId());
+        
+
 
 
         

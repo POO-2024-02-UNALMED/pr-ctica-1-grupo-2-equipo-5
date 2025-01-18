@@ -22,9 +22,10 @@ public class Obra {
     private boolean estadoCriticoA;
     private static ArrayList<Obra> estadoCriticoS;
     private ArrayList<Float> calificaciones;
-    private static ArrayList<Obra> obras;
+    public static ArrayList<Obra> obras=new ArrayList<>();
     private ArrayList<LocalTime> franjaHoraria;
     private Duration duracion;
+    public String dur;
     private Funcion funcionEstelar;
     private ArrayList<Funcion> funciones;
     private int funcionesRecomendadas;
@@ -122,6 +123,13 @@ public class Obra {
         funcionEstelar = null;
         funciones = new ArrayList<>();
         funcionesRecomendadas = funcionesRecomendadas(calificacion);
+    }
+    public Obra(String nombre,Genero genero,String duracion){
+        this.nombre=nombre;
+        this.genero=genero;
+        this.dur=duracion;
+        obras.add(this);
+
     }
     
 
@@ -303,6 +311,18 @@ public class Obra {
         return valor;
         
 
+    }
+    
+    
+    public static String generarTabla(){
+        String Nuevo="";
+        for (Obra obra : obras) {
+            String string = String.format("%30s %15s %10s",obra.getNombre(),obra.getGenero(),obra.dur+"\n");
+            Nuevo = Nuevo +string;
+
+            
+        }
+        return Nuevo;
     }
     
 

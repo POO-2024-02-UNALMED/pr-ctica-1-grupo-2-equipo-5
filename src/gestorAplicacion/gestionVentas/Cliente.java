@@ -19,6 +19,7 @@ import gestorAplicacion.herramientas.Genero;
 import gestorAplicacion.gestionFinanciera.Tesoreria;
 
 public class Cliente {
+    private String Suscripcion;
     private long id;
     private Funcion funcion;
     private Genero generoFavorito;
@@ -89,6 +90,7 @@ public class Cliente {
     public void setCorreo(String correo) {
         this.correo = correo;
     }
+    
 
     //TIPO
     public String getTipo() {
@@ -120,6 +122,7 @@ public class Cliente {
         this.cuentaBancaria.transferencia(Tesoreria.getCuenta(), precio);
         return 1;
     }
+
 
     public List<Actor> getHistorial(){ return historial; }
     public void setHistorial(List<Actor> historial){ this.historial = historial; }
@@ -189,5 +192,14 @@ public class Cliente {
     public static void setClientes(ArrayList<Cliente> clientes) {
         Cliente.clientes = clientes;
     }
+
+    public String getSuscripcion() {
+        return Suscripcion;
+    }
+
+    public void setSuscripcion(String suscripcion) {
+        Suscripcion = suscripcion;
+    }
+    
 }
 
