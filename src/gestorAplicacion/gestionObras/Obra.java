@@ -286,4 +286,24 @@ public class Obra {
     public void setFuncionesRecomendadas(int funcionesRecomendadas) {
         this.funcionesRecomendadas = funcionesRecomendadas;
     }
+    public float promedioCalificacion(){
+        float promedio=0;
+        ArrayList<Float> c = getCalificaciones();
+        for (Float cal : c) {
+            promedio =promedio+ cal;
+        
+        }
+        return (promedio / c.size());
+    }
+    public boolean calificacionVacia(){
+        boolean valor = true;
+        if (getCalificaciones().size()==0) {
+            valor = false;
+        }
+        return valor;
+        
+
+    }
+    
+
 }

@@ -117,4 +117,10 @@ public class Funcion {
         }
         return a;
     }
+    public int precioFuncion(Funcion funcion){
+        float prom = funcion.obra.promedioCalificacion()
+
+        return 
+
+    }
 }

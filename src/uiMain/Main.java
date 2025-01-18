@@ -210,21 +210,26 @@ public class Main {
     }
 
     public static void gestionVentas(){
+        byte [] opciones_2 = {1,2};
         Cliente cliente= null;
         ArrayList <Integer> lista = new ArrayList<>();
-        System.out.println("Ingrese la opcion correspondiente");
-        System.out.println("Eres cliente nuevo?");
-        System.out.println("1. NO");
-        System.out.println("2. SI");
+        customPrint(
+        "Ingrese la opcion correspondiente\n"+
+        "Eres cliente nuevo? \n"+ 
+        "1. NO\n"+
+        "2. SI\n");
+        
 
-        byte [] opciones = {1,2};
+        
         byte a = in.nextByte();
 
-        while (!isIn(opciones, a)){
-            System.out.println("\n\nLa respuesta introducida no hace parte de las opciones. Intente de nuevo:\n\n");
-            System.out.println("Eres cliente nuevo?");
-            System.out.println("1. NO");
-            System.out.println("2. SI");
+        while (!isIn(opciones_2, a)){
+
+            customPrint("La respuesta introducida no hace parte de las opciones. Intente de nuevo:\n\n"+
+            "Ingrese la opcion correspondiente\n"+
+            "Eres cliente nuevo? \n"+ 
+            "1. NO\n"+
+            "2. SI\n");
             a = in.nextByte();
         }
         Cliente c1 = new Cliente("null", 1);
@@ -234,38 +239,43 @@ public class Main {
         while (!salir) {
         switch (a) {
             case 1:
-                System.out.print("Ingresa tu id :");
+                customPrint("Ingresa tu id :");
                 long code = in.nextLong();
                 
                
 
                 if (Cliente.verificar(code)) {
-                    System.out.println("Iniciando sesion...");
+                    customPrint("Iniciando sesion...");
                     cliente=Cliente.asignar(code);
                     
                 try {
                     // Pausa de 2 segundos (2000 milisegundos)
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
-                    System.out.println("La pausa fue interrumpida.");
+                    customPrint("La pausa fue interrumpida.");
                 }
-                System.out.println("Sesion Iniciada");
+                customPrint("Sesion Iniciada");
         
                 salir = true;
                 break;
                     
 
                 }else {
-                    System.out.println("Codigo no encontrado");
-                    System.out.println("Tienes un codigo existente? :");
-                    System.out.println("1. SI");
-                    System.out.println("2. NO");
+                    customPrint("Codigo no encontrado\n"+
+                    "Ingrese la opcion correspondiente\n"+
+                    "Tienes un codigo existente? : \n"+ 
+                    "1. Si\n"+
+                    "2. NO\n");
+                    
                     byte [] opcion = {1,2};
                     byte b = in.nextByte();
 
-                    while (!isIn(opciones, a)){
-                        System.out.println("\n\nLa respuesta introducida no hace parte de las opciones. Intente de nuevo:\n\n");
-                        System.out.println("Tienes un codigo existente? :");
+                    while (!isIn(opciones_2, b)){
+                        customPrint("La respuesta introducida no hace parte de las opciones. \n"+
+                        "Intente de nuevo:\n"+
+                        "Tienes un codigo existente? : \n"+ 
+                        "1. NO\n"+
+                        "2. SI\n");
                         b = in.nextByte();
                     }
                     if (b == 1) {
@@ -281,15 +291,15 @@ public class Main {
             
                 
             case 2:
-                System.out.println("Creando Nuevo Codigo...");
+                customPrint("Creando Nuevo Codigo...");
                 try {
                     // Pausa de 2 segundos (2000 milisegundos)
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
-                    System.out.println("La pausa fue interrumpida.");
+                    customPrint("La pausa fue interrumpida.");
                     
                 }
-                System.out.println("Codigo creado");
+                customPrint("Codigo creado");
                 code= Cliente.IdRandom();
                 cliente = new Cliente(null, code);
 
@@ -298,7 +308,29 @@ public class Main {
                 break;
             }
         }
+        
+        while (!isIn(opciones_2, a)){
+
+            customPrint("Que desea hacer\n\n"+
+            "Ingrese la opcion correspondiente\n"+
+            "1. Consultar obra y comprar tiquete\n"+ 
+            "2. Mejorar Suscripcion"
+            );
+            a = in.nextByte();
+        }
+        switch (a) {
+            case 1:
+                
+                break;
+            case 2:
+
+                break;
+        
+            
+                
+        }
         System.out.println(cliente.getId());
+
 
         
 
