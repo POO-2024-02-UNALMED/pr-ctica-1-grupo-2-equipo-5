@@ -184,7 +184,7 @@ public class Main {
 
         while (task != 6){
 
-            Tesoreria tesoreria = new Tesoreria();
+            Tesoreria tesoreria = new Tesoreria(0, 100);
             String dash = "~";
             customPrint("Teatro Carlos Mayolo", true);
 
@@ -198,7 +198,8 @@ public class Main {
                 break;
 
                 case 2:
-                {}break;
+                gestionEmpleados();
+                break;
 
                 case 3:
                 gestionObras();
@@ -947,13 +948,24 @@ public class Main {
     public static void gestionEmpleados(){
         //Pagar nomina a empleados:
         //Verificacion de fondos:
-        Tesoreria tesoreria = new Tesoreria(0,10);
         double fondos = tesoreria.getCuenta().getSaldo() + tesoreria.getDineroEnCaja();
         double totalSaldos = 0;
         for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
             totalSaldos = totalSaldos + Persona.calcularSueldo();
             if(totalSaldos > fondos){
-                customPrint("Upps... No se puede realizar los pagos adecuadamente");
+                customPrint("Upps... No se puede realizar los pagos adecuadamente", "Red");
+                byte[] opValidas = {1, 2};
+                String pregunta = "¿Deseas Pagar en partes iguales? \n1. Si. \n2. No.";
+                byte respuesta = ask(pregunta, opValidas, "blue");
+
+                switch (respuesta) {
+                    case 1:
+
+                        break;
+                
+                    case 2:
+                        break;
+                }
             }
         }
 

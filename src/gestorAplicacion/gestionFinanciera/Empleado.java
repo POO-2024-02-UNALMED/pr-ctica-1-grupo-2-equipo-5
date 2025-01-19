@@ -32,7 +32,8 @@ public class Empleado {
     public Empleado(int metaSemanal, String ocupacion, CuentaBancaria cuenta) {
         this.metaSemanal = metaSemanal;
         this.cuenta = cuenta;
-        this.ocupacion = ocupacion; 
+        this.ocupacion = ocupacion;
+        this.horario = new ArrayList<>(); //Lista donde se guarda el horario 
         if(ocupacion != "Aseador"){
             if(ocupacion !="Seguridad"){
                 tipoProfesor.add(this);
