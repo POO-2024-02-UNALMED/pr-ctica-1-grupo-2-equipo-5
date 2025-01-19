@@ -8,6 +8,7 @@ import java.text.NumberFormat;
 
 import gestorAplicacion.gestionClases.Clase;
 import gestorAplicacion.gestionFinanciera.CuentaBancaria;
+import gestorAplicacion.herramientas.Genero;
 
 public class Actor extends Artista{
 
@@ -16,7 +17,7 @@ public class Actor extends Artista{
 
     //lista que almacenará todos los actores creados
     private static List<Actor> actors = new ArrayList<Actor>();
-    private List<String> generos = new ArrayList<String>();
+    private List<Genero> generos = new ArrayList<>();
     List<Float> notas = new ArrayList<Float>();
     private boolean reevaluacion = false;
     private double precioContrato;
@@ -46,8 +47,9 @@ public class Actor extends Artista{
     public List<Float> getNotas(){ return this.notas; }
     public void setNotas(List<Float> notas){ this.notas = notas;}
 
-    public List<String> getGeneros(){ return this.generos; }
-    public void setGeneros(List<String> generos){ this.generos = generos; }
+    public List<Genero> getGeneros(){ return this.generos; }
+    public void setGeneros(List<Genero> generos){ this.generos = generos; }
+    public void addGenero(Genero genero){ this.generos.add(genero); }
 
     public double getPrecioContrato(){
         this.precioContrato = ((Math.pow(super.getCalificacion(), 2)) / 5 ) * TASA;

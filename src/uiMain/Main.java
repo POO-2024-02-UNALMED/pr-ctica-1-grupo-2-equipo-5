@@ -598,7 +598,7 @@ public class Main {
         List<Actor> actorsForRental = new ArrayList<>(Actor.getActors());
 
         //primera ronda de preguntas
-        byte[] options = new byte[4];
+        byte[] options = new byte[8];
         options[0] = 1; options[1] = 2;
         
         //PREGUNTA NO. 1
@@ -610,31 +610,47 @@ public class Main {
         } else {
             actorsForRental.removeIf(actor -> actor.getCalificacion() > CALIFICACION_ALTA);}
 
-        options[2] = 3; options[3] = 4;
+        options[2] = 3; options[3] = 4; options[4] = 5; options[5] = 6; options[6] = 7; options[7] = 8;
 
         //PREGUNTA NO. 2
-        byte tipoObra = ask("¿Qué tipo de obra es?\n1. Tragedia.\n2. Comedia.\n3. Romance.\n4. Tragicomedia.", options, "");
+        byte tipoObra = ask("¿Qué tipo de obra es?\n1. Circo.\n2. Comedia.\n3. Drama.\n4. Experimental.\n5. Fantasía.\n6. Musical.\n7. Romance.\n8. Terror.", options, "");
         
         //que se borren los actores que no tengan el género buscado en sus atributos
         switch(tipoObra){
 
             case 1:
-            actorsForRental.removeIf(actor -> !isIn(actor.getGeneros(), "Tragedia"));
+            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.CIRCO));
             break;
 
             case 2:
-            actorsForRental.removeIf(actor -> !isIn(actor.getGeneros(), "Comedia"));
+            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.COMEDIA));
             break;
 
             case 3:
-            actorsForRental.removeIf(actor -> !isIn(actor.getGeneros(), "Romance"));
+            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.DRAMA));
             break;
 
             case 4:
-            actorsForRental.removeIf(actor -> !isIn(actor.getGeneros(), "Tragicomedia"));
+            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.EXPERIMENTAL));
+            break;
+
+            case 5:
+            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.FANTASIA));
+            break;
+
+            case 6:
+            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.MUSICAL));
+            break;
+
+            case 7:
+            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.ROMANCE));
+            break;
+
+            case 8:
+            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.TERROR));
             break;
         }
-        
+
         //para que la entrada de horarioCliente no se omita
         in.nextLine();
 
