@@ -1,5 +1,7 @@
 package gestorAplicacion.herramientas;
 
+import java.util.ArrayList;
+
 public enum Suscripcion {
 
     Basica,
@@ -19,6 +21,24 @@ public enum Suscripcion {
 
         return top+tipo1+tipo2+cont+tipo3+cont2;
     }
+    public static boolean tipos(String tipo){
+        ArrayList <String> arreglo= new ArrayList<>();
+        arreglo.add("vip");
+        arreglo.add("basica");
+        arreglo.add("premium");
+        for (String string : arreglo) {
+            if (string.equals(tipo)) {
+                return false;
+                
+            
+            
+            
+        }
+        
+
+    }
+    return true;
+}
         
     
 }
