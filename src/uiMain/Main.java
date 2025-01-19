@@ -927,6 +927,8 @@ public class Main {
  ///BASE PARA FUNCIONALIDAD 4
     public static void gestionClases() {
 
+        byte[] two = {1, 2};
+
         List<Artista> artistas = new ArrayList<>(); // Lista de artistas registrados, puede ser un atributo estático
         List<Clase> clases = new ArrayList<>(); // Lista de clases programadas, puede ser un atributo estático
 
@@ -939,13 +941,36 @@ public class Main {
         if (artista == null) {
             customPrint("Artista no encontrado.", "red");
             Thread.sleep(1000);
-            String nombreArtista = ask("Ingrese el nombre del nuevo artista:");
-            Artista.getArtistas().add(artista);
+            byte crearArtista =  ask("¿Desea crear un nuevo Artista?\n" + "1. Sí\n" + "2. No", two, "" );
+
+            switch (crearArtista) {
+                case 1:
+                String nombreArtista = ask("Ingrese el nombre del nuevo artista:");
+
+                String tipoArtista = ask("Ingrese el tipo de artista (director/actor)");
+    
+                if (tipoArtista.equals("director")) {
+                    // Crear un nuevo director
+                    Director nuevoDirector = new Director(nombreArtista, idArtista);
+                    customPrint("Nuevo director agregado: " + nombreArtista + "con ID" + idArtista, "green");
+                } else if (tipoArtista.equals("actor")) {
+                    // Crear un nuevo actor
+                    Actor nuevoActor = new Actor(nombreArtista, idArtista);
+                    customPrint("Nuevo actor agregado: " + nombreArtista + "con ID" + idArtista, "green");
+                } else {
+                    customPrint("Tipo de artista no válido. Debe ser 'director' o 'actor'.", "red");
+                }
+                break;
+            
+                case 2:
+                    break;
+            }
+
         }
         
 
         System.out.println("Calificaciones actuales del artista " + artista.getNombre() + ":");
-        artista.mostrarCalificaciones(); //Crear este método    
+        artista.mostrarCalificacionesOInicializar(artista);    
 
         System.out.println("Obras en estado crítico:");
         listarObrasCriticas();// Crear este método, no sin antes preguntarle a Danna específicamente sobre las "Obras críticas"

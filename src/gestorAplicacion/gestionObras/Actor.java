@@ -28,6 +28,7 @@ public class Actor extends Artista{
     public Actor(String nombre, long id){ 
         super(nombre, id);
         actors.add(this); 
+        getArtistas().add(this);
     }
 
     public String toString(){
