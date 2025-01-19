@@ -175,41 +175,42 @@ public class Main {
 
 
     public static void main(String args[]){    
-    byte task = -1;
+        byte task = -1;
 
-    while (task != 6){
+        while (task != 6){
 
-    Tesoreria tesoreria = new Tesoreria();
-    String dash = "~";
-    customPrint("Teatro Carlos Mayolo", true);
+            Tesoreria tesoreria = new Tesoreria();
+            String dash = "~";
+            customPrint("Teatro Carlos Mayolo", true);
 
-    byte[] options = {1, 2, 3, 4, 5, 6};
-    task = ask("Seleccione la tarea a realizar: \n1. Venta de tiquetes.\n2. Gestión de empleados.\n3. Gestión de obras.\n4. Gestión de clases.\n5. Alquiler de actores.\n6. Cerrar el programa.", options, "");
+            byte[] options = {1, 2, 3, 4, 5, 6};
+            task = ask("Seleccione la tarea a realizar: \n1. Venta de tiquetes.\n2. Gestión de empleados.\n3. Gestión de obras.\n4. Gestión de clases.\n5. Alquiler de actores.\n6. Cerrar el programa.", options, "");
 
-    switch (task){
+            switch (task){
 
-        case 1:
-        gestionVentas();
-        break;
+                case 1:
+                gestionVentas();
+                break;
 
-        case 2:
-        {}break;
+                case 2:
+                {}break;
 
-        case 3:
-            gestionObras();
-            break;
+                case 3:
+                gestionObras();
+                break;
 
-        case 4:
-        gestionClases();
-        break;
+                case 4:
+                gestionClases();
+                break;
 
-        case 5: AlquilarActor(); break;
+                case 5: 
+                AlquilarActor(); 
+                break;
 
-        case 6:
-        {}break;
-    }
-    
-    }
+                case 6:
+                {}break;
+            }
+        }
     }
 
     public static void gestionVentas(){
