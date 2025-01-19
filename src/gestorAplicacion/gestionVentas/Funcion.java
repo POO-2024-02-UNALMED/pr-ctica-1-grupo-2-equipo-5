@@ -117,14 +117,6 @@ public class Funcion {
         }
         return a;
     }
-    public float precioFuncion(Funcion funcion){
-        float prom = funcion.obra.promedioCalificacion();
-        float precioBase=10000;
-        precioBase = precioBase +(prom*800);
-        
-
-        return precioBase;
-
-    }
+    
     
 }

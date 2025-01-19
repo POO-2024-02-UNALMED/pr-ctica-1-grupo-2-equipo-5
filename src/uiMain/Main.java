@@ -216,7 +216,7 @@ public class Main {
         Obra obra4 = new Obra("El misterio en la mansión", Genero.TERROR, "1h 15min");
         Obra obra5 = new Obra("Bailando en el escenario", Genero.MUSICAL, "2h 20min");
 
-        System.out.println(Obra.obras);
+        
         byte [] opciones_2 = {1,2};
         Cliente cliente= null;
         ArrayList <Integer> lista = new ArrayList<>();
@@ -229,6 +229,7 @@ public class Main {
 
         
         byte a = in.nextByte();
+        in.nextLine();
 
         while (!isIn(opciones_2, a)){
 
@@ -238,6 +239,7 @@ public class Main {
             "1. NO\n"+
             "2. SI\n");
             a = in.nextByte();
+            in.nextLine();
         }
         Cliente c1 = new Cliente("null", 1);
 
@@ -248,7 +250,7 @@ public class Main {
             case 1:
                 customPrint("Ingresa tu id :");
                 long code = in.nextLong();
-                
+                in.nextLine();                
                
 
                 if (Cliente.verificar(code)) {
@@ -276,6 +278,7 @@ public class Main {
                     
                     byte [] opcion = {1,2};
                     byte b = in.nextByte();
+                    in.nextLine();
 
                     while (!isIn(opciones_2, b)){
                         customPrint("La respuesta introducida no hace parte de las opciones. \n"+
@@ -284,6 +287,7 @@ public class Main {
                         "1. NO\n"+
                         "2. SI\n");
                         b = in.nextByte();
+                        in.nextLine();
                     }
                     if (b == 1) {
                         break;
@@ -323,6 +327,7 @@ public class Main {
             );
         
         int d = in.nextByte();
+        in.nextLine();
         while (d !=2 & d != 1){
 
             customPrint("La respuesta introducida no hace parte de las opciones. \n"+
@@ -334,14 +339,24 @@ public class Main {
             
             );
             d = in.nextByte();
+            in.nextLine();
         }
         switch (d) {
             case 1:
-            customPrint(String.format("%30s %15s %10s", "Nombre Obra", "Genero", "Duracion")+"\n"+Obra.generarTabla());
-
+            customPrint(String.format("%30s %15s %10s %10s", "Nombre Obra", "Genero", "Duracion","Precio")+"\n"+Obra.generarTabla());
+            customPrint("Que obra desea consultar? \n");
+            String input = in.nextLine().toLowerCase();
             
-            
+            while (Obra.nombres(input)){
+                customPrint("Obra no encontrada \n"+
+                "Ingrese un nombre valido :");
+                input = in.nextLine().toLowerCase();
                 
+
+            }
+            
+
+
                 break;
             case 2:
 

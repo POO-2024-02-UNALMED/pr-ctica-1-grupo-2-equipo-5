@@ -21,7 +21,7 @@ public class Obra {
     private int tiquetesTotales;
     private boolean estadoCriticoA;
     private static ArrayList<Obra> estadoCriticoS;
-    private ArrayList<Float> calificaciones;
+    private ArrayList<Float> calificaciones=new ArrayList<>();
     public static ArrayList<Obra> obras=new ArrayList<>();
     private ArrayList<LocalTime> franjaHoraria;
     private Duration duracion;
@@ -296,34 +296,61 @@ public class Obra {
     }
     public float promedioCalificacion(){
         float promedio=0;
-        ArrayList<Float> c = getCalificaciones();
+        ArrayList<Float> c = this.getCalificaciones();
+        if (!calificacionVacia(this)) {
+            return 0;
+        }
         for (Float cal : c) {
             promedio =promedio+ cal;
         
         }
         return (promedio / c.size());
     }
-    public boolean calificacionVacia(){
+    public static boolean calificacionVacia(Obra obra){
         boolean valor = true;
-        if (getCalificaciones().size()==0) {
+        if (obra.getCalificaciones().size()==0) {
             valor = false;
         }
         return valor;
         
 
     }
+    public static float precioFuncion(Obra obra){
+            float prom = obra.promedioCalificacion();
+            float precioBase=10000;
+            precioBase = precioBase +(prom*800);
+            
     
+            return precioBase;
     
-    public static String generarTabla(){
-        String Nuevo="";
-        for (Obra obra : obras) {
-            String string = String.format("%30s %15s %10s",obra.getNombre(),obra.getGenero(),obra.dur+"\n");
+        }
+        
+        
+        public static String generarTabla(){
+            String Nuevo="";
+            for (Obra obra : obras) {
+                String string = String.format("%30s %15s %10s %10s",obra.getNombre(),obra.getGenero(),obra.dur,precioFuncion(obra)+"\n");
             Nuevo = Nuevo +string;
 
             
         }
         return Nuevo;
     }
+    public static boolean nombres(String nombre){
+        ArrayList<String> listaNombres=new ArrayList<>();
+        for (Obra a : Obra.obras) {
+            listaNombres.add(a.getNombre().toLowerCase());
+            
+        }
+        if(listaNombres.contains(nombre)){
+            return false;
+
+        }
+        return true;
+
+
+    }
+    
     
 
 }
