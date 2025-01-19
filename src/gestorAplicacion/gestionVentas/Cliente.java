@@ -19,7 +19,7 @@ import gestorAplicacion.herramientas.Genero;
 import gestorAplicacion.gestionFinanciera.Tesoreria;
 
 public class Cliente {
-    private String Suscripcion;
+    private Suscripcion suscripcion ;
     private long id;
     private Funcion funcion;
     private Genero generoFavorito;
@@ -193,13 +193,25 @@ public class Cliente {
         Cliente.clientes = clientes;
     }
 
-    public String getSuscripcion() {
-        return Suscripcion;
+    public  Suscripcion getSuscripcion() {
+        return suscripcion;
     }
 
-    public void setSuscripcion(String suscripcion) {
-        Suscripcion = suscripcion;
+    public void setSuscripcion(Suscripcion  suscripcion) {
+        this.suscripcion = suscripcion;
     }
+    public Suscripcion imprimirSuscripcion(){
+        Suscripcion nombre = this.getSuscripcion();
+        return nombre;
+
+    }
+    public Cliente(String tipo, long id,Suscripcion suscripcion){
+        this.tipo = tipo;
+        this.id = id;
+        this.suscripcion=suscripcion;
+        this.cuentaBancaria = new CuentaBancaria(id, 0);
+        clientes.add(this);
+    }  
     
 }
 

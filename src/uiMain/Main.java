@@ -21,6 +21,7 @@ import gestorAplicacion.gestionObras.Obra;
 import gestorAplicacion.herramientas.Aptitud;
 import gestorAplicacion.herramientas.Contador;
 import gestorAplicacion.herramientas.Genero;
+import gestorAplicacion.herramientas.Suscripcion;
 import gestorAplicacion.gestionObras.Director;
 
 
@@ -339,7 +340,7 @@ public class Main {
                 }
                 customPrint("Codigo creado");
                 code= Cliente.IdRandom();
-                cliente = new Cliente(null, code);
+                cliente = new Cliente(null, code,Suscripcion.Basica);
 
                 
                 salir = true;
@@ -387,6 +388,8 @@ public class Main {
 
                 break;
             case 2:
+                customPrint("Su suscripcion actual es "+cliente.imprimirSuscripcion());
+                customPrint(Suscripcion.tiposSuscipcion());
 
                 break;
         
