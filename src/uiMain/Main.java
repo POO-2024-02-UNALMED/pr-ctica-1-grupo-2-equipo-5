@@ -159,14 +159,12 @@ public class Main {
         }
 
         System.out.println(chosenColor + "╭" + "─".repeat(LARGO_LINEAS) + "╮" + reset);
-        if (cadena.contains("\n")){
-            String[] cadenas = cadena.split("\n");
-            for (String linea : cadenas){
-                System.out.println(chosenColor + formatString(linea, isCentrado) + reset);
-            }
-        } else {
-            System.out.println(chosenColor + formatString(cadena, isCentrado) + reset);
+        String[] cadenas = cadena.split("\n");
+
+        for (String linea : cadenas){
+            System.out.println(chosenColor + formatString(linea, isCentrado) + reset);
         }
+
         System.out.println(chosenColor + "╰" + "─".repeat(LARGO_LINEAS ) + "╯" + reset);
     }
     //---------------------------------------------------------//
