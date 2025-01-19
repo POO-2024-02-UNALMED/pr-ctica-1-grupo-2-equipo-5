@@ -338,9 +338,10 @@ public class Main {
                     customPrint("La pausa fue interrumpida.");
                     
                 }
-                customPrint("Codigo creado");
+                
                 code= Cliente.IdRandom();
                 cliente = new Cliente(null, code,Suscripcion.Basica);
+                customPrint("Codigo "+cliente.getId()+ " creado");
 
                 
                 salir = true;
@@ -350,20 +351,22 @@ public class Main {
         customPrint("Que desea hacer\n\n"+
             "Ingrese la opcion correspondiente\n"+
             "1. Consultar obra y comprar tiquete\n"+ 
-            "2. Mejorar Suscripcion"
+            "2. Mejorar Suscripcion\n"+
+            "3. consular perfil"
             
             );
         
         int d = in.nextByte();
         in.nextLine();
-        while (d !=2 & d != 1){
+        while (d !=2 & d != 1 & d != 3){
 
             customPrint("La respuesta introducida no hace parte de las opciones. \n"+
             "Intente de nuevo:\n"+
             "Que desea hacer\n\n"+
             "Ingrese la opcion correspondiente\n"+
             "1. Consultar obra y comprar tiquete\n"+ 
-            "2. Mejorar Suscripcion"
+            "2. Mejorar Suscripcion\n"+
+            "3. consular perfil"
             
             );
             d = in.nextByte();
@@ -372,7 +375,7 @@ public class Main {
         switch (d) {
             case 1:
             customPrint(String.format("%30s %15s %10s %10s", "Nombre Obra", "Genero", "Duracion","Precio")+"\n"+Obra.generarTabla());
-            customPrint("Que obra desea consultar? \n");
+            customPrint("Que obra desea comprar? \n");
             String input = in.nextLine().toLowerCase();
             
             while (Obra.nombres(input)){
@@ -382,7 +385,8 @@ public class Main {
                 
 
             }
-            customPrint(Obra.imprimirObra(Obra.buscarObra(input)));
+            customPrint("Obra comprada \n\n"+Obra.imprimirObra(Obra.buscarObra(input)));
+            cliente.setObra(input);
             
 
 
@@ -390,13 +394,49 @@ public class Main {
             case 2:
                 customPrint("Su suscripcion actual es "+cliente.imprimirSuscripcion());
                 customPrint(Suscripcion.tiposSuscipcion());
+                
+                customPrint(
+            "Que suscripcion desea aadquirir?\n\n"
+            );
+            String suscripcion = in.nextLine().toLowerCase();
+                
+            while (Suscripcion.tipos(suscripcion)){
+
+            customPrint("La respuesta introducida no hace parte de las opciones. \n"+
+            "Intente de nuevo:\n"+
+            "Que suscripcion desea aadquirir\n\n"
+            
+            );
+            suscripcion = in.nextLine().toLowerCase();
+        }
+        switch (suscripcion) {
+            case "basica":
+                cliente.setSuscripcion(Suscripcion.Basica);
+                break;
+            case "vip":
+                cliente.setSuscripcion(Suscripcion.Vip);
+                break;
+            case "premium":
+                cliente.setSuscripcion(Suscripcion.Premium);
+                break;
+
+                
+        
+        }
+            customPrint("Suscripcion "+cliente.getSuscripcion()+" apliacada");
+            
+            
+
+                break;
+            case 3:
+                customPrint(cliente.getId()+"\n"+cliente.getObra()+"\n"+cliente.getSuscripcion());
 
                 break;
         
             
                 
         }
-        
+    
 
 
 

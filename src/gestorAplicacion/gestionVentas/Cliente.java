@@ -19,6 +19,7 @@ import gestorAplicacion.herramientas.Genero;
 import gestorAplicacion.gestionFinanciera.Tesoreria;
 
 public class Cliente {
+    private String obra;
     private Suscripcion suscripcion ;
     private long id;
     private Funcion funcion;
@@ -211,7 +212,17 @@ public class Cliente {
         this.suscripcion=suscripcion;
         this.cuentaBancaria = new CuentaBancaria(id, 0);
         clientes.add(this);
-    }  
+    }
+
+    public String getObra() {
+        return obra;
+    }
+
+    public void setObra(String obra) {
+        this.obra = obra;
+    }
+
+    
     
 }
 
