@@ -140,7 +140,7 @@ public class Main {
         String reset = "\u001B[0m";
         String chosenColor = null;
 
-        switch(color){
+        switch(color){ 
             case "red":
             chosenColor = red; break;
 
@@ -211,27 +211,8 @@ public class Main {
         Obra obra1 = new Obra("El gran show", Genero.CIRCO, "1h 30min");
         Obra obra2 = new Obra("La tragedia de Romeo", Genero.DRAMA, "2h");
         Obra obra3 = new Obra("Risas aseguradas", Genero.COMEDIA, "45min");
-        Obra obra4 = new Obra("El misterio en la mansion", Genero.TERROR, "1h 15min");
+        Obra obra4 = new Obra("El misterio en la mansión", Genero.TERROR, "1h 15min");
         Obra obra5 = new Obra("Bailando en el escenario", Genero.MUSICAL, "2h 20min");
-        obra1.setCalificacion(8);
-        obra1.setCalificacion(7);
-        obra1.setCalificacion(9);
-
-        obra2.setCalificacion(5);
-        obra2.setCalificacion(8);
-        obra2.setCalificacion(6);
-
-        obra3.setCalificacion(7);
-        obra3.setCalificacion(6);
-        obra3.setCalificacion(8);
-
-        obra4.setCalificacion(9);
-        obra4.setCalificacion(7);
-        obra4.setCalificacion(8);
-
-        obra5.setCalificacion(10);
-        obra5.setCalificacion(9);
-        obra5.setCalificacion(8);
 
         
         byte [] opciones_2 = {1,2};
@@ -360,8 +341,8 @@ public class Main {
         }
         switch (d) {
             case 1:
-            customPrint(String.format("%30s %15s %10s %20s", "Nombre Obra", "Genero", "Duracion","Precio")+"\n"+Obra.generarTabla());
-            customPrint("Que obra desea comprar? \n");
+            customPrint(String.format("%30s %15s %10s %10s", "Nombre Obra", "Genero", "Duracion","Precio")+"\n"+Obra.generarTabla());
+            customPrint("Que obra desea consultar? \n");
             String input = in.nextLine().toLowerCase();
             
             while (Obra.nombres(input)){
@@ -371,8 +352,6 @@ public class Main {
                 
 
             }
-            customPrint(Obra.imprimirObra(Obra.buscarObra(input)));
-            
             
 
 
@@ -835,7 +814,7 @@ public class Main {
             
             while (continuar){
 
-                lastIdx = 0;
+                lastIdx = -1;
                 x = 0;
                 idx = 0;
                 lastResidualIdx = 0;
