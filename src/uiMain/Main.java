@@ -27,7 +27,7 @@ import gestorAplicacion.gestionObras.Director;
 
 
 public class Main {
-
+    Tesoreria tesoreria = new Tesoreria(0, 100);
     public static Scanner op;
     public static Scanner in = new Scanner(System.in);
 
@@ -181,10 +181,9 @@ public class Main {
 
     public static void main(String args[]){    
         byte task = -1;
+        
 
         while (task != 6){
-
-            Tesoreria tesoreria = new Tesoreria(0, 100);
             String dash = "~";
             customPrint("Teatro Carlos Mayolo", true);
 
@@ -946,6 +945,8 @@ public class Main {
 
     //Base para funcionalidad 2
     public static void gestionEmpleados(){
+        //Despliegue de los empleados
+
         //Pagar nomina a empleados:
         //Verificacion de fondos:
         double fondos = tesoreria.getCuenta().getSaldo() + tesoreria.getDineroEnCaja();

@@ -2,6 +2,8 @@ package gestorAplicacion.gestionVentas;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+
+import gestorAplicacion.gestionFinanciera.Empleado;
 public class Sala {
     private static ArrayList <Sala> salas = new ArrayList<>();
     private ArrayList <Silla> sillas = new ArrayList<>();
@@ -9,7 +11,7 @@ public class Sala {
     private int metrosCuadrados;
     private Boolean aseado;
     private Boolean ocupado;
-    private boolean aseador;
+    private Empleado trabajador;
     private ArrayList<ArrayList<LocalDateTime>> horario;
     private int capacidad;
 
@@ -62,12 +64,14 @@ public class Sala {
         salas = newSalas;
     }
 
-    //Presencia Aseador
-    public boolean isAseador() {
-        return aseador;
+    //Presencia trabajador
+    public Empleado getTrabajador(){
+        return this.trabajador;
     }
-    public void setAseador(boolean aseador) {
-        this.aseador = aseador;
+    public void setTrabajador(Empleado newTrabajador){
+        this.trabajador = newTrabajador;
+    }
+
     }
     public ArrayList<ArrayList<LocalDateTime>> getHorario() {
         return horario;

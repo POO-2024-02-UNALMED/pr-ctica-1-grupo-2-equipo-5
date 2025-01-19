@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import gestorAplicacion.gestionClases.Profesor;
 import gestorAplicacion.gestionObras.Artista;
+import gestorAplicacion.gestionVentas.Sala;
 import uiMain.Main;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class Empleado {
     private boolean disponible;
     private CuentaBancaria cuenta;
     private float deuda;
-    private ArrayList<Float> trabajos = new ArrayList<>(); //Aqui se almacenan los trabajos que realizo ya sea que lo halla realizado o no.
+    private ArrayList<Float> trabajos = new ArrayList<>(); //Aqui se almacenan los trabajos que realizo ya sea que fue correcto o no.
     private ArrayList<ArrayList<LocalDateTime>> horario = new ArrayList<>();
 
     //Constructor
