@@ -27,7 +27,7 @@ import gestorAplicacion.gestionObras.Director;
 
 
 public class Main {
-    Tesoreria tesoreria = new Tesoreria(0, 100);
+    static Tesoreria tesoreria = new Tesoreria(0, 100);
     public static Scanner op;
     public static Scanner in = new Scanner(System.in);
 
