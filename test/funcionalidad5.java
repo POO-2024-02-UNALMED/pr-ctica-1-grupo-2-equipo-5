@@ -80,7 +80,7 @@ public class funcionalidad5 {
             Cliente warner = new Cliente("Empresa", 246);
             warner.getHistorial().add(actor3);
             warner.getCuentaBancaria().ingresar( (double) 3_700_000 );
-            Tesoreria tesoreria = new Tesoreria();
+            Tesoreria tesoreria = new Tesoreria(0f, 100f);
 
             //--------------------------------------------//
             Main.AlquilarActor();

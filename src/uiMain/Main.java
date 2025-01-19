@@ -205,7 +205,7 @@ public class Main {
                 break;
 
                 case 4:
-                gestionClases();
+                //gestionClases();
                 break;
 
                 case 5: 
@@ -930,7 +930,7 @@ public class Main {
         }
 
         customPrint("El actor escogido fue " + actorEscogido.getNombre() + " por un precio de " +  Actor.formatoPrecio(actorEscogido.getPrecioContrato()));
-        byte codigoCompra = empresa.pagarAlquilerActor(actorEscogido);
+        byte codigoCompra = empresa.pagarAlquilerActor(actorEscogido, tesoreria);
         if (codigoCompra == -1){
             customPrint("Saldo insuficiente", true, "red");
         } else{
