@@ -390,13 +390,30 @@ public class Main {
             case 2:
                 customPrint("Su suscripcion actual es "+cliente.imprimirSuscripcion());
                 customPrint(Suscripcion.tiposSuscipcion());
+                
+                customPrint(
+            "Que suscripcion desea aadquirir?\n\n"
+            );
+            input = in.nextLine().toLowerCase();
+                
+            while (input != "vip" & input != "premium" & input != "basica"){
+
+            customPrint("La respuesta introducida no hace parte de las opciones. \n"+
+            "Intente de nuevo:\n"+
+            "Que suscripcion desea aadquirir\n\n"
+            
+            );
+            input = in.nextLine().toLowerCase();
+        }
+            
+            
 
                 break;
         
             
                 
         }
-        
+    
 
 
 
