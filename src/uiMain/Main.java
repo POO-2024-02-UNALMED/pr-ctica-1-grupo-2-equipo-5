@@ -221,7 +221,7 @@ public class Main {
         Obra obra1 = new Obra("El gran show", Genero.CIRCO, "1h 30min");
         Obra obra2 = new Obra("La tragedia de Romeo", Genero.DRAMA, "2h");
         Obra obra3 = new Obra("Risas aseguradas", Genero.COMEDIA, "45min");
-        Obra obra4 = new Obra("El misterio en la mansión", Genero.TERROR, "1h 15min");
+        Obra obra4 = new Obra("El misterio en la mansion", Genero.TERROR, "1h 15min");
         Obra obra5 = new Obra("Bailando en el escenario", Genero.MUSICAL, "2h 20min");
 
         obra1.setCalificacion(8);
@@ -381,6 +381,7 @@ public class Main {
                 
 
             }
+            customPrint(Obra.imprimirObra(Obra.buscarObra(input)));
             
 
 
