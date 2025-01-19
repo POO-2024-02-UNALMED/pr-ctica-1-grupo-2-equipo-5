@@ -928,12 +928,9 @@ public class Main {
     }
 
  ///BASE PARA FUNCIONALIDAD 4
-    public static void gestionClases() {
+    public static void gestionClases() throws InterruptedException {
 
         byte[] two = {1, 2};
-
-        List<Artista> artistas = new ArrayList<>(); // Lista de artistas registrados, puede ser un atributo estático
-        List<Clase> clases = new ArrayList<>(); // Lista de clases programadas, puede ser un atributo estático
 
         customPrint("Bienvenido a la gestión de clases.");
         Thread.sleep(2000);
@@ -972,14 +969,14 @@ public class Main {
         }
         
 
-        System.out.println("Calificaciones actuales del artista " + artista.getNombre() + ":");
+        customPrint("Calificaciones actuales del artista " + artista.getNombre() + ":");
         artista.mostrarCalificacionesOInicializar(artista);    
 
         System.out.println("Obras en estado crítico:");
-        listarObrasCriticas();// Crear este método, no sin antes preguntarle a Danna específicamente sobre las "Obras críticas"
+        //listarObrasCriticas();// Crear este método, no sin antes preguntarle a Danna específicamente sobre las "Obras críticas"
 
         System.out.print("¿Desea programar una clase? (s/n): ");
-        String respuesta = scanner.nextLine();
+
         if (respuesta.equalsIgnoreCase("s")) {
             programarClase(scanner, artista, clases); //Crear método para programar clase
         }
