@@ -967,6 +967,46 @@ public class Main {
 
     }
 
+    //Base para funcionalidad 2
+    public static void gestionEmpleados(){
+        //Pagar nomina a empleados:
+        //Verificacion de fondos:
+        Tesoreria tesoreria = new Tesoreria(0,10);
+        double fondos = tesoreria.getCuenta().getSaldo() + tesoreria.getDineroEnCaja();
+        double totalSaldos = 0;
+        for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+            totalSaldos = totalSaldos + Persona.calcularSueldo();
+            if(totalSaldos > fondos){
+                customPrint("Upps... No se puede realizar los pagos adecuadamente");
+            }
+        }
+
+        //Saldos con las bonificaciones:
+        if(tesoreria.verificacionMeta() != true){
+            for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                if(Persona.verificacionMeta() != true){
+                    Persona.setMetaSemanal(Persona.getMetaSemanal()-5); //Disminucion de meta
+                    totalSaldos = totalSaldos + Persona.calcularSueldo();
+                }
+                else{
+                    Persona.setMetaSemanal(Persona.getMetaSemanal() + 10);  //Aumento en la meta
+                    totalSaldos = totalSaldos + (Persona.calcularSueldo() * 1.5);
+                }
+            }
+        }
+        else{
+            for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                if(Persona.verificacionMeta() != true){
+                    Persona.setMetaSemanal(Persona.getMetaSemanal()-5); //Disminucion de meta
+                    totalSaldos = totalSaldos + (Persona.calcularSueldo() * 0.3);
+                }
+                else{
+                    Persona.setMetaSemanal(Persona.getMetaSemanal() + 10);  //Aumento en la meta
+                    totalSaldos = totalSaldos + (Persona.calcularSueldo() * 1.8);
+                }
+            }
+        }
+    }
  ///BASE PARA FUNCIONALIDAD 4
     public static void gestionClases() throws InterruptedException {
 

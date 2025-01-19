@@ -1,109 +1,40 @@
 package gestorAplicacion.gestionFinanciera;
 
 public class Tesoreria {
-    private static float DineroEnCaja;
+    private static double DineroEnCaja;
     private static float metaSemanal;
-    private static CuentaBancaria Cuenta = new CuentaBancaria(100, 0);
-    private float Total;
+    private static CuentaBancaria cuenta;
+    private float total;
 
-    //Metodo para verificacion de fondos
-    public double fondosSuficientes(){
-        double totalNomina = 0;
-        double Bonificacion = 0;
-        if (Tesoreria.verificacionMeta() == true){
-            for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                if (Persona.verificacionMeta() == true){
-                    Bonificacion = 1.45;
-                    totalNomina = totalNomina + (Persona.calcularSueldo() * Bonificacion);
-                }
-                else{
-                    Bonificacion = 1.3;
-                    totalNomina = totalNomina + (Persona.calcularSueldo() * Bonificacion);
-                }
-            }
-            if(totalNomina < Tesoreria.getCuenta().getSaldo()){
-                System.out.println("Se puede aplicar las bonificaciones");
-                return totalNomina;
-            }
-            else{
-                totalNomina = 0;
-                Bonificacion = 1.3;
-                for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                    totalNomina = totalNomina +  (Persona.calcularSueldo() * Bonificacion);
-                }
-                if(totalNomina < Tesoreria.getCuenta().getSaldo()){
-                    System.out.println("Se puede aplicar la bonificacion de Tesoreria");
-                    return totalNomina;
-                }
-                else{
-                    totalNomina = 0;
-                    Bonificacion = 1.15;
-                    for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                        if(Persona.verificacionMeta() == true){
-                            totalNomina = totalNomina + (Persona.calcularSueldo() * Bonificacion);
-                        }
-                        else {totalNomina = totalNomina + Persona.calcularSueldo();}
-                    }
-                    if (totalNomina < Tesoreria.getCuenta().getSaldo()){
-                        System.out.println("Se puede aplicar las bonificaciones personales");
-                        return totalNomina;
-                    }
-                    else{
-                        totalNomina = 0;
-                        for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                            totalNomina = totalNomina + Persona.calcularSueldo();
-                        }
-                        return totalNomina;
-                    }
-                }
-            }
-        }
-        else{
-            totalNomina = 0;
-            Bonificacion = 1.15;
-            for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                if(Persona.verificacionMeta() == true){
-                    totalNomina = totalNomina + (Persona.calcularSueldo() * Bonificacion);
-                }
-                else {totalNomina = totalNomina + Persona.calcularSueldo();}
-            }
-            if (totalNomina < Tesoreria.getCuenta().getSaldo()){
-                System.out.println("Se puede aplicar las bonificaciones personales");
-                return totalNomina;
-            }
-            else{
-                totalNomina = 0;
-                for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                    totalNomina = totalNomina + Persona.calcularSueldo();
-                }
-                return totalNomina;
-            }
-        }
+    //Constructor
+    public Tesoreria(float total, float metaSemanal){
+        this.total = total;
+        Tesoreria.DineroEnCaja = 0;
+        Tesoreria.metaSemanal = metaSemanal;
+        Tesoreria.cuenta = new CuentaBancaria(1, 10000000);
     }
 
-    //Metodo para verificar meta
-    public static boolean verificacionMeta(){
-        if(DineroEnCaja >= metaSemanal){
-            System.out.println("Existe la posibilidad de aplicar Bonificacion a los salarios");
+    //Metodo Verificacion Meta:
+    public boolean verificacionMeta(){
+        if (this.total == Tesoreria.metaSemanal) {
             return true;
         }
         else{
-            System.out.println("Tristemente no se alcanzo la meta :(");
             return false;
         }
     }
 
     //Setters and Getters
-    public static CuentaBancaria getCuenta() {
-        return Cuenta;
+    public CuentaBancaria getCuenta() {
+        return cuenta;
     }
     public void setCuenta(CuentaBancaria cuenta) {
-        Cuenta = cuenta;
+        Tesoreria.cuenta = cuenta;
     }
-    public float getDineroEnCaja() {
+    public double getDineroEnCaja() {
         return DineroEnCaja;
     }
-    public void setDineroEnCaja(Float dineroEnCaja) {
+    public void setDineroEnCaja(double dineroEnCaja) {
         DineroEnCaja = dineroEnCaja;
     }
     public float getMetaTotal() {
@@ -113,9 +44,9 @@ public class Tesoreria {
         metaSemanal = metaTotal;
     }
     public float getTotal() {
-        return Total;
+        return total;
     }
     public void setTotal(Float total) {
-        Total = total;
+        this.total = total;
     }
 }

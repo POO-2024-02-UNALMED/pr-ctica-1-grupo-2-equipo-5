@@ -21,16 +21,29 @@ public class Empleado {
     private boolean trabajoCorrecto;
     private int metaSemanal;
     private int puntosPositivos;
-    private String Ocupacion;
+    private String ocupacion;
     private boolean disponible;
-    private CuentaBancaria Cuenta;
-    private float Deuda;
+    private CuentaBancaria cuenta;
+    private float deuda;
     private ArrayList<Float> trabajos = new ArrayList<>(); //Aqui se almacenan los trabajos que realizo ya sea que lo halla realizado o no.
-    private ArrayList<ArrayList<LocalDateTime>> Horario = new ArrayList<>();
+    private ArrayList<ArrayList<LocalDateTime>> horario = new ArrayList<>();
 
-    //Metodo para establecer el horario
-    public void establecerHorario(){
-        
+    //Constructor
+    public Empleado(int metaSemanal, String ocupacion, CuentaBancaria cuenta) {
+        this.metaSemanal = metaSemanal;
+        this.cuenta = cuenta;
+        this.ocupacion = ocupacion; 
+        if(ocupacion != "Aseador"){
+            if(ocupacion !="Seguridad"){
+                tipoProfesor.add(this);
+            }
+            else{
+                tipoSeguridad.add(this);
+            }
+        }
+        else{
+            tipoAseador.add(this);
+        }
     }
 
     //Metodo para verificar si se hizo el trabajo bien
@@ -49,11 +62,11 @@ public class Empleado {
 
     //Calcular sueldo
     public double calcularSueldo(){
-        if(this.Ocupacion == "Seguridad"){
+        if(this.ocupacion == "Seguridad"){
             double Sueldo = this.TrabajoRealizado * salarioSeguridad;
             return Sueldo;
         }
-        else if (this.Ocupacion == "Aseador"){
+        else if (this.ocupacion == "Aseador"){
             double Sueldo = this.TrabajoRealizado * salarioAseador;
             return Sueldo;
         }
@@ -110,11 +123,11 @@ public class Empleado {
 
     //Ocupacion
     public String getOcupacion() {
-        return Ocupacion;
+        return ocupacion;
     }
 
     public void setOcupacion(String ocupacion) {
-        Ocupacion = ocupacion;
+        this.ocupacion = ocupacion;
     }
 
     //Disponibilidad
@@ -128,20 +141,20 @@ public class Empleado {
 
     //Cuenta Bancaria
     public CuentaBancaria getCuenta() {
-        return Cuenta;
+        return cuenta;
     }
 
     public void setCuenta(CuentaBancaria cuenta) {
-        Cuenta = cuenta;
+        this.cuenta = cuenta;
     }
 
     //Deuda
     public float getDeuda() {
-        return Deuda;
+        return deuda;
     }
 
     public void setDeuda(float deuda) {
-        Deuda = deuda;
+        this.deuda = deuda;
     }
 
     //Trabajos
@@ -188,11 +201,11 @@ public class Empleado {
 
     //Horario
     public ArrayList<ArrayList<LocalDateTime>> getHorario() {
-        return Horario;
+        return horario;
     }
 
     public void setHorario(ArrayList<ArrayList<LocalDateTime>> horario) {
-        Horario = horario;
+        this.horario = horario;
     }
 
     //Salarios
