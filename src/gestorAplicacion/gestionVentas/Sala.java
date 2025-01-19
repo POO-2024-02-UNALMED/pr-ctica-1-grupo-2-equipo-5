@@ -72,7 +72,7 @@ public class Sala {
         this.trabajador = newTrabajador;
     }
 
-    }
+
     public ArrayList<ArrayList<LocalDateTime>> getHorario() {
         return horario;
     }

@@ -945,7 +945,10 @@ public class Main {
 
     //Base para funcionalidad 2
     public static void gestionEmpleados(){
-        //Despliegue de los empleados
+        String q = "¿Que operacion deseas realizar? \n1. Contratar Empleados \n2. Despedir Empleados \n3. Gestionar Empleados \n4. Pagar nomina \n5. Salir";
+        byte[] opciones = {1, 2, 3, 4, 5};
+        byte respuesta = ask(q, opciones, "green");
+        
 
         //Pagar nomina a empleados:
         //Verificacion de fondos:
@@ -957,9 +960,9 @@ public class Main {
                 customPrint("Upps... No se puede realizar los pagos adecuadamente", "Red");
                 byte[] opValidas = {1, 2};
                 String pregunta = "¿Deseas Pagar en partes iguales? \n1. Si. \n2. No.";
-                byte respuesta = ask(pregunta, opValidas, "blue");
+                byte answer = ask(pregunta, opValidas, "blue");
 
-                switch (respuesta) {
+                switch (answer) {
                     case 1:
 
                         break;
@@ -967,6 +970,9 @@ public class Main {
                     case 2:
                         break;
                 }
+            }
+            else{
+                
             }
         }
 
