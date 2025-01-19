@@ -1,8 +1,8 @@
 package gestorAplicacion.gestionFinanciera;
 
 public class CuentaBancaria {
-    long idTitular;
-    double Saldo;
+    private long idTitular;
+    private double Saldo;
 
     public CuentaBancaria(long id, double saldo){
         this.idTitular = id;
