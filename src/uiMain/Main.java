@@ -136,6 +136,7 @@ public class Main {
     public static void customPrint(String cadena, boolean isCentrado, String color){
         String red = "\u001B[31m";
         String green = "\u001B[32m";
+        String yellow = "\u001B[33m";
         String blue = "\u001B[34m";
         String reset = "\u001B[0m";
         String chosenColor = null;
@@ -146,6 +147,9 @@ public class Main {
 
             case "green":
             chosenColor = green; break;
+
+            case "yellow":
+            chosenColor = yellow; break;
 
             case "blue":
             chosenColor = blue; break;
@@ -916,14 +920,13 @@ public class Main {
 
  ///BASE PARA FUNCIONALIDAD 4
     public static void gestionClases() {
-        Scanner scanner = new Scanner(System.in);
+
         List<Artista> artistas = new ArrayList<>(); // Lista de artistas registrados, puede ser un atributo estático
         List<Clase> clases = new ArrayList<>(); // Lista de clases programadas, puede ser un atributo estático
 
-        System.out.println("Bienvenido a la gestión de clases.");
-        System.out.println("Ingrese el ID del artista: ");
-        long idArtista = scanner.nextLong();
-        scanner.nextLine(); 
+        customPrint("Bienvenido a la gestión de clases.");
+        Thread.sleep(2000);
+        long idArtista = longAsk("Ingrese el ID del artista:");
 
         Artista artista = buscarArtistaPorId(artistas, idArtista); //Crear método de  busca de artista
         if (artista == null) {
