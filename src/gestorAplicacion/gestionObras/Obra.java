@@ -41,6 +41,7 @@ public class Obra {
     }
     public void setCalificacion(float calificacion) {
         this.calificacion = calificacion;
+        calificaciones.add(calificacion);
     }
     public ArrayList<Actor> getReparto() {
         return reparto;
@@ -318,24 +319,51 @@ public class Obra {
     public static float precioFuncion(Obra obra){
             float prom = obra.promedioCalificacion();
             float precioBase=10000;
-            precioBase = precioBase +(prom*800);
+            if (prom > 8) {
+                precioBase = precioBase +(prom*800);
+                
+            } else if(prom > 5)
+            {
+                precioBase = precioBase +(prom*400);
+            } else if (prom > 3){
+                precioBase = precioBase +(prom*200);
+            }else{
+                precioBase = precioBase +(prom*100);
+            }
+            
             
     
             return precioBase;
     
         }
+    public static String imprimirObra(Obra obra){
+            String string = String.format("%30s %15s %10s %20s",obra.getNombre(),obra.getGenero(),obra.dur,String.format("$%,.2f",precioFuncion(obra)));
+            return string;
+        }
         
-        
-        public static String generarTabla(){
+    public static String generarTabla(){
             String Nuevo="";
             for (Obra obra : obras) {
-                String string = String.format("%30s %15s %10s %10s",obra.getNombre(),obra.getGenero(),obra.dur,precioFuncion(obra)+"\n");
+                String string = String.format("%30s %15s %10s %20s",obra.getNombre(),obra.getGenero(),obra.dur,String.format("$%,.2f",precioFuncion(obra))+"\n");
             Nuevo = Nuevo +string;
 
             
         }
         return Nuevo;
     }
+    public static Obra buscarObra(String nombre){
+        for (Obra obra : obras) {
+            if ((obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
+                return obra;
+            }
+            
+        }
+        return obras.get(0);
+
+
+    }
+
+
     public static boolean nombres(String nombre){
         ArrayList<String> listaNombres=new ArrayList<>();
         for (Obra a : Obra.obras) {
