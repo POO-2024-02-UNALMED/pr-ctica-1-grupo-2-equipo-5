@@ -2,9 +2,12 @@ package gestorAplicacion.gestionFinanciera;
 import java.util.Random;
 import java.time.LocalDateTime;
 
+import gestorAplicacion.gestionClases.Profesor;
 import gestorAplicacion.gestionObras.Artista;
+import uiMain.Main;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Empleado {
     private final int salarioSeguridad = 6500;
@@ -203,8 +206,21 @@ public class Empleado {
         return this.salarioProfesor;
     }
     
-    public void casting(Artista artista) {
-        artista.agregarCalificacion((int) (Math.random() * 5) + 1); // Inicializa calificaciones aleatorias
-    }
+    public static void casting(Artista artista, ArrayList<Empleado> profesores) {
+        if (profesores == null || profesores.isEmpty()) {
+            Main.customPrint("No hay profesores disponibles para inicializar las calificaciones del artista", "red");
+            return;
+        }
 
+        // Seleccionar un profesor aleatorio
+        Profesor profesorAsignado = (Profesor) profesores.get((int) (Math.random() * profesores.size()));
+
+        // Generar calificaciones aleatorias
+        for (int i = 0; i < 5; i++) { // Por ejemplo, 5 calificaciones iniciales
+            artista.agregarCalificacion((int) (Math.random() * 5) + 1);
+        }
+
+        // Mostrar quién inicializó las calificaciones
+        Main.customPrint("El profesor " + profesorAsignado.getNombre() + " inicializó las calificaciones del artista " + artista.getNombre() + ".");
+    }
 }

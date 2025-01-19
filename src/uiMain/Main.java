@@ -129,6 +129,10 @@ public class Main {
         customPrint(cadena, true, "");
     }
 
+    public static void customPrint(String cadena, String color){
+        customPrint(cadena, true, color);
+    }
+
     public static void customPrint(String cadena, boolean isCentrado){
         customPrint(cadena, true, "");
     }
@@ -929,19 +933,15 @@ public class Main {
         Thread.sleep(2000);
         long idArtista = longAsk("Ingrese el ID del artista:");
 
-        Artista artista = buscarArtistaPorId(artistas, idArtista); //Crear método de  busca de artista
+        Artista artista = Artista.buscarArtistaPorId(idArtista); 
+        
         if (artista == null) {
-            System.out.println("Artista no encontrado. Creando un nuevo artista.");
-            System.out.print("Ingrese el nombre del nuevo artista: ");
-            String nombreArtista = scanner.nextLine();
-            artista = new Artista(idArtista, nombreArtista); //Crea un artista, ahora bien, preguntar a Danna
-                                                        //si el tipo de artista, ya sea actor, director, etc, se crea random
-
-            artistas.add(artista);// Se podría crear un arraylist que almacene todos los artista, si es que no existe aún
-
-            Profesor profesor = new Profesor("Profesor Inicial", true); //ORGANIZAR CLASE PROFESOR
-            profesor.casting(artista);
+            customPrint("Artista no encontrado.", "red");
+            Thread.sleep(1000);
+            String nombreArtista = ask("Ingrese el nombre del nuevo artista:");
+            Artista.getArtistas().add(artista);
         }
+        
 
         System.out.println("Calificaciones actuales del artista " + artista.getNombre() + ":");
         artista.mostrarCalificaciones(); //Crear este método    

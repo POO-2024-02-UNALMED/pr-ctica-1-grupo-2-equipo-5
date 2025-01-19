@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gestorAplicacion.gestionClases.Clase;
+import gestorAplicacion.gestionClases.Profesor;
 import gestorAplicacion.gestionFinanciera.CuentaBancaria;
+import gestorAplicacion.gestionFinanciera.Empleado;
+import uiMain.Main;
 
 public abstract class Artista {
     private float calificacion;
@@ -16,6 +19,9 @@ public abstract class Artista {
     private Clase clase;
     private String nombre;
     private ArrayList<Float> calificaciones = new ArrayList<>();
+    private ArrayList<Float> calificacionesPublico = new ArrayList<>();
+    private static ArrayList<Artista> Artistas = new ArrayList<>();
+
 
     //Constructor
     public Artista(float calificacion, long id, float promedio, CuentaBancaria cuenta, Clase clase) {
@@ -84,8 +90,21 @@ public abstract class Artista {
     }
 
     //nombre
-    public String getNombre(){ return this.nombre; }
-    public void setNombre(String nombre){ this.nombre = nombre; }
+    public String getNombre(){
+        return this.nombre; 
+    }
+    public void setNombre(String nombre){
+        this.nombre = nombre; 
+    }
+
+    //Arraylist artistas
+    public static ArrayList<Artista> getArtistas() {
+        return Artistas;
+    }
+
+    public static void setArtistas(ArrayList<Artista> artistas) {
+        Artistas = artistas;
+    }
     
 
     public void calcularCalificacion(ArrayList<Float> calificaciones){
@@ -102,6 +121,20 @@ public abstract class Artista {
         setCalificacion(v);
     }
 
+    //Calificaciones del público
+    public ArrayList<Float> getCalificacionesPublico() {
+        return calificacionesPublico;
+    }
+
+    public void setCalificacionesPublico(ArrayList<Float> calificacionesPublico) {
+        this.calificacionesPublico = calificacionesPublico;
+    }
+
+    public void agregarCalificacionPublico(float calificacion) {
+        this.calificacionesPublico.add(calificacion);
+    }
+
+    //Calificaciones
     public ArrayList<Float> getCalificaciones() {
         return calificaciones;
     }
@@ -109,6 +142,7 @@ public abstract class Artista {
     public void setCalificaciones(ArrayList<Float> calificaciones) {
         this.calificaciones = calificaciones;
     }
+
     public void agregarCalificacion(float calificacion){
         this.calificaciones.add(calificacion);
     }
@@ -120,5 +154,42 @@ public abstract class Artista {
             }
         }
         return true; // Horario disponible
+    }
+
+    public static Artista buscarArtistaPorId(long id) {
+        for (Artista artista : Artista.getArtistas()) {
+            if (artista.getId() == id) {
+                return artista; // Retorna el artista si coincide el ID
+            }
+        }
+        return null; // Retorna null si no encuentra un artista con ese ID
+    }
+
+    public void mostrarCalificacionesOInicializar(Artista artista) throws InterruptedException{
+        // Validar si el artista es nuevo (sin calificaciones en ambas listas)
+        if (artista.getCalificaciones().isEmpty()) {
+            Main.customPrint("El artista es nuevo. Inicializando calificaciones...");
+            Thread.sleep(2000);
+
+            // Llamar al método casting() para inicializar calificaciones de calificadores
+            Empleado.casting(artista, Empleado.getTipoProfesor());
+    
+            // Inicializar calificaciones del público (simuladas aleatoriamente)
+            inicializarCalificacionesPublico(artista);
+    
+            Main.customPrint("Calificaciones inicializadas exitosamente.", "green");
+        }
+    
+        // Mostrar las calificaciones del artista
+        Main.customPrint("Calificaciones del artista: " + artista.getNombre());
+        Main.customPrint("Calificaciones de calificadores: " + artista.getCalificaciones());
+        Main.customPrint("Calificaciones del público: " + artista.getCalificacionesPublico());
+    }
+    
+    // Método para inicializar calificaciones del público
+    private void inicializarCalificacionesPublico(Artista artista) {
+        for (int i = 0; i < 5; i++) { // Generar 5 calificaciones simuladas
+            artista.agregarCalificacionPublico((int) (Math.random() * 5) + 1);
+        }
     }
 }
