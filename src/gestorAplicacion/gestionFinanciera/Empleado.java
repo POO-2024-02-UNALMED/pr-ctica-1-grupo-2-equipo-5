@@ -26,7 +26,7 @@ public class Empleado {
     private String ocupacion;
     private boolean disponible;
     private CuentaBancaria cuenta;
-    private float deuda;
+    private double deuda;
     private ArrayList<Float> trabajos = new ArrayList<>(); //Aqui se almacenan los trabajos que realizo ya sea que fue correcto o no.
     private ArrayList<ArrayList<LocalDateTime>> horario = new ArrayList<>();
 
@@ -37,6 +37,7 @@ public class Empleado {
         this.metaSemanal = metaSemanal;
         this.cuenta = new CuentaBancaria(ID, 0);
         this.ocupacion = ocupacion;
+        this.deuda = 0;
         this.horario = new ArrayList<>(); //Lista donde se guarda el horario 
         if(ocupacion != "Aseador"){
             if(ocupacion !="Seguridad"){
@@ -171,11 +172,11 @@ public class Empleado {
     }
 
     //Deuda
-    public float getDeuda() {
+    public double getDeuda() {
         return deuda;
     }
 
-    public void setDeuda(float deuda) {
+    public void setDeuda(double deuda) {
         this.deuda = deuda;
     }
 
