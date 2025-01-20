@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import java.time.LocalDateTime;
-import java.text.NumberFormat;
 
 import gestorAplicacion.gestionVentas.Cliente;
 import gestorAplicacion.gestionClases.Clase;
@@ -833,8 +832,6 @@ public class Main {
         if (actorsForRental.size() == 0){
             customPrint("No se hallaron actores para el presupuesto");
         } else {
-
-        NumberFormat intToCop = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
 
             int lastIdx = 0;
             int paginasCompletas = (int) (actorsForRental.size() / ACTORES_POR_PAGINA);
