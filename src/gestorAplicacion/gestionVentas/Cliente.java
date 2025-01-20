@@ -224,7 +224,7 @@ public class Cliente {
     
     public String consultarPerfil(){
         String string2;
-        String string = String.format("%30s %20s ","Su ID es :",this.getId()+"\n");
+        String string = String.format("%30s %20s ","Usuario N. ",this.getId()+"\n");
         if (this.getObra()==null) {
             string2 = String.format("%30s %20s ","Su ultima compra :","Ninguna\n");
             

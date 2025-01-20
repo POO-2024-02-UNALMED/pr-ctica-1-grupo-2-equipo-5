@@ -375,33 +375,72 @@ public class Main {
                 
             }
         }
-        customPrint("Que desea hacer\n\n"+
-            "Ingrese la opcion correspondiente\n"+
-            "1. Consultar obra y comprar tiquete\n"+ 
-            "2. Mejorar Suscripcion\n"+
-            "3. consular perfil"
-            
-            );
+        customPrint(cliente.consultarPerfil());
         
-        int d = in.nextByte();
+
+        
+            customPrint(
+        "Ingrese la opcion correspondiente\n"+
+        "Desea mejorar su suscripcion? \n"+ 
+        "1. Si\n"+
+        "2. No\n","blue");
+        
+
+        
+        a = in.nextByte();
         in.nextLine();
-        while (d !=2 & d != 1 & d != 3){
+            while (a != 1 & a != 2) {
+                customPrint("La respuesta introducida no hace parte de las opciones.\n"+
+        "Ingrese la opcion correspondiente\n"+
+        "Desea mejorar su suscripcion? \n"+ 
+        "1. SI\n"+
+        "2. NO\n","red");
+        a = in.nextByte();
+        in.nextLine();
+
+                
+            }
+            
+            
+        
+        if(a == 1){
+            customPrint(Suscripcion.tiposSuscipcion());
+                
+                customPrint(
+            "Que suscripcion desea aadquirir?\n\n"
+            );
+            String suscripcion = in.nextLine().toLowerCase();
+                
+            while (Suscripcion.tipos(suscripcion)){
 
             customPrint("La respuesta introducida no hace parte de las opciones. \n"+
             "Intente de nuevo:\n"+
-            "Que desea hacer\n\n"+
-            "Ingrese la opcion correspondiente\n"+
-            "1. Consultar obra y comprar tiquete\n"+ 
-            "2. Mejorar Suscripcion\n"+
-            "3. consular perfil","red"
+            "Que suscripcion desea aadquirir\n\n","red"
             
             );
-            d = in.nextByte();
-            in.nextLine();
+            suscripcion = in.nextLine().toLowerCase();
         }
-        switch (d) {
-            case 1:
-            customPrint(String.format("%30s %22s %22s %15s", "Nombre Obra", "Genero", "Duracion","Precio")+"\n"+Obra.generarTabla());
+        switch (suscripcion) {
+            case "basica":
+                cliente.setSuscripcion(Suscripcion.Basica);
+                break;
+            case "vip":
+                cliente.setSuscripcion(Suscripcion.Vip);
+                break;
+            case "premium":
+                cliente.setSuscripcion(Suscripcion.Premium);
+                break;
+            case "elite":
+                cliente.setSuscripcion(Suscripcion.Elite);
+                break;
+
+                
+        
+        }
+            customPrint("Suscripcion "+cliente.getSuscripcion()+" aplicada","green");
+
+        }
+        customPrint("Estas son las funciones disponibles\n\n"+String.format("%30s %22s %22s %15s", "Nombre Obra", "Genero", "Duracion","Precio")+"\n"+Obra.generarTabla());
             customPrint("Que obra desea comprar? \n");
             String input = in.nextLine().toLowerCase();
             
@@ -445,61 +484,12 @@ public class Main {
             }
             customPrint("compra realizada");
             
-
-
-            
-
-
-                break;
-            case 2:
-                customPrint("Su suscripcion actual es "+cliente.imprimirSuscripcion(),"blue");
-                customPrint(Suscripcion.tiposSuscipcion());
-                
-                customPrint(
-            "Que suscripcion desea aadquirir?\n\n"
-            );
-            String suscripcion = in.nextLine().toLowerCase();
-                
-            while (Suscripcion.tipos(suscripcion)){
-
-            customPrint("La respuesta introducida no hace parte de las opciones. \n"+
-            "Intente de nuevo:\n"+
-            "Que suscripcion desea aadquirir\n\n","red"
-            
-            );
-            suscripcion = in.nextLine().toLowerCase();
-        }
-        switch (suscripcion) {
-            case "basica":
-                cliente.setSuscripcion(Suscripcion.Basica);
-                break;
-            case "vip":
-                cliente.setSuscripcion(Suscripcion.Vip);
-                break;
-            case "premium":
-                cliente.setSuscripcion(Suscripcion.Premium);
-                break;
-            case "elite":
-                cliente.setSuscripcion(Suscripcion.Elite);
-                break;
-
-                
         
-        }
-            customPrint("Suscripcion "+cliente.getSuscripcion()+" aplicada","green");
-            
-            
-
-                break;
-            case 3:
-                customPrint(cliente.consultarPerfil());
-
-                break;
-        
-            
                 
-        }
-    
+
+        
+        
+       
 
 
 
