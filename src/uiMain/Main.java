@@ -565,6 +565,8 @@ public class Main {
 
             eleccion = new Obra(nombre, reparto, papeles, director, costoProduccion, genero, dur);  
             }
+
+            customPrint("Obra creada: \n"+ eleccion);
         
             System.out.println("Has seleccionado" + " " + eleccion.getNombre());
             System.out.println("¿Cuántas funciones te gustaría crear para esta obra?");

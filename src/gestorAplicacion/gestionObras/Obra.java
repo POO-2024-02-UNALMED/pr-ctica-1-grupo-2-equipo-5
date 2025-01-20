@@ -13,7 +13,7 @@ public class Obra {
     private int audienciaEsperada;
     private String nombre;
     private float calificacion;
-    private ArrayList<Actor> reparto;
+    private ArrayList<Actor> reparto = new ArrayList<>();
     private ArrayList<Aptitud> papeles;
     private Director director;
     private float costoProduccion;
@@ -23,13 +23,14 @@ public class Obra {
     private boolean estadoCriticoA;
     private static ArrayList<Obra> estadoCriticoS;
     private ArrayList<Float> calificaciones=new ArrayList<>();
-    public static ArrayList<Obra> obras=new ArrayList<>();
+    private static ArrayList<Obra> obras=new ArrayList<>();
     private ArrayList<LocalTime> franjaHoraria;
     private Duration duracion;
-    public String dur;
+    private String dur;
     private Funcion funcionEstelar;
     private ArrayList<Funcion> funciones;
     private int funcionesRecomendadas;
+    private float promedioArt;
 
     public int getAudienciaEsperada() {
         return audienciaEsperada;
@@ -114,6 +115,7 @@ public class Obra {
         this.reparto = reparto;
         this.papeles = papeles;
         this.director = director;
+        promedioArt = calcPromedioArt(reparto);
         this.costoProduccion = costoProduccion;
         funcionesSemana = new ArrayList<>();
         this.genero = genero;
@@ -124,7 +126,7 @@ public class Obra {
         this.duracion = createDuration(duracion);
         funcionEstelar = null;
         funciones = new ArrayList<>();
-        funcionesRecomendadas = funcionesRecomendadas(calificacion);
+        funcionesRecomendadas = funcionesRecomendadas(promedioArt);
     }
     public Obra(String nombre,Genero genero,String duracion){
         this.nombre=nombre;
@@ -135,7 +137,7 @@ public class Obra {
     }
     
 
-    public int funcionesRecomendadas(float calificacion){
+    public int funcionesRecomendadas(float promedioArt){
         if (calificacion < 2){
             return 3;
         }
@@ -415,5 +417,37 @@ public class Obra {
         }
     }
 
-    
-}
+    public float calcPromedioArt(ArrayList<Actor> reparto){
+        int i = 0;
+        float f = 0f;
+        for (Actor actor : reparto){
+            i = i + 1;
+            f = f + actor.getCalificacion();
+        }
+        return f / i;
+    }
+    @Override
+    public String toString() {
+        return "AudienciaEsperada=" + audienciaEsperada + "\n" + "Nombre=" + nombre + " Calificacion=" + calificacion
+                + ", reparto=" + reparto + ", papeles=" + papeles + ", director=" + director.getNombre() + ", costoProduccion="
+                + costoProduccion + ", funcionesSemana=" + funcionesSemana + ", genero=" + genero + ", tiquetesTotales="
+                + tiquetesTotales + ", estadoCriticoA=" + estadoCriticoA + ", calificaciones=" + calificaciones
+                + ", franjaHoraria=" + franjaHoraria + ", duracion=" + duracion + ", dur=" + dur + ", funcionEstelar="
+                + funcionEstelar + ", funciones=" + funciones + ", funcionesRecomendadas=" + funcionesRecomendadas
+                + ", promedioArt=" + promedioArt + ", getAudienciaEsperada()=" + getAudienciaEsperada()
+                + ", getCalificacion()=" + getCalificacion() + ", getReparto()=" + getReparto() + ", getDirector()="
+                + getDirector() + ", getCostoProduccion()=" + getCostoProduccion() + ", getFuncionesSemana()="
+                + getFuncionesSemana() + ", getGenero()=" + getGenero() + ", getTiquetesTotales()="
+                + getTiquetesTotales() + ", getClass()=" + getClass() + ", isEstadoCriticoA()=" + isEstadoCriticoA()
+                + ", hashCode()=" + hashCode() + ", getNombre()=" + getNombre() + ", getCalificaciones()="
+                + getCalificaciones() + ", getDuracionFormato()=" + getDuracionFormato() + ", getFranjaHoraria()="
+                + getFranjaHoraria() + ", getDuracion()=" + getDuracion() + ", getFuncionEstelar()="
+                + getFuncionEstelar() + ", getFunciones()=" + getFunciones() + ", getDuracionFormatoS()="
+                + getDuracionFormatoS() + ", checkEstadoCritico()=" + checkEstadoCritico() + ", getPapeles()="
+                + getPapeles() + ", getFuncionesRecomendadas()=" + getFuncionesRecomendadas()
+                + ", promedioCalificacion()=" + promedioCalificacion() + ", toString()=" + super.toString();
+    }
+
+
+    }
+
