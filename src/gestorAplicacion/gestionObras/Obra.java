@@ -392,7 +392,7 @@ public class Obra {
     public static void mostrarObrasCriticas() {
         for (Obra obra : Obra.getObras()) {
             if (obra.promedioCalificacion() <= 1.0) { // Verificar si está en estado crítico
-               Main.customPrint("La obra '" + obra.getNombre() + "' está en estado crítico.", "red");
+                Main.customPrint("La obra '" + obra.getNombre() + "' está en estado crítico.", "red");
                 
                 // Verificar los aspectos de calificación y actores responsables
                 System.out.println("Llamando a los actores responsables por aspectos críticos:");
@@ -416,5 +416,4 @@ public class Obra {
     }
 
     
-}
 }

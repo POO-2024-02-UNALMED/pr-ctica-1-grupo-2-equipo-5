@@ -423,10 +423,11 @@ public class Main {
         i = 0;
         Obra eleccion;
         eleccion = null;
-
-        for (Obra obra : Obra.getObras()){          
-            i = i + 1;
-            System.out.println(String.valueOf(i) + "." + obra.getNombre());
+        if (!Obra.getObras().isEmpty()){
+            for (Obra obra : Obra.getObras()){          
+                i = i + 1;
+                System.out.println(String.valueOf(i) + "." + obra.getNombre());
+            }
         }
         customPrint(String.valueOf(i + 1) + ". Crear nueva obra");
         customPrint("¿Qué obra desea consultar? Por favor indique el número sin punto");
