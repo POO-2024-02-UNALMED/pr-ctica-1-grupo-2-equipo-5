@@ -32,44 +32,7 @@ public class funci_5 {
         obra5.setCalificacion(10);
         obra5.setCalificacion(9);
         obra5.setCalificacion(8);
-        obra1.setCalificacion(8);
-        obra1.setCalificacion(7);
-        obra1.setCalificacion(9);
-
-        obra2.setCalificacion(5);
-        obra2.setCalificacion(8);
-        obra2.setCalificacion(6);
-
-        obra3.setCalificacion(7);
-        obra3.setCalificacion(6);
-        obra3.setCalificacion(8);
-
-        obra4.setCalificacion(9);
-        obra4.setCalificacion(7);
-        obra4.setCalificacion(8);
-
-        obra5.setCalificacion(10);
-        obra5.setCalificacion(9);
-        obra5.setCalificacion(8);
-        obra1.setCalificacion(8);
-        obra1.setCalificacion(7);
-        obra1.setCalificacion(9);
-
-        obra2.setCalificacion(5);
-        obra2.setCalificacion(8);
-        obra2.setCalificacion(6);
-
-        obra3.setCalificacion(7);
-        obra3.setCalificacion(6);
-        obra3.setCalificacion(8);
-
-        obra4.setCalificacion(9);
-        obra4.setCalificacion(7);
-        obra4.setCalificacion(8);
-
-        obra5.setCalificacion(10);
-        obra5.setCalificacion(9);
-        obra5.setCalificacion(8);
+        
 
 
 
