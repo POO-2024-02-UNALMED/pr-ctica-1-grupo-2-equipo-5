@@ -32,4 +32,9 @@ public class funci_5 {
         obra5.setCalificacion(10);
         obra5.setCalificacion(9);
         obra5.setCalificacion(8);
+        
+
+
+
+
 }}

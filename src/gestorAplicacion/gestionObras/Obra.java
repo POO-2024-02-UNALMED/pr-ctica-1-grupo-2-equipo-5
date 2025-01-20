@@ -361,7 +361,18 @@ public class Obra {
             }
             
         }
-        return obras.get(0);
+        return null;
+
+
+    }
+    public static float precioObra(String nombre){
+        for (Obra obra : obras) {
+            if ((obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
+                return precioFuncion(obra);
+            }
+            
+        }
+        return 0;
 
 
     }
@@ -450,6 +461,8 @@ public class Obra {
     public void setPromedioArt(float promedioArt) {
         this.promedioArt = promedioArt;
     }
+
+
     
 
 

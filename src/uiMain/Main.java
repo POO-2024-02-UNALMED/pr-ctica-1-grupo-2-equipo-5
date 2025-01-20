@@ -42,22 +42,58 @@ public class Main {
 
     //para el método que acepta bytes se revisa si el numero hace parte de las opciones disponibles
     public static byte ask(String question, byte[] answers, String color){
-        customPrint(question, true, color);
-        byte answer = in.nextByte();
+        byte answer = -1;        
         
-        while (!isIn(answers, answer)){
-            customPrint("La respuesta introducida no hace parte de las opciones. Intente de nuevo:", true, "red");
-            customPrint(question);
-            answer = in.nextByte();
-        }
+        while (true){
+            customPrint(question, true, color);
+            String input = in.nextLine();
+           
 
-        return answer;
+            if (canBeByte(input)){ //si se puede pasar a byte
+                answer = Byte.parseByte(input); //convertir a byte
+                if (isIn(answers, answer)){ //si está en las repsuestas buscadas
+                    return answer; //retornar opción elegida
+
+                } else { //si no hace parte de las opciones elegidas
+                    customPrint("La respuesta introducida no hace parte de las opciones.\nIntente de nuevo", true, "red");
+                }
+            } else {// si no se puede pasar a byte
+                customPrint("La respuesta introducida no es un número entero.\nIntente de nuevo", true, "red");
+            }
+        }
+    }
+
+    public static boolean canBeByte(String cadena){
+        try{
+            Byte.parseByte(cadena);
+            return true;
+        } catch (Exception e){
+            return false;
+        }
+    }
+
+    public static boolean canBeLong(String cadena){
+        try{
+            Long.parseLong(cadena);
+            return true;
+        } catch (Exception e){
+            return false;
+        }
     }
 
     //pregunta y devuelve long
     public static long longAsk(String question){
         customPrint(question);
-        long answer = in.nextLong();
+
+        String input = in.nextLine();
+
+        while(!canBeLong(input)){
+            customPrint("La respuesta introducida no es numérica. Intente de nuevo:", true, "red");
+            customPrint(question);
+            input = in.nextLine();
+        }
+        
+        long answer = Long.parseLong(input);
         return answer;
     }
 
@@ -363,6 +399,39 @@ public class Main {
             }
             customPrint("Obra comprada \n\n"+Obra.imprimirObra(Obra.buscarObra(input)));
             cliente.setObra(input);
+
+            float descuento=0;
+            if (cliente.getSuscripcion().name().equals("Basica")) {
+
+                descuento = 0;
+
+
+            } else if (cliente.getSuscripcion().name().equals("Vip")) {
+
+                descuento = 0.25f;
+                
+
+            } else if (cliente.getSuscripcion().name().equals("Premium")) {
+
+                descuento = 0.10f;
+                
+            } else if (cliente.getSuscripcion().name().equals("Elite")){
+
+                descuento = 1;
+                
+            }
+            customPrint("El precio final luego de descuento es :"+String.format("$%,.2f",Obra.precioObra(input))+"\n Realizando transaccion...");
+            try {
+                // Pausa de 2 segundos (2000 milisegundos)
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                customPrint("La pausa fue interrumpida.");
+                
+            }
+            customPrint("compra realizada");
+            
+
+
             
 
 
@@ -647,6 +716,7 @@ public class Main {
         }
 
         case 2:
+
         long newId = longAsk("Genere un nuevo número de identificación.");
         
         for (Cliente cliente : Cliente.clientes){
@@ -718,8 +788,6 @@ public class Main {
             break;
         }
 
-        //para que la entrada de horarioCliente no se omita
-        in.nextLine();
 
         //PREGUNTA NO. 3
         String horarioCliente = ask("¿En qué horario necesita el actor? (Responda en formato HH:MM)");
