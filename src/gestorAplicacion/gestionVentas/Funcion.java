@@ -19,6 +19,7 @@ public class Funcion {
 
     public Funcion(Obra obra){
         this.obra=obra;
+        funcionesCreadas.add((this));
 
 
     }

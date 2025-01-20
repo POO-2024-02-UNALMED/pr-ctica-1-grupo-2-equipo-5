@@ -7,7 +7,7 @@ import gestorAplicacion.herramientas.Genero;
 public class funci_1 {
     public static void prueba() {
         
-    Funcion func1 = new Funcion();
+    
     Obra obra1 = new Obra("El gran show", Genero.CIRCO, "1h 30min");
         Obra obra2 = new Obra("La tragedia de Romeo", Genero.DRAMA, "2h");
         Obra obra3 = new Obra("Risas aseguradas", Genero.COMEDIA, "45min");
@@ -33,6 +33,11 @@ public class funci_1 {
         obra5.setCalificacion(10);
         obra5.setCalificacion(9);
         obra5.setCalificacion(8);
+        Funcion func1 = new Funcion(obra1);
+        Funcion func2 = new Funcion(obra2);
+        Funcion func3 = new Funcion(obra3);
+        Funcion func4 = new Funcion(obra4);
+        Funcion func5 = new Funcion(obra5);
         
 
 

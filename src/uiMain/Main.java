@@ -442,17 +442,17 @@ public class Main {
 
         }
         customPrint("Estas son las funciones disponibles\n\n"+String.format("%30s %22s %22s %15s", "Nombre Obra", "Genero", "Duracion","Precio")+"\n"+Funcion.generarTabla());
-            customPrint("Que obra desea comprar? \n");
+            customPrint("Que funcion desea comprar? \n");
             String input = in.nextLine().toLowerCase();
             
             while (Obra.nombres(input)){
-                customPrint("Obra no encontrada \n"+
+                customPrint("Funcion no encontrada \n"+
                 "Ingrese un nombre valido :","red");
                 input = in.nextLine().toLowerCase();
                 
 
             }
-            customPrint("Obra comprada \n\n"+Obra.imprimirObra(Obra.buscarObra(input)));
+            customPrint("Funcion seleccionada: \n\n"+Obra.imprimirObra(Obra.buscarObra(input)));
             cliente.setObra(input);
 
             float descuento=0;
@@ -475,10 +475,10 @@ public class Main {
                 descuento = 1;
                 
             }
-            customPrint("El precio final luego de descuento es :"+String.format("$%,.2f",Obra.precioObra(input))+"\n Realizando transaccion...");
+            customPrint("El precio final luego de descuento es :"+String.format("$%,.2f",Funcion.mostrarPrecioFuncion(input))+"\n Realizando transaccion...");
             try {
-                // Pausa de 2 segundos (2000 milisegundos)
-                Thread.sleep(2000);
+                // Pausa de 2 segundos (4000 milisegundos)
+                Thread.sleep(4000);
             } catch (InterruptedException e) {
                 customPrint("La pausa fue interrumpida.");
                 
