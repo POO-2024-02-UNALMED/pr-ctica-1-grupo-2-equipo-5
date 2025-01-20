@@ -49,6 +49,7 @@ public class Empleado {
         else{
             tipoAseador.add(this);
         }
+        empleadosPorRendimiento.add(this);
     }
 
     //Metodo para verificar si se hizo el trabajo bien
