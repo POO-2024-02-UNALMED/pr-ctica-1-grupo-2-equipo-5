@@ -126,6 +126,7 @@ public class Obra {
         funcionEstelar = null;
         funciones = new ArrayList<>();
         funcionesRecomendadas = funcionesRecomendadas(promedioArt);
+        obras.add(this);
     }
     public Obra(String nombre,Genero genero,String duracion){
         this.nombre=nombre;

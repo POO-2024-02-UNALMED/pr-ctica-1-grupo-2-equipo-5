@@ -255,7 +255,7 @@ public class Main {
                 customPrint("Ingresa tu id :");
                 long code = in.nextLong();
                 in.nextLine();                
-               
+                
 
                 if (Cliente.verificar(code)) {
                     customPrint("Iniciando sesion...");
@@ -428,13 +428,15 @@ public class Main {
         i = 0;
         Obra eleccion;
         eleccion = null;
+        String menuObras = "";
         if (!Obra.getObras().isEmpty()){
             for (Obra obra : Obra.getObras()){          
                 i = i + 1;
-                System.out.println(String.valueOf(i) + "." + obra.getNombre());
+                String item = String.valueOf(i) + "." + obra.getNombre() + "\n";
+                menuObras = menuObras + item;
             }
         }
-        customPrint(String.valueOf(i + 1) + ". Crear nueva obra");
+        customPrint(menuObras + String.valueOf(i + 1) + ". Crear nueva obra");
         customPrint("Por favor indique el número de su elección sin punto");
         if (in.hasNextLine()) {in.nextLine();};
         String obraSel = in.nextLine();
@@ -456,7 +458,7 @@ public class Main {
             ArrayList<Actor> reparto = new ArrayList<>();
             ArrayList<Aptitud> papeles = new ArrayList<>();
             while (s != 0){
-                System.out.println("Digita el número del actor que desea agregar sin punto, si ya terminaste de añadir el reparto por favor ingresa 0");
+                customPrint("Digita el número del actor que desea agregar sin punto\n Si ya terminaste de añadir el reparto por favor ingresa 0");
                 String d = in.nextLine();
                 s = Integer.parseInt(d);
                 if (s == 0){
@@ -466,12 +468,7 @@ public class Main {
                     Actor elegido = Actor.getActors().get(s - 1);
                     reparto.add(elegido);
                 }
-                    System.out.println("Por favor indica en qué se debe enfocar el actor (Solo puedes seleccionar una opción, sin embargo, varios actores pueden enfocarse en la misma opción) recuerde digitar solo el número de la opción");
-                    System.out.println("1. Canto");
-                    System.out.println("2. Baile");
-                    System.out.println("3. Discurso");
-                    System.out.println("4. Emocionalidad");
-                    System.out.println("5. Improvisación");
+                    customPrint("Por favor indica en qué se debe enfocar el actor (Solo puedes seleccionar una opción, sin embargo, varios actores pueden enfocarse en la misma opción) recuerde digitar solo el número de la opción\n1. Canto\n2. Baile\n3. Discurso\n4. Emocionalidad\n5. Improvisación");
                     byte u = in.nextByte();
                     switch (u){
                         case 1:
@@ -535,20 +532,22 @@ public class Main {
             int x;
             x = 0;
             Director eleccionDir = null;
+            String menuDirectores = "";
             if (!genero.getDirectores().isEmpty()){
                 for (Director director : genero.getDirectores()){
                     x = x + 1;
-                    System.out.println(String.valueOf(x) + "."+ director.getNombre());
+                    String item =(String.valueOf(x) + "."+ director.getNombre() + "\n");
+                    menuDirectores = menuDirectores + item;
                 }
             }
-            customPrint(String.valueOf(x + 1) + ". Crear nuevo director");
+            customPrint(menuDirectores + String.valueOf(x + 1) + ". Crear nuevo director");
             customPrint("Indique <3");
             if (in.hasNextLine()) {in.nextLine();};
             String directorSel = in.nextLine();
             if (Integer.parseInt(directorSel) <= x){
                 eleccionDir = genero.getDirectores().get(Integer.parseInt(directorSel) - 1);
             }
-            else if (Integer.parseInt(directorSel) > i){
+            else if (Integer.parseInt(directorSel) > x){
                 customPrint("Por favor ingrese el nombre del nuevo director");
                 String nDirector = in.nextLine();
                 customPrint("Por favor ingrese el número de documento del nuevo director");
@@ -557,6 +556,7 @@ public class Main {
                 customPrint("Director creado: \n" + eleccionDir);
                 }
             Director director = eleccionDir;
+            x = 0;
                 
 
             System.out.println("Por favor, ingresa el costo de producción");
@@ -569,19 +569,15 @@ public class Main {
             eleccion = new Obra(nombre, reparto, papeles, director, costoProduccion, genero, dur);  
             }
             customPrint(String.valueOf(eleccion.getPromedioArt()));
-            System.out.println("Has seleccionado" + " " + eleccion.getNombre());
-            System.out.println("¿Cuántas funciones te gustaría crear para esta obra?");
+            customPrint("Has seleccionado" + " " + eleccion.getNombre());
+            customPrint("¿Cuántas funciones te gustaría crear para esta obra?");
             int a = eleccion.getFuncionesRecomendadas();
             boolean continuar = false;
             do {
                 int rut = in.nextInt();
     
                 if (a + 2 < rut) {
-                    System.out.println("ALERTA, PUEDEN SER DEMASIADAS FUNCIONES PARA ESTA OBRA");
-                    System.out.println("¿DESEA CONTINUAR?");
-                    System.out.println("1. Sí");
-                    System.out.println("2. No");
-    
+                    customPrint("ALERTA, PUEDEN SER DEMASIADAS FUNCIONES PARA ESTA OBRA\n DESEA CONTINUAR?\n 1. Sí\n 2. No");
                     byte sc = in.nextByte();
     
                     switch (sc) {
@@ -597,10 +593,7 @@ public class Main {
                     }
                 }
                 else if (a - 2 > rut){
-                    System.out.println("ALERTA, PUEDEN SER MUY POCAS FUNCIONES PARA ESTA OBRA");
-                    System.out.println("¿DESEA CONTINUAR?");
-                    System.out.println("1. Sí");
-                    System.out.println("2. No");
+                    customPrint("ALERTA, PUEDEN SER MUY POCAS FUNCIONES PARA ESTA OBRA\n DESEA CONTINUAR?\n 1. Sí\n 2. No");
                     byte sc = in.nextByte();
     
                     switch (sc) {
