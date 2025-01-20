@@ -3,7 +3,7 @@ package test;
 import gestorAplicacion.gestionObras.Obra;
 import gestorAplicacion.herramientas.Genero;
 
-public class funci_5 {
+public class funci_1 {
     public static void prueba() {
         
     
