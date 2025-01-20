@@ -8,6 +8,7 @@ import java.text.NumberFormat;
 
 import gestorAplicacion.gestionClases.Clase;
 import gestorAplicacion.gestionFinanciera.CuentaBancaria;
+import gestorAplicacion.herramientas.Aptitud;
 import gestorAplicacion.herramientas.Genero;
 
 public class Actor extends Artista{
@@ -67,4 +68,9 @@ public class Actor extends Artista{
     public char getSexo(){ return this.sexo; }
     public void setSexo(char sexo){ this.sexo = sexo; }
 
+    private static void notificarActor(Actor actor, Aptitud aspecto) {
+        System.out.printf("Notificando al actor %s por el bajo desempeño en '%s'.\n",
+                          actor.getNombre(),
+                          aspecto);
+    }
 }
