@@ -4,13 +4,14 @@ import java.time.LocalDateTime;
 
 import gestorAplicacion.gestionClases.Profesor;
 import gestorAplicacion.gestionObras.Artista;
-import gestorAplicacion.gestionVentas.Sala;
 import uiMain.Main;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Empleado {
+    private String nombre;
+    private Long id;
     private final int salarioSeguridad = 6500;
     private final int salarioAseador = 5500;
     private final int salarioProfesor = 5500;
@@ -30,9 +31,11 @@ public class Empleado {
     private ArrayList<ArrayList<LocalDateTime>> horario = new ArrayList<>();
 
     //Constructor
-    public Empleado(int metaSemanal, String ocupacion, CuentaBancaria cuenta) {
+    public Empleado(String nombre, long ID, int metaSemanal, String ocupacion) {
+        this.nombre = nombre;
+        this.id = ID;
         this.metaSemanal = metaSemanal;
-        this.cuenta = cuenta;
+        this.cuenta = new CuentaBancaria(ID, 0);
         this.ocupacion = ocupacion;
         this.horario = new ArrayList<>(); //Lista donde se guarda el horario 
         if(ocupacion != "Aseador"){
@@ -88,6 +91,23 @@ public class Empleado {
     }
 
     //Setter and Getters
+    //Info
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     //Trabajo
     public int getTrabajoRealizado() {
         return TrabajoRealizado;

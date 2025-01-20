@@ -948,59 +948,75 @@ public class Main {
         String q = "¿Que operacion deseas realizar? \n1. Contratar Empleados \n2. Despedir Empleados \n3. Gestionar Empleados \n4. Pagar nomina \n5. Salir";
         byte[] opciones = {1, 2, 3, 4, 5};
         byte respuesta = ask(q, opciones, "green");
+
+        switch (respuesta) {
+            case 1:
+                
+                break;
         
+            case 2:
 
-        //Pagar nomina a empleados:
-        //Verificacion de fondos:
-        double fondos = tesoreria.getCuenta().getSaldo() + tesoreria.getDineroEnCaja();
-        double totalSaldos = 0;
-        for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-            totalSaldos = totalSaldos + Persona.calcularSueldo();
-            if(totalSaldos > fondos){
-                customPrint("Upps... No se puede realizar los pagos adecuadamente", "Red");
-                byte[] opValidas = {1, 2};
-                String pregunta = "¿Deseas Pagar en partes iguales? \n1. Si. \n2. No.";
-                byte answer = ask(pregunta, opValidas, "blue");
+                break;
 
-                switch (answer) {
-                    case 1:
+            case 3:
 
-                        break;
-                
-                    case 2:
-                        break;
-                }
-            }
-            else{
-                
-            }
-        }
-
-        //Saldos con las bonificaciones:
-        if(tesoreria.verificacionMeta() != true){
-            for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                if(Persona.verificacionMeta() != true){
-                    Persona.setMetaSemanal(Persona.getMetaSemanal()-5); //Disminucion de meta
+                break;
+            case 4:
+                //Pagar nomina a empleados:
+                double fondos = tesoreria.getCuenta().getSaldo() + tesoreria.getDineroEnCaja();
+                double totalSaldos = 0;
+                //Verificacion de fondos:
+                for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
                     totalSaldos = totalSaldos + Persona.calcularSueldo();
+                    if(totalSaldos > fondos){
+                        customPrint("Upps... No se puede realizar los pagos adecuadamente", "Red");
+                        byte[] opValidas = {1, 2};
+                        String pregunta = "¿Deseas Pagar en partes iguales? \n1. Si. \n2. No.";
+                        byte answer = ask(pregunta, opValidas, "blue");
+
+                        switch (answer) {
+                            case 1:
+
+                                break;
+                
+                            case 2:
+                                break;
+                        }
+                    }
+                    else{
+                
+                    }
+                }
+
+                //Saldos con las bonificaciones:
+                if(tesoreria.verificacionMeta() != true){
+                    for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                        if(Persona.verificacionMeta() != true){
+                            Persona.setMetaSemanal(Persona.getMetaSemanal()-5); //Disminucion de meta
+                            totalSaldos = totalSaldos + Persona.calcularSueldo();
+                        }
+                        else{
+                            Persona.setMetaSemanal(Persona.getMetaSemanal() + 10);  //Aumento en la meta
+                            totalSaldos = totalSaldos + (Persona.calcularSueldo() * 1.5);
+                        }
+                    }
                 }
                 else{
-                    Persona.setMetaSemanal(Persona.getMetaSemanal() + 10);  //Aumento en la meta
-                    totalSaldos = totalSaldos + (Persona.calcularSueldo() * 1.5);
+                    for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                        if(Persona.verificacionMeta() != true){
+                            Persona.setMetaSemanal(Persona.getMetaSemanal()-5); //Disminucion de meta
+                            totalSaldos = totalSaldos + (Persona.calcularSueldo() * 0.3);
+                        }
+                        else{
+                            Persona.setMetaSemanal(Persona.getMetaSemanal() + 10);  //Aumento en la meta
+                            totalSaldos = totalSaldos + (Persona.calcularSueldo() * 1.8);
+                        }
+                    }
                 }
-            }
-        }
-        else{
-            for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                if(Persona.verificacionMeta() != true){
-                    Persona.setMetaSemanal(Persona.getMetaSemanal()-5); //Disminucion de meta
-                    totalSaldos = totalSaldos + (Persona.calcularSueldo() * 0.3);
+                        break;
+                    case 5:
+                        break;
                 }
-                else{
-                    Persona.setMetaSemanal(Persona.getMetaSemanal() + 10);  //Aumento en la meta
-                    totalSaldos = totalSaldos + (Persona.calcularSueldo() * 1.8);
-                }
-            }
-        }
     }
  ///BASE PARA FUNCIONALIDAD 4
     public static void gestionClases() throws InterruptedException {
