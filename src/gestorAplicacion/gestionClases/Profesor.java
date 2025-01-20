@@ -7,7 +7,7 @@ public class Profesor extends Empleado {
 
     // Constructor
     public Profesor(String nombre, long id) {
-        super(); 
+        super(nombre, id); 
         this.nombre = nombre;
         Empleado.getTipoProfesor().add(this); // Añade el profesor a la lista de Empleado
     }

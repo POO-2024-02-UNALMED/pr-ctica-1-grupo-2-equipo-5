@@ -1131,12 +1131,66 @@ public class Main {
         
 
         customPrint("Calificaciones actuales del artista " + artista.getNombre() + ":");
-        artista.mostrarCalificacionesOInicializar(artista);    
 
-        System.out.println("Obras en estado crítico:");
-        //listarObrasCriticas();// Crear este método, no sin antes preguntarle a Danna específicamente sobre las "Obras críticas"
+        // Validar si el artista es nuevo (sin calificaciones en ambas listas)
+        if (artista.getCalificaciones().isEmpty()) {
+            customPrint("El artista es nuevo. Inicializando calificaciones...");  
+            Thread.sleep(2000);
 
-        System.out.print("¿Desea programar una clase? (s/n): ");
+            // Llamar al método casting() para inicializar calificaciones de calificadores
+            boolean resultado = Empleado.casting(artista, Empleado.getTipoProfesor());
+
+            if (resultado == false){
+                customPrint("No hay profesores disponibles para inicializar las calificaciones del artista", "red");
+            }
+            else if(resultado == true) {
+                
+                // Seleccionar un profesor aleatorio
+                Profesor profesorAsignado = (Profesor) Empleado.getTipoProfesor().get((int) (Math.random() * Empleado.getTipoProfesor().size()));
+                
+                // Mostrar quién inicializó las calificaciones
+                customPrint("El profesor " + profesorAsignado.getNombre() + " inicializó las calificaciones del artista " + artista.getNombre() + ".");
+            }
+            // Inicializar calificaciones del público (simuladas aleatoriamente)
+            artista.inicializarCalificacionesPublico(artista);
+            customPrint("Calificaciones inicializadas exitosamente.", "green");
+        }
+
+        // Mostrar las calificaciones del artista, sea o no sea nuevo
+        customPrint("Calificaciones del artista: " + artista.getNombre());
+        customPrint("Calificaciones de calificadores: " + artista.getCalificaciones());
+        customPrint("Calificaciones del público: " + artista.getCalificacionesPublico());
+
+        //Se enseñan obras en "Estado Crítico"
+        ArrayList<Obra> obrasCritics = Obra.mostrarObrasCriticas();
+
+        // Mostrar todas las obras críticas
+        if (obrasCritics.isEmpty()) {
+            customPrint("No hay obras en estado crítico.");
+        } else {
+            customPrint("Obras en estado crítico:");
+            for (Obra obra : obrasCritics) {
+                customPrint("- '" + obra.getNombre() + "' (Promedio de calificaciones: " + obra.promedioCalificacion() + ")");
+    
+                // Verificar los aspectos críticos y notificar a los actores responsables
+                customPrint("Llamando a los actores responsables por aspectos críticos:");
+                ArrayList<Aptitud> aspectos = obra.getPapeles(); // Aptitudes requeridas en la obra
+                ArrayList<Actor> reparto = obra.getReparto(); // Actores que participaron
+    
+                for (int i = 0; i < aspectos.size(); i++) {
+                    Aptitud aspecto = aspectos.get(i);
+                    if (i < reparto.size()) { // Validar que haya un actor asignado
+                        Actor actor = reparto.get(i);
+                        customPrint("El aspecto '" + aspecto + "' está mal calificado.", "red"); 
+                        customPrint("Notificando al actor: " + actor.getNombre());
+                    } else {
+                        Main.customPrint("No hay un actor asignado al aspecto '" + aspecto + "'.");
+                    }
+                }
+            }
+        } //Mejorar esta interacción para incluir los aspectos calificados en las obras
+
+        ask("¿Desea programar una clase?\n" + "1.Sí\n" + "2.No", two, "");
 
         if (respuesta.equalsIgnoreCase("s")) {
             programarClase(scanner, artista, clases); //Crear método para programar clase

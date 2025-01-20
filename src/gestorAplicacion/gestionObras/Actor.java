@@ -67,10 +67,6 @@ public class Actor extends Artista{
 
     public char getSexo(){ return this.sexo; }
     public void setSexo(char sexo){ this.sexo = sexo; }
-
-    public static void notificarActor(Actor actor, Aptitud aspecto) {
-        System.out.printf("Notificando al actor %s por el bajo desempeño en '%s'.\n",
-                            actor.getNombre(),
-                            aspecto);
-    }
+    
 }
+
