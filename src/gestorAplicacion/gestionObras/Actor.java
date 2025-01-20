@@ -24,7 +24,7 @@ public class Actor extends Artista{
     private double precioContrato;
     private int edad;
     private char sexo;
-    public static NumberFormat intToCop = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
+    public static NumberFormat cop = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
 
     public Actor(String nombre, long id){ 
         super(nombre, id);
@@ -59,7 +59,7 @@ public class Actor extends Artista{
     }
 
     public static String formatoPrecio(double cantidad){
-        return intToCop.format(cantidad);
+        return cop.format(cantidad);
     }
 
     public int getEdad(){ return this.edad; }

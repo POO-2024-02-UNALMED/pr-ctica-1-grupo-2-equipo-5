@@ -24,6 +24,11 @@ public class Tesoreria {
         }
     }
 
+    //Pago sueldo base
+    public void pagarSueldoBase(CuentaBancaria Cuenta, double Cantidad){
+        Tesoreria.cuenta.transferencia(Cuenta, Cantidad);
+    }
+
     //Setters and Getters
     public CuentaBancaria getCuenta() {
         return cuenta;
