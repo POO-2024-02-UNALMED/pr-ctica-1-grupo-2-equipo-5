@@ -6,7 +6,6 @@ import java.time.Duration;
 import java.time.LocalTime;
 
 import gestorAplicacion.herramientas.*;
-import uiMain.Main;
 import gestorAplicacion.gestionVentas.*;
 
 public class Obra {
@@ -389,31 +388,15 @@ public class Obra {
         }
     }
     
-    public static void mostrarObrasCriticas() {
+    public static ArrayList<Obra> mostrarObrasCriticas() {
+        ArrayList<Obra> obrasCriticas = new ArrayList<>();
+    
+        // Recopilar las obras en estado crítico
         for (Obra obra : Obra.getObras()) {
-            if (obra.promedioCalificacion() <= 1.0) { // Verificar si está en estado crítico
-                Main.customPrint("La obra '" + obra.getNombre() + "' está en estado crítico.", "red");
-                
-                // Verificar los aspectos de calificación y actores responsables
-                System.out.println("Llamando a los actores responsables por aspectos críticos:");
-                
-                ArrayList<Aptitud> aspectos = obra.getPapeles(); // Aptitudes relacionadas con la obra
-                ArrayList<Actor> reparto = obra.getReparto(); // Actores que participaron
-                
-                // Asociar aptitudes con actores del reparto
-                for (int i = 0; i < aspectos.size(); i++) {
-                    Aptitud aspecto = aspectos.get(i);
-                    if (i < reparto.size()) { // Garantizar que hay un actor correspondiente
-                        Actor actor = reparto.get(i);
-                        System.out.println("El aspecto '" + aspecto + "' está mal calificado. Notificando al actor: " + actor.getNombre());
-                        Actor.notificarActor(actor, aspecto);
-                    } else {
-                        System.out.println("No hay un actor asignado al aspecto '" + aspecto + "'.");
-                    }
-                }
+            if (obra.promedioCalificacion() <= 1.0) { // Estado crítico definido como <= 1.0
+                obrasCriticas.add(obra);
             }
         }
+        return obrasCriticas;
     }
-
-    
 }
