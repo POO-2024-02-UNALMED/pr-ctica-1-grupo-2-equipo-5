@@ -398,7 +398,7 @@ public class Main {
                 
         
         }
-            customPrint("Suscripcion "+cliente.getSuscripcion()+" apliacada");
+            customPrint("Suscripcion "+cliente.getSuscripcion()+" aplicada");
             
             
 
