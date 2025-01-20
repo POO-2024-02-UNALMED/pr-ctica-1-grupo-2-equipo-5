@@ -128,6 +128,8 @@ public class Obra {
         funciones = new ArrayList<>();
         funcionesRecomendadas = funcionesRecomendadas(promedioArt);
         obras.add(this);
+        System.out.println("heyy");
+        this.franjaHoraria(genero);
     }
     public Obra(String nombre,Genero genero,String duracion){
         this.nombre=nombre;
@@ -188,11 +190,11 @@ public class Obra {
     }
     public void franjaHoraria(Genero genero){
         Genero u;
-        Funcion a = new Funcion(LocalDateTime.of(2025, 1, 00, 00, 00));
+        Funcion a = new Funcion(LocalDateTime.of(2025, 1, 02, 00, 00));
         ArrayList<LocalTime> franja = a.extraerHora(a.getHorario());
         ArrayList<LocalTime> i = new ArrayList<>();
-        franja.add(LocalTime.of(24,00));
         franja.add(LocalTime.of(00,00));
+        franja.add(LocalTime.of(23,59));
         ArrayList<Obra> obrasGenero = new ArrayList<>();
         for (Obra obra : obras){
             u = obra.getGenero();
@@ -202,15 +204,23 @@ public class Obra {
         }
         for (Obra obra: obrasGenero){
             a = obra.funcionEstelar;
-            i = a.extraerHora(a.getHorario());
-            if (i.get( 0).isBefore(franja.get(0))){
-                franja.set(0, i.get(0));
+            if (funcionEstelar != null) {
+                ArrayList<LocalTime> fstar = funcionEstelar.extraerHora(funcionEstelar.getHorario());
+                if (!fstar.isEmpty() && fstar.size() >= 2) { // Asegúrate de que i tenga al menos 2 elementos
+                    if (fstar.get(0).isBefore(franja.get(0))) {
+                        franja.set(0, i.get(0));
+                    }
+                    if (fstar.get(1).isAfter(franja.get(1))) {
+                        franja.set(1, fstar.get(1));
+                    }
+                }
+            } else {
+                // Manejo del caso donde funcionEstelar es null
+                System.out.println("La obra '" + obra.getNombre() + "' no tiene una función estelar asignada.");
             }
-            if (i.get(1).isAfter(franja.get(1))){
-                franja.set(1, i.get(1));
-            }
-        }
+        System.out.println(franja);
         setFranjaHoraria(franja);
+        }
     }
     public String getDuracionFormato() {
         long horas = duracion.toHours();

@@ -74,6 +74,7 @@ public class Funcion {
         this.sala = null;
         this.calificador = doWeNeedACalificador();
         this.audienciaEsperada = obra.getAudienciaEsperada();
+        System.out.println("yeee");
     }
     public Funcion(){
 

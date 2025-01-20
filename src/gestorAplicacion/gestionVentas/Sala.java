@@ -120,5 +120,7 @@ public class Sala {
         this.horario = horario;
         this.capacidad = capacidad;
     }
-    
+    public Sala(){
+        salas.add(this);
+    }
 }
