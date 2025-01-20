@@ -14,8 +14,14 @@ public class Funcion {
     private Sala sala;
     private boolean calificador;
     private int audienciaEsperada;
-    static Funcion[] funcionesCreadas;
+    static ArrayList <Funcion> funcionesCreadas= new ArrayList<>() ;
 
+
+    public Funcion(Obra obra){
+        this.obra=obra;
+
+
+    }
     //OBRA
     public Obra getObra() {
         return obra;
@@ -138,6 +144,89 @@ public class Funcion {
         }
         return a;
     }
+    public static String generarTabla(){
+        String Nuevo="";
+        for (Funcion funcion : funcionesCreadas) {
+            String string = String.format("%30s %20s %20s %20s",funcion.obra.getNombre(),funcion.obra.getGenero(),funcion.obra.getDur(),String.format("$%,.2f",precioFuncion(funcion))+"\n");
+        Nuevo = Nuevo +string;
+
+        
+    }
+    return Nuevo;
+}
+public static boolean calificacionVacia(Obra obra){
+    boolean valor = true;
+    if (obra.getCalificaciones().size()==0) {
+        valor = false;
+    }
+    return valor;
+    
+
+}
+public static float precioFuncion(Funcion funcion){
+        float prom = funcion.obra.promedioCalificacion();
+        float precioBase=10000;
+        if (prom > 8) {
+            precioBase = precioBase +(prom*800);
+            
+        } else if(prom > 5)
+        {
+            precioBase = precioBase +(prom*400);
+        } else if (prom > 3){
+            precioBase = precioBase +(prom*200);
+        }else{
+            precioBase = precioBase +(prom*100);
+        }
+        
+        
+
+        return precioBase;
+
+    }
+public static String imprimirFuncion(Funcion funcion){
+        String string = String.format("%30s %15s %10s %20s",funcion.obra.getNombre(),funcion.obra.getGenero(),funcion.obra.getDur(),String.format("$%,.2f",precioFuncion(funcion)));
+        return string;
+    }
+    
+
+public static Obra buscarFuncion(String nombre){
+    for (Funcion funcion : funcionesCreadas) {
+        if ((funcion.obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
+            return funcion.obra;
+        }
+        
+    }
+    return null;
+
+
+}
+public static float mostrarPrecioFuncion(String nombre){
+    for (Funcion funcion : funcionesCreadas) {
+        if ((funcion.obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
+            return precioFuncion(funcion);
+        }
+        
+    }
+    return 0;
+
+
+}
+
+
+public static boolean nombres(String nombre){
+    ArrayList<String> listaNombres=new ArrayList<>();
+    for (Funcion a : funcionesCreadas) {
+        listaNombres.add(a.obra.getNombre().toLowerCase());
+        
+    }
+    if(listaNombres.contains(nombre)){
+        return false;
+
+    }
+    return true;
+
+
+}
 }
 
 

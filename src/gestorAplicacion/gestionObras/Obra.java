@@ -355,16 +355,7 @@ public class Obra {
             return string;
         }
         
-    public static String generarTabla(){
-            String Nuevo="";
-            for (Obra obra : obras) {
-                String string = String.format("%30s %20s %20s %20s",obra.getNombre(),obra.getGenero(),obra.dur,String.format("$%,.2f",precioFuncion(obra))+"\n");
-            Nuevo = Nuevo +string;
 
-            
-        }
-        return Nuevo;
-    }
     public static Obra buscarObra(String nombre){
         for (Obra obra : obras) {
             if ((obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){

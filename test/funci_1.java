@@ -1,12 +1,13 @@
 package test;
 
 import gestorAplicacion.gestionObras.Obra;
+import gestorAplicacion.gestionVentas.Funcion;
 import gestorAplicacion.herramientas.Genero;
 
 public class funci_1 {
     public static void prueba() {
         
-    
+    Funcion func1 = new Funcion();
     Obra obra1 = new Obra("El gran show", Genero.CIRCO, "1h 30min");
         Obra obra2 = new Obra("La tragedia de Romeo", Genero.DRAMA, "2h");
         Obra obra3 = new Obra("Risas aseguradas", Genero.COMEDIA, "45min");

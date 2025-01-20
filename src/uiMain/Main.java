@@ -24,6 +24,7 @@ import gestorAplicacion.herramientas.Aptitud;
 import gestorAplicacion.herramientas.Contador;
 import gestorAplicacion.herramientas.Genero;
 import gestorAplicacion.herramientas.Suscripcion;
+import test.funci_1;
 import test.funci_5;
 import gestorAplicacion.gestionObras.Director;
 
@@ -269,7 +270,7 @@ public class Main {
     }
 
     public static void gestionVentas(){
-        funci_5.prueba();
+        funci_1.prueba();
         
         
         byte [] opciones_2 = {1,2};
@@ -440,7 +441,7 @@ public class Main {
             customPrint("Suscripcion "+cliente.getSuscripcion()+" aplicada","green");
 
         }
-        customPrint("Estas son las funciones disponibles\n\n"+String.format("%30s %22s %22s %15s", "Nombre Obra", "Genero", "Duracion","Precio")+"\n"+Obra.generarTabla());
+        customPrint("Estas son las funciones disponibles\n\n"+String.format("%30s %22s %22s %15s", "Nombre Obra", "Genero", "Duracion","Precio")+"\n"+Funcion.generarTabla());
             customPrint("Que obra desea comprar? \n");
             String input = in.nextLine().toLowerCase();
             
