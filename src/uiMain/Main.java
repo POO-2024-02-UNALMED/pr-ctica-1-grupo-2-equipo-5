@@ -742,7 +742,7 @@ public class Main {
         for (Cliente cliente : Cliente.clientes){
             while (cliente.getId() == newId){
                 customPrint("Esta identificación ya existe en la base de datos, intente con una diferente.", true, "red");
-                newId = longAsk("Genere un nuevo número de identificación, si está en uso, este será automáticamente actualizado.");
+                newId = longAsk("Genere un nuevo número de identificación.");
             }
         }
 
@@ -758,6 +758,9 @@ public class Main {
         byte[] options = new byte[8];
         options[0] = 1; options[1] = 2;
         
+        //antes de empezar, remover aquellos actores en condición de reevaluación
+        actorsForRental.removeIf(actor -> actor.isReevaluacion());
+
         //PREGUNTA NO. 1
         byte rolActor = ask("¿Qué tipo de papel desempeñará el actor?\n1. Rol principal.\n 2. Rol secundario.", options, "");
 
@@ -836,7 +839,7 @@ public class Main {
         }
 
         //PREGUNTA NO. 3
-        String horarioCliente = ask("¿En qué horario necesita el actor? (Responda en formato HH:MM)");
+        String horarioCliente = ask("¿En qué horario se necesita al actor? (Responda en formato HH:MM)");
 
         //pendiente: diseñar lógica para revisar el horario
 
@@ -871,7 +874,7 @@ public class Main {
         reorderedActors = null;
 
         //búsqueda avanzada
-        byte advancedSearch = ask("¿Deseas hacer búsqueda avanzada? (incluye filtros por edad y sexo).\n1. Sí.\n2. No.", two, "blue");
+        byte advancedSearch = ask("¿Se desea hacer búsqueda avanzada? (incluye filtros por edad y sexo).\n1. Sí.\n2. No.", two, "blue");
 
         if (advancedSearch == 1){
 
@@ -881,7 +884,7 @@ public class Main {
                 contadores.add(new Contador(actor, 0));
             }
 
-            byte edad = ask("¿Qué tipo de edad busca?\n1. Infantil\n2. Juvenil.\n3. Adulto.\n4. Adulto mayor", options, "");
+            byte edad = ask("¿Qué tipo de edad se busca?\n1. Infantil\n2. Juvenil.\n3. Adulto.\n4. Adulto mayor", options, "");
 
             switch (edad){
 
@@ -910,7 +913,6 @@ public class Main {
 
             }
 
-            in.nextLine();
 
             byte sexo = ask("¿Qué sexo debe tener el actor?\n1. Masculino.\n2. Femenino.", two, "");
 
@@ -925,8 +927,6 @@ public class Main {
                 if (isIn(actorsForRental, contador.getActor())){ contador.numero ++; }
 
             }
-
-            in.nextLine();
 
             contadores.removeIf(contador -> contador.numero < 2);
 
