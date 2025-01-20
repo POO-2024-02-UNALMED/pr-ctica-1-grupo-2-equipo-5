@@ -397,6 +397,7 @@ public class Obra {
                 obrasCriticas.add(obra);
             }
         }
+
         return obrasCriticas;
     }
 }
