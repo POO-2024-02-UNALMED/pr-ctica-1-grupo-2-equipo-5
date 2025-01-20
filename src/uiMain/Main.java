@@ -981,7 +981,7 @@ public class Main {
                     }
                     else{
                         Persona.setMetaSemanal(Persona.getMetaSemanal() + 10);  //Aumento en la meta
-                        totalSaldos = totalSaldos + ((Persona.calcularSueldo() * 1.5) + Persona.getDeuda());
+                        totalSaldos = totalSaldos + ((Persona.calcularSueldo() * 1.15) + Persona.getDeuda());
                     }
                 }
                 //Realizacion Pago Solo con Deuda
@@ -1002,11 +1002,15 @@ public class Main {
                         customPrint(msg);
                         customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
                         customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
+                        for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                            if(Persona.verificacionMeta() == true){
+                                Persona.setDeuda(Persona.getDeuda() + Persona.calcularSueldo()*0.15); //Se añade la bonificacion a la deuda solo a aquellas que la cumplieron
+                            }
+                        }
                     }
                     else{
                         for(Empleado Persona: Empleado.getEmpleadosPorRendimiento()){
                             tesoreria.getCuenta().transferencia(Persona.getCuenta(), Persona.getDeuda() + Persona.calcularSueldo());
-                            
                         }
                         customPrint("Pago existoso", true, "green");
                         String msg = "Se pago un total de " + cantPagada;
@@ -1020,7 +1024,7 @@ public class Main {
                 else{
                     for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
                         if(Persona.verificacionMeta() == true){
-                            tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.5) + Persona.getDeuda());
+                            tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.15) + Persona.getDeuda());
                         }
                         else{
                             tesoreria.getCuenta().transferencia(Persona.getCuenta(), Persona.calcularSueldo() + Persona.getDeuda());
@@ -1041,7 +1045,7 @@ public class Main {
                     }
                     else{
                         Persona.setMetaSemanal(Persona.getMetaSemanal() + 10);  //Aumento en la meta
-                        totalSaldos = totalSaldos + (Persona.calcularSueldo() * 1.8);
+                        totalSaldos = totalSaldos + (Persona.calcularSueldo() * 1.45);
                     }
                 }
                 //Sin fondos suficientes para todas las bonificaciones
