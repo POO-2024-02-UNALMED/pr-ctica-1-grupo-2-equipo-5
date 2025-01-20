@@ -12,12 +12,12 @@ import uiMain.Main;
 
 public abstract class Artista {
     private float calificacion;
-    private long id;
+    protected long id;
     private float promedio;
     private CuentaBancaria cuenta;
     private ArrayList<ArrayList<LocalDateTime>> horario;
     private Clase clase;
-    private String nombre;
+    protected String nombre;
     private ArrayList<Float> calificaciones = new ArrayList<>();
     private ArrayList<Float> calificacionesPublico = new ArrayList<>();
     private static ArrayList<Artista> Artistas = new ArrayList<>();

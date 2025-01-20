@@ -430,11 +430,12 @@ public class Main {
             }
         }
         customPrint(String.valueOf(i + 1) + ". Crear nueva obra");
-        customPrint("¿Qué obra desea consultar? Por favor indique el número sin punto");
-        if (in.hasNextLine()) in.nextLine();
+        customPrint("Por favor indique el número de su elección sin punto");
+        if (in.hasNextLine()) {in.nextLine();};
         String obraSel = in.nextLine();
-        if (Integer.parseInt(obraSel) <= i)
+        if (Integer.parseInt(obraSel) <= i){
             eleccion = Obra.getObras().get(Integer.parseInt(obraSel) - 1);
+        }
         else if (Integer.parseInt(obraSel) > i){
             customPrint("Por favor ingrese el nombre de la nueva obra");
             String nombre = in.nextLine();
@@ -528,12 +529,30 @@ public class Main {
             System.out.println("Por favor, elige al director que se encarga de la obra");
             int x;
             x = 0;
-            for (Director director : genero.getDirectores()){
-                x = x + 1;
-                System.out.println(String.valueOf(x) + "."+ director.getNombre());
+            Director eleccionDir = null;
+            if (!genero.getDirectores().isEmpty()){
+                for (Director director : genero.getDirectores()){
+                    x = x + 1;
+                    System.out.println(String.valueOf(x) + "."+ director.getNombre());
+                }
             }
-            int dir = in.nextInt();
-            Director director = genero.getDirectores().get(dir);
+            customPrint(String.valueOf(x + 1) + ". Crear nuevo director");
+            customPrint("Indique <3");
+            if (in.hasNextLine()) {in.nextLine();};
+            String directorSel = in.nextLine();
+            if (Integer.parseInt(directorSel) <= x){
+                eleccionDir = genero.getDirectores().get(Integer.parseInt(directorSel) - 1);
+            }
+            else if (Integer.parseInt(directorSel) > i){
+                customPrint("Por favor ingrese el nombre del nuevo director");
+                String nDirector = in.nextLine();
+                customPrint("Por favor ingrese el número de documento del nuevo director");
+                long idDirector = in.nextLong();
+                eleccionDir = new Director(nDirector, idDirector, genero);
+                customPrint("Director creado: \n" + eleccionDir);
+                }
+            Director director = eleccionDir;
+                
 
             System.out.println("Por favor, ingresa el costo de producción");
             float costoProduccion = in.nextFloat();
@@ -552,7 +571,7 @@ public class Main {
             do {
                 int rut = in.nextInt();
     
-                if (a + 2 > rut) {
+                if (a + 2 < rut) {
                     System.out.println("ALERTA, PUEDEN SER DEMASIADAS FUNCIONES PARA ESTA OBRA");
                     System.out.println("¿DESEA CONTINUAR?");
                     System.out.println("1. Sí");
@@ -572,7 +591,7 @@ public class Main {
                             break;
                     }
                 }
-                else if (a - 2 < rut){
+                else if (a - 2 > rut){
                     System.out.println("ALERTA, PUEDEN SER MUY POCAS FUNCIONES PARA ESTA OBRA");
                     System.out.println("¿DESEA CONTINUAR?");
                     System.out.println("1. Sí");

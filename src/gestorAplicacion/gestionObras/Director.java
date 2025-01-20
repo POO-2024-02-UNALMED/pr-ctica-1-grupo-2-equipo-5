@@ -12,7 +12,6 @@ public class Director extends Artista {
 
     public Director(String nombre, long id){
         super(nombre, id);
-        genero.anadirDirector(this);
         directors.add(this);
         getArtistas().add(this);
     }
@@ -41,5 +40,7 @@ public class Director extends Artista {
         Director.directors = directors;
     }
     
-    
+    public String toString(){
+        return "Nombre: " + this.nombre + "\n" + "Identificación: " + this.id + "\n" + "Género: " + this.genero;
+    }
 }

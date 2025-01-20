@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public enum Genero {
     DRAMA, COMEDIA, MUSICAL, FANTASIA, TERROR, ROMANCE, CIRCO, EXPERIMENTAL;
 
-    private ArrayList<Director> directores;
+    private ArrayList<Director> directores = new ArrayList<>();
     
     public ArrayList<Director> getDirectores() {
         return directores;

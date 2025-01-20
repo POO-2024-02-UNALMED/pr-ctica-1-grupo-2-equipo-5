@@ -151,7 +151,7 @@ public class Cliente {
         }
         return Asig;
                 
-         
+        
     }
     public static long IdRandom(){
         boolean salir = false;
