@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.LocalDate;
 
 import gestorAplicacion.gestionVentas.Cliente;
 import gestorAplicacion.gestionClases.Clase;
@@ -212,6 +214,18 @@ public class Main {
         System.out.println(chosenColor + "╰" + "─".repeat(LARGO_LINEAS ) + "╯" + reset);
     }
     //---------------------------------------------------------//
+
+    public static ArrayList<LocalDate> getWeek(){
+        LocalDate today = LocalDate.now(); // Día actual
+        ArrayList<LocalDate> week = new ArrayList<>();
+
+        // Generar los próximos 7 días
+        for (int i = 0; i < 7; i++) {
+            week.add(today.plusDays(i)); // Sumar días al día actual
+        }
+
+        return week;
+    }
 
 
     public static void main(String args[]){    

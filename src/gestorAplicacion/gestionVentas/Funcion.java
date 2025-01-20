@@ -3,10 +3,9 @@ package gestorAplicacion.gestionVentas;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.time.LocalTime;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 
-import gestorAplicacion.gestionObras.Obra;
+import gestorAplicacion.gestionObras.*;
 
 public class Funcion {
     private Obra obra;
@@ -16,6 +15,8 @@ public class Funcion {
     private boolean calificador;
     private int audienciaEsperada;
     static Funcion[] funcionesCreadas;
+
+    private ArrayList<LocalDate> week = uiMain.Main.getWeek();
 
 
     //OBRA
@@ -72,8 +73,8 @@ public class Funcion {
     public Funcion(Obra obra, boolean calificador, int audienciaEsperada) {
         this.obra = obra;
         this.tiquetesVendidos = 0;
-        this.horario = createHorario(Sala.getSalas());
-        this.sala = salaDisponible(sala);
+        this.horario = createHorario(week);
+        this.sala = null;
         this.calificador = calificador;
         this.audienciaEsperada = audienciaEsperada;
     }
@@ -85,20 +86,29 @@ public class Funcion {
         horario.add(hora);
     }
     
-    public ArrayList<LocalDateTime> createHorario(ArrayList<Sala> salas){
+    public ArrayList<LocalDateTime> createHorario(ArrayList<LocalDate> week){
         ArrayList<LocalDateTime> horario = new ArrayList<>();
         LocalDateTime v;
-        for (Sala sala : salas){
+        LocalTime inicioFranja = this.obra.getFranjaHoraria().get(0);
+        for (Sala sala : Sala.getSalas()){
             if (sala.getCapacidad() > this.obra.getAudienciaEsperada()){
-                for (LocalDateTime i = LocalDateTime.of(LocalDate.now(), this.obra.getFranjaHoraria().get(0)); 
-                i == LocalDateTime.of(LocalDate.now().with(DayOfWeek.SUNDAY), this.obra.getFranjaHoraria().get(1)); 
-                i.plusMinutes(30)) {
-                    v = i.plusSeconds(this.obra.getDuracionFormatoS());
-                    if(sala.isDisponible(i, v)){
-                        horario.add(i);
-                        horario.add(v);
-                        this.setSala(sala);
-                    };
+                for (LocalDate day : week){
+                    LocalTime inicioFranjaITE = inicioFranja;
+                    while (inicioFranjaITE.isBefore(this.obra.getFranjaHoraria().get(1))
+                    && inicioFranjaITE.plusSeconds(this.getObra().getDuracionFormatoS()).isBefore(LocalTime.of(22,00)));
+                    {
+                        LocalDateTime i = LocalDateTime.of(day, inicioFranjaITE) ;
+                        v = i.plusSeconds(this.obra.getDuracionFormatoS());
+                        if(this.getObra().isRepartoDisponible(i, v)){
+                            if(sala.isDisponible(i, v)){
+                                horario.add(i);
+                                horario.add(v);
+                                this.setSala(sala);
+                                break;
+                            }
+                        }
+                        inicioFranjaITE = inicioFranjaITE.plusMinutes(30);
+                    }
                 }
             }
         }
@@ -118,5 +128,10 @@ public class Funcion {
         return a;
     }
     
-    
+    public void createFunciones(int u, ArrayList<LocalDate> week){
+
+    }
 }
+
+
+

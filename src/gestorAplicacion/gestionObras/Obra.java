@@ -30,6 +30,7 @@ public class Obra {
     private ArrayList<Funcion> funciones;
     private int funcionesRecomendadas;
     private float promedioArt;
+    private boolean repartoDisponible;
 
     public int getAudienciaEsperada() {
         return audienciaEsperada;
@@ -461,9 +462,31 @@ public class Obra {
     public void setPromedioArt(float promedioArt) {
         this.promedioArt = promedioArt;
     }
-
-
-    
-
-
+    public boolean getRepartoDisponible() {
+        return repartoDisponible;
     }
+    public void setRepartoDisponible(boolean repartoDisponible) {
+        this.repartoDisponible = repartoDisponible;
+    }
+
+    public boolean isRepartoDisponible(LocalDateTime inicio, LocalDateTime fin){
+        ArrayList<Actor> genteDisponibleFR = new ArrayList<>();
+        for (Actor actor : this.getReparto()){
+            if(actor.isDisponible(inicio, fin)){
+                genteDisponibleFR.add(actor);
+            }
+            else{
+                break;
+            }
+        }
+        if (genteDisponibleFR.size()==this.getReparto().size()){
+            setRepartoDisponible(true);
+            return true;
+        }
+        else{
+            setRepartoDisponible(false);
+            return false;
+        }
+    }
+
+}
