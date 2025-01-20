@@ -24,6 +24,7 @@ public class Actor extends Artista{
     private double precioContrato;
     private int edad;
     private char sexo;
+    private List <Aptitud> aptitudes = new ArrayList<>();
     public static NumberFormat cop = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
 
     public Actor(String nombre, long id){ 
@@ -67,6 +68,10 @@ public class Actor extends Artista{
 
     public char getSexo(){ return this.sexo; }
     public void setSexo(char sexo){ this.sexo = sexo; }
+
+    public void setAptitudes(List<Aptitud> aptitudes){ this.aptitudes = aptitudes; }
+    public List<Aptitud> getAptitudes(){ return this.aptitudes; }
+    public void addAptitud(Aptitud aptitud){ this.aptitudes.add(aptitud); }
     
 }
 
