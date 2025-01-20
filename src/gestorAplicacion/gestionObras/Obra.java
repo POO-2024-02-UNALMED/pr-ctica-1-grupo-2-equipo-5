@@ -405,9 +405,14 @@ public class Obra {
     public float calcPromedioArt(ArrayList<Actor> reparto){
         int i = 0;
         float f = 0f;
-        for (Actor actor : reparto){
-            i = i + 1;
-            f = f + actor.getCalificacion();
+        if (!reparto.isEmpty()){
+            for (Actor actor : reparto){
+                i = i + 1;
+                f = f + actor.getCalificacion();
+            }
+        }
+        else{
+            i = 1;
         }
         return f / i;
     }
@@ -432,6 +437,19 @@ public class Obra {
                 + getPapeles() + ", getFuncionesRecomendadas()=" + getFuncionesRecomendadas()
                 + ", promedioCalificacion()=" + promedioCalificacion() + ", toString()=" + super.toString();
     }
+    public String getDur() {
+        return dur;
+    }
+    public void setDur(String dur) {
+        this.dur = dur;
+    }
+    public float getPromedioArt() {
+        return promedioArt;
+    }
+    public void setPromedioArt(float promedioArt) {
+        this.promedioArt = promedioArt;
+    }
+    
 
 
     }
