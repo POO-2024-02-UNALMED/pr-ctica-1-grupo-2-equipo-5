@@ -6,6 +6,7 @@ import java.time.Duration;
 import java.time.LocalTime;
 
 import gestorAplicacion.herramientas.*;
+import uiMain.Main;
 import gestorAplicacion.gestionVentas.*;
 
 public class Obra {
@@ -391,7 +392,7 @@ public class Obra {
     public static void mostrarObrasCriticas() {
         for (Obra obra : Obra.getObras()) {
             if (obra.promedioCalificacion() <= 1.0) { // Verificar si está en estado crítico
-                System.out.println("La obra '" + obra.getNombre() + "' está en estado crítico.");
+               Main.customPrint("La obra '" + obra.getNombre() + "' está en estado crítico.", "red");
                 
                 // Verificar los aspectos de calificación y actores responsables
                 System.out.println("Llamando a los actores responsables por aspectos críticos:");
@@ -405,13 +406,14 @@ public class Obra {
                     if (i < reparto.size()) { // Garantizar que hay un actor correspondiente
                         Actor actor = reparto.get(i);
                         System.out.println("El aspecto '" + aspecto + "' está mal calificado. Notificando al actor: " + actor.getNombre());
+                        Actor.notificarActor(actor, aspecto);
                     } else {
                         System.out.println("No hay un actor asignado al aspecto '" + aspecto + "'.");
                     }
                 }
             }
         }
-    
+    }
 
     
 }

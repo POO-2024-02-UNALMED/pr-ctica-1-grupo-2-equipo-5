@@ -27,7 +27,6 @@ import gestorAplicacion.gestionObras.Director;
 
 public class Main {
     static Tesoreria tesoreria = new Tesoreria(0, 100);
-    public static Scanner op;
     public static Scanner in = new Scanner(System.in);
 
     public static boolean supportsColor = (System.console() != null && System.getenv().get("TERM") != null);
@@ -429,15 +428,16 @@ public class Main {
             i = i + 1;
             System.out.println(String.valueOf(i) + "." + obra.getNombre());
         }
-        System.out.println(String.valueOf(i + 1) + ". Crear nueva obra");
-        System.out.println("¿Qué obra desea consultar? Por favor indique el número sin punto");
-        String answer = op.nextLine();
-        if (Integer.parseInt(answer) <= i)
-            eleccion = Obra.getObras().get(Integer.parseInt(answer) - 1);
-        else if (Integer.parseInt(answer) > i){
-            System.out.println("Por favor ingrese el nombre de la nueva obra");
-            String nombre = op.nextLine();
-            System.out.println("Por favor seleccione uno por uno el reparto de la nueva obra");
+        customPrint(String.valueOf(i + 1) + ". Crear nueva obra");
+        customPrint("¿Qué obra desea consultar? Por favor indique el número sin punto");
+        if (in.hasNextLine()) in.nextLine();
+        String obraSel = in.nextLine();
+        if (Integer.parseInt(obraSel) <= i)
+            eleccion = Obra.getObras().get(Integer.parseInt(obraSel) - 1);
+        else if (Integer.parseInt(obraSel) > i){
+            customPrint("Por favor ingrese el nombre de la nueva obra");
+            String nombre = in.nextLine();
+            customPrint("Por favor seleccione uno por uno el reparto de la nueva obra");
             int f;
             f = 0;
             for (Actor actor : Actor.getActors()){
@@ -450,22 +450,22 @@ public class Main {
             ArrayList<Aptitud> papeles = new ArrayList<>();
             while (s != 0){
                 System.out.println("Digita el número del actor que desea agregar sin punto, si ya terminaste de añadir el reparto por favor ingresa 0");
-                String d = op.nextLine();
+                String d = in.nextLine();
                 s = Integer.parseInt(d);
                 if (s == 0){
                     break;
                 }
-                else;
+                else{
                     Actor elegido = Actor.getActors().get(s - 1);
                     reparto.add(elegido);
-                    }
+                }
                     System.out.println("Por favor indica en qué se debe enfocar el actor (Solo puedes seleccionar una opción, sin embargo, varios actores pueden enfocarse en la misma opción) recuerde digitar solo el número de la opción");
                     System.out.println("1. Canto");
                     System.out.println("2. Baile");
                     System.out.println("3. Discurso");
                     System.out.println("4. Emocionalidad");
                     System.out.println("5. Improvisación");
-                    byte u = op.nextByte();
+                    byte u = in.nextByte();
                     switch (u){
                         case 1:
                             papeles.add(Aptitud.CANTO);
@@ -483,6 +483,7 @@ public class Main {
                             papeles.add(Aptitud.IMPROVISACION);
                             break;
                     }
+            }
             
             System.out.println("Por favor, elige el género de la obra, recuerda solo ingresar el número sin punto.");
             System.out.println("1. Drama");
@@ -493,7 +494,7 @@ public class Main {
             System.out.println("6. Romace");
             System.out.println("7. Circo");
             System.out.println("8. Experimental");
-            byte l = op.nextByte();
+            byte l = in.nextByte();
             Genero genero;
             genero = null;
             switch (l) {
@@ -530,14 +531,14 @@ public class Main {
                 x = x + 1;
                 System.out.println(String.valueOf(x) + "."+ director.getNombre());
             }
-            int dir = op.nextInt();
+            int dir = in.nextInt();
             Director director = genero.getDirectores().get(dir);
 
             System.out.println("Por favor, ingresa el costo de producción");
-            float costoProduccion = op.nextFloat();
+            float costoProduccion = in.nextFloat();
 
             System.out.println("Por favor ingresa la duración de la obra, usa el formato HHmmSS, no separes con :,- ni otro símbolo similar.");
-            long dur = op.nextLong();
+            long dur = in.nextLong();
             
 
             eleccion = new Obra(nombre, reparto, papeles, director, costoProduccion, genero, dur);  
@@ -548,7 +549,7 @@ public class Main {
             int a = eleccion.getFuncionesRecomendadas();
             boolean continuar = false;
             do {
-                int rut = op.nextInt();
+                int rut = in.nextInt();
     
                 if (a + 2 > rut) {
                     System.out.println("ALERTA, PUEDEN SER DEMASIADAS FUNCIONES PARA ESTA OBRA");
@@ -556,7 +557,7 @@ public class Main {
                     System.out.println("1. Sí");
                     System.out.println("2. No");
     
-                    byte sc = op.nextByte();
+                    byte sc = in.nextByte();
     
                     switch (sc) {
                         case 1:
@@ -575,7 +576,7 @@ public class Main {
                     System.out.println("¿DESEA CONTINUAR?");
                     System.out.println("1. Sí");
                     System.out.println("2. No");
-                    byte sc = op.nextByte();
+                    byte sc = in.nextByte();
     
                     switch (sc) {
                         case 1:
