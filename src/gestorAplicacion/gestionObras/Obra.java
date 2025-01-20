@@ -345,7 +345,7 @@ public class Obra {
     public static String generarTabla(){
             String Nuevo="";
             for (Obra obra : obras) {
-                String string = String.format("%30s %15s %10s %20s",obra.getNombre(),obra.getGenero(),obra.dur,String.format("$%,.2f",precioFuncion(obra))+"\n");
+                String string = String.format("%30s %20s %20s %20s",obra.getNombre(),obra.getGenero(),obra.dur,String.format("$%,.2f",precioFuncion(obra))+"\n");
             Nuevo = Nuevo +string;
 
             
