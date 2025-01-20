@@ -1,6 +1,6 @@
 package gestorAplicacion.herramientas;
 
-import java.util.ArrayList;
+
 
 public enum Suscripcion {
 

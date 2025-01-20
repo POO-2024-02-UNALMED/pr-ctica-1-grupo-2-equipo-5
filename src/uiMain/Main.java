@@ -399,6 +399,39 @@ public class Main {
             }
             customPrint("Obra comprada \n\n"+Obra.imprimirObra(Obra.buscarObra(input)));
             cliente.setObra(input);
+
+            float descuento=0;
+            if (cliente.getSuscripcion().name().equals("Basica")) {
+
+                descuento = 0;
+
+
+            } else if (cliente.getSuscripcion().name().equals("Vip")) {
+
+                descuento = 0.25f;
+                
+
+            } else if (cliente.getSuscripcion().name().equals("Premium")) {
+
+                descuento = 0.10f;
+                
+            } else if (cliente.getSuscripcion().name().equals("Elite")){
+
+                descuento = 1;
+                
+            }
+            customPrint("El precio final luego de descuento es :"+String.format("$%,.2f",Obra.precioObra(input))+"\n Realizando transaccion...");
+            try {
+                // Pausa de 2 segundos (2000 milisegundos)
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                customPrint("La pausa fue interrumpida.");
+                
+            }
+            customPrint("compra realizada");
+            
+
+
             
 
 
