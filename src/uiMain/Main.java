@@ -241,7 +241,7 @@ public class Main {
             "Ingrese la opcion correspondiente\n"+
             "Eres cliente nuevo? \n"+ 
             "1. NO\n"+
-            "2. SI\n");
+            "2. SI\n","red");
             a = in.nextByte();
             in.nextLine();
         }
@@ -267,7 +267,7 @@ public class Main {
                 } catch (InterruptedException e) {
                     customPrint("La pausa fue interrumpida.");
                 }
-                customPrint("Sesion Iniciada");
+                customPrint("Sesion Iniciada","green");
         
                 salir = true;
                 break;
@@ -278,7 +278,7 @@ public class Main {
                     "Ingrese la opcion correspondiente\n"+
                     "Tienes un codigo existente? : \n"+ 
                     "1. Si\n"+
-                    "2. NO\n");
+                    "2. NO\n","red");
                     
                     byte [] opcion = {1,2};
                     byte b = in.nextByte();
@@ -289,7 +289,7 @@ public class Main {
                         "Intente de nuevo:\n"+
                         "Tienes un codigo existente? : \n"+ 
                         "1. NO\n"+
-                        "2. SI\n");
+                        "2. SI\n","red");
                         b = in.nextByte();
                         in.nextLine();
                     }
@@ -317,7 +317,7 @@ public class Main {
                 
                 code= Cliente.IdRandom();
                 cliente = new Cliente(null, code,Suscripcion.Basica);
-                customPrint("Codigo "+cliente.getId()+ " creado");
+                customPrint("Codigo "+cliente.getId()+ " creado","green");
 
                 
                 salir = true;
@@ -342,7 +342,7 @@ public class Main {
             "Ingrese la opcion correspondiente\n"+
             "1. Consultar obra y comprar tiquete\n"+ 
             "2. Mejorar Suscripcion\n"+
-            "3. consular perfil"
+            "3. consular perfil","red"
             
             );
             d = in.nextByte();
@@ -356,7 +356,7 @@ public class Main {
             
             while (Obra.nombres(input)){
                 customPrint("Obra no encontrada \n"+
-                "Ingrese un nombre valido :");
+                "Ingrese un nombre valido :","red");
                 input = in.nextLine().toLowerCase();
                 
 
@@ -368,7 +368,7 @@ public class Main {
 
                 break;
             case 2:
-                customPrint("Su suscripcion actual es "+cliente.imprimirSuscripcion());
+                customPrint("Su suscripcion actual es "+cliente.imprimirSuscripcion(),"blue");
                 customPrint(Suscripcion.tiposSuscipcion());
                 
                 customPrint(
@@ -380,7 +380,7 @@ public class Main {
 
             customPrint("La respuesta introducida no hace parte de las opciones. \n"+
             "Intente de nuevo:\n"+
-            "Que suscripcion desea aadquirir\n\n"
+            "Que suscripcion desea aadquirir\n\n","red"
             
             );
             suscripcion = in.nextLine().toLowerCase();
@@ -399,13 +399,13 @@ public class Main {
                 
         
         }
-            customPrint("Suscripcion "+cliente.getSuscripcion()+" aplicada");
+            customPrint("Suscripcion "+cliente.getSuscripcion()+" aplicada","green");
             
             
 
                 break;
             case 3:
-                customPrint(cliente.getId()+"\n"+cliente.getObra()+"\n"+cliente.getSuscripcion());
+                customPrint(cliente.consultarPerfil());
 
                 break;
         
