@@ -395,6 +395,9 @@ public class Main {
             case "premium":
                 cliente.setSuscripcion(Suscripcion.Premium);
                 break;
+            case "elite":
+                cliente.setSuscripcion(Suscripcion.Elite);
+                break;
 
                 
         
