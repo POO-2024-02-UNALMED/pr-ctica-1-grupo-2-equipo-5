@@ -802,6 +802,32 @@ public class Main {
             break;
         }
 
+        byte[] five = {1, 2, 3, 4, 5};
+        byte aptitud = ask("¿En qué aptitud debería sobresalir el actor?\n1. Canto.\n2. Baile.\n3. Discurso.\n4. Emocionalidad\n5. Improvisación.", five, "");
+
+        switch (aptitud){
+
+            case 1:
+            actorsForRental.removeIf(actor -> !actor.getAptitudes().contains(Aptitud.CANTO));
+            break;
+
+            case 2:
+            actorsForRental.removeIf(actor -> !actor.getAptitudes().contains(Aptitud.BAILE));
+            break;
+
+            case 3:
+            actorsForRental.removeIf(actor -> !actor.getAptitudes().contains(Aptitud.DISCURSO));
+            break;
+            
+            case 4:
+            actorsForRental.removeIf(actor -> !actor.getAptitudes().contains(Aptitud.EMOCIONALIDAD));
+            break;
+
+            case 5:
+            actorsForRental.removeIf(actor -> !actor.getAptitudes().contains(Aptitud.IMPROVISACION));
+            break;
+
+        }
 
         //PREGUNTA NO. 3
         String horarioCliente = ask("¿En qué horario necesita el actor? (Responda en formato HH:MM)");

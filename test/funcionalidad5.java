@@ -3,6 +3,7 @@ package test;
 import gestorAplicacion.gestionFinanciera.Tesoreria;
 import gestorAplicacion.gestionObras.Actor;
 import gestorAplicacion.gestionVentas.Cliente;
+import gestorAplicacion.herramientas.Aptitud;
 import gestorAplicacion.herramientas.Genero;
 import uiMain.Main;
 import java.util.List;
@@ -22,13 +23,15 @@ public class funcionalidad5 {
             actor1.setCalificacion(4.1f);
             actor1.setSexo('M');
             actor1.setEdad(49);
-    
+            actor1.addAptitud(Aptitud.IMPROVISACION);
+
             genres.add(Genero.DRAMA);
             Actor actor2 = new Actor("Eddie Muprhy", 9032723);
             actor2.setGeneros(new ArrayList<>(genres));
             actor2.setCalificacion(3.8f);
             actor2.setSexo('M');
             actor2.setEdad(62);
+            actor2.addAptitud(Aptitud.IMPROVISACION);
     
             genres.add(Genero.EXPERIMENTAL);
             Actor actor3 = new Actor("Emma Stone", 90234243);
@@ -36,6 +39,7 @@ public class funcionalidad5 {
             actor3.setCalificacion(4.6f);
             actor3.setSexo('F');
             actor3.setEdad(36);
+            actor3.addAptitud(Aptitud.IMPROVISACION);
 
             genres.add(Genero.FANTASIA);
             Actor actor4 = new Actor("Antonio Banderas", 90234263);
