@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import java.time.LocalDateTime;
-import java.text.NumberFormat;
 
 import gestorAplicacion.gestionVentas.Cliente;
 import gestorAplicacion.gestionClases.Clase;
@@ -398,7 +397,7 @@ public class Main {
                 
         
         }
-            customPrint("Suscripcion "+cliente.getSuscripcion()+" apliacada");
+            customPrint("Suscripcion "+cliente.getSuscripcion()+" aplicada");
             
             
 
@@ -835,8 +834,6 @@ public class Main {
             customPrint("No se hallaron actores para el presupuesto");
         } else {
 
-        NumberFormat intToCop = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
-
             int lastIdx = 0;
             int paginasCompletas = (int) (actorsForRental.size() / ACTORES_POR_PAGINA);
             int paginasTotales = 0;
@@ -946,78 +943,122 @@ public class Main {
 
     //Base para funcionalidad 2
     public static void gestionEmpleados(){
-        String q = "¿Que operacion deseas realizar? \n1. Contratar Empleados \n2. Despedir Empleados \n3. Gestionar Empleados \n4. Pagar nomina \n5. Salir";
-        byte[] opciones = {1, 2, 3, 4, 5};
-        byte respuesta = ask(q, opciones, "green");
-
-        switch (respuesta) {
-            case 1:
-                
-                break;
-        
-            case 2:
-
-                break;
-
-            case 3:
-
-                break;
-            case 4:
-                //Pagar nomina a empleados:
-                double fondos = tesoreria.getCuenta().getSaldo() + tesoreria.getDineroEnCaja();
-                double totalSaldos = 0;
-                //Verificacion de fondos:
+ 
+        //Pagar nomina a empleados:
+        double fondos = tesoreria.getCuenta().getSaldo() + tesoreria.getDineroEnCaja();
+        double totalSaldos = 0;
+        //Verificacion de fondos:
+        for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+            totalSaldos = totalSaldos + Persona.calcularSueldo();
+        }
+        //Realizar pago
+        if(totalSaldos > fondos){
+            double cantPagada = 0;
+            customPrint("Upps... No se puede realizar los pagos adecuadamente", "Red");
+            customPrint("Realizando pagos de manera equitativa...");
+            for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                cantPagada = cantPagada + ((Persona.calcularSueldo() + Persona.getDeuda())*0.5);
+                Persona.setDeuda((Persona.getDeuda() + (Persona.calcularSueldo()) * 0.5));   //Establecer cuanto se le debe a la persona
+                tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.getDeuda() + Persona.calcularSueldo())*0.5);
+            }
+            customPrint("Pago existoso", true, "green");
+            String msg = "Se pago un total de " + cantPagada;
+            customPrint(msg);
+            customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
+            customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
+        }
+        else{
+            //Verificacion fondos Bonificacion
+            totalSaldos = 0;
+            double cantPagada = 0;
+            if(tesoreria.verificacionMeta() != true){
+                //Verificacion Metas Personales
                 for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                    totalSaldos = totalSaldos + Persona.calcularSueldo();
-                    if(totalSaldos > fondos){
-                        customPrint("Upps... No se puede realizar los pagos adecuadamente", "Red");
-                        byte[] opValidas = {1, 2};
-                        String pregunta = "¿Deseas Pagar en partes iguales? \n1. Si. \n2. No.";
-                        byte answer = ask(pregunta, opValidas, "blue");
-
-                        switch (answer) {
-                            case 1:
-
-                                break;
-                
-                            case 2:
-                                break;
-                        }
+                    if(Persona.verificacionMeta() != true){
+                        Persona.setMetaSemanal(Persona.getMetaSemanal()-5); //Disminucion de meta
+                        totalSaldos = totalSaldos + (Persona.calcularSueldo() + Persona.getDeuda());
                     }
                     else{
-                
+                        Persona.setMetaSemanal(Persona.getMetaSemanal() + 10);  //Aumento en la meta
+                        totalSaldos = totalSaldos + ((Persona.calcularSueldo() * 1.5) + Persona.getDeuda());
                     }
                 }
-
-                //Saldos con las bonificaciones:
-                if(tesoreria.verificacionMeta() != true){
+                //Realizacion Pago Solo con Deuda
+                if(totalSaldos > fondos){
+                    totalSaldos = 0;
+                    customPrint("Ups... No se pueden aplicar las bonificaciones personales");
+                    customPrint("Realizando Pagos");
                     for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                        if(Persona.verificacionMeta() != true){
-                            Persona.setMetaSemanal(Persona.getMetaSemanal()-5); //Disminucion de meta
-                            totalSaldos = totalSaldos + Persona.calcularSueldo();
+                        cantPagada = cantPagada + (Persona.calcularSueldo() + Persona.getDeuda());
+                        totalSaldos = totalSaldos + Persona.calcularSueldo();
+                    }
+                    if(cantPagada > fondos){
+                        customPrint("No se pudo realizar los pagos junto a la deuda");
+                        customPrint("Realizando pago del Sueldo Base");
+                        tesoreria.pagarSueldoBase(null, cantPagada);
+                        customPrint("Pago existoso", true, "green");
+                        String msg = "Se pago un total de " + totalSaldos;
+                        customPrint(msg);
+                        customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
+                        customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
+                    }
+                    else{
+                        for(Empleado Persona: Empleado.getEmpleadosPorRendimiento()){
+                            tesoreria.getCuenta().transferencia(Persona.getCuenta(), Persona.getDeuda() + Persona.calcularSueldo());
+                            
+                        }
+                        customPrint("Pago existoso", true, "green");
+                        String msg = "Se pago un total de " + cantPagada;
+                        customPrint(msg);
+                        customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
+                        customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
+                    }
+                    
+                }
+                //Realizacion Pago Boni + Deuda
+                else{
+                    for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                        if(Persona.verificacionMeta() == true){
+                            tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.5) + Persona.getDeuda());
                         }
                         else{
-                            Persona.setMetaSemanal(Persona.getMetaSemanal() + 10);  //Aumento en la meta
-                            totalSaldos = totalSaldos + (Persona.calcularSueldo() * 1.5);
+                            tesoreria.getCuenta().transferencia(Persona.getCuenta(), Persona.calcularSueldo() + Persona.getDeuda());
                         }
                     }
+                    customPrint("Pago existoso", true, "green");
+                    String msg = "Se pago un total de " + totalSaldos;
+                    customPrint(msg);
+                    customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
+                    customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
+                }
+            }
+            else{
+                for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                    if(Persona.verificacionMeta() != true){
+                        Persona.setMetaSemanal(Persona.getMetaSemanal()-5); //Disminucion de meta
+                        totalSaldos = totalSaldos + (Persona.calcularSueldo() * 1.3);
+                    }
+                    else{
+                        Persona.setMetaSemanal(Persona.getMetaSemanal() + 10);  //Aumento en la meta
+                        totalSaldos = totalSaldos + (Persona.calcularSueldo() * 1.8);
+                    }
+                }
+                //Sin fondos suficientes para todas las bonificaciones
+                if (totalSaldos > fondos) {
+                    
                 }
                 else{
                     for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                        if(Persona.verificacionMeta() != true){
-                            Persona.setMetaSemanal(Persona.getMetaSemanal()-5); //Disminucion de meta
-                            totalSaldos = totalSaldos + (Persona.calcularSueldo() * 0.3);
+                        if(Persona.verificacionMeta() == true){
+                            tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.8) + Persona.getDeuda());
                         }
                         else{
-                            Persona.setMetaSemanal(Persona.getMetaSemanal() + 10);  //Aumento en la meta
-                            totalSaldos = totalSaldos + (Persona.calcularSueldo() * 1.8);
+                            tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.3) + Persona.getDeuda());
                         }
                     }
                 }
-                        break;
-                    case 5:
-                        break;
-                }
+            }
+        }
     }
  ///BASE PARA FUNCIONALIDAD 4
     public static void gestionClases() throws InterruptedException {
