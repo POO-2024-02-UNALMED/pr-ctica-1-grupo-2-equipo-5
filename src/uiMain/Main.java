@@ -565,9 +565,7 @@ public class Main {
 
             eleccion = new Obra(nombre, reparto, papeles, director, costoProduccion, genero, dur);  
             }
-
-            customPrint("Obra creada: \n"+ eleccion);
-        
+            customPrint(String.valueOf(eleccion.getPromedioArt()));
             System.out.println("Has seleccionado" + " " + eleccion.getNombre());
             System.out.println("¿Cuántas funciones te gustaría crear para esta obra?");
             int a = eleccion.getFuncionesRecomendadas();
@@ -615,6 +613,8 @@ public class Main {
                     continuar = true; // Acepta si la cantidad es adecuada
                 }
             } while (!continuar);
+
+            
         
     }
 
