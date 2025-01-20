@@ -429,28 +429,7 @@ public class Obra {
         }
         return f / i;
     }
-    @Override
-    public String toString() {
-        return "AudienciaEsperada=" + audienciaEsperada + "\n" + "Nombre=" + nombre + " Calificacion=" + calificacion
-                + ", reparto=" + reparto + ", papeles=" + papeles + ", director=" + director.getNombre() + ", costoProduccion="
-                + costoProduccion + ", funcionesSemana=" + funcionesSemana + ", genero=" + genero + ", tiquetesTotales="
-                + tiquetesTotales + ", estadoCriticoA=" + estadoCriticoA + ", calificaciones=" + calificaciones
-                + ", franjaHoraria=" + franjaHoraria + ", duracion=" + duracion + ", dur=" + dur + ", funcionEstelar="
-                + funcionEstelar + ", funciones=" + funciones + ", funcionesRecomendadas=" + funcionesRecomendadas
-                + ", promedioArt=" + promedioArt + ", getAudienciaEsperada()=" + getAudienciaEsperada()
-                + ", getCalificacion()=" + getCalificacion() + ", getReparto()=" + getReparto() + ", getDirector()="
-                + getDirector() + ", getCostoProduccion()=" + getCostoProduccion() + ", getFuncionesSemana()="
-                + getFuncionesSemana() + ", getGenero()=" + getGenero() + ", getTiquetesTotales()="
-                + getTiquetesTotales() + ", getClass()=" + getClass() + ", isEstadoCriticoA()=" + isEstadoCriticoA()
-                + ", hashCode()=" + hashCode() + ", getNombre()=" + getNombre() + ", getCalificaciones()="
-                + getCalificaciones() + ", getDuracionFormato()=" + getDuracionFormato() + ", getFranjaHoraria()="
-                + getFranjaHoraria() + ", getDuracion()=" + getDuracion() + ", getFuncionEstelar()="
-                + getFuncionEstelar() + ", getFunciones()=" + getFunciones() + ", getDuracionFormatoS()="
-                + getDuracionFormatoS() + ", checkEstadoCritico()=" + checkEstadoCritico() + ", getPapeles()="
-                + getPapeles() + ", getFuncionesRecomendadas()=" + getFuncionesRecomendadas()
-                + ", promedioCalificacion()=" + promedioCalificacion() + ", toString()=" + super.toString();
-    }
-    public String getDur() {
+        public String getDur() {
         return dur;
     }
     public void setDur(String dur) {
@@ -489,4 +468,7 @@ public class Obra {
         }
     }
 
+    public void addFuncion(Funcion funcion){
+        this.funcionesSemana.add(funcion);
+    }
 }

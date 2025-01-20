@@ -15,6 +15,7 @@ import gestorAplicacion.gestionClases.Profesor;
 import gestorAplicacion.gestionFinanciera.Empleado;
 import gestorAplicacion.gestionFinanciera.Tesoreria;
 import gestorAplicacion.gestionVentas.Sala;
+import gestorAplicacion.gestionVentas.Funcion;
 
 import gestorAplicacion.gestionObras.Actor;
 import gestorAplicacion.gestionObras.Artista;
@@ -49,7 +50,7 @@ public class Main {
         while (true){
             customPrint(question, true, color);
             String input = in.nextLine();
-           
+            
 
             if (canBeByte(input)){ //si se puede pasar a byte
                 answer = Byte.parseByte(input); //convertir a byte
@@ -223,12 +224,12 @@ public class Main {
         for (int i = 0; i < 7; i++) {
             week.add(today.plusDays(i)); // Sumar días al día actual
         }
-
         return week;
     }
+    Sala sala1 = new Sala();
 
+    public static void main(String args[]){  
 
-    public static void main(String args[]){    
         byte task = -1;
         
 
@@ -512,6 +513,7 @@ public class Main {
         Obra eleccion;
         eleccion = null;
         String menuObras = "";
+        ArrayList<LocalDate> week = getWeek();
         if (!Obra.getObras().isEmpty()){
             for (Obra obra : Obra.getObras()){          
                 i = i + 1;
@@ -521,7 +523,6 @@ public class Main {
         }
         customPrint(menuObras + String.valueOf(i + 1) + ". Crear nueva obra");
         customPrint("Por favor indique el número de su elección sin punto");
-        if (in.hasNextLine()) {in.nextLine();};
         String obraSel = in.nextLine();
         if (Integer.parseInt(obraSel) <= i){
             eleccion = Obra.getObras().get(Integer.parseInt(obraSel) - 1);
@@ -656,6 +657,7 @@ public class Main {
             customPrint("¿Cuántas funciones te gustaría crear para esta obra?");
             int a = eleccion.getFuncionesRecomendadas();
             boolean continuar = false;
+            int drut = 0;
             do {
                 int rut = in.nextInt();
     
@@ -666,6 +668,7 @@ public class Main {
                     switch (sc) {
                         case 1:
                             continuar = true; // Acepta y sale del ciclo
+                            drut = rut;
                             break;
                         case 2:
                             System.out.println("¿Cuántas funciones te gustaría crear para esta obra?");
@@ -682,6 +685,7 @@ public class Main {
                     switch (sc) {
                         case 1:
                             continuar = true; // Acepta y sale del ciclo
+                            drut = rut;
                             break;
                         case 2:
                             System.out.println("¿Cuántas funciones te gustaría crear para esta obra?");
@@ -689,11 +693,22 @@ public class Main {
                     }
                 }
                 else {
-                    continuar = true; // Acepta si la cantidad es adecuada
+                    continuar = true;
+                    drut = rut; // Acepta si la cantidad es adecuada
                 }
-            } while (!continuar);
+            } while (!continuar);   
 
+            if (!(drut==0)){
+                System.out.println("I work");
+            }
             
+            for (int numeroFunciones = 0; numeroFunciones < drut; numeroFunciones++){
+                ArrayList<LocalDate> weekn = getWeek();
+                Funcion funcion = new Funcion(eleccion, weekn);
+                eleccion.addFuncion(funcion);
+                customPrint("Funcion creada\nHora:  " + funcion.getHorario() + "\nSala: " + funcion.getSala());
+                customPrint("me too");
+            }
         
     }
 

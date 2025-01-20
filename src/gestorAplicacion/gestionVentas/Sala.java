@@ -109,4 +109,16 @@ public class Sala {
         y.add(a);
         setHorario(y);
     }
+    public Sala(ArrayList<Silla> sillas, int numeroSala, int metrosCuadrados, Boolean aseado, Boolean ocupado,
+            Empleado trabajador, ArrayList<ArrayList<LocalDateTime>> horario, int capacidad) {
+        this.sillas = sillas;
+        this.numeroSala = numeroSala;
+        this.metrosCuadrados = metrosCuadrados;
+        this.aseado = aseado;
+        this.ocupado = ocupado;
+        this.trabajador = trabajador;
+        this.horario = horario;
+        this.capacidad = capacidad;
+    }
+    
 }

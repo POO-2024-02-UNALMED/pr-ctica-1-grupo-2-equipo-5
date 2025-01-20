@@ -72,6 +72,34 @@ public class Actor extends Artista{
     public void setAptitudes(List<Aptitud> aptitudes){ this.aptitudes = aptitudes; }
     public List<Aptitud> getAptitudes(){ return this.aptitudes; }
     public void addAptitud(Aptitud aptitud){ this.aptitudes.add(aptitud); }
+
+    public static long getTasa() {
+        return TASA;
+    }
+
+    public static void setActors(List<Actor> actors) {
+        Actor.actors = actors;
+    }
+
+    public boolean isReevaluacion() {
+        return reevaluacion;
+    }
+
+    public void setReevaluacion(boolean reevaluacion) {
+        this.reevaluacion = reevaluacion;
+    }
+
+    public void setPrecioContrato(double precioContrato) {
+        this.precioContrato = precioContrato;
+    }
+
+    public static NumberFormat getCop() {
+        return cop;
+    }
+
+    public static void setCop(NumberFormat cop) {
+        Actor.cop = cop;
+    }
     
 }
 

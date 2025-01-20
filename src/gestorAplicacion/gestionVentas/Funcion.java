@@ -16,9 +16,6 @@ public class Funcion {
     private int audienciaEsperada;
     static Funcion[] funcionesCreadas;
 
-    private ArrayList<LocalDate> week = uiMain.Main.getWeek();
-
-
     //OBRA
     public Obra getObra() {
         return obra;
@@ -70,13 +67,13 @@ public class Funcion {
     public Sala salaDisponible(Sala sala){
         return sala;
     }
-    public Funcion(Obra obra, boolean calificador, int audienciaEsperada) {
+    public Funcion(Obra obra, ArrayList<LocalDate> week) {
         this.obra = obra;
         this.tiquetesVendidos = 0;
         this.horario = createHorario(week);
         this.sala = null;
-        this.calificador = calificador;
-        this.audienciaEsperada = audienciaEsperada;
+        this.calificador = doWeNeedACalificador();
+        this.audienciaEsperada = obra.getAudienciaEsperada();
     }
     public Funcion(){
 
@@ -88,31 +85,34 @@ public class Funcion {
     
     public ArrayList<LocalDateTime> createHorario(ArrayList<LocalDate> week){
         ArrayList<LocalDateTime> horario = new ArrayList<>();
-        LocalDateTime v;
         LocalTime inicioFranja = this.obra.getFranjaHoraria().get(0);
         for (Sala sala : Sala.getSalas()){
             if (sala.getCapacidad() > this.obra.getAudienciaEsperada()){
                 for (LocalDate day : week){
                     LocalTime inicioFranjaITE = inicioFranja;
                     while (inicioFranjaITE.isBefore(this.obra.getFranjaHoraria().get(1))
-                    && inicioFranjaITE.plusSeconds(this.getObra().getDuracionFormatoS()).isBefore(LocalTime.of(22,00)));
+                    && inicioFranjaITE.plusSeconds(this.getObra().getDuracionFormatoS()).isBefore(LocalTime.of(22,00)))
                     {
                         LocalDateTime i = LocalDateTime.of(day, inicioFranjaITE) ;
-                        v = i.plusSeconds(this.obra.getDuracionFormatoS());
-                        if(this.getObra().isRepartoDisponible(i, v)){
-                            if(sala.isDisponible(i, v)){
-                                horario.add(i);
-                                horario.add(v);
-                                this.setSala(sala);
-                                break;
-                            }
+                        LocalDateTime v = i.plusSeconds(this.obra.getDuracionFormatoS());
+                        if(this.getObra().isRepartoDisponible(i, v) && sala.isDisponible(i,v)){
+                            horario.add(i);
+                            horario.add(v);
+                            this.setSala(sala);
+                            break;
                         }
                         inicioFranjaITE = inicioFranjaITE.plusMinutes(30);
                     }
                 }
+                if (!horario.isEmpty()){
+                    break;
+                }
+            }
+            if (!horario.isEmpty()){
+                this.getSala().anadirHorario(horario);
+                break;
             }
         }
-        this.getSala().anadirHorario(horario);
         return horario;
     }
 
@@ -128,8 +128,14 @@ public class Funcion {
         return a;
     }
     
-    public void createFunciones(int u, ArrayList<LocalDate> week){
-
+    public boolean doWeNeedACalificador(){
+        boolean a = false;
+        for (Actor actor : this.getObra().getReparto()){
+            if (actor.isReevaluacion()){
+                a = true;
+            }
+        }
+        return a;
     }
 }
 
