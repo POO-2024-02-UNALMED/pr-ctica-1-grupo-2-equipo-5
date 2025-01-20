@@ -7,7 +7,6 @@ import gestorAplicacion.gestionObras.Artista;
 import uiMain.Main;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Empleado {
     private String nombre;
