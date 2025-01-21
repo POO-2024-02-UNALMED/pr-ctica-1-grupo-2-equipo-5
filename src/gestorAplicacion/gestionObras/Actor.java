@@ -100,6 +100,14 @@ public class Actor extends Artista{
     public static void setCop(NumberFormat cop) {
         Actor.cop = cop;
     }
+
+    public float getCalificacionPorAptitud(Aptitud aptitud) {
+        int index = this.aptitudes.indexOf(aptitud);
+        if (index != -1 && index < notas.size()) {
+            return notas.get(index);
+        }
+        return -1; // Retorna -1 si la aptitud no tiene calificación
+    }
     
 }
 
