@@ -26,6 +26,7 @@ public class Actor extends Artista{
     private char sexo;
     private List <Aptitud> aptitudes = new ArrayList<>();
     public static NumberFormat cop = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
+    private ArrayList<Double> calificacionesAptitudes; // Calificaciones asociadas a las aptitudes
 
     public Actor(String nombre, long id){ 
         super(nombre, id);
@@ -101,12 +102,21 @@ public class Actor extends Artista{
         Actor.cop = cop;
     }
 
-    public float getCalificacionPorAptitud(Aptitud aptitud) {
-        int index = this.aptitudes.indexOf(aptitud);
-        if (index != -1 && index < notas.size()) {
-            return notas.get(index);
+    public double getCalificacionPorAptitud(Aptitud aptitud) {
+        int index = aptitudes.indexOf(aptitud);
+        if (index != -1) {
+            return calificacionesAptitudes.get(index);
         }
-        return -1; // Retorna -1 si la aptitud no tiene calificación
+        return -1; // Retornar -1 si la aptitud no está en la lista (Verificar si el -1 afecta en algo en el código
+        //Tal vez eliminarlo.
+    }
+
+    // Actualizar la calificación de una aptitud específica
+    public void setCalificacionPorAptitud(Aptitud aptitud, double calificacion) {
+        int index = aptitudes.indexOf(aptitud);
+        if (index != -1) {
+            calificacionesAptitudes.set(index, calificacion);
+        }
     }
     
 }

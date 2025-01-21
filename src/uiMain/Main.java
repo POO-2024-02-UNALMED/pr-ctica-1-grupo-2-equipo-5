@@ -1332,7 +1332,7 @@ public class Main {
             }
         }
     }
- ///BASE PARA FUNCIONALIDAD 4
+ //FUNCIONALIDAD 4
     public static void gestionClases() throws InterruptedException {
 
         byte[] two = {1, 2};
@@ -1410,54 +1410,44 @@ public class Main {
 
         // Mostrar todas las obras críticas
         if (obrasCritics.isEmpty()) {
-            customPrint("No hay obras en estado crítico.");
+            customPrint("No hay obras en estado crítico.", "yellow");
         } else {
             customPrint("Obras en estado crítico:");
             for (Obra obra : obrasCritics) {
                 customPrint("- '" + obra.getNombre() + "' (Promedio de calificaciones: " + obra.promedioCalificacion() + ")");
     
-                // Verificar los aspectos críticos y notificar a los actores responsables
-                customPrint("Llamando a los actores responsables por aspectos críticos:");
-                ArrayList<Aptitud> aspectos = obra.getPapeles(); // Aptitudes requeridas en la obra
-                ArrayList<Actor> reparto = obra.getReparto(); // Actores que participaron
-    
-                for (int i = 0; i < aspectos.size(); i++) {
-                    Aptitud aspecto = aspectos.get(i);
-                    if (i < reparto.size()) { // Validar que haya un actor asignado
-                        Actor actor = reparto.get(i);
-                        customPrint("El aspecto '" + aspecto + "' está mal calificado.", "red"); 
-                        customPrint("Notificando al actor: " + actor.getNombre());
-                    } else {
-                        Main.customPrint("No hay un actor asignado al aspecto '" + aspecto + "'.");
+                // Revisar aspectos críticos y las calificaciones de los actores
+                for (Aptitud aspecto : obra.getPapeles()) { // Obtenemos cada aptitud crítica de la obra
+                    boolean encontrado = false;
+                    for (Actor actor : obra.getReparto()) { // Revisamos cada actor en el reparto
+                        double calificacion = actor.getCalificacionPorAptitud(aspecto);
+                        if (calificacion < 3.0) { // Si la calificación es baja
+                            customPrint("El aspecto '" + aspecto + "' tiene una calificación baja (" + calificacion + ").", "red");
+                            customPrint("Notificando al actor: " + actor.getNombre());
+                            encontrado = true;
+                            break;
+                        }
+                    }
+                    if (!encontrado) {
+                        customPrint("No hay actores con calificaciones bajas en el aspecto '" + aspecto + "'.", "yellow");
                     }
                 }
             }
-        } //Mejorar esta interacción para incluir los aspectos calificados en las obras
-
-        ask("¿Desea programar una clase?\n" + "1.Sí\n" + "2.No", two, "");
-
-        if (respuesta.equalsIgnoreCase("s")) {
-            programarClase(scanner, artista, clases); //Crear método para programar clase
         }
-
-        System.out.println("Fin de la gestión de clases.");
-        scanner.close();
     
 
-        private static Artista buscarArtistaPorId(List<Artista> artistas, long idArtista2) {
-            for (Artista artista : artistas) {
-                if (artista.getId() == idArtista2) {
-                return artista;
-                }
-            }
-            return null;
-        }
+        byte respuesta = ask("¿Desea programar una clase?\n" + "1.Sí\n" + "2.No", two, "");
 
-        private static void listarObrasCriticas() {
-        // Simulación de obras críticas en el sistema                            //CREAR ESTE MÉTODO PARA FUN4
-        System.out.println("Obra 1: Muy mala calificación en Actuación.");
-        System.out.println("Obra 2: Muy mala calificación en Dirección.");
-        } 
+        switch (respuesta) {
+            case 1:
+                
+                break;
+        
+            case 2:
+
+                break;
+        }
+            programarClase(scanner, artista, clases); //Crear método para programar clase
 
         private static void programarClase(Scanner scanner, Artista artista, List<Clase> clases) {
             System.out.print("Ingrese la materia de la clase: ");
