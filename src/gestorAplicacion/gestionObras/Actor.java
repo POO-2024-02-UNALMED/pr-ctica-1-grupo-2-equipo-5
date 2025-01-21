@@ -34,7 +34,7 @@ public class Actor extends Artista{
     }
 
     public String toString(){
-        return super.getNombre() + "\nId: " + super.getId() + "\nEdad: " + this.edad + "\nCalificación: " + super.getCalificacion() + "\nPrecio de contratación: " +  formatoPrecio(this.getPrecioContrato());
+        return super.getNombre() + "\nId: " + super.getId() + "\nEdad: " + this.edad + "\nCalificación: " + super.getCalificacion() + "\nPrecio de contratación: " +  formatoPrecio(this.precioContrato);
     }
 
 
@@ -54,8 +54,8 @@ public class Actor extends Artista{
     public void setGeneros(List<Genero> generos){ this.generos = generos; }
     public void addGenero(Genero genero){ this.generos.add(genero); }
 
-    public double getPrecioContrato(){
-        this.precioContrato = ((Math.pow(super.getCalificacion(), 2)) / 5 ) * TASA;
+    public double getPrecioContrato(long horas){
+        this.precioContrato = ((((Math.pow(super.getCalificacion(), 2)) / 5 ) * TASA) / 8) * horas;
         return this.precioContrato;
     }
 

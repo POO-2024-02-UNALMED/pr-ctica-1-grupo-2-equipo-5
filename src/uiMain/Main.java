@@ -7,7 +7,9 @@ import java.util.Locale;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import gestorAplicacion.gestionVentas.Cliente;
 import gestorAplicacion.gestionClases.Clase;
@@ -41,6 +43,31 @@ public class Main {
     public static String ask(String question){
         customPrint(question, true);
         String answer = in.nextLine();
+        return answer;
+    }
+
+    public static boolean canBeTime(String time){ //formato HH:MM
+
+        DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("HH:MM");
+        try{
+            LocalTime.parse(time, formatoHora);
+            return true;
+        } catch (Exception e){
+            return false;
+        }
+    }
+
+    public static LocalTime timeAsk(String question){
+        customPrint(question);
+        String input = in.nextLine();
+
+        while (!canBeTime(input)){
+            customPrint("La respuesta introducida no está en el formato 24 horas (HH:MM). Intente de nuevo:", true, "red");
+            customPrint(question);
+            input = in.nextLine();     
+        }
+
+        LocalTime answer = LocalTime.parse(input);
         return answer;
     }
 
@@ -118,16 +145,6 @@ public class Main {
             }
         }
         return false;       
-    }
-
-    //revisa si hay superposición de horarios dado dos argumentos 
-    public static boolean isDisponible(LocalDateTime inicio, LocalDateTime fin, ArrayList<ArrayList<LocalDateTime>> horario) {
-        for (ArrayList<LocalDateTime> evento : horario) {
-            if (inicio.isBefore(evento.get(1)) && fin.isAfter(evento.get(0))) {
-                return false; // Horario ocupado
-            }
-        }
-        return true; // Horario disponible
     }
 
     public static int LARGO_LINEAS = 100;
@@ -232,7 +249,6 @@ public class Main {
     public static void main(String args[]){  
 
         byte task = -1;
-        
 
         while (task != 6){
             String dash = "~";
@@ -838,10 +854,52 @@ public class Main {
 
         }
 
-        //PREGUNTA NO. 3
-        String horarioCliente = ask("¿En qué horario se necesita al actor? (Responda en formato HH:MM)");
+        //PREGUNTA NO. 3, 4, 5 (HORARIOS)
+        String diasCadena = "¿Para qué día se necesita el alquiler?\n";
+        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, dd 'de' MMMM 'de' yyyy", new Locale("es"));
 
-        //pendiente: diseñar lógica para revisar el horario
+        for (int i = 0; i < getWeek().size(); i++){
+            diasCadena += (i+1) + ". " + getWeek().get(i).format(formatter) + "\n";
+        }
+
+        byte[] seven = {1, 2, 3, 4, 5, 6, 7};
+
+        byte dia = ask(diasCadena, seven, "");
+
+        LocalDate diaEscogido = getWeek().get( dia-1 );
+
+        customPrint("Lineamiento interno de horarios:\n1. El tiempo mínimo de contratación es de 4 horas.\n2. El tiempo máximo de contratación es de 8 horas.\n3. Solo se puede contratar desde las 10:00 hasta las 22:00.", true, "blue");
+
+        LocalTime inicioHorario = timeAsk("Introduzca horario de inicio del alquiler (Responda en formato HH:MM).");
+        LocalTime finHorario = timeAsk("Introduzca horario de fin del alquiler (Responda en formato HH:MM).");
+
+        LocalDateTime fechaInicio = diaEscogido.atTime(inicioHorario);
+        LocalDateTime fechaFin = diaEscogido.atTime(finHorario);
+
+        if (fechaFin.isBefore(fechaInicio)){
+            customPrint("La hora de fin del horario ocurre antes que la del inicio.", true, "red"); return;
+        }
+
+        Duration duration = Duration.between(fechaInicio, fechaFin);
+        long duracionAlquiler = duration.toHours();
+        
+        if (duracionAlquiler < 4){
+            customPrint("El tiempo mínimo de contratación es de 4 horas.", true, "red"); return;
+        }
+
+        if (duracionAlquiler > 8){
+            customPrint("El tiempo máximo de contratación es de 8 horas.", true, "red"); return;
+        }
+
+        LocalTime horaMin = LocalTime.of(8, 0);
+        LocalTime horaMax = LocalTime.of(22, 0); 
+
+        if (inicioHorario.isBefore(horaMin) || finHorario.isAfter(horaMax)){
+            customPrint("El horario de contratación no cumple con los lineamientos.", true, "red"); return;
+        }
+
+        actorsForRental.removeIf(actor -> !actor.isDisponible(fechaInicio, fechaFin));
 
         //preseleccionados
 
@@ -946,23 +1004,23 @@ public class Main {
 
             }
 
-        double minActorPrecio = actorsForRental.get(0).getPrecioContrato();
-        double maxActorPrecio = actorsForRental.get(0).getPrecioContrato();
+        double minActorPrecio = actorsForRental.get(0).getPrecioContrato(duracionAlquiler);
+        double maxActorPrecio = actorsForRental.get(0).getPrecioContrato(duracionAlquiler);
 
         //conseguir precio de contrato min y max para que el usuario sepa el rango
         for (Actor actor : actorsForRental){
 
-            if (actor.getPrecioContrato() > maxActorPrecio){
-                maxActorPrecio = actor.getPrecioContrato();
-            } else if (actor.getPrecioContrato() < minActorPrecio){
-                minActorPrecio = actor.getPrecioContrato();
+            if (actor.getPrecioContrato(duracionAlquiler) > maxActorPrecio){
+                maxActorPrecio = actor.getPrecioContrato(duracionAlquiler);
+            } else if (actor.getPrecioContrato(duracionAlquiler) < minActorPrecio){
+                minActorPrecio = actor.getPrecioContrato(duracionAlquiler);
             }
 
         }    
 
         long presupuesto = longAsk("¿Cuál es el presupuesto máximo para el actor?" + "\nTenga en cuenta que el rango de los precios es de " + Actor.formatoPrecio(minActorPrecio) + " a " + Actor.formatoPrecio(maxActorPrecio));
 
-        actorsForRental.removeIf(actor -> actor.getPrecioContrato() > presupuesto);
+        actorsForRental.removeIf(actor -> actor.getPrecioContrato(duracionAlquiler) > presupuesto);
 
         if (actorsForRental.size() == 0){
             customPrint("No se hallaron actores para el presupuesto");
@@ -979,16 +1037,31 @@ public class Main {
             int lastResidualIdx = 0;
             Actor actorEscogido = null;//new Actor("auxiliar", 0);
             String page = "";
+            byte[] byteActores = null;
 
-            if (actorsForRental.size()%ACTORES_POR_PAGINA != 0){
+
+            if (actorsForRental.size()%ACTORES_POR_PAGINA != 0){ //cuando no se pueden dividir los actores en paginas de la misma cantidad
                 paginasResiduales = true;
                 paginasTotales = paginasCompletas + 1;
-            }
+                byteActores = new byte[ACTORES_POR_PAGINA + 1];
 
+                if (actorsForRental.size() < ACTORES_POR_PAGINA){
+                    for (int i = 0; i < actorsForRental.size(); i++){
+                        byteActores[i] = (byte) i;
+                    }
+                } else{
+                    for (int i = 0; i < byteActores.length; i++){
+                        byteActores[i] = (byte) i;
+                    }
+                }
 
-            byte[] byteActores = new byte[ACTORES_POR_PAGINA + 1];
-            for (int i = 0; i < byteActores.length; i++){
-                byteActores[i] = (byte) i;
+            } else{ //si se divide perfectamente
+                byteActores = new byte[ACTORES_POR_PAGINA + 1];
+
+                for (int i = 0; i < byteActores.length; i++){
+                    byteActores[i] = (byte) i;
+                }
+
             }
 
             byte seguirBuscando = 0;
@@ -1014,7 +1087,7 @@ public class Main {
                 }
                 x++;
                 page += "\n" + "Página " + x + "/" + paginasTotales;
-                customPrint(page);;
+                customPrint(page);
 
                 seguirBuscando = ask("Ingrese 0 para ver la siguiente página\nSi ya decidió el actor, presione su número", byteActores, "");
                 page = "";
@@ -1046,8 +1119,13 @@ public class Main {
                 page += "Página " + (paginasCompletas + 1) + "/" + (paginasTotales);
                 customPrint(page);
 
-                seguirBuscando = ask("Ingrese 0 para ver la siguiente página\nSi ya decidió el actor, presione su número", byteActores, "");
-                //System.out.println();
+                //reevaluar si los actores que salen en la siguiente pagina son 5 (ACTORES POR PAGINA) o menos
+                byte[] residualByteActores = new byte[lastResidualIdx + 1];
+                for (int i = 0; i <= lastResidualIdx; i++){
+                    residualByteActores[i] = (byte) i;
+                }
+
+                seguirBuscando = ask("Ingrese 0 para ver la siguiente página\nSi ya decidió el actor, presione su número", residualByteActores, "");
                 
                 if (seguirBuscando != 0){
                     
@@ -1061,12 +1139,14 @@ public class Main {
             }
         }
 
-        customPrint("El actor escogido fue " + actorEscogido.getNombre() + " por un precio de " +  Actor.formatoPrecio(actorEscogido.getPrecioContrato()));
-        byte codigoCompra = empresa.pagarAlquilerActor(actorEscogido, tesoreria);
+        customPrint("El actor escogido fue " + actorEscogido.getNombre() + " por un precio de " +  Actor.formatoPrecio(actorEscogido.getPrecioContrato(duracionAlquiler)));
+        byte codigoCompra = empresa.pagarAlquilerActor(actorEscogido, duracionAlquiler, tesoreria);
         if (codigoCompra == -1){
             customPrint("Saldo insuficiente", true, "red");
         } else{
             customPrint("Pago recibido!", true, "green");
+            ArrayList<LocalDateTime> horarioFinal = new ArrayList<>(); horarioFinal.add(fechaInicio); horarioFinal.add(fechaFin);
+            actorEscogido.addHorario(horarioFinal);
         }
         customPrint("Saldo disponible: " + Actor.formatoPrecio(empresa.getCuentaBancaria().getSaldo()));
 

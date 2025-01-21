@@ -75,6 +75,7 @@ public abstract class Artista {
     public void setHorario(ArrayList<ArrayList<LocalDateTime>> horario) {
         this.horario = horario;
     }
+    public void addHorario(ArrayList<LocalDateTime> horario){ this.horario.add(horario); }
 
     //Clase
     public Clase getClase() {
