@@ -1157,7 +1157,61 @@ public class Main {
 
     //Base para funcionalidad 2
     public static void gestionEmpleados(){
- 
+        //Obtener lista de empleados por ocupacion:
+        //Aseador
+        String msgBase = "\n";
+        for(Empleado Persona : Empleado.getTipoSeguridad()){
+            if(msgBase != "\n"){
+                msgBase = msgBase + Persona;
+            }
+            else{
+                msgBase = Persona + msgBase;
+            }
+        }
+        customPrint("Seguridad", true, "blue");
+        customPrint(msgBase);
+        msgBase = "\n";
+        for(Empleado Persona : Empleado.getTipoAseador()){
+            if(msgBase != "\n"){
+                msgBase = msgBase + Persona;
+            }
+            else{
+                msgBase = Persona + msgBase;
+            }
+        }
+        customPrint("Seguridad", true, "blue");
+        customPrint(msgBase);
+        msgBase = "\n";
+        for(Empleado Persona : Empleado.getTipoProfesor()){
+            if(msgBase != "\n"){
+                msgBase = msgBase + Persona;
+            }
+            else{
+                msgBase = Persona + msgBase;
+            }
+        }
+        customPrint("Profesor", true, "blue");
+        customPrint(msgBase);
+        
+        String question = "Deseas Contratar o Despedir a algun empleado \n1. Si \n2. No";
+        byte[] options = {1,2};
+        byte respuesta = ask(question, options, "green");
+
+        switch (respuesta) {
+            case 1:
+                question = "Operacion a realizar \n1.Contratar \n2.Despedir";
+                byte[] options2 = {1,2};
+                byte answer = ask(question, options2, "green");
+                if(answer == 1){
+                    
+                }
+                break;
+        
+            case 2:
+                break;
+        }
+
+
         //Pagar nomina a empleados:
         double fondos = tesoreria.getCuenta().getSaldo() + tesoreria.getDineroEnCaja();
         double totalSaldos = 0;
