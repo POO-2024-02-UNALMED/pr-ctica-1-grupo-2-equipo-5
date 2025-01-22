@@ -47,10 +47,8 @@ public class Main {
     }
 
     public static boolean canBeTime(String time){ //formato HH:MM
-
-        DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("HH:MM");
         try{
-            LocalTime.parse(time, formatoHora);
+            LocalTime hour = LocalTime.parse(time);
             return true;
         } catch (Exception e){
             return false;
