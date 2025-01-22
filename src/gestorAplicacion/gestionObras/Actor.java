@@ -120,5 +120,24 @@ public class Actor extends Artista{
         }
     }
     
+    public List<Aptitud> obtenerAreasDeMejora() {
+        // Crear una lista de índices y ordenar según las calificaciones
+        List<Integer> indicesOrdenados = new ArrayList<>();
+        for (int i = 0; i < aptitudes.size(); i++) {
+            indicesOrdenados.add(i);
+        }
+    
+        // Ordenar los índices basándonos en las calificaciones
+        indicesOrdenados.sort((i, j) -> Double.compare(calificacionesAptitudes.get(i), calificacionesAptitudes.get(j)));
+    
+        // Crear una lista ordenada de aptitudes según las calificaciones
+        List<Aptitud> areasDeMejora = new ArrayList<>();
+        for (int index : indicesOrdenados) {
+            areasDeMejora.add(aptitudes.get(index));
+        }
+    
+        return areasDeMejora;
+    }
+    
 }
 

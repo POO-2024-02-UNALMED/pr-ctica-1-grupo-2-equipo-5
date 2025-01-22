@@ -1334,75 +1334,57 @@ public class Main {
         }
     }
  //FUNCIONALIDAD 4
-    public static void gestionClases() throws InterruptedException {
+    public static void gestionClases() {
 
-        byte[] two = {1, 2};
+        byte[] dos = {1,2};
 
         customPrint("Bienvenido a la gestión de clases.");
         Thread.sleep(2000);
         long idArtista = longAsk("Ingrese el ID del artista:");
-
-        Artista artista = Artista.buscarArtistaPorId(idArtista); 
+        
+        Artista artista = Artista.buscarArtistaPorId(idArtista);
         
         if (artista == null) {
             customPrint("Artista no encontrado.", "red");
             Thread.sleep(1000);
-            byte crearArtista =  ask("¿Desea crear un nuevo Artista?\n" + "1. Sí\n" + "2. No", two, "" );
-
+            byte crearArtista = ask("¿Desea crear un nuevo Artista?\n" + "1. Sí\n" + "2. No", new byte[]{1, 2}, "");
+        
             switch (crearArtista) {
                 case 1:
-                String nombreArtista = ask("Ingrese el nombre del nuevo artista:");
-
-                String tipoArtista = ask("Ingrese el tipo de artista (director/actor)");
-    
-                if (tipoArtista.equals("director")) {
-                    // Crear un nuevo director
-                    Director nuevoDirector = new Director(nombreArtista, idArtista);
-                    customPrint("Nuevo director agregado: " + nombreArtista + "con ID" + idArtista, "green");
-                } else if (tipoArtista.equals("actor")) {
-                    // Crear un nuevo actor
-                    Actor nuevoActor = new Actor(nombreArtista, idArtista);
-                    customPrint("Nuevo actor agregado: " + nombreArtista + "con ID" + idArtista, "green");
-                } else {
-                    customPrint("Tipo de artista no válido. Debe ser 'director' o 'actor'.", "red");
-                }
-                break;
-            
-                case 2:
+                    String nombreArtista = ask("Ingrese el nombre del nuevo artista:");
+                    String tipoArtista = ask("Ingrese el tipo de artista (director/actor)");
+        
+                    if (tipoArtista.equals("director")) {
+                        // Crear un nuevo director
+                        Director nuevoDirector = new Director(nombreArtista, idArtista);
+                        customPrint("Nuevo director agregado: " + nombreArtista + " con ID " + idArtista, "green");
+                        customPrint("Recuerde que los directores no reciben clases.", "yellow");
+                        return; // Salir del flujo de clases
+                    } else if (tipoArtista.equals("actor")) {
+                        // Crear un nuevo actor
+                        Actor nuevoActor = new Actor(nombreArtista, idArtista);
+                        customPrint("Nuevo actor agregado: " + nombreArtista + " con ID " + idArtista, "green");
+                        artista = nuevoActor; // Asignar al artista actual
+                    } else {
+                        customPrint("Tipo de artista no válido. Debe ser 'director' o 'actor'.", "red");
+                        return; // Salir si el tipo es inválido
+                    }
                     break;
+        
+                case 2:
+                    customPrint("Finalizando gestión de clases.", "blue");
+                    return; // Salir si no desea crear un nuevo artista
             }
-
         }
         
-
-        customPrint("Calificaciones actuales del artista " + artista.getNombre() + ":");
-
-        // Validar si el artista es nuevo (sin calificaciones en ambas listas)
-        if (artista.getCalificaciones().isEmpty()) {
-            customPrint("El artista es nuevo. Inicializando calificaciones...");  
-            Thread.sleep(2000);
-
-            // Llamar al método casting() para inicializar calificaciones de calificadores
-            boolean resultado = Empleado.casting(artista, Empleado.getTipoProfesor());
-
-            if (resultado == false){
-                customPrint("No hay profesores disponibles para inicializar las calificaciones del artista", "red");
-            }
-            else if(resultado == true) {
-                
-                // Seleccionar un profesor aleatorio
-                Profesor profesorAsignado = (Profesor) Empleado.getTipoProfesor().get((int) (Math.random() * Empleado.getTipoProfesor().size()));
-                
-                // Mostrar quién inicializó las calificaciones
-                customPrint("El profesor " + profesorAsignado.getNombre() + " inicializó las calificaciones del artista " + artista.getNombre() + ".");
-            }
-            // Inicializar calificaciones del público (simuladas aleatoriamente)
-            artista.inicializarCalificacionesPublico(artista);
-            customPrint("Calificaciones inicializadas exitosamente.", "green");
+        // Si el artista no es un actor, finalizar el flujo
+        if (!(artista instanceof Actor)) {
+            customPrint("Solo los actores pueden recibir clases.", "yellow");
+            return; // Salir del flujo de clases
         }
-
-        // Mostrar las calificaciones del artista, sea o no sea nuevo
-        customPrint("Calificaciones del artista: " + artista.getNombre());
+        
+        // Mostrar calificaciones actuales y continuar con el flujo
+        customPrint("Calificaciones actuales del artista " + artista.getNombre() + ":");
         customPrint("Calificaciones de calificadores: " + artista.getCalificaciones());
         customPrint("Calificaciones del público: " + artista.getCalificacionesPublico());
 
@@ -1422,7 +1404,7 @@ public class Main {
                     boolean encontrado = false;
                     for (Actor actor : obra.getReparto()) { // Revisamos cada actor en el reparto
                         double calificacion = actor.getCalificacionPorAptitud(aspecto);
-                        if (calificacion < 3.0) { // Si la calificación es baja
+                        if (calificacion != -1 && calificacion < 3.0) { // Si la calificación es baja
                             customPrint("El aspecto '" + aspecto + "' tiene una calificación baja (" + calificacion + ").", "red");
                             customPrint("Notificando al actor: " + actor.getNombre());
                             encontrado = true;
@@ -1435,6 +1417,97 @@ public class Main {
                 }
             }
         }
+
+        // Continuar con las recomendaciones y programación de clases
+        if (artista instanceof Actor) {
+            Actor actor = (Actor) artista;
+        
+            // Recomendación de materias para el actor
+            List<Aptitud> areasDeMejora = actor.obtenerAreasDeMejora();
+            customPrint("Áreas recomendadas para mejorar:");
+            for (int i = 0; i < Math.min(3, areasDeMejora.size()); i++) {
+                Aptitud aptitud = areasDeMejora.get(i);
+                double calificacion = actor.getCalificacionPorAptitud(aptitud);
+                customPrint("- " + aptitud + " (Calificación: " + calificacion + ")", "yellow");
+            }
+        }
+        
+        byte respuesta = ask("¿Desea continuar programando clases en estas áreas?\n1. Sí\n2. No", dos, "");
+        if (respuesta == 2) {
+            customPrint("Finalizando gestión de clases.", "blue");
+            return; // Salir del flujo si no desea continuar
+        }
+        
+        customPrint("Programando una clase para el actor: " + artista.getNombre(), "blue");
+
+        // Paso 1: Seleccionar un área de mejora
+        customPrint("Revisando áreas de mejora...");
+        List<Aptitud> areasDeMejora = artista.obtenerAreasDeMejora();
+
+        // Si no hay áreas de mejora, no se puede continuar
+        if (areasDeMejora.isEmpty()) {
+            customPrint("No hay áreas de mejora identificadas para este actor. Finalizando.", "yellow");
+            return;
+        }
+
+        // Mostrar las áreas y permitir al usuario elegir
+        customPrint("Seleccione un área de mejora:");
+        for (int i = 0; i < areasDeMejora.size(); i++) {
+            customPrint((i + 1) + ". " + areasDeMejora.get(i));
+        }
+        int seleccion = intAsk("Ingrese el número del área seleccionada:", 1, areasDeMejora.size());
+        Aptitud aptitudSeleccionada = areasDeMejora.get(seleccion - 1);
+
+        // Paso 2: Determinar el nivel de la clase
+        double calificacion = artista.getCalificacionPorAptitud(aptitudSeleccionada);
+        String nivelClase;
+
+        if (calificacion < 3.0) {
+            nivelClase = "Introducción";
+        } else if (calificacion < 4.0) {
+            nivelClase = "Profundización";
+        } else {
+            nivelClase = "Perfeccionamiento";
+        }
+        customPrint("Se programará una clase de nivel: " + nivelClase, "green");
+
+        // Paso 3: Buscar una sala disponible
+        Sala salaDisponible = Sala.buscarSalaDisponible();
+        if (salaDisponible == null) {
+            customPrint("No hay salas disponibles para programar la clase.", "red");
+            return;
+        }
+        customPrint("Sala asignada: " + salaDisponible.getNombre(), "green");
+
+        // Paso 4: Asignar un profesor calificador
+        Profesor profesorAsignado = Profesor.buscarProfesorDisponible(aptitudSeleccionada);
+        if (profesorAsignado == null) {
+            customPrint("No hay profesores disponibles capacitados en: " + aptitudSeleccionada, "red");
+            return;
+        }
+        customPrint("Profesor asignado: " + profesorAsignado.getNombre(), "green");
+
+        // Paso 5: Confirmar y registrar la clase
+        customPrint("Confirmando programación de la clase...");
+        Clase nuevaClase = new Clase(artista, aptitudSeleccionada, nivelClase, salaDisponible, profesorAsignado);
+        salaDisponible.programarClase(nuevaClase);
+        profesorAsignado.agendarClase(nuevaClase);
+
+        customPrint("Clase programada exitosamente:", "green");
+        customPrint("- Actor: " + artista.getNombre());
+        customPrint("- Área: " + aptitudSeleccionada);
+        customPrint("- Nivel: " + nivelClase);
+        customPrint("- Sala: " + salaDisponible.getNombre());
+        customPrint("- Profesor: " + profesorAsignado.getNombre());
+        
+
+
+
+
+
+
+
+
     
 
         byte respuesta = ask("¿Desea programar una clase?\n" + "1.Sí\n" + "2.No", two, "");

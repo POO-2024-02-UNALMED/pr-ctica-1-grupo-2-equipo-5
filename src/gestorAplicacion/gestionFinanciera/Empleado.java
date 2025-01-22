@@ -2,6 +2,7 @@ package gestorAplicacion.gestionFinanciera;
 import java.util.Random;
 import java.time.LocalDateTime;
 
+import gestorAplicacion.gestionObras.Actor;
 import gestorAplicacion.gestionObras.Artista;
 
 
@@ -242,6 +243,9 @@ public class Empleado {
     }
     
     public static boolean casting(Artista artista, ArrayList<Empleado> profesores) {
+        if (!(artista instanceof Actor)) {
+        return false; // Solo aplicable a actores
+        }
         if (profesores == null || profesores.isEmpty()) {
             return false;
         }

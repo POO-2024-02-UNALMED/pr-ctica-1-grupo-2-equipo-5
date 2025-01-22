@@ -14,7 +14,7 @@ public class Sala {
     private Empleado trabajador;
     private ArrayList<ArrayList<LocalDateTime>> horario;
     private int capacidad;
-
+ 
 
     //SILLAS
     public ArrayList<Silla> getSillas() {
