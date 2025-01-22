@@ -1,6 +1,7 @@
 package gestorAplicacion.gestionObras;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -26,7 +27,7 @@ public class Actor extends Artista{
     private char sexo;
     private List <Aptitud> aptitudes = new ArrayList<>();
     public static NumberFormat cop = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
-    private ArrayList<Double> calificacionesAptitudes; // Calificaciones asociadas a las aptitudes
+    private ArrayList<Double> calificacionesAptitudes = new ArrayList<>(Arrays.asList(0.0, 0.0, 0.0, 0.0, 0.0)); // Calificaciones asociadas a las aptitudes
 
     public Actor(String nombre, long id){ 
         super(nombre, id);

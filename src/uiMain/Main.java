@@ -829,27 +829,28 @@ public class Main {
 
         byte[] five = {1, 2, 3, 4, 5};
         byte aptitud = ask("¿En qué aptitud debería sobresalir el actor?\n1. Canto.\n2. Baile.\n3. Discurso.\n4. Emocionalidad\n5. Improvisación.", five, "");
+        byte CALIFICACION_APTITUD_ALTA = 4;
 
         switch (aptitud){
 
             case 1:
-            actorsForRental.removeIf(actor -> !actor.getAptitudes().contains(Aptitud.CANTO));
+            actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.CANTO) < CALIFICACION_APTITUD_ALTA);
             break;
 
             case 2:
-            actorsForRental.removeIf(actor -> !actor.getAptitudes().contains(Aptitud.BAILE));
+            actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.BAILE) < CALIFICACION_APTITUD_ALTA);
             break;
 
             case 3:
-            actorsForRental.removeIf(actor -> !actor.getAptitudes().contains(Aptitud.DISCURSO));
+            actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.DISCURSO) < CALIFICACION_APTITUD_ALTA);
             break;
             
             case 4:
-            actorsForRental.removeIf(actor -> !actor.getAptitudes().contains(Aptitud.EMOCIONALIDAD));
+            actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.EMOCIONALIDAD) < CALIFICACION_APTITUD_ALTA);
             break;
 
             case 5:
-            actorsForRental.removeIf(actor -> !actor.getAptitudes().contains(Aptitud.IMPROVISACION));
+            actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.IMPROVISACION) < CALIFICACION_APTITUD_ALTA);
             break;
 
         }
