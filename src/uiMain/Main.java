@@ -119,7 +119,7 @@ public class Main {
         String input = in.nextLine();
 
         while(!canBeLong(input)){
-            customPrint("La respuesta introducida no es numérica. Intente de nuevo:", true, "red");
+            customPrint("La respuesta introducida no es numérica o está fuera del rango. Intente de nuevo.", true, "red");
             customPrint(question);
             input = in.nextLine();
         }
@@ -732,7 +732,7 @@ public class Main {
     switch (menuLog){
 
         case 1:
-        long idEntrada = longAsk("Ingrese el número de identificación:");
+        long idEntrada = longAsk("Ingrese el número de identificación.");
         boolean idFlag = false;
         
         for (Cliente cliente : Cliente.clientes){
