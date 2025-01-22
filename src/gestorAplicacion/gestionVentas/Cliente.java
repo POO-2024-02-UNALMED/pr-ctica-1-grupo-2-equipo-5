@@ -111,7 +111,7 @@ public class Cliente {
 
 
     //metodo para contratar actor y enviar dinero a tesorería
-    public byte pagarAlquilerActor(Actor actor, long duracion, Tesoreria tesoreria){
+    public byte pagarContratoActor(Actor actor, long duracion, Tesoreria tesoreria){
 
         if (tipo != "Empresa" || this.cuentaBancaria.getSaldo() < actor.getPrecioContrato(duracion)){ return -1; }
 

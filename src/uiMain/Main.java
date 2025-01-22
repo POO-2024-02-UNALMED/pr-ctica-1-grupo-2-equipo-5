@@ -255,7 +255,7 @@ public class Main {
             customPrint("Teatro Carlos Mayolo", true);
 
             byte[] options = {1, 2, 3, 4, 5, 6};
-            task = ask("Seleccione la tarea a realizar: \n1. Venta de tiquetes.\n2. Gestión de empleados.\n3. Gestión de obras.\n4. Gestión de clases.\n5. Alquiler de actores.\n6. Cerrar el programa.", options, "");
+            task = ask("Seleccione la tarea a realizar: \n1. Venta de tiquetes.\n2. Gestión de empleados.\n3. Gestión de obras.\n4. Gestión de clases.\n5. Contratación de actores.\n6. Cerrar el programa.", options, "");
 
             switch (task){
 
@@ -276,7 +276,7 @@ public class Main {
                 break;
 
                 case 5: 
-                AlquilarActor(); 
+                ContratarActor(); 
                 break;
 
                 case 6:
@@ -719,7 +719,7 @@ public class Main {
         
     }
 
-    public static void AlquilarActor(){
+    public static void ContratarActor(){
 
     byte[] two = {1, 2};
     byte menuLog = ask("Seleccione:\n1. Empresa registrada.\n2. Empresa nueva.", two, "");
@@ -856,7 +856,7 @@ public class Main {
         }
 
         //PREGUNTA NO. 3, 4, 5 (HORARIOS)
-        String diasCadena = "¿Para qué día se necesita el alquiler?\n";
+        String diasCadena = "¿Para qué día se necesita la contratación?\n";
         
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, dd 'de' MMMM 'de' yyyy", new Locale("es"));
 
@@ -872,8 +872,8 @@ public class Main {
 
         customPrint("Lineamiento interno de horarios:\n1. El tiempo mínimo de contratación es de 4 horas.\n2. El tiempo máximo de contratación es de 8 horas.\n3. Solo se puede contratar desde las 10:00 hasta las 22:00.", true, "blue");
 
-        LocalTime inicioHorario = timeAsk("Introduzca horario de inicio del alquiler (Responda en formato HH:MM).");
-        LocalTime finHorario = timeAsk("Introduzca horario de fin del alquiler (Responda en formato HH:MM).");
+        LocalTime inicioHorario = timeAsk("Introduzca horario de inicio de la contratación (Responda en formato HH:MM).");
+        LocalTime finHorario = timeAsk("Introduzca horario de fin de la contratación (Responda en formato HH:MM).");
 
         LocalDateTime fechaInicio = diaEscogido.atTime(inicioHorario);
         LocalDateTime fechaFin = diaEscogido.atTime(finHorario);
@@ -883,13 +883,13 @@ public class Main {
         }
 
         Duration duration = Duration.between(fechaInicio, fechaFin);
-        long duracionAlquiler = duration.toHours();
+        long duracionContrato = duration.toHours();
         
-        if (duracionAlquiler < 4){
+        if (duracionContrato < 4){
             customPrint("El tiempo mínimo de contratación es de 4 horas.", true, "red"); return;
         }
 
-        if (duracionAlquiler > 8){
+        if (duracionContrato > 8){
             customPrint("El tiempo máximo de contratación es de 8 horas.", true, "red"); return;
         }
 
@@ -1005,23 +1005,23 @@ public class Main {
 
             }
 
-        double minActorPrecio = actorsForRental.get(0).getPrecioContrato(duracionAlquiler);
-        double maxActorPrecio = actorsForRental.get(0).getPrecioContrato(duracionAlquiler);
+        double minActorPrecio = actorsForRental.get(0).getPrecioContrato(duracionContrato);
+        double maxActorPrecio = actorsForRental.get(0).getPrecioContrato(duracionContrato);
 
         //conseguir precio de contrato min y max para que el usuario sepa el rango
         for (Actor actor : actorsForRental){
 
-            if (actor.getPrecioContrato(duracionAlquiler) > maxActorPrecio){
-                maxActorPrecio = actor.getPrecioContrato(duracionAlquiler);
-            } else if (actor.getPrecioContrato(duracionAlquiler) < minActorPrecio){
-                minActorPrecio = actor.getPrecioContrato(duracionAlquiler);
+            if (actor.getPrecioContrato(duracionContrato) > maxActorPrecio){
+                maxActorPrecio = actor.getPrecioContrato(duracionContrato);
+            } else if (actor.getPrecioContrato(duracionContrato) < minActorPrecio){
+                minActorPrecio = actor.getPrecioContrato(duracionContrato);
             }
 
         }    
 
         long presupuesto = longAsk("¿Cuál es el presupuesto máximo para el actor?" + "\nTenga en cuenta que el rango de los precios es de " + Actor.formatoPrecio(minActorPrecio) + " a " + Actor.formatoPrecio(maxActorPrecio));
 
-        actorsForRental.removeIf(actor -> actor.getPrecioContrato(duracionAlquiler) > presupuesto);
+        actorsForRental.removeIf(actor -> actor.getPrecioContrato(duracionContrato) > presupuesto);
 
         if (actorsForRental.size() == 0){
             customPrint("No se hallaron actores para el presupuesto");
@@ -1140,8 +1140,8 @@ public class Main {
             }
         }
 
-        customPrint("El actor escogido fue " + actorEscogido.getNombre() + " por un precio de " +  Actor.formatoPrecio(actorEscogido.getPrecioContrato(duracionAlquiler)));
-        byte codigoCompra = empresa.pagarAlquilerActor(actorEscogido, duracionAlquiler, tesoreria);
+        customPrint("El actor escogido fue " + actorEscogido.getNombre() + " por un precio de " +  Actor.formatoPrecio(actorEscogido.getPrecioContrato(duracionContrato)));
+        byte codigoCompra = empresa.pagarContratoActor(actorEscogido, duracionContrato, tesoreria);
         if (codigoCompra == -1){
             customPrint("Saldo insuficiente", true, "red");
         } else{
