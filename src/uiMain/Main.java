@@ -762,6 +762,11 @@ public class Main {
             }
         }
 
+        while (newId <= 0){
+            customPrint("La identificación debe ser un número entero positivo.", true, "red");
+            newId = longAsk("Genere un nuevo número de identificación.");
+        }
+
         empresa = new Cliente("Empresa", newId);
         customPrint("Cliente creado:\n" + empresa, true, "green");
         
@@ -907,7 +912,7 @@ public class Main {
         if (actorsForRental.size() == 0){ 
             customPrint("No hay artistas disponibles con los requerimientos pedidos.", true, "red"); return;
         } else {
-            customPrint(actorsForRental.size() + " actores encontrados durante la preselección.", true, "green");
+            customPrint(actorsForRental.size() + " actor/es encontrado/s durante la preselección.", true, "green");
         }
 
         boolean firstElementAdded = true;
@@ -1001,7 +1006,7 @@ public class Main {
             actorsForRental = advancedList;
             advancedList = null;
             
-            customPrint(actorsForRental.size() + " actores se ajustaron a dos o más características avanzadas.", true, "green");
+            customPrint(actorsForRental.size() + " actor/es se ajustaron a dos o más características avanzadas.", true, "green");
 
             }
 
