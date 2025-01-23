@@ -87,7 +87,7 @@ public class Main {
                     customPrint("La respuesta introducida no hace parte de las opciones.\nIntente de nuevo", true, "red");
                 }
             } else {// si no se puede pasar a byte
-                customPrint("La respuesta introducida no es un número entero.\nIntente de nuevo", true, "red");
+                customPrint("La respuesta introducida no es un número entero o excede el rango.\nIntente de nuevo", true, "red");
             }
         }
     }
@@ -878,6 +878,13 @@ public class Main {
         LocalTime inicioHorario = timeAsk("Introduzca horario de inicio de la contratación (Responda en formato HH:MM).");
         LocalTime finHorario = timeAsk("Introduzca horario de fin de la contratación (Responda en formato HH:MM).");
 
+        LocalTime horaMin = LocalTime.of(8, 0);
+        LocalTime horaMax = LocalTime.of(22, 0); 
+
+        if (inicioHorario.isBefore(horaMin) || finHorario.isAfter(horaMax)){
+            customPrint("El horario de contratación ocurre fuera de los límites del lineamiento.", true, "red"); return;
+        }
+
         LocalDateTime fechaInicio = diaEscogido.atTime(inicioHorario);
         LocalDateTime fechaFin = diaEscogido.atTime(finHorario);
 
@@ -894,13 +901,6 @@ public class Main {
 
         if (duracionContrato > 8){
             customPrint("El tiempo máximo de contratación es de 8 horas.", true, "red"); return;
-        }
-
-        LocalTime horaMin = LocalTime.of(8, 0);
-        LocalTime horaMax = LocalTime.of(22, 0); 
-
-        if (inicioHorario.isBefore(horaMin) || finHorario.isAfter(horaMax)){
-            customPrint("El horario de contratación no cumple con los lineamientos.", true, "red"); return;
         }
 
         actorsForRental.removeIf(actor -> !actor.isDisponible(fechaInicio, fechaFin));
@@ -1152,7 +1152,7 @@ public class Main {
             ArrayList<LocalDateTime> horarioFinal = new ArrayList<>(); horarioFinal.add(fechaInicio); horarioFinal.add(fechaFin);
             actorEscogido.addHorario(horarioFinal);
         }
-        customPrint("Saldo disponible: " + Actor.formatoPrecio(empresa.getCuentaBancaria().getSaldo()));
+        customPrint("Saldo disponible: " + Actor.formatoPrecio(empresa.getCuentaBancaria().getSaldo()), true, "blue");
 
                 
         }
