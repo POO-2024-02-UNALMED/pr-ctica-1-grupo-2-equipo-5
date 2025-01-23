@@ -52,6 +52,10 @@ public class Empleado {
         empleadosPorRendimiento.add(this);
     }
 
+    //Constructor para funcionalidad 4
+
+    public Empleado() {}
+
     //Metodo para verificar si se hizo el trabajo bien
     public void VerificacionTrabajo(){
         Random random = new Random();
