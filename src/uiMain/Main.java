@@ -10,6 +10,7 @@ import java.time.LocalTime;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import gestorAplicacion.gestionVentas.Cliente;
 import gestorAplicacion.gestionClases.Clase;
@@ -67,6 +68,28 @@ public class Main {
 
         LocalTime answer = LocalTime.parse(input);
         return answer;
+    }
+
+    // Método para ingresar horarios de manera más intuitiva. Usado en funcionalidad 4
+    public static LocalDateTime solicitarHorario(String tipo) {
+        LocalDateTime horario = null;
+
+        while (horario == null) {
+            try {
+                String fecha = ask("Ingrese la fecha del " + tipo + " (formato: Año-Mes-Día, Ejemplo: 2025-01-23):");
+                
+                String hora = ask("Ingrese la hora del " + tipo + " (formato: Hora:Minuto, Ejemplo: 14:30):");
+                
+                // Combinar fecha y hora ingresadas
+                String fechaHora = fecha + "T" + hora;
+                
+                // Formatear y parsear la fecha y hora
+                horario = LocalDateTime.parse(fechaHora, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            } catch (DateTimeParseException e) {
+                customPrint("Formato inválido. Asegúrese de seguir el formato especificado. Intente nuevamente.", "red");
+            }
+        }
+        return horario;
     }
 
     //para el método que acepta bytes se revisa si el numero hace parte de las opciones disponibles
@@ -1337,7 +1360,7 @@ public class Main {
         }
     }
  //FUNCIONALIDAD 4
-    public static void gestionClases() {
+    public static void gestionClases() throws InterruptedException {
 
         byte[] dos = {1,2};
 
@@ -1359,7 +1382,7 @@ public class Main {
         
                     if (tipoArtista.equals("director")) {
                         // Crear un nuevo director
-                        Director nuevoDirector = new Director(nombreArtista, idArtista);
+                        new Director(nombreArtista, idArtista);
                         customPrint("Nuevo director agregado: " + nombreArtista + " con ID " + idArtista, "green");
                         customPrint("Recuerde que los directores no reciben clases.", "yellow");
                         return; // Salir del flujo de clases
@@ -1434,11 +1457,19 @@ public class Main {
             } else {
                 nivelClase = "Perfeccionamiento";
             }
+
             customPrint("Se seleccionó el área '" + areaSeleccionada + "' con nivel de clase: " + nivelClase);
-        
-            // Solicitar el horario deseado
-            LocalDateTime inicio = LocalDateTime.parse(ask("Ingrese el horario de inicio (formato: AAAA-MM-DDTHH:MM):"));
-            LocalDateTime fin = LocalDateTime.parse(ask("Ingrese el horario de fin (formato: AAAA-MM-DDTHH:MM):"));
+
+            // Uso del método
+            LocalDateTime inicio = solicitarHorario("inicio");
+            LocalDateTime fin = solicitarHorario("fin");
+
+            // Validar que la hora de fin sea posterior a la de inicio
+            if (fin.isBefore(inicio)) {
+                customPrint("El horario de fin debe ser posterior al horario de inicio. Intente nuevamente.", "red");
+                inicio = solicitarHorario("inicio");
+                fin = solicitarHorario("fin");
+            }
         
             // Buscar una sala disponible en el horario deseado
             Sala salaAsignada = null;
@@ -1496,46 +1527,7 @@ public class Main {
 
 
 
-
-            ArrayList<LocalDateTime> horario = {inicio, fin};
-            double costo = calcularCosto(nivel);
-            if (!artista.getCuentaBancaria().pagar(costo)) {
-                System.out.println("Saldo insuficiente para pagar la clase.");
-                return;
-            }
-
-            Tesoreria.recibirPago(costo); //Crear método o adaptar otros para esta función
-            Clase nuevaClase = new Clase(materia, nivel, sala, profesor, costo, horario);
-            clases.add(nuevaClase);
-            System.out.println("Clase programada exitosamente para el artista " + artista.getNombre() + ".");
-        }
-
-        private static Sala buscarSalaDisponible(List<Sala> salas) {
-            for (Sala sala : salas) {
-                if (sala.isDisponible(null, null) && sala.isAseada()) {
-                    return sala;                                        //AGREAGAR MÉTODOS
-                }
-            }
-        return null; // No se encontró una sala disponible y aseada
-        }  
-                                                
-        private static Profesor buscarProfesorDisponible(List<Profesor> profesores) {
-            for (Profesor profesor : profesores) {
-                if (profesor.isDisponible()) {
-                    return profesor;
-                }
-            }
-            return null; // No se encontró un profesor disponible
-        }
-
-        private static double calcularCosto(int nivel) {
-            switch (nivel) {
-                case 1: return 50.0; // Costo para nivel Introducción
-                case 2: return 75.0; // Costo para nivel Profundización
-                case 3: return 100.0; // Costo para nivel Perfeccionamiento
-                default: return 0.0;
-            }
-        }
-    }
+            //Pago de la clase
+    }// Fin del método
 }
 
