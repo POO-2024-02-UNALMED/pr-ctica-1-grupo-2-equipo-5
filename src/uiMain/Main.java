@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Locale;
-
+import java.util.Random;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Duration;
@@ -1161,6 +1161,8 @@ public class Main {
 
     //Base para funcionalidad 2
     public static void gestionEmpleados(){
+        final String[] nombres = {"Miguel", "Juan", "Danna", "Carlos", "Oscar", "Julian", "Maria", "Paula", "Esteban", "Sara", "Frank", "Pablo", "Jimena", "Daniela"};
+        final String [] Apellidos = {"Perez", "Hernandez", "Montoya", "Velez", "Aguirre", "Salazar", "Restrepo", "Rodriguez", "Garcia", "Lopez", "Sanchez", "Ramirez"};
         //Obtener lista de empleados por ocupacion:
         //Aseador
         String msgBase = "\n";
@@ -1172,7 +1174,7 @@ public class Main {
                 msgBase = Persona + msgBase;
             }
         }
-        customPrint("Seguridad", true, "blue");
+        customPrint("Seguridad", true, "red");
         customPrint(msgBase);
         msgBase = "\n";
         for(Empleado Persona : Empleado.getTipoAseador()){
@@ -1183,7 +1185,7 @@ public class Main {
                 msgBase = Persona + msgBase;
             }
         }
-        customPrint("Seguridad", true, "blue");
+        customPrint("Seguridad", true, "red");
         customPrint(msgBase);
         msgBase = "\n";
         for(Empleado Persona : Empleado.getTipoProfesor()){
@@ -1194,7 +1196,7 @@ public class Main {
                 msgBase = Persona + msgBase;
             }
         }
-        customPrint("Profesor", true, "blue");
+        customPrint("Profesor", true, "red");
         customPrint(msgBase);
         
         String question = "Deseas Contratar o Despedir a algun empleado \n1. Si \n2. No";
@@ -1203,11 +1205,31 @@ public class Main {
 
         switch (respuesta) {
             case 1:
-                question = "Operacion a realizar \n1.Contratar \n2.Despedir";
-                byte[] options2 = {1,2};
+                question = "Operacion a realizar \n1.Contratar \n2.Despedir \n0. Salir";
+                byte[] options2 = {0,1,2};
                 byte answer = ask(question, options2, "green");
                 if(answer == 1){
-                    
+                    String pregunta = "Que tipo de Empleado deseas: 0. Salir \n1. Aseador \n2. Seguridad \n3. Profesor";
+                    byte[] option = {0,1,2,3};
+                    byte res = ask(pregunta, option, "red");
+                    Random random = new Random();
+                    switch (res) {
+                        case 1:
+                            String Aseador = "Aseador";
+                            int nombre = random.nextInt(nombres.length);
+                            int apellido = random.nextInt(Apellidos.length);
+                            long id = random.nextInt(1000000 - 100 + 1) + 100;
+                            new Empleado(nombres[nombre] + Apellidos[apellido], id, apellido, Aseador)
+                            break;
+                        case 2:
+                            String Seguridad = "Seguridad";
+                            break;
+                        case 3:
+                            String Profesor = "Profesor";
+                            break;
+                        case 0:
+                            break;
+                    }
                 }
                 break;
         

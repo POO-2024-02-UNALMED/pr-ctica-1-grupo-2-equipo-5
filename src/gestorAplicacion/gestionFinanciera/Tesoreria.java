@@ -1,7 +1,7 @@
 package gestorAplicacion.gestionFinanciera;
 
 public class Tesoreria {
-    private static double DineroEnCaja;
+    private static double dineroEnCaja;
     private static float metaSemanal;
     private static CuentaBancaria cuenta;
     private float total;
@@ -9,7 +9,7 @@ public class Tesoreria {
     //Constructor
     public Tesoreria(float total, float metaSemanal){
         this.total = total;
-        Tesoreria.DineroEnCaja = 0;
+        Tesoreria.dineroEnCaja = 0;
         Tesoreria.metaSemanal = metaSemanal;
         Tesoreria.cuenta = new CuentaBancaria(1, 10000000);
     }
@@ -23,7 +23,11 @@ public class Tesoreria {
             return false;
         }
     }
-
+    //Transferir dineroencaja a la cuenta
+    public void transferenciaFondos(){
+        this.getCuenta().ingresar(dineroEnCaja);
+        dineroEnCaja = 0;
+    }
     //Pago sueldo base
     public void pagarSueldoBase(CuentaBancaria Cuenta, double Cantidad){
         Tesoreria.cuenta.transferencia(Cuenta, Cantidad);
@@ -37,10 +41,10 @@ public class Tesoreria {
         Tesoreria.cuenta = cuenta;
     }
     public double getDineroEnCaja() {
-        return DineroEnCaja;
+        return dineroEnCaja;
     }
-    public void setDineroEnCaja(double dineroEnCaja) {
-        DineroEnCaja = dineroEnCaja;
+    public void setDineroEnCaja(double newDinero) {
+        dineroEnCaja = newDinero;
     }
     public float getMetaTotal() {
         return metaSemanal;
