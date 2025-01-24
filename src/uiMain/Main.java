@@ -267,7 +267,7 @@ public class Main {
     }
     Sala sala1 = new Sala();
 
-    public static void main(String args[]){  
+    public static void main(String args[]) throws InterruptedException {  
 
         byte task = -1;
 
