@@ -30,11 +30,8 @@ public class funcionalidad2 {
             Empleado2.setTrabajoRealizado(250);
             Empleado3.setTrabajoRealizado(20);
             Empleado4.setTrabajoRealizado(10);
-            Empleado9.setTrabajoRealizado(1000);
+            Empleado9.setTrabajoRealizado(4000);
             Empleado2.setMetaSemanal(3);
-        
-
-            
 
             Main.gestionEmpleados();
         }

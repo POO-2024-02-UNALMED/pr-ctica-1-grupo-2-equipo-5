@@ -1393,23 +1393,27 @@ public class Main {
         }
         //Realizar pago
         if(totalSaldos > fondos){
+            ArrayList<Empleado>  Cuentas_Pagadas = new ArrayList<>();
             double cantPagada = 0;
             customPrint("Upps... No se puede realizar los pagos adecuadamente", "Red");
             customPrint("Realizando pagos de manera equitativa...");
             for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
                 boolean transaccion = tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.getDeuda() + Persona.calcularSueldo()) *0.5);  //Establecer cuanto se le debe a la persona
                 if(transaccion != true){
-                    System.out.println("Saldo insuficiente");
+                    System.out.println("No se le puede pagar a " + Persona.getNombre());
+                    Persona.setDeuda(Persona.getDeuda() + Persona.calcularSueldo());
+                    System.out.println("nueva deuda: " + Persona.getDeuda() );
                 }
                 else{
                     cantPagada = cantPagada + ((Persona.calcularSueldo() + Persona.getDeuda())*0.5);
-                    Persona.setDeuda((Persona.getDeuda() + (Persona.calcularSueldo() + Persona.getDeuda())* 0.5)); 
+                    Persona.setDeuda((Persona.getDeuda() + (Persona.calcularSueldo() + Persona.getDeuda())* 0.5));
+                    Cuentas_Pagadas.add(Persona); 
                 }
             }
             customPrint("Pago existoso", true, "green");
             String msg = "Se pago un total de " + cantPagada;
             customPrint(msg);
-            customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
+            customPrint("Se realizo el pago a " + Cuentas_Pagadas.size() + " cuentas en total");
             customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
         }
         else{
