@@ -3,6 +3,7 @@ package uiMain;
 import java.util.List;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Random;
 import java.time.LocalDateTime;
@@ -1184,8 +1185,8 @@ public class Main {
 
     //Base para funcionalidad 2
     public static void gestionEmpleados(){
-        final String[] nombres = {"Miguel", "Juan", "Danna", "Carlos", "Oscar", "Julian", "Maria", "Paula", "Esteban", "Sara", "Frank", "Pablo", "Jimena", "Daniela"};
-        final String [] Apellidos = {"Perez", "Hernandez", "Montoya", "Velez", "Aguirre", "Salazar", "Restrepo", "Rodriguez", "Garcia", "Lopez", "Sanchez", "Ramirez"};
+        final String[] nombres = {"Miguel", "Juan", "Danna", "Carlos", "Oscar", "Julian", "Maria", "Paula", "Esteban", "Sara", "Frank", "Pablo", "Jimena", "Daniela", "Ana", "Emma", "Samuel"};
+        final String [] Apellidos = {"Perez", "Hernandez", "Montoya", "Velez", "Aguirre", "Salazar", "Restrepo", "Rodriguez", "Garcia", "Lopez", "Sanchez", "Ramirez", "Gonzales", "Gomez", "Martinez"};
         //Obtener lista de empleados por ocupacion:
         //Aseador
         String msgBase = "\n";
@@ -1208,7 +1209,7 @@ public class Main {
                 msgBase = Persona + msgBase;
             }
         }
-        customPrint("Seguridad", true, "red");
+        customPrint("Aseador", true, "red");
         customPrint(msgBase);
         msgBase = "\n";
         for(Empleado Persona : Empleado.getTipoProfesor()){
@@ -1239,28 +1240,59 @@ public class Main {
                     switch (res) {
                         case 1:
                             String Aseador = "Aseador";
-                            int nombre = random.nextInt(nombres.length);
-                            int apellido = random.nextInt(Apellidos.length);
-                            long id = random.nextInt(1000000 - 100 + 1) + 100;
-                            new Empleado(nombres[nombre] + Apellidos[apellido], id, apellido, Aseador)
+                            int nombre_A = random.nextInt(nombres.length);
+                            int apellido_A = random.nextInt(Apellidos.length);
+                            long id_A = random.nextInt(1000000 - 100 + 1) + 100;
+                            Empleado nuevo_empleado_A = new Empleado(nombres[nombre_A] + " " + Apellidos[apellido_A], id_A, Aseador);
+                            customPrint("Se contrato a " + nuevo_empleado_A.getNombre());
                             break;
                         case 2:
                             String Seguridad = "Seguridad";
+                            int nombre_S = random.nextInt(nombres.length);
+                            int apellido_S = random.nextInt(Apellidos.length);
+                            long id_S = random.nextInt(1000000 - 100 + 1) + 100;
+                            Empleado nuevo_empleado_S = new Empleado(nombres[nombre_S] + " " + Apellidos[apellido_S], id_S, Seguridad);
+                            customPrint("Se contrato a " + nuevo_empleado_S.getNombre());
                             break;
                         case 3:
                             String Profesor = "Profesor";
+                            int nombre_P = random.nextInt(nombres.length);
+                            int apellido_P = random.nextInt(Apellidos.length);
+                            long id_P = random.nextInt(1000000 - 100 + 1) + 100;
+                            Empleado nuevo_empleado_P = new Empleado(nombres[nombre_P] + " " + Apellidos[apellido_P], id_P, Profesor);
+                            customPrint("Se contrato a " + nuevo_empleado_P.getNombre());
                             break;
                         case 0:
                             break;
                     }
                 }
-                break;
+                else{
+                    if(answer == 2){
+                        question = "Introduce el id del trabajador a despedir";
+                        long buscar_id = longAsk(question);
+                        for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                            if(Persona.getId() == buscar_id){
+                                double liquidacion = (Persona.calcularSueldo()*1.2) + Persona.getDeuda();
+                                tesoreria.getCuenta().transferencia(Persona.getCuenta(), liquidacion);
+                                Empleado.getEmpleadosPorRendimiento().remove(Persona);
+                                customPrint("Se despidio a " + Persona.getNombre());
+                            }
+                        }
+                    }
+                    else{
+                        break;
+                    }
+                }
         
             case 2:
                 break;
         }
-
-
+        try{
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            customPrint("La pausa fue interrumpida.");
+            
+        }
         //Pagar nomina a empleados:
         double fondos = tesoreria.getCuenta().getSaldo() + tesoreria.getDineroEnCaja();
         double totalSaldos = 0;

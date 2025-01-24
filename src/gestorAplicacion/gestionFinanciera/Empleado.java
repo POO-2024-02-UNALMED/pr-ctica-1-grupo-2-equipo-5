@@ -30,10 +30,10 @@ public class Empleado {
     private ArrayList<ArrayList<LocalDateTime>> horario = new ArrayList<>();
 
     //Constructor
-    public Empleado(String nombre, long ID, int metaSemanal, String ocupacion) {
+    public Empleado(String nombre, long ID, String ocupacion) {
         this.nombre = nombre;
         this.id = ID;
-        this.metaSemanal = metaSemanal;
+        this.metaSemanal = 1;
         this.cuenta = new CuentaBancaria(ID, 0);
         this.ocupacion = ocupacion;
         this.deuda = 0;
