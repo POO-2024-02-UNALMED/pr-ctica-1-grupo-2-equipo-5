@@ -10,6 +10,7 @@ import java.time.LocalTime;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import gestorAplicacion.gestionVentas.Cliente;
 import gestorAplicacion.gestionClases.Clase;
@@ -67,6 +68,28 @@ public class Main {
 
         LocalTime answer = LocalTime.parse(input);
         return answer;
+    }
+
+    // Método para ingresar horarios de manera más intuitiva. Usado en funcionalidad 4
+    public static LocalDateTime solicitarHorario(String tipo) {
+        LocalDateTime horario = null;
+
+        while (horario == null) {
+            try {
+                String fecha = ask("Ingrese la fecha del " + tipo + " (formato: Año-Mes-Día, Ejemplo: 2025-01-23):");
+                
+                String hora = ask("Ingrese la hora del " + tipo + " (formato: Hora:Minuto, Ejemplo: 14:30):");
+                
+                // Combinar fecha y hora ingresadas
+                String fechaHora = fecha + "T" + hora;
+                
+                // Formatear y parsear la fecha y hora
+                horario = LocalDateTime.parse(fechaHora, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            } catch (DateTimeParseException e) {
+                customPrint("Formato inválido. Asegúrese de seguir el formato especificado. Intente nuevamente.", "red");
+            }
+        }
+        return horario;
     }
 
     //para el método que acepta bytes se revisa si el numero hace parte de las opciones disponibles
@@ -1359,7 +1382,7 @@ public class Main {
         }
     }
  //FUNCIONALIDAD 4
-    public static void gestionClases() {
+    public static void gestionClases() throws InterruptedException {
 
         byte[] dos = {1,2};
 
@@ -1381,7 +1404,7 @@ public class Main {
         
                     if (tipoArtista.equals("director")) {
                         // Crear un nuevo director
-                        Director nuevoDirector = new Director(nombreArtista, idArtista);
+                        new Director(nombreArtista, idArtista);
                         customPrint("Nuevo director agregado: " + nombreArtista + " con ID " + idArtista, "green");
                         customPrint("Recuerde que los directores no reciben clases.", "yellow");
                         return; // Salir del flujo de clases
@@ -1403,51 +1426,10 @@ public class Main {
         }
         
         // Si el artista no es un actor, finalizar el flujo
-        if (!(artista instanceof Actor)) {
-            customPrint("Solo los actores pueden recibir clases.", "yellow");
-            return; // Salir del flujo de clases
-        }
-        
-        // Mostrar calificaciones actuales y continuar con el flujo
-        customPrint("Calificaciones actuales del artista " + artista.getNombre() + ":");
-        customPrint("Calificaciones de calificadores: " + artista.getCalificaciones());
-        customPrint("Calificaciones del público: " + artista.getCalificacionesPublico());
-
-        //Se enseñan obras en "Estado Crítico"
-        ArrayList<Obra> obrasCritics = Obra.mostrarObrasCriticas();
-
-        // Mostrar todas las obras críticas
-        if (obrasCritics.isEmpty()) {
-            customPrint("No hay obras en estado crítico.", "yellow");
-        } else {
-            customPrint("Obras en estado crítico:");
-            for (Obra obra : obrasCritics) {
-                customPrint("- '" + obra.getNombre() + "' (Promedio de calificaciones: " + obra.promedioCalificacion() + ")");
-    
-                // Revisar aspectos críticos y las calificaciones de los actores
-                for (Aptitud aspecto : obra.getPapeles()) { // Obtenemos cada aptitud crítica de la obra
-                    boolean encontrado = false;
-                    for (Actor actor : obra.getReparto()) { // Revisamos cada actor en el reparto
-                        double calificacion = actor.getCalificacionPorAptitud(aspecto);
-                        if (calificacion != -1 && calificacion < 3.0) { // Si la calificación es baja
-                            customPrint("El aspecto '" + aspecto + "' tiene una calificación baja (" + calificacion + ").", "red");
-                            customPrint("Notificando al actor: " + actor.getNombre());
-                            encontrado = true;
-                            break;
-                        }
-                    }
-                    if (!encontrado) {
-                        customPrint("No hay actores con calificaciones bajas en el aspecto '" + aspecto + "'.", "yellow");
-                    }
-                }
-            }
-        }
-
-        // Continuar con las recomendaciones y programación de clases
         if (artista instanceof Actor) {
             Actor actor = (Actor) artista;
         
-            // Recomendación de materias para el actor
+            // Mostrar áreas de mejora recomendadas
             List<Aptitud> areasDeMejora = actor.obtenerAreasDeMejora();
             customPrint("Áreas recomendadas para mejorar:");
             for (int i = 0; i < Math.min(3, areasDeMejora.size()); i++) {
@@ -1455,163 +1437,119 @@ public class Main {
                 double calificacion = actor.getCalificacionPorAptitud(aptitud);
                 customPrint("- " + aptitud + " (Calificación: " + calificacion + ")", "yellow");
             }
-        }
         
-        byte respuesta = ask("¿Desea continuar programando clases en estas áreas?\n1. Sí\n2. No", dos, "");
-        if (respuesta == 2) {
-            customPrint("Finalizando gestión de clases.", "blue");
-            return; // Salir del flujo si no desea continuar
-        }
+            // Preguntar si quiere seguir la recomendación
+            byte respuesta = ask("¿Desea programar una clase basada en las áreas recomendadas?\n1. Sí\n2. No", dos, "");
+            Aptitud areaSeleccionada = null;
         
-        customPrint("Programando una clase para el actor: " + artista.getNombre(), "blue");
+            if (respuesta == 1) {
+                // Seleccionar el área de mejora más baja recomendada
+                areaSeleccionada = areasDeMejora.get(0);
+                customPrint("Se seleccionó el área '" + areaSeleccionada + "' automáticamente.");
+            } else {
+                byte respuesta1 = ask("¿Desea programar otra clase?\n1. Sí\n2. No", dos, "");
+                if (respuesta1 == 1){
+                // Permitir al usuario elegir cualquier aptitud
+                    customPrint("Seleccione un área para programar una clase:");
+                    for (int i = 0; i < actor.getAptitudes().size(); i++) {
+                        Aptitud aptitud = actor.getAptitudes().get(i);
+                        customPrint((i + 1) + ". " + aptitud);
+                    }
+                    byte[] opcionesAptitudes = new byte[actor.getAptitudes().size()];
+                    for (byte i = 0; i < opcionesAptitudes.length; i++) {
+                        opcionesAptitudes[i] = (byte) (i + 1);
+                    }
+                    
+                    byte opcion = ask("Ingrese el número del área deseada:", opcionesAptitudes, "");
+                    areaSeleccionada = actor.getAptitudes().get(opcion - 1);
+                }
+                else {
+                    customPrint("Finalizando gestión de clases.", "blue");
+                    return;
+                }
+            }
+        
+            // Determinar el nivel de la clase
+            double calificacionActual = actor.getCalificacionPorAptitud(areaSeleccionada);
+            String nivelClase;
+            if (calificacionActual < 3.0) {
+                nivelClase = "Introducción";
+            } else if (calificacionActual < 4.0) {
+                nivelClase = "Profundización";
+            } else {
+                nivelClase = "Perfeccionamiento";
+            }
 
-        // Paso 1: Seleccionar un área de mejora
-        customPrint("Revisando áreas de mejora...");
-        List<Aptitud> areasDeMejora = artista.obtenerAreasDeMejora();
+            customPrint("Se seleccionó el área '" + areaSeleccionada + "' con nivel de clase: " + nivelClase);
 
-        // Si no hay áreas de mejora, no se puede continuar
-        if (areasDeMejora.isEmpty()) {
-            customPrint("No hay áreas de mejora identificadas para este actor. Finalizando.", "yellow");
-            return;
-        }
+            // Uso del método
+            LocalDateTime inicio = solicitarHorario("inicio");
+            LocalDateTime fin = solicitarHorario("fin");
 
-        // Mostrar las áreas y permitir al usuario elegir
-        customPrint("Seleccione un área de mejora:");
-        for (int i = 0; i < areasDeMejora.size(); i++) {
-            customPrint((i + 1) + ". " + areasDeMejora.get(i));
-        }
-        int seleccion = intAsk("Ingrese el número del área seleccionada:", 1, areasDeMejora.size());
-        Aptitud aptitudSeleccionada = areasDeMejora.get(seleccion - 1);
-
-        // Paso 2: Determinar el nivel de la clase
-        double calificacion = artista.getCalificacionPorAptitud(aptitudSeleccionada);
-        String nivelClase;
-
-        if (calificacion < 3.0) {
-            nivelClase = "Introducción";
-        } else if (calificacion < 4.0) {
-            nivelClase = "Profundización";
+            // Validar que la hora de fin sea posterior a la de inicio
+            if (fin.isBefore(inicio)) {
+                customPrint("El horario de fin debe ser posterior al horario de inicio. Intente nuevamente.", "red");
+                inicio = solicitarHorario("inicio");
+                fin = solicitarHorario("fin");
+            }
+        
+            // Buscar una sala disponible en el horario deseado
+            Sala salaAsignada = null;
+            for (Sala sala : Sala.getSalas()) {
+                if (sala.getAseado() && sala.isDisponible(inicio, fin)) {
+                    salaAsignada = sala;
+                    break;
+                }
+            }
+        
+            if (salaAsignada == null) {
+                customPrint("No hay salas disponibles en el horario deseado o no están limpias.", "red");
+                return;
+            }
+        
+            customPrint("Sala asignada: " + salaAsignada.getNumeroSala());
+        
+            // Asignar el horario a la sala
+            ArrayList<LocalDateTime> nuevoHorario = new ArrayList<>();
+            nuevoHorario.add(inicio);
+            nuevoHorario.add(fin);
+            salaAsignada.anadirHorario(nuevoHorario);
+        
+            // Buscar un profesor capacitado y disponible (aleatoriamente)
+            Profesor profesorAsignado = null;
+            for (Empleado empleado : Empleado.getTipoProfesor()) {
+                if (empleado instanceof Profesor) {
+                    Profesor profesor = (Profesor) empleado;
+        
+                    // Simular disponibilidad aleatoria
+                    boolean disponible = Math.random() > 0.5; // 50% de probabilidad de estar disponible
+                    if (profesor.tieneEspecializacion(areaSeleccionada) && disponible) {
+                        profesorAsignado = profesor;
+                        break;
+                    }
+                }
+            }
+        
+            if (profesorAsignado == null) {
+                customPrint("No hay profesores disponibles con especialización en el área seleccionada o están ocupados.", "red");
+                return;
+            }
+        
+            customPrint("Profesor asignado: " + profesorAsignado.getNombre());
+        
+            // Clase programada exitosamente
+            customPrint("Clase programada exitosamente en el área '" + areaSeleccionada + "' con el profesor '" 
+                + profesorAsignado.getNombre() + "' en la sala '" + salaAsignada.getNumeroSala() + "'.", "green");
         } else {
-            nivelClase = "Perfeccionamiento";
+            customPrint("Solo los actores pueden recibir clases.", "red");
         }
-        customPrint("Se programará una clase de nivel: " + nivelClase, "green");
 
-        // Paso 3: Buscar una sala disponible
-        Sala salaDisponible = Sala.buscarSalaDisponible();
-        if (salaDisponible == null) {
-            customPrint("No hay salas disponibles para programar la clase.", "red");
-            return;
-        }
-        customPrint("Sala asignada: " + salaDisponible.getNombre(), "green");
-
-        // Paso 4: Asignar un profesor calificador
-        Profesor profesorAsignado = Profesor.buscarProfesorDisponible(aptitudSeleccionada);
-        if (profesorAsignado == null) {
-            customPrint("No hay profesores disponibles capacitados en: " + aptitudSeleccionada, "red");
-            return;
-        }
-        customPrint("Profesor asignado: " + profesorAsignado.getNombre(), "green");
-
-        // Paso 5: Confirmar y registrar la clase
-        customPrint("Confirmando programación de la clase...");
-        Clase nuevaClase = new Clase(artista, aptitudSeleccionada, nivelClase, salaDisponible, profesorAsignado);
-        salaDisponible.programarClase(nuevaClase);
-        profesorAsignado.agendarClase(nuevaClase);
-
-        customPrint("Clase programada exitosamente:", "green");
-        customPrint("- Actor: " + artista.getNombre());
-        customPrint("- Área: " + aptitudSeleccionada);
-        customPrint("- Nivel: " + nivelClase);
-        customPrint("- Sala: " + salaDisponible.getNombre());
-        customPrint("- Profesor: " + profesorAsignado.getNombre());
         
 
 
 
 
-
-
-
-
-    
-
-        byte respuesta = ask("¿Desea programar una clase?\n" + "1.Sí\n" + "2.No", two, "");
-
-        switch (respuesta) {
-            case 1:
-                
-                break;
-        
-            case 2:
-
-                break;
-        }
-            programarClase(scanner, artista, clases); //Crear método para programar clase
-
-        private static void programarClase(Scanner scanner, Artista artista, List<Clase> clases) {
-            System.out.print("Ingrese la materia de la clase: ");
-            String materia = scanner.nextLine();
-
-            System.out.print("Ingrese el nivel de la clase (1 = Introducción, 2 = Profundización, 3 = Perfeccionamiento): ");
-            int nivel = scanner.nextInt();
-            scanner.nextLine();
-
-            Sala sala = estaDisponible(); //Adpatar método de sala
-            if (sala == null) {
-                System.out.println("No hay salas disponibles y aseadas.");
-                return;
-            }
-
-            Profesor profesor = buscarProfesorDisponible();
-            if (profesor == null) {
-                System.out.println("No hay profesores disponibles.");
-                return;
-            }
-
-            System.out.print("Ingrese la hora de inicio de la clase (formato: yyyy-MM-ddTHH:mm): ");
-            LocalDateTime inicio = LocalDateTime.parse(scanner.nextLine());
-            System.out.print("Ingrese la hora de fin de la clase (formato: yyyy-MM-ddTHH:mm): ");
-            LocalDateTime fin = LocalDateTime.parse(scanner.nextLine());
-
-            ArrayList<LocalDateTime> horario = {inicio, fin};
-            double costo = calcularCosto(nivel);
-            if (!artista.getCuentaBancaria().pagar(costo)) {
-                System.out.println("Saldo insuficiente para pagar la clase.");
-                return;
-            }
-
-            Tesoreria.recibirPago(costo); //Crear método o adaptar otros para esta función
-            Clase nuevaClase = new Clase(materia, nivel, sala, profesor, costo, horario);
-            clases.add(nuevaClase);
-            System.out.println("Clase programada exitosamente para el artista " + artista.getNombre() + ".");
-        }
-
-        private static Sala buscarSalaDisponible(List<Sala> salas) {
-            for (Sala sala : salas) {
-                if (sala.isDisponible(null, null) && sala.isAseada()) {
-                    return sala;                                        //AGREAGAR MÉTODOS
-                }
-            }
-        return null; // No se encontró una sala disponible y aseada
-        }  
-                                                
-        private static Profesor buscarProfesorDisponible(List<Profesor> profesores) {
-            for (Profesor profesor : profesores) {
-                if (profesor.isDisponible()) {
-                    return profesor;
-                }
-            }
-            return null; // No se encontró un profesor disponible
-        }
-
-        private static double calcularCosto(int nivel) {
-            switch (nivel) {
-                case 1: return 50.0; // Costo para nivel Introducción
-                case 2: return 75.0; // Costo para nivel Profundización
-                case 3: return 100.0; // Costo para nivel Perfeccionamiento
-                default: return 0.0;
-            }
-        }
-    }
+            //Pago de la clase
+    }// Fin del método
 }
 
