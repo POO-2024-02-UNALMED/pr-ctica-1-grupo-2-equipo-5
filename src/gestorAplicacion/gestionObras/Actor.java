@@ -28,11 +28,18 @@ public class Actor extends Artista{
     private List <Aptitud> aptitudes = new ArrayList<>();
     public static NumberFormat cop = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
     private ArrayList<Double> calificacionesAptitudes = new ArrayList<>(Arrays.asList(0.0, 0.0, 0.0, 0.0, 0.0)); // Calificaciones asociadas a las aptitudes
+    private ArrayList<ArrayList<Double>> historialCalificaciones;
+
 
     public Actor(String nombre, long id){ 
         super(nombre, id);
         actors.add(this); 
         getArtistas().add(this);
+        // Inicializar todas las aptitudes del enum Aptitud, ya que todos los actores tienen todas las aptitudes
+        for (Aptitud aptitud : Aptitud.values()) {
+            aptitudes.add(aptitud); 
+            historialCalificaciones.add(new ArrayList<>()); // Crear espacio para las calificaciones de esa aptitud
+        }
     }
 
     public String toString(){
@@ -138,6 +145,31 @@ public class Actor extends Artista{
     
         return areasDeMejora;
     }
-    
+
+    public ArrayList<Double> getHistorialCalificaciones(Aptitud aptitud) {
+        int index = aptitudes.indexOf(aptitud);
+        return index != -1 ? historialCalificaciones.get(index) : null;
+    }
+
+    public double promedioCalificacion(Aptitud aptitud) {
+        List<Double> calificaciones = historialCalificaciones.get(aptitud);
+        return calificaciones == null ? 0 : calificaciones.stream().mapToDouble(Double::doubleValue).average().orElse(0);
+    }
+
+    public boolean huboMejora(Aptitud aptitud) {
+        ArrayList<Double> calificaciones = getHistorialCalificaciones(aptitud);
+        if (calificaciones == null || calificaciones.size() < 2) return false;
+        int n = calificaciones.size();
+        return calificaciones.get(n - 1) > calificaciones.get(n - 2);
+    }
+
+    public boolean noHaMejoradoEnCuatroIntentos(Aptitud aptitud) {
+        ArrayList<Double> calificaciones = getHistorialCalificaciones(aptitud);
+        if (calificaciones == null || calificaciones.size() < 4) return false;
+        int n = calificaciones.size();
+        return calificaciones.get(n - 1) <= calificaciones.get(n - 2)
+                && calificaciones.get(n - 2) <= calificaciones.get(n - 3)
+                && calificaciones.get(n - 3) <= calificaciones.get(n - 4);
+    }
 }
 

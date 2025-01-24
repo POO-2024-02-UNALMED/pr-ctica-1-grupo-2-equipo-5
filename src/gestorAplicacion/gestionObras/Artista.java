@@ -9,7 +9,7 @@ public abstract class Artista {
     private float calificacion;
     protected long id;
     private float promedio;
-    private CuentaBancaria cuenta;
+    protected CuentaBancaria cuenta;
     private ArrayList<ArrayList<LocalDateTime>> horario;
     private Clase clase;
     protected String nombre;
