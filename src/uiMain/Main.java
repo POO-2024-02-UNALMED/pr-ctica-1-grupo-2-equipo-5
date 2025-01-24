@@ -1189,104 +1189,126 @@ public class Main {
         final String [] Apellidos = {"Perez", "Hernandez", "Montoya", "Velez", "Aguirre", "Salazar", "Restrepo", "Rodriguez", "Garcia", "Lopez", "Sanchez", "Ramirez", "Gonzales", "Gomez", "Martinez"};
         //Obtener lista de empleados por ocupacion:
         //Aseador
-        String msgBase = "\n";
-        for(Empleado Persona : Empleado.getTipoSeguridad()){
-            if(msgBase != "\n"){
-                msgBase = msgBase + Persona;
-            }
-            else{
-                msgBase = Persona + msgBase;
-            }
-        }
-        customPrint("Seguridad", true, "red");
-        customPrint(msgBase);
-        msgBase = "\n";
-        for(Empleado Persona : Empleado.getTipoAseador()){
-            if(msgBase != "\n"){
-                msgBase = msgBase + Persona;
-            }
-            else{
-                msgBase = Persona + msgBase;
-            }
-        }
-        customPrint("Aseador", true, "red");
-        customPrint(msgBase);
-        msgBase = "\n";
-        for(Empleado Persona : Empleado.getTipoProfesor()){
-            if(msgBase != "\n"){
-                msgBase = msgBase + Persona;
-            }
-            else{
-                msgBase = Persona + msgBase;
-            }
-        }
-        customPrint("Profesor", true, "red");
-        customPrint(msgBase);
-        
-        String question = "Deseas Contratar o Despedir a algun empleado \n1. Si \n2. No";
-        byte[] options = {1,2};
-        byte respuesta = ask(question, options, "green");
-
-        switch (respuesta) {
-            case 1:
-                question = "Operacion a realizar \n1.Contratar \n2.Despedir \n0. Salir";
-                byte[] options2 = {0,1,2};
-                byte answer = ask(question, options2, "green");
-                if(answer == 1){
-                    String pregunta = "Que tipo de Empleado deseas: 0. Salir \n1. Aseador \n2. Seguridad \n3. Profesor";
-                    byte[] option = {0,1,2,3};
-                    byte res = ask(pregunta, option, "red");
-                    Random random = new Random();
-                    switch (res) {
-                        case 1:
-                            String Aseador = "Aseador";
-                            int nombre_A = random.nextInt(nombres.length);
-                            int apellido_A = random.nextInt(Apellidos.length);
-                            long id_A = random.nextInt(1000000 - 100 + 1) + 100;
-                            Empleado nuevo_empleado_A = new Empleado(nombres[nombre_A] + " " + Apellidos[apellido_A], id_A, Aseador);
-                            customPrint("Se contrato a " + nuevo_empleado_A.getNombre());
-                            break;
-                        case 2:
-                            String Seguridad = "Seguridad";
-                            int nombre_S = random.nextInt(nombres.length);
-                            int apellido_S = random.nextInt(Apellidos.length);
-                            long id_S = random.nextInt(1000000 - 100 + 1) + 100;
-                            Empleado nuevo_empleado_S = new Empleado(nombres[nombre_S] + " " + Apellidos[apellido_S], id_S, Seguridad);
-                            customPrint("Se contrato a " + nuevo_empleado_S.getNombre());
-                            break;
-                        case 3:
-                            String Profesor = "Profesor";
-                            int nombre_P = random.nextInt(nombres.length);
-                            int apellido_P = random.nextInt(Apellidos.length);
-                            long id_P = random.nextInt(1000000 - 100 + 1) + 100;
-                            Empleado nuevo_empleado_P = new Empleado(nombres[nombre_P] + " " + Apellidos[apellido_P], id_P, Profesor);
-                            customPrint("Se contrato a " + nuevo_empleado_P.getNombre());
-                            break;
-                        case 0:
-                            break;
-                    }
+        boolean repetidor = false;
+        do{
+            String msgBase = "\n";
+            for(Empleado Persona : Empleado.getTipoSeguridad()){
+                if(msgBase != "\n"){
+                    msgBase = msgBase + Persona.getNombre() + "\n";
                 }
                 else{
-                    if(answer == 2){
-                        question = "Introduce el id del trabajador a despedir";
-                        long buscar_id = longAsk(question);
-                        for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                            if(Persona.getId() == buscar_id){
-                                double liquidacion = (Persona.calcularSueldo()*1.2) + Persona.getDeuda();
-                                tesoreria.getCuenta().transferencia(Persona.getCuenta(), liquidacion);
-                                Empleado.getEmpleadosPorRendimiento().remove(Persona);
-                                customPrint("Se despidio a " + Persona.getNombre());
-                            }
+                    msgBase = Persona.getNombre() + msgBase;
+                }
+            }
+            customPrint("Seguridad", true, "red");
+            customPrint(msgBase);
+            msgBase = "\n";
+            for(Empleado Persona : Empleado.getTipoAseador()){
+                if(msgBase != "\n"){
+                    msgBase = msgBase + Persona.getNombre() + "\n";
+                }
+                else{
+                    msgBase = Persona.getNombre() + msgBase;
+                }
+            }
+            customPrint("Aseador", true, "red");
+            customPrint(msgBase);
+            msgBase = "\n";
+            for(Empleado Persona : Empleado.getTipoProfesor()){
+                if(msgBase != "\n"){
+                    msgBase = msgBase + Persona.getNombre() + "\n";
+                }
+                else{
+                    msgBase = Persona.getNombre() + msgBase;
+                }
+            }
+            customPrint("Profesor", true, "red");
+            customPrint(msgBase);
+        
+            String question = "Deseas Contratar o Despedir a algun empleado \n1. Si \n2. No";
+            byte[] options = {1,2};
+            byte respuesta = ask(question, options, "green");
+
+            switch (respuesta) {
+                case 1:
+                    question = "Operacion a realizar \n1.Contratar \n2.Despedir \n0. Salir";
+                    byte[] options2 = {0,1,2};
+                    byte answer = ask(question, options2, "green");
+                    if(answer == 1){
+                        String pregunta = "Que tipo de Empleado deseas: 0. Salir \n1. Aseador \n2. Seguridad \n3. Profesor";
+                        byte[] option = {0,1,2,3};
+                        byte res = ask(pregunta, option, "red");
+                        Random random = new Random();
+                        switch (res) {
+                            case 1:
+                                String Aseador = "Aseador";
+                                int nombre_A = random.nextInt(nombres.length);
+                                int apellido_A = random.nextInt(Apellidos.length);
+                                long id_A = random.nextInt(1000000 - 100 + 1) + 100;
+                                Empleado nuevo_empleado_A = new Empleado(nombres[nombre_A] + " " + Apellidos[apellido_A], id_A, Aseador);
+                                customPrint("Se contrato a " + nuevo_empleado_A.getNombre());
+                                repetidor = false;
+                                break;
+                            case 2:
+                                String Seguridad = "Seguridad";
+                                int nombre_S = random.nextInt(nombres.length);
+                                int apellido_S = random.nextInt(Apellidos.length);
+                                long id_S = random.nextInt(1000000 - 100 + 1) + 100;
+                                Empleado nuevo_empleado_S = new Empleado(nombres[nombre_S] + " " + Apellidos[apellido_S], id_S, Seguridad);
+                                customPrint("Se contrato a " + nuevo_empleado_S.getNombre());
+                                repetidor = false;
+                                break;
+                            case 3:
+                                String Profesor = "Profesor";
+                                int nombre_P = random.nextInt(nombres.length);
+                                int apellido_P = random.nextInt(Apellidos.length);
+                                long id_P = random.nextInt(1000000 - 100 + 1) + 100;
+                                Empleado nuevo_empleado_P = new Empleado(nombres[nombre_P] + " " + Apellidos[apellido_P], id_P, Profesor);
+                                customPrint("Se contrato a " + nuevo_empleado_P.getNombre());
+                                repetidor = false;
+                                break;
+                            case 0:
+                                repetidor = false;
+                                break;
                         }
                     }
                     else{
-                        break;
+                        if(answer == 2){
+                            question = "Introduce el id del trabajador a despedir";
+                            long buscar_id = longAsk(question);
+                            Empleado.getEmpleadosPorRendimiento().removeIf(Persona ->{
+                                if(Persona.getId() == buscar_id){
+                                    double liquidacion = (Persona.calcularSueldo()*1.2) + Persona.getDeuda();
+                                    tesoreria.getCuenta().transferencia(Persona.getCuenta(), liquidacion);
+                                    customPrint("Se despidio a " + Persona.getNombre() + " y se le pago su respectiva liquidacion");
+                                    if(Persona.getOcupacion() != "Aseador"){
+                                        if (Persona.getOcupacion() != "Seguridad"){
+                                            Empleado.getTipoProfesor().remove(Persona);
+                                        }
+                                        else{
+                                            Empleado.getTipoSeguridad().remove(Persona);
+                                        }
+                                    }
+                                    else{
+                                        Empleado.getTipoAseador().remove(Persona);
+                                    }
+                                    return true;
+                                }
+                                return false;
+                            });
+                        }
+                        else{
+                            repetidor = false;
+                        }
                     }
-                }
+                    break;
         
-            case 2:
-                break;
-        }
+                case 2:
+                    repetidor = true;
+            }
+        } while(!repetidor);
+
+
         try{
             Thread.sleep(2000);
         } catch (InterruptedException e) {
