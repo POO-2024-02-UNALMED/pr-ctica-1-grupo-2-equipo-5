@@ -1215,10 +1215,6 @@ public class Main {
                         Persona.setDeuda(0);
                     }
                 }
-                else{
-                    customPrint("Ya no hay fondos suficientes", true, "red");
-                    customPrint("El saldo de tesoreria es: " + tesoreria.getCuenta().getSaldo());
-                }
             }
         }
         customPrint("El saldo de tesoreria es: " + tesoreria.getCuenta().getSaldo());
