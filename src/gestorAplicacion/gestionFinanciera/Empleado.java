@@ -21,7 +21,7 @@ public class Empleado {
     private int TrabajoRealizado; //Es el total del trabajo realizado Pago
     private boolean trabajoCorrecto;
     private int metaSemanal;
-    private int puntosPositivos;
+    protected int puntosPositivos;
     private String ocupacion;
     private boolean disponible;
     private CuentaBancaria cuenta;
