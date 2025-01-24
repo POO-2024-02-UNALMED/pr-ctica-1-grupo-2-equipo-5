@@ -38,17 +38,6 @@ public class Empleado {
         this.ocupacion = ocupacion;
         this.deuda = 0;
         this.horario = new ArrayList<>(); //Lista donde se guarda el horario 
-        if(ocupacion != "Aseador"){
-            if(ocupacion !="Seguridad"){
-                tipoProfesor.add(this);
-            }
-            else{
-                tipoSeguridad.add(this);
-            }
-        }
-        else{
-            tipoAseador.add(this);
-        }
         empleadosPorRendimiento.add(this);
     }
 

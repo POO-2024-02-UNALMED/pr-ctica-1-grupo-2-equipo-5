@@ -1299,31 +1299,48 @@ public class Main {
                         Random random = new Random();
                         switch (res) {
                             case 1:
-                                String Aseador = "Aseador";
-                                int nombre_A = random.nextInt(nombres.length);
-                                int apellido_A = random.nextInt(Apellidos.length);
-                                long id_A = random.nextInt(1000000 - 100 + 1) + 100;
+                                int n = 0;
+                            msg_base = ""
+                                ArrayList<String> candidatos = new ArrayList<>();
+                                ArrayList<Integer> ids = new ArrayList<>();
+                                do{
+                                    int nombre = random.nextInt(nombres.length);
+                                    int apellido = random.nextInt(Apellidos.length);
+                                    long id = random.nextInt(1000000 - 100 + 1) + 100;
+                                }while (n<10);
+                                ArrayList<Empleado> tipAseador = new ArrayList<>();
+                                tipAseador = Empleado.getTipoAseador();
                                 Empleado nuevo_empleado_A = new Empleado(nombres[nombre_A] + " " + Apellidos[apellido_A], id_A, Aseador);
+                                tipAseador.add(nuevo_empleado_A);
+                                Empleado.setTipoAseador(tipAseador);
                                 customPrint("Se contrato a " + nuevo_empleado_A.getNombre());
                                 repetidor = false;
                                 break;
                             case 2:
+                                ArrayList<Empleado> tipSeguridad = new ArrayList<>();
+                                tipSeguridad = Empleado.getTipoProfesor();
                                 String Seguridad = "Seguridad";
                                 int nombre_S = random.nextInt(nombres.length);
                                 int apellido_S = random.nextInt(Apellidos.length);
                                 long id_S = random.nextInt(1000000 - 100 + 1) + 100;
                                 Empleado nuevo_empleado_S = new Empleado(nombres[nombre_S] + " " + Apellidos[apellido_S], id_S, Seguridad);
+                                tipSeguridad.add(nuevo_empleado_S);
+                                Empleado.setTipoSeguridad(tipSeguridad);
                                 customPrint("Se contrato a " + nuevo_empleado_S.getNombre());
                                 repetidor = false;
                                 break;
                             case 3:
-                                String Profesor = "Profesor";
+                                ArrayList<Empleado> tipProfesors = new ArrayList<>();
+                                tipProfesors = Empleado.getTipoProfesor();
                                 int nombre_P = random.nextInt(nombres.length);
                                 int apellido_P = random.nextInt(Apellidos.length);
                                 long id_P = random.nextInt(1000000 - 100 + 1) + 100;
-                                Empleado nuevo_empleado_P = new Empleado(nombres[nombre_P] + " " + Apellidos[apellido_P], id_P, Profesor);
-                                customPrint("Se contrato a " + nuevo_empleado_P.getNombre());
+                                Empleado nuevo_empleado_P = new Profesor(nombres[nombre_P] + " " + Apellidos[apellido_P], id_P);
+                                tipProfesors.add(nuevo_empleado_P);
+                                Empleado.setTipoProfesor(tipProfesors);
+                                customPrint("Se contrato a " + nuevo_empleado_P.getNombre());                               
                                 repetidor = false;
+                   
                                 break;
                             case 0:
                                 repetidor = false;
@@ -1372,8 +1389,15 @@ public class Main {
         } while(!repetidor);
         
         //Administrar Trabajadores
-        //Asigar horas
-        //Asignar Trabajos
+        //Asignar horas
+        //Hora inicio - Hora fin
+        //Asignar Horario Trabajador
+        //Automatico: Verificar metros de la sala y se asigan de acuerdo a la dificultad, verificar por meta
+        //Asigna el trabajo de una vez y se verifica
+        //Asignar Horario Seguridad
+        
+        //Asignar Horario Profesor LO HACE OSCAR
+
         //Verificación del trabajo
         
         try{

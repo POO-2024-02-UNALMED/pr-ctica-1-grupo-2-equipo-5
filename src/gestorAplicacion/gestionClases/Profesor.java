@@ -10,8 +10,9 @@ public class Profesor extends Empleado {
     private ArrayList<Aptitud> especializaciones;
 
     // Constructor
-    public Profesor(String nombre, long ID) {
-        super(nombre, ID, "Profesor");
+    public Profesor(String nombre, long id) {
+        super(nombre, id, "Profesor");
+        this.nombre = nombre;
         this.especializaciones = new ArrayList<>();
     }
 

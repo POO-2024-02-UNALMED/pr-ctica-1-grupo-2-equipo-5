@@ -22,7 +22,7 @@ public class funcionalidad2 {
             Empleado Empleado3 = new Empleado("Juan Hernández", 1023526, "Seguridad");
             Empleado Empleado4 = new Empleado("Danna Montoya", 1023527, "Seguridad");
             Empleado Empleado5 = new Empleado("Carlos Velez", 1023528, "Seguridad");
-            Empleado Empleado6 = new Profesor("Raul", 108850);
+            Empleado Empleado6 = new Profesor("Raul Velasquez", 108850);
             Empleado Empleado9 = new Empleado("Jimena González", 1023532, "Aseador");
             Empleado1.setDeuda(20000);
             Empleado5.setDeuda(30000);
@@ -32,7 +32,13 @@ public class funcionalidad2 {
             Empleado4.setTrabajoRealizado(10);
             Empleado9.setTrabajoRealizado(4000);
             Empleado2.setMetaSemanal(3);
-
+            Empleado.getTipoAseador().add(Empleado1);
+            Empleado.getTipoAseador().add(Empleado2);
+            Empleado.getTipoAseador().add(Empleado9);
+            Empleado.getTipoSeguridad().add(Empleado3);
+            Empleado.getTipoSeguridad().add(Empleado4);
+            Empleado.getTipoSeguridad().add(Empleado5);
+            Empleado.getTipoProfesor().add(Empleado6);
             Main.gestionEmpleados();
         }
 }
