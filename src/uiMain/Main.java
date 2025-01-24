@@ -25,7 +25,6 @@ import gestorAplicacion.gestionObras.Actor;
 import gestorAplicacion.gestionObras.Artista;
 import gestorAplicacion.gestionObras.Obra;
 import gestorAplicacion.herramientas.Aptitud;
-import gestorAplicacion.herramientas.Contador;
 import gestorAplicacion.herramientas.Genero;
 import gestorAplicacion.herramientas.Suscripcion;
 import test.funci_1;
@@ -880,7 +879,7 @@ public class Main {
             actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.IMPROVISACION) < CALIFICACION_APTITUD_ALTA);
             break;
 
-        }
+        }  
 
         //PREGUNTA NO. 3, 4, 5 (HORARIOS)
         String diasCadena = "¿Para qué día se necesita la contratación?\n";
@@ -964,10 +963,13 @@ public class Main {
 
         if (advancedSearch == 1){
 
-            List<Contador> contadores = new ArrayList<Contador>();
+            List<ArrayList> contadores = new ArrayList<>();
 
             for (Actor actor : actorsForRental){
-                contadores.add(new Contador(actor, 0));
+                ArrayList<Object> contador = new ArrayList<>();
+                contador.add(actor);
+                contador.add(0);
+                contadores.add(contador);
             }
 
             byte edad = ask("¿Qué tipo de edad se busca?\n1. Infantil\n2. Juvenil.\n3. Adulto.\n4. Adulto mayor", options, "");
@@ -993,9 +995,15 @@ public class Main {
                 break;
             }
 
-            for (Contador contador : contadores){
+            for (ArrayList contador : contadores){
 
-                if (isIn(actorsForRental, contador.getActor())){ contador.numero ++; }
+                if (isIn(actorsForRental, (Actor)contador.get(0))){ 
+                    
+                    int newVal = ((Integer)contador.get(1)) + 1;
+
+                    contador.set(1, newVal); 
+                
+                }
 
             }
 
@@ -1008,21 +1016,27 @@ public class Main {
                 actorsForRental.removeIf(actor -> actor.getSexo() == 'M');
             }
 
-            for (Contador contador : contadores){
+            for (ArrayList contador : contadores){
 
-                if (isIn(actorsForRental, contador.getActor())){ contador.numero ++; }
+                if (isIn(actorsForRental, (Actor)contador.get(0))){ 
+                    
+                    int newVal = ((Integer)contador.get(1)) + 1;
+
+                    contador.set(1, newVal); 
+                
+                }
 
             }
 
-            contadores.removeIf(contador -> contador.numero < 2);
+            contadores.removeIf(contador -> ((Integer)contador.get(1)) < 2);
 
             if (contadores.size() == 0){
                 customPrint("No se encontraron actores que se ajusten bien a las características.", true, "red"); return;}
 
             List<Actor> advancedList = new ArrayList<Actor>();
 
-            for (Contador contador : contadores){
-                advancedList.add(contador.getActor());
+            for (ArrayList contador : contadores){
+                advancedList.add( (Actor)contador.get(0));
             }
             
             actorsForRental = advancedList;
