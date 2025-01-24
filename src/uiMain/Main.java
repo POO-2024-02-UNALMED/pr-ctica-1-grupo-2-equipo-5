@@ -1187,17 +1187,18 @@ public class Main {
     public static void gestionEmpleados(){
         final String[] nombres = {"Miguel", "Juan", "Danna", "Carlos", "Oscar", "Julian", "Maria", "Paula", "Esteban", "Sara", "Frank", "Pablo", "Jimena", "Daniela", "Ana", "Emma", "Samuel"};
         final String [] Apellidos = {"Perez", "Hernandez", "Montoya", "Velez", "Aguirre", "Salazar", "Restrepo", "Rodriguez", "Garcia", "Lopez", "Sanchez", "Ramirez", "Gonzales", "Gomez", "Martinez"};
+
+        
         //Obtener lista de empleados por ocupacion:
-        //Aseador
         boolean repetidor = false;
         do{
             String msgBase = "\n";
             for(Empleado Persona : Empleado.getTipoSeguridad()){
                 if(msgBase != "\n"){
-                    msgBase = msgBase + Persona.getNombre() + "\n";
+                    msgBase = msgBase + Persona.getNombre() + " " +  Persona.getId() + "\n";
                 }
                 else{
-                    msgBase = Persona.getNombre() + msgBase;
+                    msgBase = Persona.getNombre() + " " + Persona.getId() + msgBase;
                 }
             }
             customPrint("Seguridad", true, "red");
@@ -1205,10 +1206,10 @@ public class Main {
             msgBase = "\n";
             for(Empleado Persona : Empleado.getTipoAseador()){
                 if(msgBase != "\n"){
-                    msgBase = msgBase + Persona.getNombre() + "\n";
+                    msgBase = msgBase + Persona.getNombre() + " " +  Persona.getId() + "\n";
                 }
                 else{
-                    msgBase = Persona.getNombre() + msgBase;
+                    msgBase = Persona.getNombre() + " " +  Persona.getId() + msgBase;
                 }
             }
             customPrint("Aseador", true, "red");
@@ -1216,10 +1217,10 @@ public class Main {
             msgBase = "\n";
             for(Empleado Persona : Empleado.getTipoProfesor()){
                 if(msgBase != "\n"){
-                    msgBase = msgBase + Persona.getNombre() + "\n";
+                    msgBase = msgBase + Persona.getNombre() + " " +  Persona.getId() + "\n";
                 }
                 else{
-                    msgBase = Persona.getNombre() + msgBase;
+                    msgBase = Persona.getNombre() + " " +  Persona.getId() + msgBase;
                 }
             }
             customPrint("Profesor", true, "red");
@@ -1307,7 +1308,7 @@ public class Main {
                     repetidor = true;
             }
         } while(!repetidor);
-
+        //Asignacion de trabajos
 
         try{
             Thread.sleep(2000);
