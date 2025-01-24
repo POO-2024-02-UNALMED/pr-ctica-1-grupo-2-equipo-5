@@ -13,22 +13,24 @@ public class CuentaBancaria {
         this.Saldo += cant;
     }
 
-    public void retirar (double cant){
+    public boolean retirar (double cant){
         if (cant > this.Saldo){
-            System.out.println("Saldo insuficiente");
+            return false;
         }
         else{
-            Saldo -= cant;
+            this.Saldo = Saldo - cant;
+            return true;
         }
     }
 
-    public void transferencia(CuentaBancaria Destino, double cant){
+    public boolean transferencia(CuentaBancaria Destino, double cant){
         if(cant <= this.Saldo){
-            this.retirar(cant);
+            retirar(cant);
             Destino.ingresar(cant);
+            return true;
         }
         else{
-            System.out.println("Saldo insuficiente");
+            return false;
         }
     }
 

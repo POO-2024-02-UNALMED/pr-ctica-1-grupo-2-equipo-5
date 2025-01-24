@@ -1187,7 +1187,26 @@ public class Main {
     public static void gestionEmpleados(){
         final String[] nombres = {"Miguel", "Juan", "Danna", "Carlos", "Oscar", "Julian", "Maria", "Paula", "Esteban", "Sara", "Frank", "Pablo", "Jimena", "Daniela", "Ana", "Emma", "Samuel"};
         final String [] Apellidos = {"Perez", "Hernandez", "Montoya", "Velez", "Aguirre", "Salazar", "Restrepo", "Rodriguez", "Garcia", "Lopez", "Sanchez", "Ramirez", "Gonzales", "Gomez", "Martinez"};
-
+        //Verifica si hay deudas y Pagar
+        for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+            if(Persona.getDeuda() != 0){
+                if(tesoreria.getCuenta().getSaldo() > Persona.getDeuda()){
+                    boolean transaccion = tesoreria.getCuenta().transferencia(Persona.getCuenta(), Persona.getDeuda());
+                    if(transaccion != true){
+                        System.out.println("No se pudo realizar el pago");
+                    }
+                    else{
+                        System.out.println("Se realizo el Pago a: " + Persona.getNombre() + " por un valor de: " + Persona.getDeuda());
+                        Persona.setDeuda(0);
+                    }
+                }
+                else{
+                    customPrint("Ya no hay fondos suficientes", true, "red");
+                    customPrint("El saldo de tesoreria es: " + tesoreria.getCuenta().getSaldo());
+                }
+            }
+        }
+        customPrint("El saldo de tesoreria es: " + tesoreria.getCuenta().getSaldo());
 
         //Obtener lista de empleados por ocupacion:
         boolean repetidor = false;
@@ -1317,7 +1336,8 @@ public class Main {
             
         }
         //Pagar nomina a empleados:
-        double fondos = tesoreria.getCuenta().getSaldo() + tesoreria.getDineroEnCaja();
+
+        double fondos = tesoreria.getCuenta().getSaldo();
         double totalSaldos = 0;
         //Verificacion de fondos:
         for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
