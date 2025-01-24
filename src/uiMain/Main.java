@@ -1188,7 +1188,7 @@ public class Main {
         final String[] nombres = {"Miguel", "Juan", "Danna", "Carlos", "Oscar", "Julian", "Maria", "Paula", "Esteban", "Sara", "Frank", "Pablo", "Jimena", "Daniela", "Ana", "Emma", "Samuel"};
         final String [] Apellidos = {"Perez", "Hernandez", "Montoya", "Velez", "Aguirre", "Salazar", "Restrepo", "Rodriguez", "Garcia", "Lopez", "Sanchez", "Ramirez", "Gonzales", "Gomez", "Martinez"};
 
-        
+
         //Obtener lista de empleados por ocupacion:
         boolean repetidor = false;
         do{
@@ -1309,7 +1309,7 @@ public class Main {
             }
         } while(!repetidor);
         //Asignacion de trabajos
-
+        //T
         try{
             Thread.sleep(2000);
         } catch (InterruptedException e) {
