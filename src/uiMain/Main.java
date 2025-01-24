@@ -16,6 +16,7 @@ import java.time.format.DateTimeParseException;
 import gestorAplicacion.gestionVentas.Cliente;
 import gestorAplicacion.gestionClases.Clase;
 import gestorAplicacion.gestionClases.Profesor;
+import gestorAplicacion.gestionFinanciera.CuentaBancaria;
 import gestorAplicacion.gestionFinanciera.Empleado;
 import gestorAplicacion.gestionFinanciera.Tesoreria;
 import gestorAplicacion.gestionVentas.Sala;
@@ -25,7 +26,6 @@ import gestorAplicacion.gestionObras.Actor;
 import gestorAplicacion.gestionObras.Artista;
 import gestorAplicacion.gestionObras.Obra;
 import gestorAplicacion.herramientas.Aptitud;
-import gestorAplicacion.herramientas.Contador;
 import gestorAplicacion.herramientas.Genero;
 import gestorAplicacion.herramientas.Suscripcion;
 import test.funci_1;
@@ -294,7 +294,7 @@ public class Main {
                 break;
 
                 case 4:
-                //gestionClases();
+                gestionClases();
                 break;
 
                 case 5: 
@@ -880,7 +880,7 @@ public class Main {
             actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.IMPROVISACION) < CALIFICACION_APTITUD_ALTA);
             break;
 
-        }
+        }  
 
         //PREGUNTA NO. 3, 4, 5 (HORARIOS)
         String diasCadena = "¿Para qué día se necesita la contratación?\n";
@@ -964,10 +964,13 @@ public class Main {
 
         if (advancedSearch == 1){
 
-            List<Contador> contadores = new ArrayList<Contador>();
+            List<ArrayList> contadores = new ArrayList<>();
 
             for (Actor actor : actorsForRental){
-                contadores.add(new Contador(actor, 0));
+                ArrayList<Object> contador = new ArrayList<>();
+                contador.add(actor);
+                contador.add(0);
+                contadores.add(contador);
             }
 
             byte edad = ask("¿Qué tipo de edad se busca?\n1. Infantil\n2. Juvenil.\n3. Adulto.\n4. Adulto mayor", options, "");
@@ -993,9 +996,15 @@ public class Main {
                 break;
             }
 
-            for (Contador contador : contadores){
+            for (ArrayList contador : contadores){
 
-                if (isIn(actorsForRental, contador.getActor())){ contador.numero ++; }
+                if (isIn(actorsForRental, (Actor)contador.get(0))){ 
+                    
+                    int newVal = ((Integer)contador.get(1)) + 1;
+
+                    contador.set(1, newVal); 
+                
+                }
 
             }
 
@@ -1008,21 +1017,27 @@ public class Main {
                 actorsForRental.removeIf(actor -> actor.getSexo() == 'M');
             }
 
-            for (Contador contador : contadores){
+            for (ArrayList contador : contadores){
 
-                if (isIn(actorsForRental, contador.getActor())){ contador.numero ++; }
+                if (isIn(actorsForRental, (Actor)contador.get(0))){ 
+                    
+                    int newVal = ((Integer)contador.get(1)) + 1;
+
+                    contador.set(1, newVal); 
+                
+                }
 
             }
 
-            contadores.removeIf(contador -> contador.numero < 2);
+            contadores.removeIf(contador -> ((Integer)contador.get(1)) < 2);
 
             if (contadores.size() == 0){
                 customPrint("No se encontraron actores que se ajusten bien a las características.", true, "red"); return;}
 
             List<Actor> advancedList = new ArrayList<Actor>();
 
-            for (Contador contador : contadores){
-                advancedList.add(contador.getActor());
+            for (ArrayList contador : contadores){
+                advancedList.add( (Actor)contador.get(0));
             }
             
             actorsForRental = advancedList;
@@ -1615,16 +1630,144 @@ public class Main {
             // Clase programada exitosamente
             customPrint("Clase programada exitosamente en el área '" + areaSeleccionada + "' con el profesor '" 
                 + profesorAsignado.getNombre() + "' en la sala '" + salaAsignada.getNumeroSala() + "'.", "green");
-        } else {
-            customPrint("Solo los actores pueden recibir clases.", "red");
-        }
 
-        
+
+
+
+
+
+
 
 
 
 
             //Pago de la clase
+
+            // Cálculo del costo de matrícula
+            double costoClase = 0;
+            switch (nivelClase) {
+                case "Introducción": costoClase = 100; break;
+                case "Profundización": costoClase = 150; break;
+                case "Perfeccionamiento": costoClase = 180; break;
+            }
+
+            customPrint("El costo de la clase es: $" + costoClase, "blue");
+
+            // Procesar el pago desde la cuenta del artista hacia la tesorería
+            CuentaBancaria cuentaArtista = actor.getCuenta(); 
+            cuentaArtista.transferencia(tesoreria.getCuenta(), costoClase);
+
+            // Asignación de calificador para la próxima función
+            Profesor calificador = null;
+            for (Empleado empleado : Empleado.getTipoProfesor()) {
+                if (empleado instanceof Profesor) {
+                    Profesor profesor = (Profesor) empleado;
+
+                    // Simular disponibilidad aleatoria
+                    boolean disponible = Math.random() > 0.5;
+                    if (profesor.tieneEspecializacion(areaSeleccionada) && disponible) {
+                        calificador = profesor;
+                        break;
+                    }
+                }
+            }
+
+            if (calificador != null) {
+                customPrint("Profesor calificador asignado: " + calificador.getNombre(), "green");
+            } else {
+                customPrint("No hay profesores disponibles para calificar la próxima función.", "red");
+            }
+
+            // Evaluación y retroalimentación
+            double calificacion = Math.random() * 5; // Generar calificación aleatoria
+            customPrint("El profesor calificó el desempeño del actor con un: " + calificacion, "yellow");
+
+            // Verificar si hubo mejora
+            if (!actor.huboMejora(areaSeleccionada)) {
+                customPrint("No hubo mejora en el desempeño. Se programará una nueva clase en el área deficiente...", "red");
+
+
+                // Reutilizar la lógica para programar otra clase
+
+
+                LocalDateTime nuevoInicio = solicitarHorario("inicio");
+                LocalDateTime nuevoFin = solicitarHorario("fin");
+
+                // Validar que el horario de fin sea posterior al de inicio
+                while (nuevoFin.isBefore(nuevoInicio)) {
+                    customPrint("El horario de fin debe ser posterior al horario de inicio. Intente nuevamente.", "red");
+                    nuevoInicio = solicitarHorario("inicio");
+                    nuevoFin = solicitarHorario("fin");
+                }
+
+                // Buscar una sala disponible para el nuevo horario
+                Sala nuevaSala = null;
+                for (Sala sala : Sala.getSalas()) {
+                    if (sala.getAseado() && sala.isDisponible(nuevoInicio, nuevoFin)) {
+                        nuevaSala = sala;
+                        break;
+                    }
+                }
+
+                if (nuevaSala == null) {
+                    customPrint("No hay salas disponibles en el nuevo horario deseado o no están limpias.", "red");
+                    return;
+                }
+
+
+
+                customPrint("Sala asignada para la nueva clase: " + nuevaSala.getNumeroSala());
+                nuevaSala.anadirHorario(new ArrayList<>(List.of(nuevoInicio, nuevoFin)));
+
+                // Reasignar profesor capacitado
+                Profesor nuevoProfesor = null;
+                for (Empleado empleado : Empleado.getTipoProfesor()) {
+                    if (empleado instanceof Profesor) {
+                        Profesor profesor = (Profesor) empleado;
+
+                        // Simular disponibilidad aleatoria
+                        boolean disponible = Math.random() > 0.5;
+                        if (profesor.tieneEspecializacion(areaSeleccionada) && disponible) {
+                            nuevoProfesor = profesor;
+                            break;
+                        }
+                    }
+                }
+
+                if (nuevoProfesor == null) {
+                    customPrint("No hay profesores disponibles para la nueva clase en el área seleccionada.", "red");
+                    return;
+                }
+
+                customPrint("Nuevo profesor asignado: " + nuevoProfesor.getNombre(), "green");
+                customPrint("Clase reprogramada exitosamente con el profesor " + nuevoProfesor.getNombre() 
+                    + " en la sala " + nuevaSala.getNumeroSala() + ".", "green");
+            }
+
+            
+
+            // Verificar si el actor debe bajar de nivel en el área seleccionada
+            if (actor.noHaMejoradoEnCuatroIntentos(areaSeleccionada)) {
+                customPrint("El actor no ha mostrado mejora en el área '" + areaSeleccionada 
+                    + "' después de cuatro clases. Reduciendo el nivel en esta área...", "red");
+
+                double nuevaCalificacion = Math.max(0, actor.getCalificacionPorAptitud(areaSeleccionada) - 1);
+                actor.actualizarCalificacion(areaSeleccionada, nuevaCalificacion); // Método que deberás agregar en Actor
+                customPrint("Nuevo nivel del área '" + areaSeleccionada + "': " + nuevaCalificacion, "yellow");
+            }
+        } else {
+            customPrint("Solo los actores pueden recibir clases.", "red");
+        }
+
+
+
+
+
+
+
+        
+        
+        
     }// Fin del método
 }
 
