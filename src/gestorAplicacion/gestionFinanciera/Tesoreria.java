@@ -59,24 +59,12 @@ public class Tesoreria {
         this.total = total;
     }
 
-    // Métodos adicionales
-    public static void procesarPago(CuentaBancaria cuenta, double monto) {
-        if (cuenta.getSaldo() >= monto) {
-            cuenta.retirar(monto);
-            dineroEnCaja += monto;
-            System.out.println("Pago de " + monto + " procesado correctamente. Dinero en caja: " + dineroEnCaja);
-        } else {
-            System.out.println("Saldo insuficiente en la cuenta del artista.");
-        }
-    }
+    // Métodos adicionale
 
     public static void reembolsarPago(CuentaBancaria cuenta, double monto) {
         if (dineroEnCaja >= monto) {
             dineroEnCaja -= monto;
             cuenta.ingresar(monto);
-            System.out.println("Se ha reembolsado " + monto + " al artista. Dinero en caja: " + dineroEnCaja);
-        } else {
-            System.out.println("Fondos insuficientes para procesar el reembolso.");
         }
     }
 }

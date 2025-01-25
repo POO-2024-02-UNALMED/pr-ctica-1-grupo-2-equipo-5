@@ -20,16 +20,22 @@ public class Funcion {
     static ArrayList <Funcion> funcionesCreadas= new ArrayList<>() ;
 
 
-    // static{
-    //     funci_1.prueba();
-    // }
+    static{
+         funci_1.prueba();
+     }
     public String tablaSillas(){
         String Nuevo="";
         ArrayList <Silla> s = this.getSala().getSillas();
         int h = 0;
         for (int i = 0; i < s.size(); i++) {
-            char primerCaracter = s.get(i).getTipo().name().charAt(0);
-            Nuevo=Nuevo+primerCaracter+s.get(i).getCodigo()+" "; 
+                        
+            if (s.get(i).getCodigo()==88){
+                Nuevo=Nuevo+"      ";
+            }else {
+                char primerCaracter = s.get(i).getTipo().name().charAt(0);
+                Nuevo=Nuevo+primerCaracter+String.format("%04d", s.get(i).getCodigo())+" "; 
+            }
+  
             if ((i + 1) % 8 == 0) { 
                 Nuevo = Nuevo+"\n";
             }
@@ -37,10 +43,12 @@ public class Funcion {
         return Nuevo;
     }
     public void eliminarSilla(Integer i){
+        Silla sillaVacia = new Silla(88);
         ArrayList <Silla> s = this.getSala().getSillas();
         for (int k = 0; k < s.size(); k++) {
             if(s.get(k).getCodigo().equals(i)){
-                s.remove(k);
+                s.set(k, sillaVacia);
+                
 
             }
 
@@ -111,7 +119,6 @@ public class Funcion {
 
     //AUDIENCIA ESPERADA
     public int getAudienciaEsperada() {
-        System.out.println("ehhh");
         return audienciaEsperada;
 
     }
@@ -129,7 +136,6 @@ public class Funcion {
         this.sala = getSala();
         this.calificador = doWeNeedACalificador();
         this.audienciaEsperada = obra.getAudienciaEsperada();
-        System.out.println("yeee");
         funcionesCreadas.add(this);
     }
     public Funcion(){
@@ -147,26 +153,19 @@ public class Funcion {
     public ArrayList<LocalDateTime> createHorario(ArrayList<LocalDate> week){
         ArrayList<LocalDateTime> horario = new ArrayList<>();
         LocalTime inicioFranja = this.obra.getFranjaHoraria().get(0);
-        System.err.println(Sala.getSalas());
-        System.out.println(inicioFranja);
         for (Sala sala : Sala.getSalas()){
-            System.out.println("salas");
             if (sala.getCapacidad() > this.obra.getAudienciaEsperada()){
                 for (LocalDate day : week){
-                    System.out.println("weekn");
                     LocalTime inicioFranjaITE = inicioFranja;
                     while (inicioFranjaITE.isBefore(this.obra.getFranjaHoraria().get(1))
                     && inicioFranjaITE.plusSeconds(this.getObra().getDuracionFormatoS()).isBefore(LocalTime.of(22,00)))
                     {
-                        System.out.println("franja");
                         LocalDateTime i = LocalDateTime.of(day, inicioFranjaITE) ;
                         LocalDateTime v = i.plusSeconds(this.obra.getDuracionFormatoS());
-                        System.out.println(i);
                         if(this.getObra().isRepartoDisponible(i, v) && sala.isDisponible(i,v)){
                             horario.add(i);
                             horario.add(v);
                             this.setSala(sala);
-                            System.out.println(sala.getNumeroSala());
                             this.getSala().anadirHorario(horario);
                             return horario;
                         }
@@ -197,7 +196,6 @@ public class Funcion {
                 a = true;
             }
         }
-        System.out.println("jmmm");
         return a;
     }
     public static String generarTabla(){

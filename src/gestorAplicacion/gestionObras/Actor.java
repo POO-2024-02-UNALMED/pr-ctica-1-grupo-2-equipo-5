@@ -110,13 +110,32 @@ public class Actor extends Artista{
         Actor.cop = cop;
     }
 
+    public double getPrecioContrato() {
+        return precioContrato;
+    }
+
+    public ArrayList<Double> getCalificacionesAptitudes() {
+        return calificacionesAptitudes;
+    }
+
+    public void setCalificacionesAptitudes(ArrayList<Double> calificacionesAptitudes) {
+        this.calificacionesAptitudes = calificacionesAptitudes;
+    }
+
+    public ArrayList<ArrayList<Double>> getHistorialCalificaciones() {
+        return historialCalificaciones;
+    }
+
+    public void setHistorialCalificaciones(ArrayList<ArrayList<Double>> historialCalificaciones) {
+        this.historialCalificaciones = historialCalificaciones;
+    }
+
     public double getCalificacionPorAptitud(Aptitud aptitud) {
         int index = aptitudes.indexOf(aptitud);
         if (index != -1) {
             return calificacionesAptitudes.get(index);
         }
-        return -1; // Retornar -1 si la aptitud no está en la lista (Verificar si el -1 afecta en algo en el código
-        //Tal vez eliminarlo.
+        return -1; 
     }
 
     // Actualizar la calificación de una aptitud específica
@@ -140,7 +159,9 @@ public class Actor extends Artista{
         // Crear una lista ordenada de aptitudes según las calificaciones
         List<Aptitud> areasDeMejora = new ArrayList<>();
         for (int index : indicesOrdenados) {
-            areasDeMejora.add(aptitudes.get(index));
+            if (getCalificacionPorAptitud(aptitudes.get(index)) <= 3.0) {
+                areasDeMejora.add(aptitudes.get(index));
+            }
         }
     
         return areasDeMejora;

@@ -166,9 +166,6 @@ public class Sala {
             contador++;
         }
 
-        if (!(contador == capacidad)){
-            System.out.println("The problem is on here dude");
-        }
         return sillas;
     }
     public Sala(int numeroSala,  int metrosCuadrados, int capacidad){

@@ -229,7 +229,8 @@ public class Empleado {
         }
         // Generar calificaciones aleatorias
         for (int i = 0; i < 5; i++) { // Por ejemplo, 5 calificaciones iniciales
-            artista.agregarCalificacion((int) (Math.random() * 5) + 1);
+            
+            artista.agregarCalificacion((float) (Math.random() * 5) + 1);
         }
         return true;
     }
