@@ -618,6 +618,7 @@ public class Main {
                 Obra.buscarObra(inputF).recurrencia();
                 dineroTesoreria = ((Funcion.mostrarPrecioFuncion(inputF)*descuento)+precioSus);
                 tesoreria.setDineroEnCaja(tesoreria.getDineroEnCaja()+dineroTesoreria);
+                tesoreria.setTotal(tesoreria.getTotal()+dineroTesoreria);
             try {
                 // Pausa de 2 segundos (4000 milisegundos)
                 Thread.sleep(4000);
