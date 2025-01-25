@@ -101,7 +101,7 @@ public class Main {
         byte answer = -1;        
         
         while (true){
-            customPrint(question, true, color);
+            customPrint(question, true, "blue");
             String input = in.nextLine();
             
 
@@ -139,7 +139,7 @@ public class Main {
 
     //pregunta y devuelve long
     public static long longAsk(String question){
-        customPrint(question);
+        customPrint(question, "blue");
 
         String input = in.nextLine();
 
@@ -1379,23 +1379,21 @@ public class Main {
         final String [] Apellidos = {"Perez", "Hernandez", "Montoya", "Velez", "Aguirre", "Salazar", "Restrepo", "Rodriguez", "Garcia", "Lopez", "Sanchez", "Ramirez", "Gonzales", "Gomez", "Martinez"};
         tesoreria.transferenciaFondos();
         //Verifica si hay deudas y Pagar
-        
+        customPrint("Verificando deudas ...");
+        String Deudas = "";
         for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
             if(Persona.getDeuda() != 0){
                 if(tesoreria.getCuenta().getSaldo() > Persona.getDeuda()){
                     boolean transaccion = tesoreria.getCuenta().transferencia(Persona.getCuenta(), Persona.getDeuda());
-                    if(transaccion != true){
-                        System.out.println("No se pudo realizar el pago");
-                    }
-                    else{
-                        System.out.println("Se realizo el Pago a: " + Persona.getNombre() + " por un valor de: " + Persona.getDeuda());
+                    if(transaccion == true){
+                        Deudas = Deudas + "Se realizo el Pago a: " + Persona.getNombre() + " por un valor de: " + String.format("$%,.2f", Persona.getDeuda() ) + "\n";
                         Persona.setDeuda(0);
                     }
                 }
             }
         }
         String Saldo = String.format("$%,.2f",tesoreria.getCuenta().getSaldo());
-        customPrint("El saldo de tesoreria es: " + Saldo);
+        customPrint(Deudas + "El saldo de tesoreria es: " + Saldo, "green");
         
         try{
             Thread.sleep(2000);
@@ -1415,8 +1413,7 @@ public class Main {
                     msgBase = Persona.getNombre() + " " + Persona.getId() + msgBase;
                 }
             }
-            customPrint("Seguridad", true, "red");
-            customPrint(msgBase);
+            customPrint("Seguridad \n" + msgBase, true, "");
             msgBase = "\n";
 
             try{
@@ -1433,8 +1430,7 @@ public class Main {
                     msgBase = Persona.getNombre() + " " +  Persona.getId() + msgBase;
                 }
             }
-            customPrint("Aseador", true, "red");
-            customPrint(msgBase);
+            customPrint("Aseador \n" + msgBase, true, "");
             msgBase = "\n";
             
             try{
@@ -1451,8 +1447,7 @@ public class Main {
                     msgBase = Persona.getNombre() + " " +  Persona.getId() + msgBase;
                 }
             }
-            customPrint("Profesor", true, "red");
-            customPrint(msgBase);
+            customPrint("Profesor \n" + msgBase, true, "");
             
             try{
                 Thread.sleep(1500);
@@ -1462,17 +1457,17 @@ public class Main {
 
             String question = "Deseas Contratar o Despedir a algun empleado \n1. Si \n2. No";
             byte[] options = {1,2};
-            byte respuesta = ask(question, options, "green");
+            byte respuesta = ask(question, options, "blue");
 
             switch (respuesta) {
                 case 1:
                     question = "Operacion a realizar \n1.Contratar \n2.Despedir \n0. Salir";
                     byte[] options2 = {0,1,2};
-                    byte answer = ask(question, options2, "green");
+                    byte answer = ask(question, options2, "blue");
                     if(answer == 1){
                         String pregunta = "Que tipo de Empleado deseas: \n0. Salir \n1. Aseador \n2. Seguridad \n3. Profesor";
                         byte[] option = {0,1,2,3};
-                        byte res = ask(pregunta, option, "red");
+                        byte res = ask(pregunta, option, "blue");
                         Random random = new Random();
                         switch (res) {
                             case 1:
@@ -1501,22 +1496,21 @@ public class Main {
                                     }
                                 }
                                 msgBase = msgBase + "10. Salir";
-                                customPrint("Candidados a Aseador", true);
-                                customPrint(msgBase);
+                                customPrint("Candidados a Aseador \n" + msgBase);
                                 byte[] opciones = {0,1,2,3,4,5,6,7,8,9,10};
-                                byte empleado = ask("Contrata algun empleado", opciones, "green");
+                                byte empleado = ask("Contrata algun empleado", opciones, "blue");
                                 if(empleado < 10){
                                     ArrayList<Empleado> tipAseador = new ArrayList<>();
                                     tipAseador = Empleado.getTipoAseador();
                                     Empleado nuevo_empleado_A = new Empleado(candidatos.get(empleado), idA.get(empleado), "Aseador");
                                     tipAseador.add(nuevo_empleado_A);
                                     Empleado.setTipoAseador(tipAseador);
-                                    customPrint("Se contrato a " + nuevo_empleado_A.getNombre());
+                                    customPrint("Se contrato a " + nuevo_empleado_A.getNombre(), "green");
                                     repetidor = false;
                                 break;
                                 }
                                 else{
-                                    customPrint("No se contrato ningun empleado", true);
+                                    customPrint("No se contrato ningun empleado", true, "green");
                                     break;
                                 }
 
@@ -1546,22 +1540,21 @@ public class Main {
                                     }
                                 }
                                 msgBase = msgBase + "10. Salir";
-                                customPrint("Candidados a Seguridad", true);
-                                customPrint(msgBase);
+                                customPrint("Candidados a Seguridad \n" + msgBase);
                                 byte[] opcionesS = {0,1,2,3,4,5,6,7,8,9,10};
-                                byte empleadoS = ask("Contrata algun empleado", opcionesS, "green");
+                                byte empleadoS = ask("Contrata algun empleado", opcionesS, "blue");
                                 if(empleadoS < 10){
                                     ArrayList<Empleado> tipSeguridad = new ArrayList<>();
                                     tipSeguridad = Empleado.getTipoSeguridad();
                                     Empleado nuevo_empleado_S = new Empleado(candidatosS.get(empleadoS), idS.get(empleadoS), "Seguridad");
                                     tipSeguridad.add(nuevo_empleado_S);
                                     Empleado.setTipoSeguridad(tipSeguridad);
-                                    customPrint("Se contrato a " + nuevo_empleado_S.getNombre());
+                                    customPrint("Se contrato a " + nuevo_empleado_S.getNombre(), "green");
                                     repetidor = false;
                                 break;
                                 }
                                 else{
-                                    customPrint("No se contrato ningun empleado", true);
+                                    customPrint("No se contrato ningun empleado", true, "green");
                                     break;
                                 }
                             case 3:
@@ -1590,22 +1583,21 @@ public class Main {
                                     }
                                 }
                                 msgBase = msgBase + "10. Salir";
-                                customPrint("Candidados a Seguridad", true);
-                                customPrint(msgBase);
+                                customPrint("Candidados a Seguridad \n " + msgBase);
                                 byte[] opcionesP = {0,1,2,3,4,5,6,7,8,9,10};
-                                byte empleadoP = ask("Contrata algun empleado", opcionesP, "green");
+                                byte empleadoP = ask("Contrata algun empleado", opcionesP, "blue");
                                 if(empleadoP < 10){
                                     ArrayList<Empleado> tipProfesors = new ArrayList<>();
                                     tipProfesors = Empleado.getTipoProfesor();
                                     Empleado nuevo_empleado_P = new Profesor(candidatosP.get(empleadoP), idP.get(empleadoP));
                                     tipProfesors.add(nuevo_empleado_P);
                                     Empleado.setTipoProfesor(tipProfesors);
-                                    customPrint("Se contrato a " + nuevo_empleado_P.getNombre());
+                                    customPrint("Se contrato a " + nuevo_empleado_P.getNombre(), "green");
                                     repetidor = false;
                                 break;
                                 }
                                 else{
-                                    customPrint("No se contrato ningun empleado", true);
+                                    customPrint("No se contrato ningun empleado", true, "green");
                                     break;
                                 }
                             case 0:
@@ -1617,13 +1609,13 @@ public class Main {
                         if(answer == 2){
                             question = "Introduce el id del trabajador a despedir";
                             long buscar_id = longAsk(question);
-                            final boolean[] encontrado = {false};
+                            boolean[] encontrado = {false};
                             Empleado.getEmpleadosPorRendimiento().removeIf(Persona ->{
                                 if(Persona.getId() == buscar_id){
                                     encontrado[0] = true;
                                     double liquidacion = (Persona.calcularSueldo()*1.2) + Persona.getDeuda();
                                     tesoreria.getCuenta().transferencia(Persona.getCuenta(), liquidacion);
-                                    customPrint("Se despidio a " + Persona.getNombre() + " y se le pago su respectiva liquidacion");
+                                    customPrint("Se despidio a " + Persona.getNombre() + " y se le pago su respectiva liquidacion", "green");
                                     if(Persona.getOcupacion() != "Aseador"){
                                         if (Persona.getOcupacion() != "Seguridad"){
                                             Empleado.getTipoProfesor().remove(Persona);
@@ -1640,7 +1632,7 @@ public class Main {
                                 return false;
                             });
                             if(!encontrado[0]){
-                                customPrint("No se encontro ningun trabajador con el id " + buscar_id);
+                                customPrint("No se encontro ningun trabajador con el id " + buscar_id, "red");
                             }
                         }
                         else{
@@ -1654,7 +1646,7 @@ public class Main {
             }
         } while(!repetidor);
         
-        customPrint("Asignando trabajos, por favor espere ...", true, "green");
+        customPrint("Asignando trabajos, por favor espere ...", true);
         try{
             Thread.sleep(2000);
         } catch (InterruptedException e) {
@@ -1714,27 +1706,39 @@ public class Main {
                     int asignadas = 0;
                     ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>();
                     if(asignadas < funcion_por_trabajador){
-                        for(Funcion Funciones : funcionesDisponibles){
+                        for(int i = 0; i < funcionesDisponibles.size(); i++){
+                            Funcion Funciones = funcionesDisponibles.get(i);
                             //Asignacion del horario y del Trabajo
-                            if(Persona.getHorario() != null){
-                                if(Funciones.getHorario().get(0).isAfter(localTime.get(localTime.size()-1).get(1))){
-                                    localTime.add(Funciones.getHorario());
-                                    asignadas = asignadas + 1;
-                                    //CALCULAR DURACION DE LA FUNCION
-                                    LocalDateTime inicio = Funciones.getHorario().get(0);
-                                    LocalDateTime fin = Funciones.getHorario().get(1);
-    
-                                    double duracionFuncion = Duration.between(inicio, fin).toMinutes()/60.0; // Para obtener las horas
-                                    Persona.getTrabajos().add(duracionFuncion);
+                            //Verifica que la funcion tenga un horario
+                            if(!Funciones.getHorario().isEmpty()){
+                                if(Persona.getHorario() != null){
+                                    if(Funciones.getHorario().get(0).isAfter(localTime.get(localTime.size()-1).get(1))){
+                                        localTime.add(Funciones.getHorario());
+                                        asignadas = asignadas + 1;
+                                        //CALCULAR DURACION DE LA FUNCION
+                                        LocalDateTime inicio = Funciones.getHorario().get(0);
+                                        LocalDateTime fin = Funciones.getHorario().get(1);
+        
+                                        double duracionFuncion = Duration.between(inicio, fin).toMinutes()/60.0; // Para obtener las horas
+                                        Persona.getTrabajos().add(duracionFuncion);
+
+                                        funcionesDisponibles.remove(i);
+                                        i--;
+                                    }
+                                    else{
+                                        continue;
+                                    }
                                 }
                                 else{
-                                    continue;
+                                    localTime.add(Funciones.getHorario());
+                                    asignadas = asignadas + 1;
+                                    
                                 }
                             }
                             else{
-                                localTime.add(Funciones.getHorario());
-                                asignadas = asignadas + 1;
-                                
+                                funcionesDisponibles.remove(i);
+                                i--;
+                                customPrint("No hay horarios para aplicar", "red");
                             }
                         }
                         Persona.setHorario(localTime);
