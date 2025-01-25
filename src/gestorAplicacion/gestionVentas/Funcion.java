@@ -26,16 +26,25 @@ public class Funcion {
         String Nuevo="";
         ArrayList <Silla> s = this.getSala().getSillas();
         int h = 0;
-        for (int i = 0;i<(s.size()/ 8);i++){
-            for (int j =0;j < 8;i++){
-                String string = s.get(j + h).getTipo().name();
-                Nuevo = Nuevo +string;
-            }  
-            h = h + 8;  
-            Nuevo=Nuevo+"\n";
-            System.out.println();
+        for (int i = 0; i < s.size(); i++) {
+            char primerCaracter = s.get(i).getTipo().name().charAt(0);
+            Nuevo=Nuevo+primerCaracter+s.get(i).getCodigo()+" "; 
+            if ((i + 1) % 8 == 0) { 
+                Nuevo = Nuevo+"\n";
+            }
         }
         return Nuevo;
+    }
+    public void eliminarSilla(Integer i){
+        ArrayList <Silla> s = this.getSala().getSillas();
+        for (int k = 0; k < s.size(); k++) {
+            if(s.get(k).getCodigo().equals(i)){
+                s.remove(k);
+
+            }
+
+        }
+        
     }
     
     public Funcion(Obra obra,Sala sala){
@@ -231,10 +240,10 @@ public static String imprimirFuncion(Funcion funcion){
     }
     
 
-public static Obra buscarFuncion(String nombre){
+public static Funcion buscarFuncion(String nombre){
     for (Funcion funcion : funcionesCreadas) {
         if ((funcion.obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
-            return funcion.obra;
+            return funcion;
         }
         
     }
