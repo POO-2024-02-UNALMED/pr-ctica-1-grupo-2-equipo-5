@@ -23,7 +23,6 @@ public class funcionalidad5 {
             actor1.setCalificacion(4.1f);
             actor1.setSexo('M');
             actor1.setEdad(49);
-            actor1.addAptitud(Aptitud.IMPROVISACION);
             actor1.setCalificacionPorAptitud(Aptitud.IMPROVISACION, 4.1);
 
             genres.add(Genero.DRAMA);
@@ -32,7 +31,6 @@ public class funcionalidad5 {
             actor2.setCalificacion(3.8f);
             actor2.setSexo('M');
             actor2.setEdad(62);
-            actor2.addAptitud(Aptitud.IMPROVISACION);
             actor2.setCalificacionPorAptitud(Aptitud.IMPROVISACION, 4.1);
     
             genres.add(Genero.EXPERIMENTAL);
@@ -41,7 +39,6 @@ public class funcionalidad5 {
             actor3.setCalificacion(4.6f);
             actor3.setSexo('F');
             actor3.setEdad(36);
-            actor3.addAptitud(Aptitud.IMPROVISACION);
             actor3.setCalificacionPorAptitud(Aptitud.IMPROVISACION, 3.1);
 
             genres.add(Genero.FANTASIA);
@@ -50,7 +47,6 @@ public class funcionalidad5 {
             actor4.setCalificacion(4.7f);
             actor4.setSexo('M');
             actor4.setEdad(64);
-            actor4.addAptitud(Aptitud.IMPROVISACION);
             actor4.setCalificacionPorAptitud(Aptitud.IMPROVISACION, 3.1);
 
             genres.add(Genero.MUSICAL);
@@ -59,7 +55,6 @@ public class funcionalidad5 {
             actor5.setCalificacion(5.0f);
             actor5.setSexo('M');
             actor5.setEdad(76);
-            actor5.addAptitud(Aptitud.IMPROVISACION);
             actor5.setCalificacionPorAptitud(Aptitud.IMPROVISACION, 3.1);
 
             genres.add(Genero.ROMANCE);
@@ -68,7 +63,6 @@ public class funcionalidad5 {
             actor6.setCalificacion(4.2f);
             actor6.setSexo('M');
             actor6.setEdad(85);
-            actor6.addAptitud(Aptitud.IMPROVISACION);
             actor6.setCalificacionPorAptitud(Aptitud.IMPROVISACION, 3.1);
 
             genres.add(Genero.TERROR);
@@ -77,7 +71,6 @@ public class funcionalidad5 {
             actor7.setCalificacion(4.5f);
             actor7.setSexo('M');
             actor7.setEdad(70);
-            actor7.addAptitud(Aptitud.IMPROVISACION);
             actor7.setCalificacionPorAptitud(Aptitud.IMPROVISACION, 3.1);
 
             Actor actor8 = new Actor("Carmen Maura", 90456243);
@@ -85,7 +78,6 @@ public class funcionalidad5 {
             actor8.setCalificacion(4.3f);
             actor8.setSexo('F');
             actor8.setEdad(79);
-            actor8.addAptitud(Aptitud.IMPROVISACION);
             actor8.setCalificacionPorAptitud(Aptitud.IMPROVISACION, 3.1);
             
             Actor actor9 = new Actor("Florina Lemaitre", 9076243);
@@ -93,7 +85,6 @@ public class funcionalidad5 {
             actor9.setCalificacion(3.9f);
             actor9.setSexo('F');
             actor9.setEdad(36);
-            actor9.addAptitud(Aptitud.IMPROVISACION);
             actor9.setCalificacionPorAptitud(Aptitud.IMPROVISACION, 3.1);
 
             Cliente warner = new Cliente("Empresa", 246);

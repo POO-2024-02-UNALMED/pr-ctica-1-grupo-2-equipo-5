@@ -11,11 +11,8 @@ import uiMain.Main.isIn;
 import gestorAplicacion.herramientas.*;
 import gestorAplicacion.gestionObras.*;
 import gestorAplicacion.gestionFinanciera.CuentaBancaria;
-import gestorAplicacion.gestionObras.Actor;
 import gestorAplicacion.gestionVentas.Funcion;
 import gestorAplicacion.gestionVentas.Tiquete;
-import gestorAplicacion.herramientas.Genero;
-
 import gestorAplicacion.gestionFinanciera.Tesoreria;
 
 public class Cliente {

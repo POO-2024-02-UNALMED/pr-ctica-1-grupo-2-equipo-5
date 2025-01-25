@@ -45,19 +45,6 @@ public class Empleado {
 
     public Empleado() {}
 
-    //Metodo para verificar si se hizo el trabajo bien
-    public void VerificacionTrabajo(){
-        Random random = new Random();
-        double randomValue = random.nextDouble();
-        if (randomValue > 5.0){
-            this.setTrabajoCorrecto(true);
-            this.puntosPositivos += 1;
-        }
-        else{
-            this.setTrabajoCorrecto(false);
-            
-        }
-    }
 
     //Calcular sueldo
     public double calcularSueldo(){
