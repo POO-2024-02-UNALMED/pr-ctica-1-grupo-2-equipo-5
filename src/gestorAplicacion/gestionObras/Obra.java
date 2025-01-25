@@ -13,7 +13,7 @@ public class Obra {
     private String nombre;
     private float calificacion;
     private ArrayList<Actor> reparto = new ArrayList<>();
-    private ArrayList<Aptitud> papeles;
+    private ArrayList<Aptitud> papeles = new ArrayList<>();
     private Director director;
     private float costoProduccion;
     private ArrayList<Funcion> funcionesSemana;
@@ -409,7 +409,7 @@ public class Obra {
     
         // Recopilar las obras en estado crítico
         for (Obra obra : Obra.getObras()) {
-            if (obra.promedioCalificacion() <= 1.0) { // Estado crítico definido como <= 1.0
+            if (obra.promedioCalificacion() <= 2.0) { // Estado crítico definido como <= 2.0
                 obrasCriticas.add(obra);
             }
         }
