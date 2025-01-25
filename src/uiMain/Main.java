@@ -526,6 +526,12 @@ public class Main {
 
             }
             customPrint(Funcion.buscarFuncion(inputF).tablaSillas());
+            Integer num=in.nextInt();
+            in.nextLine();
+            Funcion.buscarFuncion(inputF).eliminarSilla(num);
+            customPrint(Funcion.buscarFuncion(inputF).tablaSillas());
+
+
             
             customPrint("Funcion seleccionada: \n\n"+Obra.imprimirObra(Obra.buscarObra(inputF)));
             cliente.setObra(inputF);
