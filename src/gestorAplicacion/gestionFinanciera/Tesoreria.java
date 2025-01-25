@@ -2,9 +2,9 @@ package gestorAplicacion.gestionFinanciera;
 
 public class Tesoreria {
     private static double dineroEnCaja;
-    private static float metaSemanal;
+    private static double metaSemanal;
     private static CuentaBancaria cuenta;
-    private float total;
+    private double total;
 
     //Constructor
     public Tesoreria(float total, float metaSemanal){
@@ -46,16 +46,16 @@ public class Tesoreria {
     public void setDineroEnCaja(double newDinero) {
         dineroEnCaja = newDinero;
     }
-    public float getMetaTotal() {
+    public double getMetaTotal() {
         return metaSemanal;
     }
     public void setMetaTotal(Float metaTotal) {
         metaSemanal = metaTotal;
     }
-    public float getTotal() {
+    public double getTotal() {
         return total;
     }
-    public void setTotal(Float total) {
+    public void setTotal(double total) {
         this.total = total;
     }
 

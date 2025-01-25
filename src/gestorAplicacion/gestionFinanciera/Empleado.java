@@ -1,5 +1,4 @@
 package gestorAplicacion.gestionFinanciera;
-import java.util.Random;
 import java.time.LocalDateTime;
 
 import gestorAplicacion.gestionObras.Actor;

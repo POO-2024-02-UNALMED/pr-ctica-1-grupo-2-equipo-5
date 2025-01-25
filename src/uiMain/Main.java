@@ -30,8 +30,6 @@ import gestorAplicacion.gestionObras.Obra;
 import gestorAplicacion.herramientas.Aptitud;
 import gestorAplicacion.herramientas.Genero;
 import gestorAplicacion.herramientas.Suscripcion;
-import test.funci_1;
-import test.funci_5;
 import gestorAplicacion.gestionObras.Director;
 
 
@@ -1551,11 +1549,16 @@ public class Main {
         } while(!repetidor);
         
 
-        //Organiza el ranking - Aseador - Seguridad - Profesor
+        //Organiza el ranking - Aseador - Seguridad - Profesor - Salas
         ArrayList<Empleado> Aseador_order = Empleado.getTipoAseador();
         ArrayList<Empleado> Seguridad_order = Empleado.getTipoSeguridad();
         ArrayList<Empleado> Profesor_order = Empleado.getTipoProfesor();
-        
+        ArrayList<Sala> SalasPorTamano = Sala.getSalas();
+        Collections.sort(SalasPorTamano, new Comparator<Sala>(){
+            public int compare(Sala S1, Sala S2){
+                return Integer.compare(S2.getMetrosCuadrados(), S1.getMetrosCuadrados());
+            }
+        });
         Collections.sort(Aseador_order, new Comparator<Empleado>() {
             public int compare(Empleado E1, Empleado E2){
                 return Integer.compare(E2.getMetaSemanal(), E1.getMetaSemanal());
@@ -1575,10 +1578,47 @@ public class Main {
         Empleado.setTipoAseador(Aseador_order);
         Empleado.setTipoProfesor(Profesor_order);
         Empleado.setTipoSeguridad(Seguridad_order);
-        
         //Administrar Trabajadores
         //Asignar horas y trabajos
+        //Para Seguridad
+        int cant_trabajadores_principiantes = 0;
+        int base = 1;
+        for(Empleado Persona : Empleado.getTipoSeguridad()){
+            if(Persona.getMetaSemanal() == base){
+                cant_trabajadores_principiantes += 1;
+            }
+        }
+        //Asignacion de tareas si todos los trabajadores son principiantes
+        if(cant_trabajadores_principiantes == Empleado.getTipoSeguridad().size()){
+            int totalSalas = Sala.getSalas().size();
+            int totalTrabajadores = cant_trabajadores_principiantes;
+            int sala_por_trabajador = totalSalas/totalTrabajadores;
+            for(Empleado Persona : Empleado.getTipoSeguridad()){
+                int asignadas = 0;
+                ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>();
+                if(asignadas<sala_por_trabajador){
+                    for(Funcion Funciones : Funcion.getFuncionesCreadas()){
+                        //Asignacion del horario
+                        if(Persona.getHorario() != null){
+                            if(Funciones.getHorario().get(0).isAfter(localTime.get(localTime.size()-1).get(1))){
+                                localTime.add(Funciones.getHorario());
+                                asignadas = asignadas + 1;
+                            }
+                            else{
+                                continue;
+                            }
+                        }
+                        else{
+                            localTime.add(Funciones.getHorario());
+                        }
+                    }
+                    Persona.setHorario(localTime);
+                }
+            }
+        }
+        else{
 
+        }
 
         //Hora inicio - Hora fin
         //Asignar Horario Trabajador
@@ -1598,7 +1638,7 @@ public class Main {
         }
         
         //Pagar nomina a empleados:
-        
+        tesoreria.setTotal(tesoreria.getTotal() + tesoreria.getDineroEnCaja());
         double fondos = tesoreria.getCuenta().getSaldo();
         double totalSaldos = 0;
         //Verificacion de fondos:
