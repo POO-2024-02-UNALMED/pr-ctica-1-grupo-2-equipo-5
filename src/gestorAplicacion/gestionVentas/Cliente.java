@@ -21,7 +21,6 @@ public class Cliente {
     private String obra;
     private Suscripcion suscripcion ;
     private long id;
-    private Funcion funcion;
     private Genero generoFavorito;
     private Actor actorFavorito;
     private ArrayList<Tiquete> ultimasCompras = new ArrayList<>();
@@ -29,8 +28,8 @@ public class Cliente {
     private String correo;
     private String tipo;
     private CuentaBancaria cuentaBancaria;
-    private Asiento asiento;
     public static ArrayList<Cliente> clientes = new ArrayList<>();
+    public Tiquete tiquete;
 
     //constructor solo con tipo de cliente y id
     public Cliente(String tipo, long id){
@@ -53,12 +52,7 @@ public class Cliente {
     }
 
     //FUNCION
-    public Funcion getFuncion() {
-        return funcion;
-    }
-    public void setFuncion(Funcion funcion) {
-        this.funcion = funcion;
-    }
+   
 
     //GENERO FAVORITO
     public Genero getGeneroFavorito() {
@@ -154,16 +148,10 @@ public class Cliente {
         long codigo = 0;
         Random random = new Random();
 
-
-
         while (!salir) {
             codigo = random.nextInt(999);
-
             if (verificar(codigo)) {
-                
-            
-            }else{
-                
+            }else{  
                 salir = true;
             } 
         }
@@ -202,12 +190,12 @@ public class Cliente {
         return nombre;
 
     }
-    public Cliente(String tipo, long id,Suscripcion suscripcion,Asiento asiento){
+    public Cliente(String tipo, long id,Suscripcion suscripcion,Silla silla){
         this.tipo = tipo;
         this.id = id;
         this.suscripcion=suscripcion;
         this.cuentaBancaria = new CuentaBancaria(id, 0);
-        this.asiento=asiento;
+        this.tiquete.setSilla(silla);
         clientes.add(this);
     }
 
@@ -237,13 +225,7 @@ public class Cliente {
 
     }
 
-    public Asiento getAsiento() {
-        return asiento;
-    }
 
-    public void setAsiento(Asiento asiento) {
-        this.asiento = asiento;
-    }
 
     
     

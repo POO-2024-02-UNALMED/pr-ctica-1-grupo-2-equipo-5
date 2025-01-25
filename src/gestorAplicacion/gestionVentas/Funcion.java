@@ -22,7 +22,8 @@ public class Funcion {
     static{
         funci_1.prueba();
     }
-    public Funcion(Obra obra){
+    public Funcion(Obra obra,Sala sala){
+        this.sala = sala;
         this.obra=obra;
         funcionesCreadas.add((this));
 

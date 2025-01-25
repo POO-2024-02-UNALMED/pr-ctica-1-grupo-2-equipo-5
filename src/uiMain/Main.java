@@ -40,8 +40,8 @@ import test.funcionalidad2;
 public class Main {
     static Tesoreria tesoreria = new Tesoreria(0, 100);
     public static Scanner in = new Scanner(System.in);
-    public static boolean supportsColor = (System.console() != null && System.getenv().get("TERM") != null);
-
+    //public static boolean supportsColor = (System.console() != null && System.getenv().get("TERM") != null);
+    public static boolean supportsColor = true;
     //------------------HERRAMIENTAS-------------------------//
     //pregunta y devuelve cadena respuesta
     public static String ask(String question){
@@ -311,6 +311,7 @@ public class Main {
     }
 
     public static void gestionVentas(){
+        Silla silla = new Silla(Asiento.BASICO);
 
         InterfaceTipos asiento = Asiento.BASICO;
         InterfaceTipos suscription = Suscripcion.Basica;
@@ -555,7 +556,7 @@ public class Main {
             }
             if (confirmacion != ""){
                 customPrint(confirmacion);
-                cliente.setAsiento(Asiento.GOLD);
+                cliente.tiquete.setSilla(silla);
             }else{
             customPrint(asiento.tipos());
             customPrint("Que Asiento desea comprar? \n");
@@ -570,18 +571,18 @@ public class Main {
             }
             switch (input) {
                 case "basico":
-                    cliente.setAsiento(Asiento.BASICO);
+                    cliente.tiquete.setSilla(silla);
                     break;
                 case "comfort":
-                    cliente.setAsiento(Asiento.COMFORT);
+                    cliente.tiquete.setSilla(silla);
                     precioSus = precioSus+(2900*descuento);
                     break;
                 case "premium":
-                    cliente.setAsiento(Asiento.PREMIUM);
+                    cliente.tiquete.setSilla(silla);
                     precioSus = precioSus+(5900*descuento);
                     break;
                 case "gold":
-                    cliente.setAsiento(Asiento.GOLD);
+                    cliente.tiquete.setSilla(silla);
                     precioSus = precioSus+(9900*descuento);
                     break;
     
