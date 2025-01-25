@@ -542,9 +542,8 @@ public class Main {
             descuento = 1-descuento;
             String mensajeDescuento="";
             String mensaje;
-            customPrint(""+descuento);
             if (descuento==0){
-                mensaje = "Su funcion es gratiss" ;
+                mensaje = "Su funcion es gratiss\n" ;
             }else{
                 mensaje="";
             }
@@ -573,15 +572,15 @@ public class Main {
                     break;
                 case "comfort":
                     cliente.setAsiento(Asiento.Comfort);
-                    precioSus = precioSus+2900;
+                    precioSus = precioSus+(2900*descuento);
                     break;
                 case "premium":
                     cliente.setAsiento(Asiento.Premium);
-                    precioSus = precioSus+5900;
+                    precioSus = precioSus+(5900*descuento);
                     break;
                 case "gold":
                     cliente.setAsiento(Asiento.Gold);
-                    precioSus = precioSus+9900;
+                    precioSus = precioSus+(9900*descuento);
                     break;
     
                     
