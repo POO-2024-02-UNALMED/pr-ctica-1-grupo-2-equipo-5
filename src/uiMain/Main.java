@@ -1575,7 +1575,6 @@ public class Main {
         Empleado.setTipoAseador(Aseador_order);
         Empleado.setTipoProfesor(Profesor_order);
         Empleado.setTipoSeguridad(Seguridad_order);
-
         
         //Administrar Trabajadores
         //Asignar horas y trabajos
