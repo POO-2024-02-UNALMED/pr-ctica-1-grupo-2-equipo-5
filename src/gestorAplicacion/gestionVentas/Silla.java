@@ -12,6 +12,10 @@ public class Silla {
         this.tipo=tipo;
 
     }
+    public Silla(Integer i){
+        this.codigo=i;
+
+    }
     //TIPO
     public Asiento getTipo() {
         return tipo;

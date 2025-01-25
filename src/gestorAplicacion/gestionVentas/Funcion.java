@@ -18,17 +18,23 @@ public class Funcion {
     private int audienciaEsperada;
     static ArrayList <Funcion> funcionesCreadas= new ArrayList<>() ;
 
-
-    // static{
-    //     funci_1.prueba();
-    // }
+    
+    static{
+         funci_1.prueba();
+     }
     public String tablaSillas(){
         String Nuevo="";
         ArrayList <Silla> s = this.getSala().getSillas();
         int h = 0;
         for (int i = 0; i < s.size(); i++) {
-            char primerCaracter = s.get(i).getTipo().name().charAt(0);
-            Nuevo=Nuevo+primerCaracter+s.get(i).getCodigo()+" "; 
+            
+            if (s.get(i).getCodigo()==88){
+                Nuevo=Nuevo+"      ";
+            }else {
+                char primerCaracter = s.get(i).getTipo().name().charAt(0);
+                Nuevo=Nuevo+primerCaracter+String.format("%04d", s.get(i).getCodigo())+" "; 
+            }
+            
             if ((i + 1) % 8 == 0) { 
                 Nuevo = Nuevo+"\n";
             }
@@ -36,10 +42,11 @@ public class Funcion {
         return Nuevo;
     }
     public void eliminarSilla(Integer i){
+        Silla sillaVacia = new Silla(88);
         ArrayList <Silla> s = this.getSala().getSillas();
         for (int k = 0; k < s.size(); k++) {
             if(s.get(k).getCodigo().equals(i)){
-                s.remove(k);
+                s.set(k, sillaVacia);
 
             }
 
