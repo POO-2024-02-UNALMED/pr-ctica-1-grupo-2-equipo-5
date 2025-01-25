@@ -31,6 +31,7 @@ public class Obra {
     private int funcionesRecomendadas;
     private float promedioArt;
     private boolean repartoDisponible;
+    private float Asistencia=0;
 
     public int getAudienciaEsperada() {
         return audienciaEsperada;
@@ -341,19 +342,25 @@ public class Obra {
         
 
     }
+    public void recurrencia(){
+        this.Asistencia++;
+    
+
+    }
     public static float precioFuncion(Obra obra){
             float prom = obra.promedioCalificacion();
             float precioBase=10000;
+            float ad = (obra.getAsistencia()*500);
             if (prom > 8) {
-                precioBase = precioBase +(prom*800);
+                precioBase =( precioBase +(prom*800)+ad);
                 
             } else if(prom > 5)
             {
-                precioBase = precioBase +(prom*400);
+                precioBase = (precioBase +(prom*400)+ad);
             } else if (prom > 3){
-                precioBase = precioBase +(prom*200);
+                precioBase = (precioBase +(prom*200+ad));
             }else{
-                precioBase = precioBase +(prom*100);
+                precioBase = (precioBase +(prom*100+ad));
             }
             
             
@@ -483,4 +490,11 @@ public class Obra {
     public void addFuncion(Funcion funcion){
         this.funcionesSemana.add(funcion);
     }
+    public float getAsistencia() {
+        return Asistencia;
+    }
+    public void setAsistencia(float asistencia) {
+        Asistencia = asistencia;
+    }
+    
 }

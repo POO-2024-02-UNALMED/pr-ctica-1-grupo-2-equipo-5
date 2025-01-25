@@ -183,19 +183,21 @@ public static boolean calificacionVacia(Obra obra){
     
 
 }
-public static float precioFuncion(Funcion funcion){
+
+    public static float precioFuncion(Funcion funcion){
         float prom = funcion.obra.promedioCalificacion();
         float precioBase=10000;
+        float ad = (funcion.obra.getAsistencia()*500);
         if (prom > 8) {
-            precioBase = precioBase +(prom*800);
+            precioBase =( precioBase +(prom*800)+ad);
             
         } else if(prom > 5)
         {
-            precioBase = precioBase +(prom*400);
+            precioBase = (precioBase +(prom*400)+ad);
         } else if (prom > 3){
-            precioBase = precioBase +(prom*200);
+            precioBase = (precioBase +(prom*200+ad));
         }else{
-            precioBase = precioBase +(prom*100);
+            precioBase = (precioBase +(prom*100+ad));
         }
         
         
