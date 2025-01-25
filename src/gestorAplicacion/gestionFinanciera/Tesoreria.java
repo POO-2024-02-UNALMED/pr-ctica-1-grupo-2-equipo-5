@@ -58,13 +58,4 @@ public class Tesoreria {
     public void setTotal(double total) {
         this.total = total;
     }
-
-    // Métodos adicionale
-
-    public static void reembolsarPago(CuentaBancaria cuenta, double monto) {
-        if (dineroEnCaja >= monto) {
-            dineroEnCaja -= monto;
-            cuenta.ingresar(monto);
-        }
-    }
 }

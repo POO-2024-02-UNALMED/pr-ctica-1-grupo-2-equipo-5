@@ -54,33 +54,19 @@ public class funcionalidad4 {
         Profesor.getTipoProfesor().add(profesor2);
         
         // Crear artistas (actores y un director)
-        Artista actor1 = new Actor("Carlos Moreno", 1234567);
+        Artista actor1 = new Actor("Carlos Moreno", 12);
         Artista actor2 = new Actor("Ana Pérez", 11);
-        Artista director1 = new Director("Luis Herrera", 2222222);
+        Artista director1 = new Director("Luis Herrera", 22);
 
-        ((Actor) actor2).setCalificacionPorAptitud(Aptitud.CANTO, 5.0);
+        
         ((Actor) actor2).setCalificacionPorAptitud(Aptitud.BAILE, 3.0);
         ((Actor) actor2).setCalificacionPorAptitud(Aptitud.DISCURSO, 3.0);
         ((Actor) actor2).setCalificacionPorAptitud(Aptitud.EMOCIONALIDAD, 2.9);
         ((Actor) actor2).setCalificacionPorAptitud(Aptitud.IMPROVISACION, 1.8);
-
-
+        ((Actor) actor2).setCalificacionPorAptitud(Aptitud.CANTO, 1.0);
+        
         // Caso 1: Actor válido con profesores disponibles
         Main.gestionClases();
-
-        /*// Caso 2: Actor válido pero SIN profesores disponibles
-        System.out.println("\nCASO 2: Actor válido pero SIN profesores disponibles");
-        Empleado.getTipoProfesor().clear(); // Eliminar todos los profesores
-        Main.gestionClases();
-
-        // Caso 3: Artista que NO es un actor
-        System.out.println("\nCASO 3: Artista que no es un actor");
-        Empleado.getTipoProfesor().add(profesor1); // Añadir al menos un profesor de nuevo
-        Main.gestionClases();
-
-        // Caso 4: Actor válido, profesores disponibles, y más de una iteración (casting exitoso)
-        System.out.println("\nCASO 4: Actor válido con múltiples rondas de evaluación");
-        Main.gestionClases();*/
     }
 }
 
