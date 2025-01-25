@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 import gestorAplicacion.gestionClases.Profesor;
 import gestorAplicacion.gestionFinanciera.Empleado;
-import gestorAplicacion.gestionFinanciera.Tesoreria;
+// import gestorAplicacion.gestionFinanciera.Tesoreria;
 // import gestorAplicacion.gestionFinanciera.Tesoreria;
 // import gestorAplicacion.gestionObras.Actor;
 // import gestorAplicacion.gestionVentas.Cliente;
