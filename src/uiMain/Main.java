@@ -1708,6 +1708,7 @@ public class Main {
                     if(asignadas < funcion_por_trabajador){
                         for(int i = 0; i < funcionesDisponibles.size(); i++){
                             Funcion Funciones = funcionesDisponibles.get(i);
+                            System.out.println(Funciones.getObra().getNombre());
                             //Asignacion del horario y del Trabajo
                             //Verifica que la funcion tenga un horario
                             if(!Funciones.getHorario().isEmpty()){
@@ -2090,9 +2091,7 @@ public class Main {
                 posicion = posicion + 1;
             }
         }
-        customPrint("Ranking de Empleados", true);
-        customPrint(msgBase);
-
+        customPrint("Ranking de Empleados \n" + msgBase, true, "green");
     }
 
 
