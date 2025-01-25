@@ -1,5 +1,4 @@
 package gestorAplicacion.gestionFinanciera;
-import java.util.Random;
 import java.time.LocalDateTime;
 
 import gestorAplicacion.gestionObras.Actor;
@@ -18,15 +17,15 @@ public class Empleado {
     private static ArrayList<Empleado> tipoSeguridad = new ArrayList<>();
     private static ArrayList<Empleado> tipoAseador = new ArrayList<>();
     private static ArrayList<Empleado> tipoProfesor = new ArrayList<>();
-    private int TrabajoRealizado; //Es el total del trabajo realizado Pago
-    private boolean trabajoCorrecto;
+    private double TrabajoRealizado; //Es el total del trabajo realizado Pago
+    private ArrayList<Boolean> trabajoCorrecto = new ArrayList<>();
     private int metaSemanal;
     protected int puntosPositivos;
     private String ocupacion;
     private boolean disponible;
     private CuentaBancaria cuenta;
     private double deuda;
-    private ArrayList<Float> trabajos = new ArrayList<>(); //Aqui se almacenan los trabajos que realizo ya sea que fue correcto o no.
+    private ArrayList<Double> trabajos = new ArrayList<>(); //Aqui se almacenan los trabajos que realizo ya sea que fue correcto o no.
     private ArrayList<ArrayList<LocalDateTime>> horario = new ArrayList<>();
 
     //Constructor
@@ -44,7 +43,6 @@ public class Empleado {
     //Constructor para funcionalidad 4
 
     public Empleado() {}
-
 
     //Calcular sueldo
     public double calcularSueldo(){
@@ -90,19 +88,19 @@ public class Empleado {
     }
 
     //Trabajo
-    public int getTrabajoRealizado() {
+    public double getTrabajoRealizado() {
         return TrabajoRealizado;
     }
 
-    public void setTrabajoRealizado(int trabajoRealizado) {
+    public void setTrabajoRealizado(double trabajoRealizado) {
         TrabajoRealizado = trabajoRealizado;
     }
 
-    public boolean isTrabajoCorrecto() {
+    public ArrayList<Boolean> getTrabajoCorrecto() {
         return trabajoCorrecto;
     }
 
-    public void setTrabajoCorrecto(boolean trabajoCorrecto) {
+    public void setTrabajoCorrecto(ArrayList<Boolean> trabajoCorrecto) {
         this.trabajoCorrecto = trabajoCorrecto;
     }
 
@@ -161,11 +159,11 @@ public class Empleado {
     }
 
     //Trabajos
-    public ArrayList<Float> getTrabajos() {
+    public ArrayList<Double> getTrabajos() {
         return this.trabajos;
     }
 
-    public void setTrabajos(ArrayList<Float> trabajos) {
+    public void setTrabajos(ArrayList<Double> trabajos) {
         this.trabajos = trabajos;
     }
 

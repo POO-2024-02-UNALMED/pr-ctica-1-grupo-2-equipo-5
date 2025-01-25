@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Locale;
 import java.util.Random;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -29,10 +29,10 @@ import gestorAplicacion.gestionObras.Actor;
 import gestorAplicacion.gestionObras.Artista;
 import gestorAplicacion.gestionObras.Obra;
 import gestorAplicacion.herramientas.Aptitud;
+import gestorAplicacion.herramientas.Asiento;
 import gestorAplicacion.herramientas.Genero;
+import gestorAplicacion.herramientas.InterfaceTipos;
 import gestorAplicacion.herramientas.Suscripcion;
-import test.funci_1;
-import test.funci_5;
 import gestorAplicacion.gestionObras.Director;
 
 
@@ -311,8 +311,10 @@ public class Main {
     }
 
     public static void gestionVentas(){
-        
-        
+
+        InterfaceTipos asiento = Asiento.Basico;
+        InterfaceTipos suscription = Suscripcion.Basica;
+        String confirmacion="";
         float dineroTesoreria=0;
         byte [] opciones_2 = {1,2,3};
         Cliente cliente= null;
@@ -416,7 +418,7 @@ public class Main {
                 }
                 
                 code= Cliente.IdRandom();
-                cliente = new Cliente(null, code,Suscripcion.Basica);
+                cliente = new Cliente(null, code,Suscripcion.Basica,Asiento.Basico);
                 customPrint("Codigo "+cliente.getId()+ " creado","green");
 
                 
@@ -462,18 +464,18 @@ public class Main {
             
         
         if(a == 1){
-            customPrint(Suscripcion.tiposSuscipcion());
+            customPrint(suscription.tipos());
                 
                 customPrint(
-            "Que suscripcion desea aadquirir?\n\n"
+            "Que suscripcion desea adquirir?\n\n"
             );
             String suscripcion = in.nextLine().toLowerCase();
                 
-            while (Suscripcion.tipos(suscripcion)){
+            while (suscription.imprimirTipos(suscripcion)){
 
             customPrint("La respuesta introducida no hace parte de las opciones. \n"+
             "Intente de nuevo:\n"+
-            "Que suscripcion desea aadquirir\n\n","red"
+            "Que suscripcion desea adquirir\n\n","red"
             
             );
             suscripcion = in.nextLine().toLowerCase();
@@ -503,59 +505,92 @@ public class Main {
         }
         customPrint("Estas son las funciones disponibles\n\n"+String.format("%30s %22s %22s %15s", "Nombre Obra", "Genero", "Duracion","Precio")+"\n\n"+Funcion.generarTabla());
             customPrint("Que funcion desea comprar? \n");
-            String input = in.nextLine().toLowerCase();
+            String inputF = in.nextLine().toLowerCase();
             float precioSus=0;
-            while (Obra.nombres(input)){
+            while (Obra.nombres(inputF)){
                 customPrint("Funcion no encontrada \n"+
                 "Ingrese un nombre valido :","red");
-                input = in.nextLine().toLowerCase();
+                inputF = in.nextLine().toLowerCase();
                 
 
             }
-            customPrint("Funcion seleccionada: \n\n"+Obra.imprimirObra(Obra.buscarObra(input)));
-            cliente.setObra(input);
+            customPrint("Funcion seleccionada: \n\n"+Obra.imprimirObra(Obra.buscarObra(inputF)));
+            cliente.setObra(inputF);
             
             float descuento=0;
             if (cliente.getSuscripcion().name().equals("Basica")) {
-
                 descuento = 0;
                 precioSus = 0;
-
-
             } else if (cliente.getSuscripcion().name().equals("Vip")) {
-
                 descuento = 0.25f;
                 precioSus = 18900;
-                
-                
-
             } else if (cliente.getSuscripcion().name().equals("Premium")) {
-
                 descuento = 0.10f;
                 precioSus = 11900;
-                
             } else if (cliente.getSuscripcion().name().equals("Elite")){
-
+                confirmacion="Tienes un asiento Gold gratis";
                 descuento = 1;
-                precioSus = 39900;
-                
+                precioSus = 39900;              
             }
+
             if (antiguo==true){
                 precioSus = 0;
             }
+
+
+
             descuento = 1-descuento;
             String mensajeDescuento="";
             String mensaje;
             if (descuento==0){
-                mensaje = "Su funcion es gratiss" ;
+                mensaje = "Su funcion es gratiss\n" ;
             }else{
                 mensaje="";
             }
-            if (descuento !=0){
+            if (descuento !=1.0f){
                 mensajeDescuento = "luego de descuento es :";
 
             }
-            customPrint(mensaje+"\nTotal a pagar \n\n "+mensajeDescuento+String.format("$%,.2f",((Funcion.mostrarPrecioFuncion(input)*descuento)+precioSus)));
+            if (confirmacion != ""){
+                customPrint(confirmacion);
+                cliente.setAsiento(Asiento.Gold);
+            }else{
+            customPrint(asiento.tipos());
+            customPrint("Que Asiento desea comprar? \n");
+            String input=in.nextLine().toLowerCase();
+        
+            while (asiento.imprimirTipos(input)){
+                customPrint(
+                "Ingrese un asiendo valido :","red");
+                input = in.nextLine().toLowerCase();
+                
+
+            }
+            switch (input) {
+                case "basico":
+                    cliente.setAsiento(Asiento.Basico);
+                    break;
+                case "comfort":
+                    cliente.setAsiento(Asiento.Comfort);
+                    precioSus = precioSus+(2900*descuento);
+                    break;
+                case "premium":
+                    cliente.setAsiento(Asiento.Premium);
+                    precioSus = precioSus+(5900*descuento);
+                    break;
+                case "gold":
+                    cliente.setAsiento(Asiento.Gold);
+                    precioSus = precioSus+(9900*descuento);
+                    break;
+    
+                    
+            
+            }
+        }
+
+        
+        
+            customPrint(mensaje+"\nTotal a pagar\n\n "+mensajeDescuento+String.format("$%,.2f",((Funcion.mostrarPrecioFuncion(inputF)*descuento)+precioSus)));
             customPrint(
     "1. Realizar compra\n"+
         "2. Cancelar Compra \n"
@@ -578,7 +613,7 @@ public class Main {
             }
             if (a==1){
                 customPrint("Realizando Compra");
-                dineroTesoreria = ((Funcion.mostrarPrecioFuncion(input)*descuento)+precioSus);
+                dineroTesoreria = ((Funcion.mostrarPrecioFuncion(inputF)*descuento)+precioSus);
             try {
                 // Pausa de 2 segundos (4000 milisegundos)
                 Thread.sleep(4000);
@@ -1389,7 +1424,7 @@ public class Main {
                     byte[] options2 = {0,1,2};
                     byte answer = ask(question, options2, "green");
                     if(answer == 1){
-                        String pregunta = "Que tipo de Empleado deseas: 0. Salir \n1. Aseador \n2. Seguridad \n3. Profesor";
+                        String pregunta = "Que tipo de Empleado deseas: \n0. Salir \n1. Aseador \n2. Seguridad \n3. Profesor";
                         byte[] option = {0,1,2,3};
                         byte res = ask(pregunta, option, "red");
                         Random random = new Random();
@@ -1408,7 +1443,7 @@ public class Main {
                                     idA.add(id);
                                     n = n + 1;
                                 }while (n<10);
-                                    int j = 0;
+                                int j = 0;
                                 for(String Nombre : candidatos){
                                     if(msgBase != "\n"){
                                         msgBase = msgBase + j +". " + Nombre + " " +  idA.get(j) + "\n";
@@ -1435,6 +1470,7 @@ public class Main {
                                 break;
                                 }
                                 else{
+                                    customPrint("No se contrato ningun empleado", true);
                                     break;
                                 }
 
@@ -1455,7 +1491,7 @@ public class Main {
                                     int b = 0;
                                 for(String Nombre : candidatosS){
                                     if(msgBase != "\n"){
-                                        msgBase = msgBase + b+". " + Nombre + " " +  idS.get(b) + "\n";
+                                        msgBase = msgBase + b +". " + Nombre + " " +  idS.get(b) + "\n";
                                         b = b + 1;
                                     }
                                     else{
@@ -1479,6 +1515,7 @@ public class Main {
                                 break;
                                 }
                                 else{
+                                    customPrint("No se contrato ningun empleado", true);
                                     break;
                                 }
                             case 3:
@@ -1522,6 +1559,7 @@ public class Main {
                                 break;
                                 }
                                 else{
+                                    customPrint("No se contrato ningun empleado", true);
                                     break;
                                 }
                             case 0:
@@ -1570,12 +1608,23 @@ public class Main {
             }
         } while(!repetidor);
         
+        customPrint("Asignando trabajos, por favor espere ...", true, "green");
+        try{
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            customPrint("La pausa fue interrumpida.");    
+        }
 
-        //Organiza el ranking - Aseador - Seguridad - Profesor
+        //Organiza el ranking - Aseador - Seguridad - Profesor - Salas
         ArrayList<Empleado> Aseador_order = Empleado.getTipoAseador();
         ArrayList<Empleado> Seguridad_order = Empleado.getTipoSeguridad();
         ArrayList<Empleado> Profesor_order = Empleado.getTipoProfesor();
-        
+        ArrayList<Sala> SalasPorTamano = Sala.getSalas();
+        Collections.sort(SalasPorTamano, new Comparator<Sala>(){
+            public int compare(Sala S1, Sala S2){
+                return Integer.compare(S2.getMetrosCuadrados(), S1.getMetrosCuadrados());
+            }
+        });
         Collections.sort(Aseador_order, new Comparator<Empleado>() {
             public int compare(Empleado E1, Empleado E2){
                 return Integer.compare(E2.getMetaSemanal(), E1.getMetaSemanal());
@@ -1595,10 +1644,154 @@ public class Main {
         Empleado.setTipoAseador(Aseador_order);
         Empleado.setTipoProfesor(Profesor_order);
         Empleado.setTipoSeguridad(Seguridad_order);
+
         
         //Administrar Trabajadores
         //Asignar horas y trabajos
+        //Para Seguridad
+        int cant_trabajadores_principiantes = 0;
+        int base = 1;
+        int totalFunciones = Funcion.getFuncionesCreadas().size();
+        int totalTrabajadores_S = Empleado.getTipoSeguridad().size();
+        int funcion_por_trabajador = totalFunciones/totalTrabajadores_S;
+        for(Empleado Persona : Empleado.getTipoSeguridad()){
+            if(Persona.getMetaSemanal() == base){
+                cant_trabajadores_principiantes += 1;
+            }
+        }
+        //Asignacion de tareas si todos los trabajadores son principiantes
+        if(cant_trabajadores_principiantes == Empleado.getTipoSeguridad().size()){
+            for(Empleado Persona : Empleado.getTipoSeguridad()){
+                int asignadas = 0;
+                ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>();
+                if(asignadas < funcion_por_trabajador){
+                    for(Funcion Funciones : Funcion.getFuncionesCreadas()){
+                        //Asignacion del horario y del Trabajo
+                        if(Persona.getHorario() != null){
+                            if(Funciones.getHorario().get(0).isAfter(localTime.get(localTime.size()-1).get(1))){
+                                localTime.add(Funciones.getHorario());
+                                asignadas = asignadas + 1;
+                                //CALCULAR DURACION DE LA FUNCION
+                                LocalDateTime inicio = Funciones.getHorario().get(0);
+                                LocalDateTime fin = Funciones.getHorario().get(1);
 
+                                double duracionFuncion = Duration.between(inicio, fin).toMinutes()/60.0; // Para obtener las horas
+                                Persona.getTrabajos().add(duracionFuncion);
+                            }
+                            else{
+                                continue;
+                            }
+                        }
+                        else{
+                            localTime.add(Funciones.getHorario());
+                            asignadas = asignadas + 1;
+                        }
+                    }
+                    Persona.setHorario(localTime);
+                    Persona.setDisponible(false);
+                }
+            }
+        }
+        else{
+            ArrayList<Funcion> FuncionPorDuracion = Funcion.getFuncionesCreadas();
+            Collections.sort(FuncionPorDuracion, new Comparator<Funcion>() {
+                public int compare(Funcion f1, Funcion f2){
+                    double duracionF1 = Duration.between(f1.getHorario().get(0), f1.getHorario().get(1)).toMinutes()/60.0;
+                    double duracionF2 = Duration.between(f2.getHorario().get(0), f2.getHorario().get(1)).toMinutes()/60.0;
+                    return Double.compare(duracionF2, duracionF1);
+                }
+            });
+            for(Empleado Persona : Empleado.getTipoSeguridad()){
+                int asignadas = 0;
+                ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>();
+                if(asignadas < funcion_por_trabajador){
+                    for(Funcion Funciones : FuncionPorDuracion ){
+                        //Asignacion del horario y del Trabajo
+                        if(Persona.getHorario() != null){
+                            if(Funciones.getHorario().get(0).isAfter(localTime.get(localTime.size()-1).get(1))){
+                                localTime.add(Funciones.getHorario());
+                                asignadas = asignadas + 1;
+                                //CALCULAR DURACION DE LA FUNCION
+                                LocalDateTime inicio = Funciones.getHorario().get(0);
+                                LocalDateTime fin = Funciones.getHorario().get(1);
+
+                                double duracionFuncion = Duration.between(inicio, fin).toMinutes()/60.0; // Para obtener las horas
+                                Persona.getTrabajos().add(duracionFuncion);
+                            }
+                            else{
+                                continue;
+                            }
+                        }
+                        else{
+                            localTime.add(Funciones.getHorario());
+                            asignadas = asignadas + 1;
+                        }
+                    }
+                }
+            }
+        }
+
+        customPrint("trabajos Asignados...");
+        customPrint("Desplegando Trabajadores");
+        
+        //Verificacion del trabajo de Seguridad
+        cant_trabajadores_principiantes = 0;
+        for(Empleado Persona : Empleado.getTipoSeguridad()){
+            if(Persona.getMetaSemanal() == base){
+                cant_trabajadores_principiantes += 1;
+            }
+        }
+        if(cant_trabajadores_principiantes == Empleado.getTipoSeguridad().size()){
+            for(Empleado Persona : Empleado.getTipoSeguridad()){
+                for(double Hora : Persona.getTrabajos()){
+                    Random random = new Random();
+                    double randomValue = random.nextDouble();
+                    if(randomValue > 0.5){
+                        Persona.getTrabajoCorrecto().add(true);
+                        Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Hora);
+                        Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
+                    }
+                    else{Persona.getTrabajoCorrecto().add(false);}
+                }
+                Persona.setDisponible(true);
+            }
+        }
+        else{
+            for(Empleado Persona : Empleado.getTipoSeguridad()){
+                for(double Hora : Persona.getTrabajos()){
+                    Random random = new Random();
+                    double randomValue = random.nextDouble();
+                    if(Persona.getMetaSemanal() > 20){
+                        if(Hora >= 4){
+                            if(randomValue > 0.65){
+                                Persona.getTrabajoCorrecto().add(true);
+                                Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Hora);
+                                Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
+                            }
+                            else {Persona.getTrabajoCorrecto().add(false);}
+                        }
+                        else{
+                            if(randomValue > 0.45){
+                                Persona.getTrabajoCorrecto().add(true);
+                                Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Hora);
+                                Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
+                            }
+                            else{Persona.getTrabajoCorrecto().add(false);}
+                        }
+                    }
+                    else{
+                        if(randomValue > 0.5){
+                            Persona.getTrabajoCorrecto().add(true);
+                            Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Hora);
+                            Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
+                        }
+                        else{Persona.getTrabajoCorrecto().add(false);}
+                    }
+                }
+            }
+        }
+        
+        
 
         //Hora inicio - Hora fin
         //Asignar Horario Trabajador
@@ -1608,7 +1801,7 @@ public class Main {
         
         //Asignar Horario Profesor LO HACE OSCAR
 
-        //Verificación del trabajo
+
         
         try{
             Thread.sleep(2000);
@@ -1618,22 +1811,22 @@ public class Main {
         }
         
         //Pagar nomina a empleados:
-        
-        double fondos = tesoreria.getCuenta().getSaldo();
-        double totalSaldos = 0;
-        //Verificacion de fondos:
-            for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                totalSaldos = totalSaldos + Persona.calcularSueldo();
-            }
-        //Realizar pago
         byte[] option = {1,2};
         byte respuesta = ask("¿Desea realizar los pagos \n1. Si \n2. No", option, "green");
         switch (respuesta) {
             case 1:
+                tesoreria.setTotal(tesoreria.getTotal() + tesoreria.getDineroEnCaja());
+                double fondos = tesoreria.getCuenta().getSaldo();
+                double totalSaldos = 0;
+                //Verificacion de fondos:
+                for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                    totalSaldos = totalSaldos + Persona.calcularSueldo();
+                }
+                //Realizar pago
                 if(totalSaldos > fondos){
                     ArrayList<Empleado>  Cuentas_Pagadas = new ArrayList<>();
                     double cantPagada = 0;
-                      customPrint("Upps... No se puede realizar los pagos adecuadamente", "Red");
+                    customPrint("Upps... No se puede realizar los pagos adecuadamente", "Red");
                     customPrint("Realizando pagos de manera equitativa...");
                     for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
                         boolean transaccion = tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.getDeuda() + Persona.calcularSueldo()) *0.5);  //Establecer cuanto se le debe a la persona
@@ -1818,7 +2011,7 @@ public class Main {
             case 2:
                 break;
         }
-        
+    
         //Imprimir Ranking
         ArrayList<Empleado> Ranking = Empleado.getEmpleadosPorRendimiento();
         Collections.sort(Ranking, new Comparator<Empleado>() {
@@ -1843,6 +2036,9 @@ public class Main {
         customPrint(msgBase);
 
     }
+
+
+
 
     //FUNCIONALIDAD 4
     public static void gestionClases() throws InterruptedException {
@@ -1894,7 +2090,7 @@ public class Main {
         }
         
         if (artista.getCalificaciones().isEmpty()) {
-            customPrint("El artista es nuevo. Inicializando calificaciones...");  
+            customPrint("El actor no tiene calficaciones. Inicializando calificaciones...");  
             Thread.sleep(2000);
 
             // Llamar al método casting() para inicializar calificaciones de calificadores
@@ -1908,17 +2104,20 @@ public class Main {
                 Profesor profesorAsignado = (Profesor) Empleado.getTipoProfesor().get((int) (Math.random() * Empleado.getTipoProfesor().size()));
                 
                 // Mostrar quién inicializó las calificaciones
-                customPrint("El profesor " + profesorAsignado.getNombre() + " inicializó las calificaciones del artista " + artista.getNombre() + ".");
+                customPrint("El/la profesor/a " + profesorAsignado.getNombre() + " inicializó las calificaciones de el actor " + artista.getNombre() + ".");
             }
             // Inicializar calificaciones del público (simuladas aleatoriamente)
             artista.inicializarCalificacionesPublico(artista);
-            customPrint("Calificaciones inicializadas exitosamente.", "green");
         }
-
+        Thread.sleep(2000);
         // Mostrar las calificaciones del artista, sea o no sea nuevo
         customPrint("Calificaciones del artista: " + artista.getNombre());
-        customPrint("Calificaciones de calificadores: " + artista.getCalificaciones());
+        Thread.sleep(2000);
+        if (artista.getCalificaciones() != null) {
+            customPrint("Calificaciones de calificadores: " + artista.getCalificaciones());
+        }
         customPrint("Calificaciones del público: " + artista.getCalificacionesPublico());
+        Thread.sleep(3500);
 
         //Se enseñan obras en "Estado Crítico"
         ArrayList<Obra> obrasCritics = Obra.mostrarObrasCriticas();
