@@ -24,7 +24,7 @@ import gestorAplicacion.gestionFinanciera.Tesoreria;
 import gestorAplicacion.gestionVentas.Sala;
 import gestorAplicacion.gestionVentas.Funcion;
 import gestorAplicacion.gestionVentas.Silla;
-
+import gestorAplicacion.gestionVentas.Tiquete;
 import gestorAplicacion.gestionObras.Actor;
 import gestorAplicacion.gestionObras.Artista;
 import gestorAplicacion.gestionObras.Obra;
@@ -319,6 +319,7 @@ public class Main {
 
     public static void gestionVentas(){
         Silla silla = new Silla(Asiento.BASICO);
+        Tiquete tiquete = new Tiquete();
 
         InterfaceTipos asiento = Asiento.BASICO;
         InterfaceTipos suscription = Suscripcion.Basica;
@@ -426,7 +427,7 @@ public class Main {
                 }
                 
                 code= Cliente.IdRandom();
-                cliente = new Cliente(null, code,Suscripcion.Basica,Asiento.BASICO);
+                cliente = new Cliente(code,Suscripcion.Basica);
                 customPrint("Codigo "+cliente.getId()+ " creado","green");
 
                 
@@ -521,7 +522,10 @@ public class Main {
                 inputF = in.nextLine().toLowerCase();
                 
 
+
+
             }
+            customPrint(Funcion.buscarFuncion(inputF).tablaSillas());
             
             customPrint("Funcion seleccionada: \n\n"+Obra.imprimirObra(Obra.buscarObra(inputF)));
             cliente.setObra(inputF);

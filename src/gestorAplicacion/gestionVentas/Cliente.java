@@ -198,6 +198,12 @@ public class Cliente {
         this.tiquete.setSilla(silla);
         clientes.add(this);
     }
+    public Cliente(long id,Suscripcion suscripcion){
+        this.id = id;
+        this.suscripcion=suscripcion;
+        this.cuentaBancaria = new CuentaBancaria(id, 0);
+        clientes.add(this);
+    }
 
     public String getObra() {
         return obra;

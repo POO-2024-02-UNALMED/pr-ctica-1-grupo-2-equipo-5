@@ -26,6 +26,10 @@ public class Tiquete {
         Tiquete.tiquetes = tiquetes;
     }
 
+    public Tiquete(){
+
+    };
+
     public Tiquete(Cliente cliente){
         this.cliente = cliente;
         tiquetes.add(this);

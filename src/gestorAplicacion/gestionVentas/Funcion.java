@@ -31,6 +31,22 @@ public class Funcion {
 
 
     }
+    
+    public String tablaSillas(){
+        String Nuevo="";
+        ArrayList <Silla> s = this.getSala().getSillas();
+        int h = 0;
+        for (int i = 0;i<(s.size()/ 8);i++){
+            for (int j =0;j < 8;i++){
+                String string = s.get(j + h).getTipo().name();
+                Nuevo = Nuevo +string;
+            }  
+            h = h + 8;  
+            Nuevo=Nuevo+"\n";
+            System.out.println();
+        }
+        return Nuevo;
+    }
     //OBRA
     public Obra getObra() {
         return obra;
@@ -171,6 +187,8 @@ public class Funcion {
     }
     public static String generarTabla(){
         String Nuevo="";
+        
+        
         for (Funcion funcion : funcionesCreadas) {
             String string = String.format("%30s %20s %20s %20s",funcion.obra.getNombre(),funcion.obra.getGenero(),funcion.obra.getDur(),String.format("$%,.2f",precioFuncion(funcion))+"\n");
         Nuevo = Nuevo +string;
@@ -217,10 +235,10 @@ public static String imprimirFuncion(Funcion funcion){
     }
     
 
-public static Obra buscarFuncion(String nombre){
+public static Funcion buscarFuncion(String nombre){
     for (Funcion funcion : funcionesCreadas) {
         if ((funcion.obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
-            return funcion.obra;
+            return funcion;
         }
         
     }
