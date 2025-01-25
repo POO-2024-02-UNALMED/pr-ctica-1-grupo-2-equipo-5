@@ -1552,12 +1552,30 @@ public class Main {
         
 
         //Organiza el ranking - Aseador - Seguridad - Profesor
-        ArrayList<Empleado> Ranking = Empleado.getEmpleadosPorRendimiento();
-        Collections.sort(Ranking, new Comparator<Empleado>() {
+        ArrayList<Empleado> Aseador_order = Empleado.getTipoAseador();
+        ArrayList<Empleado> Seguridad_order = Empleado.getTipoSeguridad();
+        ArrayList<Empleado> Profesor_order = Empleado.getTipoProfesor();
+        
+        Collections.sort(Aseador_order, new Comparator<Empleado>() {
             public int compare(Empleado E1, Empleado E2){
-                return Double.compare(E2.getMetaSemanal(), E1.getMetaSemanal());
+                return Integer.compare(E2.getMetaSemanal(), E1.getMetaSemanal());
             }
         });
+        Collections.sort(Seguridad_order, new Comparator<Empleado>() {
+            public int compare(Empleado E1, Empleado E2){
+                return Integer.compare(E2.getMetaSemanal(), E1.getMetaSemanal());
+            }
+        });
+        Collections.sort(Profesor_order, new Comparator<Empleado>() {
+            public int compare(Empleado E1, Empleado E2){
+                return Integer.compare(E2.getMetaSemanal(), E1.getMetaSemanal());
+            }
+        });
+       
+        Empleado.setTipoAseador(Aseador_order);
+        Empleado.setTipoProfesor(Profesor_order);
+        Empleado.setTipoSeguridad(Seguridad_order);
+
         
         //Administrar Trabajadores
         //Asignar horas y trabajos
@@ -1585,194 +1603,226 @@ public class Main {
         double fondos = tesoreria.getCuenta().getSaldo();
         double totalSaldos = 0;
         //Verificacion de fondos:
-        for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-            totalSaldos = totalSaldos + Persona.calcularSueldo();
-        }
-        //Realizar pago
-        if(totalSaldos > fondos){
-            ArrayList<Empleado>  Cuentas_Pagadas = new ArrayList<>();
-            double cantPagada = 0;
-            customPrint("Upps... No se puede realizar los pagos adecuadamente", "Red");
-            customPrint("Realizando pagos de manera equitativa...");
             for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                boolean transaccion = tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.getDeuda() + Persona.calcularSueldo()) *0.5);  //Establecer cuanto se le debe a la persona
-                if(transaccion != true){
-                    System.out.println("No se le puede pagar a " + Persona.getNombre());
-                    Persona.setDeuda(Persona.getDeuda() + Persona.calcularSueldo());
-                    System.out.println("nueva deuda: " + Persona.getDeuda() );
-                }
-                else{
-                    cantPagada = cantPagada + ((Persona.calcularSueldo() + Persona.getDeuda())*0.5);
-                    Persona.setDeuda((Persona.getDeuda() + (Persona.calcularSueldo() + Persona.getDeuda())* 0.5));
-                    Cuentas_Pagadas.add(Persona); 
-                }
+                totalSaldos = totalSaldos + Persona.calcularSueldo();
             }
-            customPrint("Pago existoso", true, "green");
-            String msg = "Se pago un total de " + cantPagada;
-            customPrint(msg);
-            customPrint("Se realizo el pago a " + Cuentas_Pagadas.size() + " cuentas en total");
-            customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
-        }
-        else{
-            //Verificacion fondos Bonificacion
-            totalSaldos = 0;
-            double cantPagada = 0;
-            if(tesoreria.verificacionMeta() != true){
-                //Verificacion Metas Personales
-                for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                    if(Persona.verificacionMeta() != true){
-                        Persona.setMetaSemanal(Persona.getMetaSemanal()-5); //Disminucion de meta
-                        totalSaldos = totalSaldos + (Persona.calcularSueldo() + Persona.getDeuda());
-                    }
-                    else{
-                        Persona.setMetaSemanal(Persona.getMetaSemanal() + 10);  //Aumento en la meta
-                        totalSaldos = totalSaldos + ((Persona.calcularSueldo() * 1.15) + Persona.getDeuda());
-                    }
-                }
-                //Realizacion Pagos
+        //Realizar pago
+        byte[] option = {1,2};
+        byte respuesta = ask("¿Desea realizar los pagos \n1. Si \n2. No", option, "green");
+        switch (respuesta) {
+            case 1:
                 if(totalSaldos > fondos){
-                    //Verificacion
-                    totalSaldos = 0;
-                    customPrint("Ups... No se pueden aplicar las bonificaciones personales");
-                    customPrint("Realizando Pagos");
+                    ArrayList<Empleado>  Cuentas_Pagadas = new ArrayList<>();
+                    double cantPagada = 0;
+                      customPrint("Upps... No se puede realizar los pagos adecuadamente", "Red");
+                    customPrint("Realizando pagos de manera equitativa...");
                     for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                        cantPagada = cantPagada + (Persona.calcularSueldo() + Persona.getDeuda());
-                        totalSaldos = totalSaldos + Persona.calcularSueldo();
-                    }
-                    //Pago solo sueldo base
-                    if(cantPagada > fondos){
-                        System.out.println("Sueldo Base");
-                        customPrint("No se pudo realizar los pagos junto a la deuda");
-                        customPrint("Realizando pago del Sueldo Base");
-                        tesoreria.pagarSueldoBase(null, cantPagada);
-                        customPrint("Pago existoso", true, "green");
-                        String msg = "Se pago un total de " + totalSaldos;
-                        customPrint(msg);
-                        customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
-                        customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
-                        for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                            if(Persona.verificacionMeta() == true){
-                                Persona.setDeuda(Persona.getDeuda() + Persona.calcularSueldo()*0.15); //Se añade la bonificacion a la deuda solo a aquellas que la cumplieron
-                            }
-                        }
-                    }
-                    else{
-                    //Pago Sueldo base + Deuda
-                        for(Empleado Persona: Empleado.getEmpleadosPorRendimiento()){
-                            tesoreria.getCuenta().transferencia(Persona.getCuenta(), Persona.getDeuda() + Persona.calcularSueldo());
-                        }
-                        customPrint("Pago existoso", true, "green");
-                        String msg = "Se pago un total de " + cantPagada;
-                        customPrint(msg);
-                        customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
-                        customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
-                    }
-                    
-                }
-                //Realizacion Pago Boni + Deuda
-                else{
-                    for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                        if(Persona.verificacionMeta() == true){
-                            tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.15) + Persona.getDeuda());
+                        boolean transaccion = tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.getDeuda() + Persona.calcularSueldo()) *0.5);  //Establecer cuanto se le debe a la persona
+                        if(transaccion != true){
+                            System.out.println("No se le puede pagar a " + Persona.getNombre());
+                            Persona.setDeuda(Persona.getDeuda() + Persona.calcularSueldo());
+                            System.out.println("nueva deuda: " + Persona.getDeuda() );
                         }
                         else{
-                            tesoreria.getCuenta().transferencia(Persona.getCuenta(), Persona.calcularSueldo() + Persona.getDeuda());
+                            cantPagada = cantPagada + ((Persona.calcularSueldo() + Persona.getDeuda())*0.5);
+                            Persona.setDeuda((Persona.getDeuda() + (Persona.calcularSueldo() + Persona.getDeuda())* 0.5));
+                            Cuentas_Pagadas.add(Persona); 
                         }
                     }
                     customPrint("Pago existoso", true, "green");
-                    String msg = "Se pago un total de " + totalSaldos;
+                    String msg = "Se pago un total de " + cantPagada;
                     customPrint(msg);
-                    customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
+                    customPrint("Se realizo el pago a " + Cuentas_Pagadas.size() + " cuentas en total");
                     customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
                 }
-            }
-            //Pago Bonis Tesorerias + deuda
-            else{
-                for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                    if(Persona.verificacionMeta() != true){
-                        Persona.setMetaSemanal(Persona.getMetaSemanal()-5); //Disminucion de meta
-                        totalSaldos = totalSaldos + (Persona.calcularSueldo() * 1.3);
-                    }
-                    else{
-                        Persona.setMetaSemanal(Persona.getMetaSemanal() + 10);  //Aumento en la meta
-                        totalSaldos = totalSaldos + (Persona.calcularSueldo() * 1.45);
-                    }
-                }
-                //Sin fondos suficientes para todas las bonificaciones
-                if (totalSaldos > fondos) {
+                else{
+                    //Verificacion fondos Bonificacion
                     totalSaldos = 0;
-                    //Verificacion Metas Personales
-                    for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                        if(Persona.verificacionMeta() != true){
-                            Persona.setMetaSemanal(Persona.getMetaSemanal());
-                            totalSaldos = totalSaldos + (Persona.calcularSueldo() + Persona.getDeuda());
-                        }
-                        else{
-                            Persona.setMetaSemanal(Persona.getMetaSemanal()); 
-                            totalSaldos = totalSaldos + ((Persona.calcularSueldo() * 1.15) + Persona.getDeuda());
-                        }
-                    }
-                    //Realizacion Pagos
-                    if(totalSaldos > fondos){
-                        //Verificacion
-                        totalSaldos = 0;
-                        customPrint("Ups... No se pueden aplicar las bonificaciones personales");
-                        customPrint("Realizando Pagos");
+                    double cantPagada = 0;
+                    if(tesoreria.verificacionMeta() != true){
+                        //Verificacion Metas Personales
                         for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                            cantPagada = cantPagada + (Persona.calcularSueldo() + Persona.getDeuda());
-                            totalSaldos = totalSaldos + Persona.calcularSueldo();
+                            if(Persona.verificacionMeta() != true){
+                                Persona.setMetaSemanal(Persona.getMetaSemanal()-5); //Disminucion de meta
+                                totalSaldos = totalSaldos + (Persona.calcularSueldo() + Persona.getDeuda());
+                            }
+                            else{
+                                Persona.setMetaSemanal(Persona.getMetaSemanal() + 10);  //Aumento en la meta
+                                totalSaldos = totalSaldos + ((Persona.calcularSueldo() * 1.15) + Persona.getDeuda());
+                            }
                         }
-                        //Pago solo sueldo base
-                        if(cantPagada > fondos){
-                            customPrint("No se pudo realizar los pagos junto a la deuda");
-                            customPrint("Realizando pago del Sueldo Base");
-                            tesoreria.pagarSueldoBase(null, cantPagada);
+                        //Realizacion Pagos
+                        if(totalSaldos > fondos){
+                            //Verificacion
+                            totalSaldos = 0;
+                            customPrint("Ups... No se pueden aplicar las bonificaciones personales");
+                            customPrint("Realizando Pagos");
+                            for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                                cantPagada = cantPagada + (Persona.calcularSueldo() + Persona.getDeuda());
+                                totalSaldos = totalSaldos + Persona.calcularSueldo();
+                            }
+                            //Pago solo sueldo base
+                            if(cantPagada > fondos){
+                                System.out.println("Sueldo Base");
+                                customPrint("No se pudo realizar los pagos junto a la deuda");
+                                customPrint("Realizando pago del Sueldo Base");
+                                tesoreria.pagarSueldoBase(null, cantPagada);
+                                customPrint("Pago existoso", true, "green");
+                                String msg = "Se pago un total de " + totalSaldos;
+                                customPrint(msg);
+                                customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
+                                customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
+                                for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                                    if(Persona.verificacionMeta() == true){
+                                        Persona.setDeuda(Persona.getDeuda() + Persona.calcularSueldo()*0.15); //Se añade la bonificacion a la deuda solo a aquellas que la cumplieron
+                                    }
+                                }
+                            }
+                            else{
+                            //Pago Sueldo base + Deuda
+                                for(Empleado Persona: Empleado.getEmpleadosPorRendimiento()){
+                                    tesoreria.getCuenta().transferencia(Persona.getCuenta(), Persona.getDeuda() + Persona.calcularSueldo());
+                                }
+                                customPrint("Pago existoso", true, "green");
+                                String msg = "Se pago un total de " + cantPagada;
+                                customPrint(msg);
+                                customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
+                                customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
+                            }
+
+                        }
+                        //Realizacion Pago Boni + Deuda
+                        else{
+                            for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                                if(Persona.verificacionMeta() == true){
+                                    tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.15) + Persona.getDeuda());
+                                }
+                                else{
+                                    tesoreria.getCuenta().transferencia(Persona.getCuenta(), Persona.calcularSueldo() + Persona.getDeuda());
+                                }
+                            }
                             customPrint("Pago existoso", true, "green");
                             String msg = "Se pago un total de " + totalSaldos;
                             customPrint(msg);
                             customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
                             customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
+                        }
+                    }
+                    //Pago Bonis Tesorerias + deuda
+                    else{
+                        for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                            if(Persona.verificacionMeta() != true){
+                                Persona.setMetaSemanal(Persona.getMetaSemanal()-5); //Disminucion de meta
+                                totalSaldos = totalSaldos + (Persona.calcularSueldo() * 1.3);
+                            }
+                            else{
+                                Persona.setMetaSemanal(Persona.getMetaSemanal() + 10);  //Aumento en la meta
+                                totalSaldos = totalSaldos + (Persona.calcularSueldo() * 1.45);
+                            }
+                        }
+                        //Sin fondos suficientes para todas las bonificaciones
+                        if (totalSaldos > fondos) {
+                            totalSaldos = 0;
+                            //Verificacion Metas Personales
                             for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                                if(Persona.verificacionMeta() == true){
-                                    Persona.setDeuda(Persona.getDeuda() + Persona.calcularSueldo()*0.15); //Se añade la bonificacion a la deuda solo a aquellas que la cumplieron
+                                if(Persona.verificacionMeta() != true){
+                                    Persona.setMetaSemanal(Persona.getMetaSemanal());
+                                    totalSaldos = totalSaldos + (Persona.calcularSueldo() + Persona.getDeuda());
+                                }
+                                else{
+                                    Persona.setMetaSemanal(Persona.getMetaSemanal()); 
+                                    totalSaldos = totalSaldos + ((Persona.calcularSueldo() * 1.15) + Persona.getDeuda());
+                                }
+                            }
+                            //Realizacion Pagos
+                            if(totalSaldos > fondos){
+                                //Verificacion
+                                totalSaldos = 0;
+                                customPrint("Ups... No se pueden aplicar las bonificaciones personales");
+                                customPrint("Realizando Pagos");
+                                for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                                    cantPagada = cantPagada + (Persona.calcularSueldo() + Persona.getDeuda());
+                                    totalSaldos = totalSaldos + Persona.calcularSueldo();
+                                }
+                                //Pago solo sueldo base
+                                if(cantPagada > fondos){
+                                    customPrint("No se pudo realizar los pagos junto a la deuda");
+                                    customPrint("Realizando pago del Sueldo Base");
+                                    tesoreria.pagarSueldoBase(null, cantPagada);
+                                    customPrint("Pago existoso", true, "green");
+                                    String msg = "Se pago un total de " + totalSaldos;
+                                    customPrint(msg);
+                                    customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
+                                    customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
+                                    for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                                        if(Persona.verificacionMeta() == true){
+                                            Persona.setDeuda(Persona.getDeuda() + Persona.calcularSueldo()*0.15); //Se añade la bonificacion a la deuda solo a aquellas que la cumplieron
+                                        }
+                                    }
+                                }
+                                else{
+                                //Pago Sueldo base + Deuda
+                                    for(Empleado Persona: Empleado.getEmpleadosPorRendimiento()){
+                                        tesoreria.getCuenta().transferencia(Persona.getCuenta(), Persona.getDeuda() + Persona.calcularSueldo());
+                                    }
+                                    customPrint("Pago existoso", true, "green");
+                                    String msg = "Se pago un total de " + cantPagada;
+                                    customPrint(msg);
+                                    customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
+                                    customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
+                                }
+                            }
+                            else{
+                                for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                                    if(Persona.verificacionMeta() == true){
+                                        tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.45) + Persona.getDeuda());
+                                    }
+                                    else{
+                                        tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.3) + Persona.getDeuda());
+                                    }
                                 }
                             }
                         }
                         else{
-                        //Pago Sueldo base + Deuda
-                            for(Empleado Persona: Empleado.getEmpleadosPorRendimiento()){
-                                tesoreria.getCuenta().transferencia(Persona.getCuenta(), Persona.getDeuda() + Persona.calcularSueldo());
-                            }
-                            customPrint("Pago existoso", true, "green");
-                            String msg = "Se pago un total de " + cantPagada;
-                            customPrint(msg);
-                            customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
-                            customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
-                        }
-                    }
-                    else{
-                        for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                            if(Persona.verificacionMeta() == true){
-                                tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.45) + Persona.getDeuda());
-                            }
-                            else{
-                                tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.3) + Persona.getDeuda());
+                            for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                                if(Persona.verificacionMeta() == true){
+                                    tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.45) + Persona.getDeuda());
+                                }
+                                else{
+                                    tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.3) + Persona.getDeuda());
+                                }
                             }
                         }
                     }
                 }
-                else{
-                    for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                        if(Persona.verificacionMeta() == true){
-                            tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.45) + Persona.getDeuda());
-                        }
-                        else{
-                            tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.3) + Persona.getDeuda());
-                        }
-                    }
-                }
+                break;
+            case 2:
+                break;
+        }
+        
+        //Imprimir Ranking
+        ArrayList<Empleado> Ranking = Empleado.getEmpleadosPorRendimiento();
+        Collections.sort(Ranking, new Comparator<Empleado>() {
+            public int compare(Empleado E1, Empleado E2){
+                return Integer.compare(E2.getMetaSemanal(), E1.getMetaSemanal());
+            }
+        });
+        Empleado.setEmpleadosPorRendimiento(Ranking);
+        String msgBase = "\n";
+        int posicion = 1;
+        for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+            if(msgBase != "\n"){
+                msgBase = msgBase + posicion + ". " + Persona.getNombre() + "\n"; 
+                posicion = posicion + 1;
+            }
+            else{
+                msgBase = posicion + ". " + Persona.getNombre() + msgBase;
+                posicion = posicion + 1;
             }
         }
+        customPrint("Ranking de Empleados", true);
+        customPrint(msgBase);
+
     }
 
     //FUNCIONALIDAD 4
