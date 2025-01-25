@@ -26,7 +26,9 @@ import gestorAplicacion.gestionObras.Actor;
 import gestorAplicacion.gestionObras.Artista;
 import gestorAplicacion.gestionObras.Obra;
 import gestorAplicacion.herramientas.Aptitud;
+import gestorAplicacion.herramientas.Asiento;
 import gestorAplicacion.herramientas.Genero;
+import gestorAplicacion.herramientas.InterfaceTipos;
 import gestorAplicacion.herramientas.Suscripcion;
 import test.funci_1;
 import test.funci_5;
@@ -307,8 +309,10 @@ public class Main {
     }
 
     public static void gestionVentas(){
-        
-        
+
+        InterfaceTipos asiento = Asiento.Basico;
+        InterfaceTipos suscription = Suscripcion.Basica;
+        String confirmacion="";
         float dineroTesoreria=0;
         byte [] opciones_2 = {1,2,3};
         Cliente cliente= null;
@@ -412,7 +416,7 @@ public class Main {
                 }
                 
                 code= Cliente.IdRandom();
-                cliente = new Cliente(null, code,Suscripcion.Basica);
+                cliente = new Cliente(null, code,Suscripcion.Basica,Asiento.Basico);
                 customPrint("Codigo "+cliente.getId()+ " creado","green");
 
                 
@@ -458,18 +462,18 @@ public class Main {
             
         
         if(a == 1){
-            customPrint(Suscripcion.tiposSuscipcion());
+            customPrint(suscription.tipos());
                 
                 customPrint(
-            "Que suscripcion desea aadquirir?\n\n"
+            "Que suscripcion desea adquirir?\n\n"
             );
             String suscripcion = in.nextLine().toLowerCase();
                 
-            while (Suscripcion.tipos(suscripcion)){
+            while (suscription.imprimirTipos(suscripcion)){
 
             customPrint("La respuesta introducida no hace parte de las opciones. \n"+
             "Intente de nuevo:\n"+
-            "Que suscripcion desea aadquirir\n\n","red"
+            "Que suscripcion desea adquirir\n\n","red"
             
             );
             suscripcion = in.nextLine().toLowerCase();
@@ -499,59 +503,93 @@ public class Main {
         }
         customPrint("Estas son las funciones disponibles\n\n"+String.format("%30s %22s %22s %15s", "Nombre Obra", "Genero", "Duracion","Precio")+"\n\n"+Funcion.generarTabla());
             customPrint("Que funcion desea comprar? \n");
-            String input = in.nextLine().toLowerCase();
+            String inputF = in.nextLine().toLowerCase();
             float precioSus=0;
-            while (Obra.nombres(input)){
+            while (Obra.nombres(inputF)){
                 customPrint("Funcion no encontrada \n"+
                 "Ingrese un nombre valido :","red");
-                input = in.nextLine().toLowerCase();
+                inputF = in.nextLine().toLowerCase();
                 
 
             }
-            customPrint("Funcion seleccionada: \n\n"+Obra.imprimirObra(Obra.buscarObra(input)));
-            cliente.setObra(input);
+            customPrint("Funcion seleccionada: \n\n"+Obra.imprimirObra(Obra.buscarObra(inputF)));
+            cliente.setObra(inputF);
             
             float descuento=0;
             if (cliente.getSuscripcion().name().equals("Basica")) {
-
                 descuento = 0;
                 precioSus = 0;
-
-
             } else if (cliente.getSuscripcion().name().equals("Vip")) {
-
                 descuento = 0.25f;
                 precioSus = 18900;
-                
-                
-
             } else if (cliente.getSuscripcion().name().equals("Premium")) {
-
                 descuento = 0.10f;
                 precioSus = 11900;
-                
             } else if (cliente.getSuscripcion().name().equals("Elite")){
-
+                confirmacion="Tienes un asiento Gold gratis";
                 descuento = 1;
-                precioSus = 39900;
-                
+                precioSus = 39900;              
             }
+
             if (antiguo==true){
                 precioSus = 0;
             }
+
+
+
             descuento = 1-descuento;
             String mensajeDescuento="";
             String mensaje;
+            customPrint(""+descuento);
             if (descuento==0){
                 mensaje = "Su funcion es gratiss" ;
             }else{
                 mensaje="";
             }
-            if (descuento !=0){
+            if (descuento !=1.0f){
                 mensajeDescuento = "luego de descuento es :";
 
             }
-            customPrint(mensaje+"\nTotal a pagar \n\n "+mensajeDescuento+String.format("$%,.2f",((Funcion.mostrarPrecioFuncion(input)*descuento)+precioSus)));
+            if (confirmacion != ""){
+                customPrint(confirmacion);
+                cliente.setAsiento(Asiento.Gold);
+            }else{
+            customPrint(asiento.tipos());
+            customPrint("Que Asiento desea comprar? \n");
+            String input=in.nextLine().toLowerCase();
+        
+            while (asiento.imprimirTipos(input)){
+                customPrint(
+                "Ingrese un asiendo valido :","red");
+                input = in.nextLine().toLowerCase();
+                
+
+            }
+            switch (input) {
+                case "basico":
+                    cliente.setAsiento(Asiento.Basico);
+                    break;
+                case "comfort":
+                    cliente.setAsiento(Asiento.Comfort);
+                    precioSus = precioSus+2900;
+                    break;
+                case "premium":
+                    cliente.setAsiento(Asiento.Premium);
+                    precioSus = precioSus+5900;
+                    break;
+                case "gold":
+                    cliente.setAsiento(Asiento.Gold);
+                    precioSus = precioSus+9900;
+                    break;
+    
+                    
+            
+            }
+        }
+
+        
+        
+            customPrint(mensaje+"\nTotal a pagar\n\n "+mensajeDescuento+String.format("$%,.2f",((Funcion.mostrarPrecioFuncion(inputF)*descuento)+precioSus)));
             customPrint(
     "1. Realizar compra\n"+
         "2. Cancelar Compra \n"
@@ -574,7 +612,7 @@ public class Main {
             }
             if (a==1){
                 customPrint("Realizando Compra");
-                dineroTesoreria = ((Funcion.mostrarPrecioFuncion(input)*descuento)+precioSus);
+                dineroTesoreria = ((Funcion.mostrarPrecioFuncion(inputF)*descuento)+precioSus);
             try {
                 // Pausa de 2 segundos (4000 milisegundos)
                 Thread.sleep(4000);

@@ -30,6 +30,7 @@ public class Cliente {
     private String correo;
     private String tipo;
     private CuentaBancaria cuentaBancaria;
+    private Asiento asiento;
     public static ArrayList<Cliente> clientes = new ArrayList<>();
 
     //constructor solo con tipo de cliente y id
@@ -206,11 +207,12 @@ public class Cliente {
         return nombre;
 
     }
-    public Cliente(String tipo, long id,Suscripcion suscripcion){
+    public Cliente(String tipo, long id,Suscripcion suscripcion,Asiento asiento){
         this.tipo = tipo;
         this.id = id;
         this.suscripcion=suscripcion;
         this.cuentaBancaria = new CuentaBancaria(id, 0);
+        this.asiento=asiento;
         clientes.add(this);
     }
 
@@ -239,6 +241,15 @@ public class Cliente {
         return string+string2+string3;
 
     }
+
+    public Asiento getAsiento() {
+        return asiento;
+    }
+
+    public void setAsiento(Asiento asiento) {
+        this.asiento = asiento;
+    }
+
     
     
 }
