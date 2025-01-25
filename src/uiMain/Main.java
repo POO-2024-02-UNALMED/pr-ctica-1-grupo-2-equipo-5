@@ -1706,7 +1706,6 @@ public class Main {
         int totalFunciones = Funcion.getFuncionesCreadas().size();
         int totalTrabajadores_S = Empleado.getTipoSeguridad().size();
         int funcion_por_trabajador = totalFunciones/totalTrabajadores_S;
-        
         ArrayList<Funcion> funcionesDisponibles = new ArrayList<>(Funcion.getFuncionesCreadas());
 
         //Verificar si las listas no estan vacias
@@ -1718,10 +1717,8 @@ public class Main {
             }
             //Asignacion de tareas si todos los trabajadores son principiantes
             if(cant_trabajadores_principiantes == Empleado.getTipoSeguridad().size()){
-                int funciones = 1;
                 for(Empleado Persona : Empleado.getTipoSeguridad()){
                     int asignadas = 0;
-                    String cuidar = "\n";
                     ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
                     for(int i = 0; i < funcionesDisponibles.size(); i++){
                         if(asignadas < funcion_por_trabajador){
@@ -1729,12 +1726,11 @@ public class Main {
                             //Asignacion del horario y del Trabajo
                             //Verifica que la funcion tenga un horario
                             if(!Funciones.getHorario().isEmpty()){
-                                if(Persona.getHorario().size() != 0){
+                                System.out.println("Entra");
+                                if(localTime.size() != 0){
                                     if(Funciones.getHorario().get(0).isAfter(localTime.get(localTime.size()-1).get(1))){
                                         localTime.add(Funciones.getHorario());
-                                        cuidar = cuidar + "Funcion " + funciones + "\n";
                                         asignadas = asignadas + 1;
-                                        funciones = funciones + 1;
                                         //CALCULAR DURACION DE LA FUNCION
                                         LocalDateTime inicio = Funciones.getHorario().get(0);
                                         LocalDateTime fin = Funciones.getHorario().get(1);
@@ -1745,31 +1741,31 @@ public class Main {
                                         funcionesDisponibles.remove(i);
                                         i--;
                                     }
-                                    else{
-                                        funciones = funciones + 1;
-                                        continue;
-                                    }
                                 }
                                 else{
                                     localTime.add(Funciones.getHorario());
                                     funcionesDisponibles.remove(i);
-                                    cuidar = "Funcion " + funciones + cuidar;
-                                    funciones = funciones + 1;
                                     asignadas = asignadas + 1;
-                                    
+
+                                    LocalDateTime inicio = Funciones.getHorario().get(0);
+                                    LocalDateTime fin = Funciones.getHorario().get(1);
+        
+                                    double duracionFuncion = Duration.between(inicio, fin).toMinutes()/60.0; // Para obtener las horas
+                                    Persona.getTrabajos().add(duracionFuncion);
+                                    i--;
                                 }
                             }
                             else{
+                                System.out.println("Falla");
                                 funcionesDisponibles.remove(i);
                                 i--;
                                 customPrint("No hay horarios para aplicar", "red");
                             }
                         }
-                        break;
                     }
-                    customPrint(Persona.getNombre() + " Cuidará: \n" + cuidar);
                     Persona.setHorario(localTime);
                     Persona.setDisponible(false);
+                    customPrint(Persona.getNombre() + " Cuidará: \n" + Persona.getHorario().size() +  " funcion/es" );
                 }
             }
             else{
@@ -1781,10 +1777,8 @@ public class Main {
                         return Double.compare(duracionF2, duracionF1);
                     }
                 });
-                int funciones = 1;
                 for(Empleado Persona : Empleado.getTipoSeguridad()){
                     int asignadas = 0;
-                    String cuidar = "\n";
                     ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
                     for(int i = 0; i < funcionesDisponibles.size(); i++){
                         if(asignadas < funcion_por_trabajador){
@@ -1794,10 +1788,8 @@ public class Main {
                             if(!Funciones.getHorario().isEmpty()){
                                 if(Persona.getHorario().size() != 0){
                                     if(Funciones.getHorario().get(0).isAfter(localTime.get(localTime.size()-1).get(1))){
-                                        localTime.add(Funciones.getHorario());
-                                        cuidar = cuidar + "Funcion " + funciones + "\n";
+                                        localTime.add(Funciones.getHorario());                                        
                                         asignadas = asignadas + 1;
-                                        funciones = funciones + 1;
                                         //CALCULAR DURACION DE LA FUNCION
                                         LocalDateTime inicio = Funciones.getHorario().get(0);
                                         LocalDateTime fin = Funciones.getHorario().get(1);
@@ -1808,16 +1800,10 @@ public class Main {
                                         funcionesDisponibles.remove(i);
                                         i--;
                                     }
-                                    else{
-                                        funciones = funciones + 1;
-                                        continue;
-                                    }
                                 }
                                 else{
                                     localTime.add(Funciones.getHorario());
                                     funcionesDisponibles.remove(i);
-                                    cuidar = "Funcion " + funciones + cuidar;
-                                    funciones = funciones + 1;
                                     asignadas = asignadas + 1;
                                     
                                 }
@@ -1828,11 +1814,10 @@ public class Main {
                                 customPrint("No hay horarios para aplicar", "red");
                             }
                         }
-                        break;
                     }
-                    customPrint(Persona.getNombre() + " Cuidará: \n" + cuidar, "green");
                     Persona.setHorario(localTime);
                     Persona.setDisponible(false);
+                    customPrint(Persona.getNombre() + " Cuidará: \n" + Persona.getHorario().size() +  "funcion/es" );
                 }
             }
         }

@@ -16,6 +16,7 @@ public class Funcion {
     private Sala sala;
     private boolean calificador;
     private int audienciaEsperada;
+    private boolean trabajador;
     static ArrayList <Funcion> funcionesCreadas= new ArrayList<>() ;
 
 
@@ -61,7 +62,13 @@ public class Funcion {
     public void setObra(Obra obra) {
         this.obra = obra;
     }
-
+    //TRABAJADOR
+    public boolean getTrabajador(){
+        return trabajador;
+    }
+    public void setTrabajador(boolean trabajador){
+        trabajador = trabajador
+    }
     //FUNCIONES
     public static ArrayList<Funcion> getFuncionesCreadas(){
         return funcionesCreadas;
