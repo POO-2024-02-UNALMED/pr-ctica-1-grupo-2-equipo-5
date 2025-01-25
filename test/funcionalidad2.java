@@ -24,10 +24,6 @@ public class funcionalidad2 {
             Empleado1.setDeuda(20000);
             Empleado5.setDeuda(30000);
             Empleado9.setDeuda(50000);
-            Empleado2.setTrabajoRealizado(250);
-            Empleado3.setTrabajoRealizado(20);
-            Empleado4.setTrabajoRealizado(10);
-            Empleado9.setTrabajoRealizado(4000);
             Empleado2.setMetaSemanal(3);
             Empleado.getTipoAseador().add(Empleado1);
             Empleado.getTipoAseador().add(Empleado2);

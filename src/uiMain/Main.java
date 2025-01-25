@@ -1702,6 +1702,7 @@ public class Main {
         int funcion_por_trabajador = totalFunciones/totalTrabajadores_S;
         ArrayList<Funcion> funcionesDisponibles = new ArrayList<>(Funcion.getFuncionesCreadas());
         //Verificar si las listas no estan vacias
+        System.out.println("entrar a asignacion trabajadores");
         if(totalFunciones != 0 && totalTrabajadores_S != 0 && !Funcion.getFuncionesCreadas().isEmpty()){
             for(Empleado Persona : Empleado.getTipoSeguridad()){
                 if(Persona.getMetaSemanal() == base){

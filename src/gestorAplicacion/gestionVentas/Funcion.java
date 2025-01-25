@@ -19,9 +19,9 @@ public class Funcion {
     static ArrayList <Funcion> funcionesCreadas= new ArrayList<>() ;
 
 
-    static{
-        funci_1.prueba();
-    }
+    // static{
+    //     funci_1.prueba();
+    // }
     public String tablaSillas(){
         String Nuevo="";
         ArrayList <Silla> s = this.getSala().getSillas();
