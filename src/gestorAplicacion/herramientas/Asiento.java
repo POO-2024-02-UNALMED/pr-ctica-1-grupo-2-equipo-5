@@ -2,10 +2,10 @@ package gestorAplicacion.herramientas;
 
 
 public enum Asiento implements InterfaceTipos{
-    Basico,
-    Comfort, 
-    Premium,
-    Gold;
+    BASICO,
+    COMFORT, 
+    PREMIUM,
+    GOLD;
 
     public  String tipos(){
         String top = String.format("%30s %30s ","Tipo Asiento","Precio Adicional\n\n");

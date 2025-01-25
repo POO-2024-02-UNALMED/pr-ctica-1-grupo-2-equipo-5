@@ -134,7 +134,7 @@ public class Sala {
         int contador = 0;
         ArrayList<Silla> sillas = new ArrayList<>();
         for (int i = 0; i < u * 2; i++){
-            Silla silla = new Silla(Asiento.PREMIUMGOLD, f);
+            Silla silla = new Silla(Asiento.GOLD, f);
             sillas.add(silla);
             f++;
             contador++;
@@ -152,7 +152,7 @@ public class Sala {
             contador++;
         }
         for (int i = 0; i < u * 8; i++){
-            Silla silla = new Silla(Asiento.ESTANDAR, p);
+            Silla silla = new Silla(Asiento.BASICO, p);
             sillas.add(silla);
             p++;
             contador++;
@@ -160,7 +160,7 @@ public class Sala {
 
         int t = capacidad - contador;
         for (int i = 0; i < t; i++){
-            Silla silla = new Silla(Asiento.ESTANDAR, p);
+            Silla silla = new Silla(Asiento.BASICO, p);
             sillas.add(silla);
             p++;
             contador++;

@@ -200,7 +200,6 @@ public class Obra {
         Genero u;
         Funcion a = new Funcion(LocalDateTime.of(2024, 1, 02, 00, 00));
         ArrayList<LocalTime> franja = new ArrayList<>();
-        ArrayList<LocalTime> i = new ArrayList<>();
         franja.add(LocalTime.of(00,00));
         franja.add(LocalTime.of(23,59));
         ArrayList<Obra> obrasGenero = new ArrayList<>();
@@ -212,13 +211,16 @@ public class Obra {
         }
         for (Obra obra: obrasGenero){
             a = obra.funcionEstelar;
+            System.out.println(a);
             if (a != null) {
                 ArrayList<LocalTime> fstar = a.extraerHora(a.getHorario());
-                if (!fstar.isEmpty() && fstar.size() >= 2) { // Asegúrate de que i tenga al menos 2 elementos
-                    if (fstar.get(0).isBefore(franja.get(0))) {
+                System.out.println("a " + a.getHorario());
+                if (!fstar.isEmpty() && fstar.size() < 2) {
+                    System.out.println("fstar"); // Asegúrate de que i tenga al menos 2 elementos
+                    if (fstar.get(0).isAfter(franja.get(0))) {
                         franja.set(0, fstar.get(0));
                     }
-                    if (fstar.get(1).isAfter(franja.get(1))) {
+                    if (fstar.get(1).isBefore(franja.get(1))) {
                         franja.set(1, fstar.get(1));
                     }
                 }

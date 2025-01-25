@@ -640,7 +640,7 @@ public class Main {
 
         
         
-       
+
 
 
 
@@ -650,12 +650,36 @@ public class Main {
 
     public static void gestionObras(){
         ArrayList<LocalDateTime> horarioEstObra1 = new ArrayList<>();
-        horarioEstObra1.add(LocalDateTime.of(2024,1,1,8,00));
-        horarioEstObra1.add(LocalDateTime.of(2024,1,1,9,30));        
+        ArrayList<LocalDateTime> horarioEstObra2 = new ArrayList<>();
+        ArrayList<LocalDateTime> horarioEstObra3 = new ArrayList<>();
+        ArrayList<LocalDateTime> horarioEstObra4 = new ArrayList<>();
+        ArrayList<LocalDateTime> horarioEstObra5 = new ArrayList<>();
+        ArrayList<LocalDateTime> horarioEstObra6 = new ArrayList<>();
+        ArrayList<LocalDateTime> horarioEstObra7 = new ArrayList<>();
+        ArrayList<LocalDateTime> horarioEstObra8 = new ArrayList<>();
+        horarioEstObra1.add(LocalDateTime.of(2024,1,1,9,00));
+        horarioEstObra1.add(LocalDateTime.of(2024,1,1,12,30));
+        horarioEstObra2.add(LocalDateTime.of(2024, 1, 1, 15, 00));
+        horarioEstObra2.add(LocalDateTime.of(2024,1,1,21,30));
+        horarioEstObra3.add(LocalDateTime.of(2024,1,1,13,00));
+        horarioEstObra3.add(LocalDateTime.of(2024,1,1,22,30));
+        horarioEstObra4.add(LocalDateTime.of(2024, 1, 1, 12, 00));
+        horarioEstObra4.add(LocalDateTime.of(2024,1,1,22,30));
+        horarioEstObra5.add(LocalDateTime.of(2024,1,1,16,00));
+        horarioEstObra5.add(LocalDateTime.of(2024,1,1,22,30));
+        horarioEstObra6.add(LocalDateTime.of(2024, 1, 1, 20, 00));
+        horarioEstObra6.add(LocalDateTime.of(2024,1,1,23,59));
+        horarioEstObra7.add(LocalDateTime.of(2024,1,1,17,00));
+        horarioEstObra7.add(LocalDateTime.of(2024,1,1,23,30));
+        horarioEstObra8.add(LocalDateTime.of(2024, 1, 1, 10, 00));
+        horarioEstObra8.add(LocalDateTime.of(2024,1,1,17,30));
         Sala sala1 = new Sala(1, 100, 24);
+        Sala sala2 = new Sala(2, 200, 48);
+        Sala sala3 = new Sala(3, 50, 16);
+        Sala sala4 = new Sala(4, 150, 24);
         Obra obra1 = null;
         for (Obra obra : Obra.getObras()) {
-            if (obra.getNombre().trim().equals("La naranja mecánica")) { 
+            if (obra.getNombre().trim().equals("NOTFORITE")) { 
                 obra1 = obra;
                 break;
             }
@@ -663,8 +687,14 @@ public class Main {
     
         // Si obra1 no existe, se crea y se agrega al listado
         if (obra1 == null) {
-            obra1 = new Obra(new Funcion(horarioEstObra1), Genero.EXPERIMENTAL,"La naranja mecánica");
-            Obra.getObras().add(obra1);
+            obra1 = new Obra(new Funcion(horarioEstObra1), Genero.EXPERIMENTAL,"NOTFORITE");
+            Obra obra2 = new Obra(new Funcion(horarioEstObra2), Genero.DRAMA, "NOTFORITE");
+            Obra obra3 = new Obra(new Funcion(horarioEstObra3), Genero.COMEDIA,"NOTFORITE");
+            Obra obra4 = new Obra(new Funcion(horarioEstObra4), Genero.MUSICAL, "NOTFORITE");            
+            Obra obra5 = new Obra(new Funcion(horarioEstObra5), Genero.FANTASIA,"NOTFORITE");
+            Obra obra6 = new Obra(new Funcion(horarioEstObra6), Genero.TERROR, "NOTFORITE");            
+            Obra obra7 = new Obra(new Funcion(horarioEstObra7), Genero.ROMANCE,"NOTFORITE");
+            Obra obra8 = new Obra(new Funcion(horarioEstObra8), Genero.CIRCO, "NOTFORITE");
         }
         
         int i;
@@ -674,10 +704,12 @@ public class Main {
         String menuObras = "";
         ArrayList<LocalDate> week = getWeek();
         if (!Obra.getObras().isEmpty()){
-            for (Obra obra : Obra.getObras()){          
-                i = i + 1;
-                String item = String.valueOf(i) + "." + obra.getNombre() + "\n";
-                menuObras = menuObras + item;
+            for (Obra obra : Obra.getObras()){   
+                if(obra.getNombre() != "NOTFORITE"){       
+                    i = i + 1;
+                    String item = String.valueOf(i) + "." + obra.getNombre() + "\n";
+                    menuObras = menuObras + item;
+                }
             }
         }
         customPrint(menuObras + String.valueOf(i + 1) + ". Crear nueva obra");
