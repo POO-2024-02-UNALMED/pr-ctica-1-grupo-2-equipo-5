@@ -2150,9 +2150,6 @@ public class Main {
         customPrint("Ranking de Empleados \n" + msgBase, true, "green");
     }
 
-
-
-
     //FUNCIONALIDAD 4
     public static void gestionClases() throws InterruptedException {
 
