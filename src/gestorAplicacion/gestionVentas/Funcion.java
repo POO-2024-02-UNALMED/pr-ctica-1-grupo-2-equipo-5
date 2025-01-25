@@ -123,6 +123,7 @@ public class Funcion {
         this.calificador = doWeNeedACalificador();
         this.audienciaEsperada = obra.getAudienciaEsperada();
         System.out.println("yeee");
+        funcionesCreadas.add(this);
     }
     public Funcion(){
 
