@@ -712,6 +712,7 @@ public class Main {
         
         int i;
         i = 0;
+        int o = 0;
         Obra eleccion;
         eleccion = null;
         String menuObras = "";
@@ -723,13 +724,16 @@ public class Main {
                     String item = String.valueOf(i) + "." + obra.getNombre() + "\n";
                     menuObras = menuObras + item;
                 }
+                else{
+                    o++;
+                }
             }
         }
         customPrint(menuObras + String.valueOf(i + 1) + ". Crear nueva obra");
         customPrint("Por favor indique el número de su elección sin punto");
         String obraSel = in.nextLine();
         if (Integer.parseInt(obraSel) <= i){
-            eleccion = Obra.getObras().get(Integer.parseInt(obraSel) - 1);
+            eleccion = Obra.getObras().get(Integer.parseInt(obraSel) - 1 + o);
         }
         else if (Integer.parseInt(obraSel) > i){
             customPrint("Por favor ingrese el nombre de la nueva obra");
@@ -756,7 +760,7 @@ public class Main {
                     Actor elegido = Actor.getActors().get(s - 1);
                     reparto.add(elegido);
                 }
-                    customPrint("Por favor indica en qué se debe enfocar el actor (Solo puedes seleccionar una opción, sin embargo, varios actores pueden enfocarse en la misma opción) recuerde digitar solo el número de la opción\n1. Canto\n2. Baile\n3. Discurso\n4. Emocionalidad\n5. Improvisación");
+                    customPrint("Por favor indica en qué se debe enfocar el actor \n (Solo puedes seleccionar una opción, sin embargo,\n varios actores pueden enfocarse en la misma opción) \nrecuerde digitar solo el número de la opción\n1. Canto\n2. Baile\n3. Discurso\n4. Emocionalidad\n5. Improvisación");
                     byte u = in.nextByte();
                     switch (u){
                         case 1:

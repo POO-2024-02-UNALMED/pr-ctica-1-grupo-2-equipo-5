@@ -19,6 +19,8 @@ public class Funcion {
     static ArrayList <Funcion> funcionesCreadas= new ArrayList<>() ;
 
 
+
+    public Funcion(Obra obra){
     static{
         funci_1.prueba();
     }
@@ -39,7 +41,7 @@ public class Funcion {
 
     //FUNCIONES
     public static ArrayList<Funcion> getFuncionesCreadas(){
-        return funcionesCreadas;
+        return funcionesCreadas;5
     }
     public static void setFuncionesCreadas(ArrayList<Funcion> newFunciones){
         funcionesCreadas = newFunciones;
@@ -115,6 +117,7 @@ public class Funcion {
         ArrayList<LocalDateTime> horario = new ArrayList<>();
         LocalTime inicioFranja = this.obra.getFranjaHoraria().get(0);
         System.err.println(Sala.getSalas());
+        System.out.println(inicioFranja);
         for (Sala sala : Sala.getSalas()){
             System.out.println("salas");
             if (sala.getCapacidad() > this.obra.getAudienciaEsperada()){
@@ -127,6 +130,7 @@ public class Funcion {
                         System.out.println("franja");
                         LocalDateTime i = LocalDateTime.of(day, inicioFranjaITE) ;
                         LocalDateTime v = i.plusSeconds(this.obra.getDuracionFormatoS());
+                        System.out.println(i);
                         if(this.getObra().isRepartoDisponible(i, v) && sala.isDisponible(i,v)){
                             horario.add(i);
                             horario.add(v);
