@@ -16,7 +16,7 @@ public class Obra {
     private ArrayList<Aptitud> papeles;
     private Director director;
     private float costoProduccion;
-    private ArrayList<Funcion> funcionesSemana;
+    private ArrayList<Funcion> funcionesSemana = new ArrayList<>();
     private Genero genero;
     private int tiquetesTotales;
     private boolean estadoCriticoA;
@@ -139,7 +139,15 @@ public class Obra {
 
     }
     
-
+    public Obra(Funcion funcionEstelar, Genero genero, String nombre){
+        this.funcionEstelar = funcionEstelar;
+        this.genero = genero;
+        this.nombre = nombre;
+        this.franjaHoraria(genero);
+        System.out.println(funcionEstelar);
+        this.duracion = Duration.between(funcionEstelar.getHorario().get(0), funcionEstelar.getHorario().get(1));
+        obras.add(this);
+    }
     public int funcionesRecomendadas(float promedioArt){
         if (calificacion < 2){
             return 3;
@@ -190,8 +198,8 @@ public class Obra {
     }
     public void franjaHoraria(Genero genero){
         Genero u;
-        Funcion a = new Funcion(LocalDateTime.of(2025, 1, 02, 00, 00));
-        ArrayList<LocalTime> franja = a.extraerHora(a.getHorario());
+        Funcion a = new Funcion(LocalDateTime.of(2024, 1, 02, 00, 00));
+        ArrayList<LocalTime> franja = new ArrayList<>();
         ArrayList<LocalTime> i = new ArrayList<>();
         franja.add(LocalTime.of(00,00));
         franja.add(LocalTime.of(23,59));
@@ -204,11 +212,11 @@ public class Obra {
         }
         for (Obra obra: obrasGenero){
             a = obra.funcionEstelar;
-            if (funcionEstelar != null) {
-                ArrayList<LocalTime> fstar = funcionEstelar.extraerHora(funcionEstelar.getHorario());
+            if (a != null) {
+                ArrayList<LocalTime> fstar = a.extraerHora(a.getHorario());
                 if (!fstar.isEmpty() && fstar.size() >= 2) { // Asegúrate de que i tenga al menos 2 elementos
                     if (fstar.get(0).isBefore(franja.get(0))) {
-                        franja.set(0, i.get(0));
+                        franja.set(0, fstar.get(0));
                     }
                     if (fstar.get(1).isAfter(franja.get(1))) {
                         franja.set(1, fstar.get(1));
@@ -218,9 +226,10 @@ public class Obra {
                 // Manejo del caso donde funcionEstelar es null
                 System.out.println("La obra '" + obra.getNombre() + "' no tiene una función estelar asignada.");
             }
+        }
         System.out.println(franja);
         setFranjaHoraria(franja);
-        }
+        
     }
     public String getDuracionFormato() {
         long horas = duracion.toHours();

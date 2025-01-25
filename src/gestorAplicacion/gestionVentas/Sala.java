@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import gestorAplicacion.gestionFinanciera.Empleado;
+import gestorAplicacion.herramientas.Asiento;
 public class Sala {
     private static ArrayList <Sala> salas = new ArrayList<>();
     private ArrayList <Silla> sillas = new ArrayList<>();
@@ -14,7 +15,7 @@ public class Sala {
     private Empleado trabajador;
     private ArrayList<ArrayList<LocalDateTime>> horario;
     private int capacidad;
- 
+
 
     //SILLAS
     public ArrayList<Silla> getSillas() {
@@ -94,13 +95,13 @@ public class Sala {
         this.capacidad = capacidad;
     }
 
-    public void calcCapacidad(ArrayList<Silla> sillas){
+    public int calcCapacidad(ArrayList<Silla> sillas){
         int u;
         u = 0;
         for (int i = 0; i == sillas.size(); i++){
             u = u + 1;
         }
-        this.setCapacidad(u);    
+        return u;    
     }
 
     public void anadirHorario(ArrayList<LocalDateTime> a){
@@ -122,5 +123,68 @@ public class Sala {
     }
     public Sala(){
         salas.add(this);
+    }
+
+    public ArrayList<Silla> createSillas(int capacidad){
+        float u = capacidad / 16;
+        int f = 0;
+        int s = 10;
+        int o = 100;
+        int p = 1000;
+        int contador = 0;
+        ArrayList<Silla> sillas = new ArrayList<>();
+        for (int i = 0; i < u * 2; i++){
+            Silla silla = new Silla(Asiento.PREMIUMGOLD, f);
+            sillas.add(silla);
+            f++;
+            contador++;
+        }
+        for (int i = 0; i < u * 2; i++){
+            Silla silla = new Silla(Asiento.PREMIUM, s);
+            sillas.add(silla);
+            s++;
+            contador++;
+        }
+        for (int i = 0; i < u * 4; i++){
+            Silla silla = new Silla(Asiento.COMFORT, o);
+            sillas.add(silla);
+            o++;
+            contador++;
+        }
+        for (int i = 0; i < u * 8; i++){
+            Silla silla = new Silla(Asiento.ESTANDAR, p);
+            sillas.add(silla);
+            p++;
+            contador++;
+        }
+
+        int t = capacidad - contador;
+        for (int i = 0; i < t; i++){
+            Silla silla = new Silla(Asiento.ESTANDAR, p);
+            sillas.add(silla);
+            p++;
+            contador++;
+        }
+
+        if (!(contador == capacidad)){
+            System.out.println("The problem is on here dude");
+        }
+        return sillas;
+    }
+    public Sala(int numeroSala,  int metrosCuadrados, int capacidad){
+        sillas = createSillas(capacidad);
+        this.numeroSala = numeroSala;
+        this.metrosCuadrados = metrosCuadrados;
+        aseado = true;
+        ocupado = false;
+        trabajador = null;
+        horario = new ArrayList<>();
+        this.capacidad = capacidad;
+        salas.add(this);
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(this.numeroSala);
     }
 }

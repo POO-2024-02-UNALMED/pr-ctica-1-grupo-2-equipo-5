@@ -23,6 +23,7 @@ import gestorAplicacion.gestionFinanciera.Empleado;
 import gestorAplicacion.gestionFinanciera.Tesoreria;
 import gestorAplicacion.gestionVentas.Sala;
 import gestorAplicacion.gestionVentas.Funcion;
+import gestorAplicacion.gestionVentas.Silla;
 
 import gestorAplicacion.gestionObras.Actor;
 import gestorAplicacion.gestionObras.Artista;
@@ -267,7 +268,8 @@ public class Main {
         }
         return week;
     }
-    Sala sala1 = new Sala();
+// creación de salas
+    Sala sala1 = new Sala(1, 100, 24);
 
     public static void main(String args[]) throws InterruptedException {  
 
@@ -612,6 +614,24 @@ public class Main {
     }
 
     public static void gestionObras(){
+        ArrayList<LocalDateTime> horarioEstObra1 = new ArrayList<>();
+        horarioEstObra1.add(LocalDateTime.of(2024,1,1,8,00));
+        horarioEstObra1.add(LocalDateTime.of(2024,1,1,9,30));        
+        Sala sala1 = new Sala(1, 100, 24);
+        Obra obra1 = null;
+        for (Obra obra : Obra.getObras()) {
+            if (obra.getNombre().trim().equals("La naranja mecánica")) { 
+                obra1 = obra;
+                break;
+            }
+        }
+    
+        // Si obra1 no existe, se crea y se agrega al listado
+        if (obra1 == null) {
+            obra1 = new Obra(new Funcion(horarioEstObra1), Genero.EXPERIMENTAL,"La naranja mecánica");
+            Obra.getObras().add(obra1);
+        }
+        
         int i;
         i = 0;
         Obra eleccion;

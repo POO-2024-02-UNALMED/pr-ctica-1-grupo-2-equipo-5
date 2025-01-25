@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 import uiMain.Main;
-import uiMain.Main.isIn;
 
 
 import gestorAplicacion.herramientas.*;
@@ -120,10 +119,6 @@ public class Cliente {
         this.cuentaBancaria.transferencia(tesoreria.getCuenta(), precio);
         return 1;
     }
-
-
-    public List<Actor> getHistorial(){ return historial; }
-    public void setHistorial(List<Actor> historial){ this.historial = historial; }
 
     public static boolean verificar(long elemento){
         for (int i=0; i < clientes.size();i++){

@@ -31,6 +31,10 @@ public class Silla {
     public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
+    public Silla(Asiento tipo, Integer codigo) {
+        this.tipo = tipo;
+        this.codigo = codigo;
+    }
 
     
     
