@@ -11,7 +11,6 @@ import gestorAplicacion.gestionFinanciera.Empleado;
 // import gestorAplicacion.gestionVentas.Cliente;
 // import gestorAplicacion.herramientas.Aptitud;
 // import gestorAplicacion.herramientas.Genero;
-import uiMain.Main;
 
 public class funcionalidad2 {
         public static void empezar(){
@@ -37,7 +36,6 @@ public class funcionalidad2 {
             Empleado.getTipoSeguridad().add(Empleado4);
             Empleado.getTipoSeguridad().add(Empleado5);
             Empleado.getTipoProfesor().add(Empleado6);
-            Main.gestionEmpleados();
         }
 }
 

@@ -34,7 +34,7 @@ import gestorAplicacion.herramientas.Genero;
 import gestorAplicacion.herramientas.InterfaceTipos;
 import gestorAplicacion.herramientas.Suscripcion;
 import gestorAplicacion.gestionObras.Director;
-
+import test.funcionalidad2;
 
 
 public class Main {
@@ -272,7 +272,7 @@ public class Main {
     Sala sala1 = new Sala(1, 100, 24);
 
     public static void main(String args[]) throws InterruptedException {  
-
+        funcionalidad2.empezar();
         byte task = -1;
 
         while (task != 6){
