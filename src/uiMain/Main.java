@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Locale;
 import java.util.Random;
 import java.time.LocalDateTime;
@@ -1374,48 +1376,134 @@ public class Main {
                         switch (res) {
                             case 1:
                                 int n = 0;
-                            msg_base = ""
+                                msgBase = "\n";
                                 ArrayList<String> candidatos = new ArrayList<>();
-                                ArrayList<Integer> ids = new ArrayList<>();
+                                ArrayList<Long> idA = new ArrayList<>();
                                 do{
                                     int nombre = random.nextInt(nombres.length);
                                     int apellido = random.nextInt(Apellidos.length);
                                     long id = random.nextInt(1000000 - 100 + 1) + 100;
+                                    String Nombre = nombres[nombre] + " " + Apellidos[apellido];
+                                    candidatos.add(Nombre);
+                                    idA.add(id);
+                                    n = n + 1;
                                 }while (n<10);
-                                ArrayList<Empleado> tipAseador = new ArrayList<>();
-                                tipAseador = Empleado.getTipoAseador();
-                                Empleado nuevo_empleado_A = new Empleado(nombres[nombre_A] + " " + Apellidos[apellido_A], id_A, Aseador);
-                                tipAseador.add(nuevo_empleado_A);
-                                Empleado.setTipoAseador(tipAseador);
-                                customPrint("Se contrato a " + nuevo_empleado_A.getNombre());
-                                repetidor = false;
+                                    int j = 0;
+                                for(String Nombre : candidatos){
+                                    if(msgBase != "\n"){
+                                        msgBase = msgBase + j +". " + Nombre + " " +  idA.get(j) + "\n";
+                                        j = j + 1;
+                                    }
+                                    else{
+                                        msgBase = j +". " + Nombre + " " + idA.get(j) + msgBase;
+                                        j = j + 1;
+                                    }
+                                }
+                                msgBase = msgBase + "10. Salir";
+                                customPrint("Candidados a Aseador", true);
+                                customPrint(msgBase);
+                                byte[] opciones = {0,1,2,3,4,5,6,7,8,9,10};
+                                byte empleado = ask("Contrata algun empleado", opciones, "green");
+                                if(empleado < 10){
+                                    ArrayList<Empleado> tipAseador = new ArrayList<>();
+                                    tipAseador = Empleado.getTipoAseador();
+                                    Empleado nuevo_empleado_A = new Empleado(candidatos.get(empleado), idA.get(empleado), "Aseador");
+                                    tipAseador.add(nuevo_empleado_A);
+                                    Empleado.setTipoAseador(tipAseador);
+                                    customPrint("Se contrato a " + nuevo_empleado_A.getNombre());
+                                    repetidor = false;
                                 break;
+                                }
+                                else{
+                                    break;
+                                }
+
                             case 2:
-                                ArrayList<Empleado> tipSeguridad = new ArrayList<>();
-                                tipSeguridad = Empleado.getTipoProfesor();
-                                String Seguridad = "Seguridad";
-                                int nombre_S = random.nextInt(nombres.length);
-                                int apellido_S = random.nextInt(Apellidos.length);
-                                long id_S = random.nextInt(1000000 - 100 + 1) + 100;
-                                Empleado nuevo_empleado_S = new Empleado(nombres[nombre_S] + " " + Apellidos[apellido_S], id_S, Seguridad);
-                                tipSeguridad.add(nuevo_empleado_S);
-                                Empleado.setTipoSeguridad(tipSeguridad);
-                                customPrint("Se contrato a " + nuevo_empleado_S.getNombre());
-                                repetidor = false;
+                                int a = 0;
+                                msgBase = "\n";
+                                ArrayList<String> candidatosS = new ArrayList<>();
+                                ArrayList<Long> idS = new ArrayList<>();
+                                do{
+                                    int nombre = random.nextInt(nombres.length);
+                                    int apellido = random.nextInt(Apellidos.length);
+                                    long id = random.nextInt(1000000 - 100 + 1) + 100;
+                                    String Nombre = nombres[nombre] + " " + Apellidos[apellido];
+                                    candidatosS.add(Nombre);
+                                    idS.add(id);
+                                    a = a + 1;
+                                }while (a<10);
+                                    int b = 0;
+                                for(String Nombre : candidatosS){
+                                    if(msgBase != "\n"){
+                                        msgBase = msgBase + b+". " + Nombre + " " +  idS.get(b) + "\n";
+                                        b = b + 1;
+                                    }
+                                    else{
+                                        msgBase = b +". " + Nombre + " " + idS.get(b) + msgBase;
+                                        b = b + 1;
+                                    }
+                                }
+                                msgBase = msgBase + "10. Salir";
+                                customPrint("Candidados a Seguridad", true);
+                                customPrint(msgBase);
+                                byte[] opcionesS = {0,1,2,3,4,5,6,7,8,9,10};
+                                byte empleadoS = ask("Contrata algun empleado", opcionesS, "green");
+                                if(empleadoS < 10){
+                                    ArrayList<Empleado> tipSeguridad = new ArrayList<>();
+                                    tipSeguridad = Empleado.getTipoSeguridad();
+                                    Empleado nuevo_empleado_S = new Empleado(candidatosS.get(empleadoS), idS.get(empleadoS), "Seguridad");
+                                    tipSeguridad.add(nuevo_empleado_S);
+                                    Empleado.setTipoSeguridad(tipSeguridad);
+                                    customPrint("Se contrato a " + nuevo_empleado_S.getNombre());
+                                    repetidor = false;
                                 break;
+                                }
+                                else{
+                                    break;
+                                }
                             case 3:
-                                ArrayList<Empleado> tipProfesors = new ArrayList<>();
-                                tipProfesors = Empleado.getTipoProfesor();
-                                int nombre_P = random.nextInt(nombres.length);
-                                int apellido_P = random.nextInt(Apellidos.length);
-                                long id_P = random.nextInt(1000000 - 100 + 1) + 100;
-                                Empleado nuevo_empleado_P = new Profesor(nombres[nombre_P] + " " + Apellidos[apellido_P], id_P);
-                                tipProfesors.add(nuevo_empleado_P);
-                                Empleado.setTipoProfesor(tipProfesors);
-                                customPrint("Se contrato a " + nuevo_empleado_P.getNombre());                               
-                                repetidor = false;
-                   
+                                int c = 0;
+                                msgBase = "\n";
+                                ArrayList<String> candidatosP = new ArrayList<>();
+                                ArrayList<Long> idP = new ArrayList<>();
+                                do{
+                                    int nombre = random.nextInt(nombres.length);
+                                    int apellido = random.nextInt(Apellidos.length);
+                                    long id = random.nextInt(1000000 - 100 + 1) + 100;
+                                    String Nombre = nombres[nombre] + " " + Apellidos[apellido];
+                                    candidatosP.add(Nombre);
+                                    idP.add(id);
+                                    c = c + 1;
+                                }while (c<10);
+                                    int d = 0;
+                                for(String Nombre : candidatosP){
+                                    if(msgBase != "\n"){
+                                        msgBase = msgBase + d +". " + Nombre + " " +  idP.get(d) + "\n";
+                                        d = d + 1;
+                                    }
+                                    else{
+                                        msgBase = d +". " + Nombre + " " + idP.get(d) + msgBase;
+                                        d = d + 1;
+                                    }
+                                }
+                                msgBase = msgBase + "10. Salir";
+                                customPrint("Candidados a Seguridad", true);
+                                customPrint(msgBase);
+                                byte[] opcionesP = {0,1,2,3,4,5,6,7,8,9,10};
+                                byte empleadoP = ask("Contrata algun empleado", opcionesP, "green");
+                                if(empleadoP < 10){
+                                    ArrayList<Empleado> tipProfesors = new ArrayList<>();
+                                    tipProfesors = Empleado.getTipoProfesor();
+                                    Empleado nuevo_empleado_P = new Profesor(candidatosP.get(empleadoP), idP.get(empleadoP));
+                                    tipProfesors.add(nuevo_empleado_P);
+                                    Empleado.setTipoProfesor(tipProfesors);
+                                    customPrint("Se contrato a " + nuevo_empleado_P.getNombre());
+                                    repetidor = false;
                                 break;
+                                }
+                                else{
+                                    break;
+                                }
                             case 0:
                                 repetidor = false;
                                 break;
@@ -1462,8 +1550,19 @@ public class Main {
             }
         } while(!repetidor);
         
+
+        //Organiza el ranking - Aseador - Seguridad - Profesor
+        ArrayList<Empleado> Ranking = Empleado.getEmpleadosPorRendimiento();
+        Collections.sort(Ranking, new Comparator<Empleado>() {
+            public int compare(Empleado E1, Empleado E2){
+                return Double.compare(E2.getMetaSemanal(), E1.getMetaSemanal());
+            }
+        });
+        
         //Administrar Trabajadores
-        //Asignar horas
+        //Asignar horas y trabajos
+
+
         //Hora inicio - Hora fin
         //Asignar Horario Trabajador
         //Automatico: Verificar metros de la sala y se asigan de acuerdo a la dificultad, verificar por meta
@@ -1675,10 +1774,6 @@ public class Main {
             }
         }
     }
-
-
-
-
 
     //FUNCIONALIDAD 4
     public static void gestionClases() throws InterruptedException {
