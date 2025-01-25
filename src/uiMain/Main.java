@@ -40,7 +40,8 @@ import gestorAplicacion.gestionObras.Director;
 public class Main {
     static Tesoreria tesoreria = new Tesoreria(0, 100);
     public static Scanner in = new Scanner(System.in);
-    public static boolean supportsColor = (System.console() != null && System.getenv().get("TERM") != null);
+    //public static boolean supportsColor = (System.console() != null && System.getenv().get("TERM") != null);
+    public static boolean supportsColor = true;
 
     //------------------HERRAMIENTAS-------------------------//
     //pregunta y devuelve cadena respuesta
@@ -308,6 +309,12 @@ public class Main {
                 {}break;
             }
         }
+
+        
+        Sala sala1 = new Sala(1, 100, 24);
+        Sala sala2 = new Sala(2, 200, 48);
+        Sala sala3 = new Sala(3, 50, 16);
+        Sala sala4 = new Sala(4, 150, 24);
     }
 
     public static void gestionVentas(){
