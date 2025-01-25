@@ -530,14 +530,6 @@ public class Main {
             in.nextLine();
             Funcion.buscarFuncion(inputF).eliminarSilla(num);
             customPrint(Funcion.buscarFuncion(inputF).tablaSillas());
-             num=in.nextInt();
-            in.nextLine();
-            Funcion.buscarFuncion(inputF).eliminarSilla(num);
-            customPrint(Funcion.buscarFuncion(inputF).tablaSillas());
-            num=in.nextInt();
-            in.nextLine();
-            Funcion.buscarFuncion(inputF).eliminarSilla(num);
-            customPrint(Funcion.buscarFuncion(inputF).tablaSillas());
 
 
             
