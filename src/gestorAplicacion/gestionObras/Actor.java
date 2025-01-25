@@ -28,7 +28,7 @@ public class Actor extends Artista{
     private List <Aptitud> aptitudes = new ArrayList<>();
     public static NumberFormat cop = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
     private ArrayList<Double> calificacionesAptitudes = new ArrayList<>(Arrays.asList(0.0, 0.0, 0.0, 0.0, 0.0)); // Calificaciones asociadas a las aptitudes
-    private ArrayList<ArrayList<Double>> historialCalificaciones = new ArrayList<>();
+    private ArrayList<ArrayList<Double>> historialCalificaciones;
 
 
     public Actor(String nombre, long id){ 
