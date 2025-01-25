@@ -1407,10 +1407,10 @@ public class Main {
             String msgBase = "\n";
             for(Empleado Persona : Empleado.getTipoSeguridad()){
                 if(msgBase != "\n"){
-                    msgBase = msgBase + Persona.getNombre() + " " +  Persona.getId() + "\n";
+                    msgBase = msgBase + String.format("%-20s %10s", Persona.getNombre(), "ID: " +  Persona.getId()) + "\n";
                 }
                 else{
-                    msgBase = Persona.getNombre() + " " + Persona.getId() + msgBase;
+                    msgBase = String.format("%-20s %10s", Persona.getNombre(), "ID: " + Persona.getId()) + msgBase;
                 }
             }
             customPrint("Seguridad \n" + msgBase, true, "");
@@ -1424,10 +1424,10 @@ public class Main {
             
             for(Empleado Persona : Empleado.getTipoAseador()){
                 if(msgBase != "\n"){
-                    msgBase = msgBase + Persona.getNombre() + " " +  Persona.getId() + "\n";
+                    msgBase = msgBase + String.format("%-20s %10s", Persona.getNombre(), "ID: " +  Persona.getId()) + "\n";
                 }
                 else{
-                    msgBase = Persona.getNombre() + " " +  Persona.getId() + msgBase;
+                    msgBase = String.format("%-20s %10s", Persona.getNombre(), "ID: " + Persona.getId()) + msgBase;
                 }
             }
             customPrint("Aseador \n" + msgBase, true, "");
@@ -1441,10 +1441,10 @@ public class Main {
             
             for(Empleado Persona : Empleado.getTipoProfesor()){
                 if(msgBase != "\n"){
-                    msgBase = msgBase + Persona.getNombre() + " " +  Persona.getId() + "\n";
+                    msgBase = msgBase + String.format("%-20s %10s", Persona.getNombre(), "ID: " +  Persona.getId()) + "\n";
                 }
                 else{
-                    msgBase = Persona.getNombre() + " " +  Persona.getId() + msgBase;
+                    msgBase = String.format("%-20s %10s", Persona.getNombre(), "ID: " + Persona.getId()) + msgBase;
                 }
             }
             customPrint("Profesor \n" + msgBase, true, "");
