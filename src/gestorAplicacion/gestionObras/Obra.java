@@ -13,7 +13,7 @@ public class Obra {
     private String nombre;
     private float calificacion;
     private ArrayList<Actor> reparto = new ArrayList<>();
-    private ArrayList<Aptitud> papeles;
+    private ArrayList<Aptitud> papeles = new ArrayList<>();
     private Director director;
     private float costoProduccion;
     private ArrayList<Funcion> funcionesSemana;
