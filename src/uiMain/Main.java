@@ -525,11 +525,7 @@ public class Main {
 
 
             }
-            customPrint(Funcion.buscarFuncion(inputF).tablaSillas());
-            Integer num=in.nextInt();
-            in.nextLine();
-            Funcion.buscarFuncion(inputF).eliminarSilla(num);
-            customPrint(Funcion.buscarFuncion(inputF).tablaSillas());
+            
 
 
             
@@ -577,7 +573,13 @@ public class Main {
             }else{
             customPrint(asiento.tipos());
             customPrint("Que Asiento desea comprar? \n");
+
+            customPrint(Funcion.buscarFuncion(inputF).tablaSillas());
+            Integer codigo = in.nextInt();
+            Funcion.buscarFuncion(inputF).eliminarSilla(codigo);
             String input=in.nextLine().toLowerCase();
+            customPrint(Funcion.buscarFuncion(inputF).tablaSillas());
+            
         
             while (asiento.imprimirTipos(input)){
                 customPrint(
