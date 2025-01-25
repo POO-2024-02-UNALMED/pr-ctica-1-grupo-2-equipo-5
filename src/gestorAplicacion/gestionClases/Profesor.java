@@ -11,17 +11,14 @@ public class Profesor extends Empleado {
 
     // Constructor
     public Profesor(String nombre, long id) {
-        super();
+        super(nombre, id, "Profesor");
         this.nombre = nombre;
         this.especializaciones = new ArrayList<>();
-        Empleado.getTipoProfesor().add(this); // Añade el profesor a la lista de Empleado
     }
 
     public Profesor(String nombre, long id, ArrayList<Aptitud> especializaciones) {
-        super();
-        this.nombre = nombre;
+        super(nombre, id, "Profesor");
         this.especializaciones = especializaciones;
-        Empleado.getTipoProfesor().add(this); // Añade el profesor a la lista de Empleado
     }
 
     public String getNombre() {
@@ -48,6 +45,11 @@ public class Profesor extends Empleado {
 
     public boolean tieneEspecializacion(Aptitud aptitud) {
         return especializaciones.contains(aptitud);
+    }
+
+    // Método para agregar puntos positivos
+    public void agregarPuntos(int puntos) {
+        this.puntosPositivos += puntos;
     }
 }
     

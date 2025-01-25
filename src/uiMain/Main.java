@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Locale;
 import java.util.Random;
 import java.time.LocalDateTime;
@@ -37,7 +39,6 @@ import gestorAplicacion.gestionObras.Director;
 public class Main {
     static Tesoreria tesoreria = new Tesoreria(0, 100);
     public static Scanner in = new Scanner(System.in);
-
     public static boolean supportsColor = (System.console() != null && System.getenv().get("TERM") != null);
 
     //------------------HERRAMIENTAS-------------------------//
@@ -268,7 +269,7 @@ public class Main {
     }
     Sala sala1 = new Sala();
 
-    public static void main(String args[]){  
+    public static void main(String args[]) throws InterruptedException {  
 
         byte task = -1;
 
@@ -308,17 +309,18 @@ public class Main {
     }
 
     public static void gestionVentas(){
-        funci_1.prueba();
         
         
-        byte [] opciones_2 = {1,2};
+        float dineroTesoreria=0;
+        byte [] opciones_2 = {1,2,3};
         Cliente cliente= null;
         ArrayList <Integer> lista = new ArrayList<>();
         customPrint(
         "Ingrese la opcion correspondiente\n"+
         "Eres cliente nuevo? \n"+ 
         "1. NO\n"+
-        "2. SI\n");
+        "2. SI\n"+
+        "3. MENU PRINCIPAL");
         
 
         
@@ -331,7 +333,8 @@ public class Main {
             "Ingrese la opcion correspondiente\n"+
             "Eres cliente nuevo? \n"+ 
             "1. NO\n"+
-            "2. SI\n","red");
+            "2. SI\n"+
+            "3. MENU PRINCIPAL","red");
             a = in.nextByte();
             in.nextLine();
         }
@@ -368,24 +371,28 @@ public class Main {
                     "Ingrese la opcion correspondiente\n"+
                     "Tienes un codigo existente? : \n"+ 
                     "1. Si\n"+
-                    "2. NO\n","red");
+                    "2. NO\n"+
+                    "3. MENU PRINCIPAL","red");
                     
-                    byte [] opcion = {1,2};
+                    byte [] opcion = {1,2,3};
                     byte b = in.nextByte();
                     in.nextLine();
 
-                    while (!isIn(opciones_2, b)){
+                    while (!isIn(opcion, b)){
                         customPrint("La respuesta introducida no hace parte de las opciones. \n"+
                         "Intente de nuevo:\n"+
                         "Tienes un codigo existente? : \n"+ 
                         "1. NO\n"+
-                        "2. SI\n","red");
+                        "2. SI\n"+
+                        "3. MENU PRINCIPAL","red");
                         b = in.nextByte();
                         in.nextLine();
                     }
                     if (b == 1) {
                         break;
                         
+                    }else if(b==3){
+                        return;
                     }
 
                     
@@ -393,7 +400,8 @@ public class Main {
                     
                     
                 }
-            
+            case 3:
+                return;
                 
             case 2:
                 customPrint("Creando Nuevo Codigo...");
@@ -411,10 +419,17 @@ public class Main {
 
                 
                 salir = true;
+            
+            
                 
             }
         }
+        boolean antiguo = true;
         customPrint(cliente.consultarPerfil());
+        if (cliente.getSuscripcion().name().equals("Basica")){
+            antiguo = false;
+
+        }
         
 
         
@@ -422,18 +437,20 @@ public class Main {
         "Ingrese la opcion correspondiente\n"+
         "Desea mejorar su suscripcion? \n"+ 
         "1. Si\n"+
-        "2. No\n","blue");
+        "2. No\n"+
+        "3. MENU PRINCIPAL","blue");
         
 
         
         a = in.nextByte();
         in.nextLine();
-            while (a != 1 & a != 2) {
+            while (a != 1 & a != 2 & a !=3) {
                 customPrint("La respuesta introducida no hace parte de las opciones.\n"+
         "Ingrese la opcion correspondiente\n"+
         "Desea mejorar su suscripcion? \n"+ 
         "1. SI\n"+
-        "2. NO\n","red");
+        "2. NO\n"+
+        "3. MENU PRINCIPAL","red");
         a = in.nextByte();
         in.nextLine();
 
@@ -479,10 +496,13 @@ public class Main {
             customPrint("Suscripcion "+cliente.getSuscripcion()+" aplicada","green");
 
         }
-        customPrint("Estas son las funciones disponibles\n\n"+String.format("%30s %22s %22s %15s", "Nombre Obra", "Genero", "Duracion","Precio")+"\n"+Funcion.generarTabla());
+        else if (a==3){
+            return;
+        }
+        customPrint("Estas son las funciones disponibles\n\n"+String.format("%30s %22s %22s %15s", "Nombre Obra", "Genero", "Duracion","Precio")+"\n\n"+Funcion.generarTabla());
             customPrint("Que funcion desea comprar? \n");
             String input = in.nextLine().toLowerCase();
-            
+            float precioSus=0;
             while (Obra.nombres(input)){
                 customPrint("Funcion no encontrada \n"+
                 "Ingrese un nombre valido :","red");
@@ -492,28 +512,71 @@ public class Main {
             }
             customPrint("Funcion seleccionada: \n\n"+Obra.imprimirObra(Obra.buscarObra(input)));
             cliente.setObra(input);
-
+            
             float descuento=0;
             if (cliente.getSuscripcion().name().equals("Basica")) {
 
                 descuento = 0;
+                precioSus = 0;
 
 
             } else if (cliente.getSuscripcion().name().equals("Vip")) {
 
                 descuento = 0.25f;
+                precioSus = 18900;
+                
                 
 
             } else if (cliente.getSuscripcion().name().equals("Premium")) {
 
                 descuento = 0.10f;
+                precioSus = 11900;
                 
             } else if (cliente.getSuscripcion().name().equals("Elite")){
 
                 descuento = 1;
+                precioSus = 39900;
                 
             }
-            customPrint("El precio final luego de descuento es :"+String.format("$%,.2f",Funcion.mostrarPrecioFuncion(input))+"\n Realizando transaccion...");
+            if (antiguo==true){
+                precioSus = 0;
+            }
+            descuento = 1-descuento;
+            String mensajeDescuento="";
+            String mensaje;
+            if (descuento==0){
+                mensaje = "Su funcion es gratiss" ;
+            }else{
+                mensaje="";
+            }
+            if (descuento !=0){
+                mensajeDescuento = "luego de descuento es :";
+
+            }
+            customPrint(mensaje+"\nTotal a pagar \n\n "+mensajeDescuento+String.format("$%,.2f",((Funcion.mostrarPrecioFuncion(input)*descuento)+precioSus)));
+            customPrint(
+    "1. Realizar compra\n"+
+        "2. Cancelar Compra \n"
+        ,"blue");
+        
+
+        
+        a = in.nextByte();
+        in.nextLine();
+            while (a != 1 & a != 2 ) {
+                customPrint("La respuesta introducida no hace parte de las opciones.\n"+
+        "Ingrese la opcion correspondiente\n"+
+        "1. Realizar compra\n"+
+        "2. Cancelar Compra \n"
+        ,"red");
+        a = in.nextByte();
+        in.nextLine();
+
+                
+            }
+            if (a==1){
+                customPrint("Realizando Compra");
+                dineroTesoreria = ((Funcion.mostrarPrecioFuncion(input)*descuento)+precioSus);
             try {
                 // Pausa de 2 segundos (4000 milisegundos)
                 Thread.sleep(4000);
@@ -521,7 +584,19 @@ public class Main {
                 customPrint("La pausa fue interrumpida.");
                 
             }
-            customPrint("compra realizada");
+            customPrint("Compra Realizada","green");
+        }else{
+            customPrint("Cancelando Compra...");
+            try {
+                // Pausa de 2 segundos (4000 milisegundos)
+                Thread.sleep(4000);
+            } catch (InterruptedException e) {
+                customPrint("La pausa fue interrumpida.");
+                
+            }
+            customPrint("Compra Cancelada");
+            return;
+        }
             
         
                 
@@ -1202,8 +1277,31 @@ public class Main {
     public static void gestionEmpleados(){
         final String[] nombres = {"Miguel", "Juan", "Danna", "Carlos", "Oscar", "Julian", "Maria", "Paula", "Esteban", "Sara", "Frank", "Pablo", "Jimena", "Daniela", "Ana", "Emma", "Samuel"};
         final String [] Apellidos = {"Perez", "Hernandez", "Montoya", "Velez", "Aguirre", "Salazar", "Restrepo", "Rodriguez", "Garcia", "Lopez", "Sanchez", "Ramirez", "Gonzales", "Gomez", "Martinez"};
-
-
+        
+        //Verifica si hay deudas y Pagar
+        
+        for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+            if(Persona.getDeuda() != 0){
+                if(tesoreria.getCuenta().getSaldo() > Persona.getDeuda()){
+                    boolean transaccion = tesoreria.getCuenta().transferencia(Persona.getCuenta(), Persona.getDeuda());
+                    if(transaccion != true){
+                        System.out.println("No se pudo realizar el pago");
+                    }
+                    else{
+                        System.out.println("Se realizo el Pago a: " + Persona.getNombre() + " por un valor de: " + Persona.getDeuda());
+                        Persona.setDeuda(0);
+                    }
+                }
+            }
+        }
+        customPrint("El saldo de tesoreria es: " + tesoreria.getCuenta().getSaldo());
+        
+        try{
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            customPrint("La pausa fue interrumpida.");    
+        }
+        
         //Obtener lista de empleados por ocupacion:
         boolean repetidor = false;
         do{
@@ -1219,6 +1317,13 @@ public class Main {
             customPrint("Seguridad", true, "red");
             customPrint(msgBase);
             msgBase = "\n";
+
+            try{
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                customPrint("La pausa fue interrumpida.");    
+            }
+            
             for(Empleado Persona : Empleado.getTipoAseador()){
                 if(msgBase != "\n"){
                     msgBase = msgBase + Persona.getNombre() + " " +  Persona.getId() + "\n";
@@ -1230,6 +1335,13 @@ public class Main {
             customPrint("Aseador", true, "red");
             customPrint(msgBase);
             msgBase = "\n";
+            
+            try{
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                customPrint("La pausa fue interrumpida.");    
+            }
+            
             for(Empleado Persona : Empleado.getTipoProfesor()){
                 if(msgBase != "\n"){
                     msgBase = msgBase + Persona.getNombre() + " " +  Persona.getId() + "\n";
@@ -1240,7 +1352,13 @@ public class Main {
             }
             customPrint("Profesor", true, "red");
             customPrint(msgBase);
-        
+            
+            try{
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                customPrint("La pausa fue interrumpida.");    
+            }
+
             String question = "Deseas Contratar o Despedir a algun empleado \n1. Si \n2. No";
             byte[] options = {1,2};
             byte respuesta = ask(question, options, "green");
@@ -1257,32 +1375,135 @@ public class Main {
                         Random random = new Random();
                         switch (res) {
                             case 1:
-                                String Aseador = "Aseador";
-                                int nombre_A = random.nextInt(nombres.length);
-                                int apellido_A = random.nextInt(Apellidos.length);
-                                long id_A = random.nextInt(1000000 - 100 + 1) + 100;
-                                Empleado nuevo_empleado_A = new Empleado(nombres[nombre_A] + " " + Apellidos[apellido_A], id_A, Aseador);
-                                customPrint("Se contrato a " + nuevo_empleado_A.getNombre());
-                                repetidor = false;
+                                int n = 0;
+                                msgBase = "\n";
+                                ArrayList<String> candidatos = new ArrayList<>();
+                                ArrayList<Long> idA = new ArrayList<>();
+                                do{
+                                    int nombre = random.nextInt(nombres.length);
+                                    int apellido = random.nextInt(Apellidos.length);
+                                    long id = random.nextInt(1000000 - 100 + 1) + 100;
+                                    String Nombre = nombres[nombre] + " " + Apellidos[apellido];
+                                    candidatos.add(Nombre);
+                                    idA.add(id);
+                                    n = n + 1;
+                                }while (n<10);
+                                    int j = 0;
+                                for(String Nombre : candidatos){
+                                    if(msgBase != "\n"){
+                                        msgBase = msgBase + j +". " + Nombre + " " +  idA.get(j) + "\n";
+                                        j = j + 1;
+                                    }
+                                    else{
+                                        msgBase = j +". " + Nombre + " " + idA.get(j) + msgBase;
+                                        j = j + 1;
+                                    }
+                                }
+                                msgBase = msgBase + "10. Salir";
+                                customPrint("Candidados a Aseador", true);
+                                customPrint(msgBase);
+                                byte[] opciones = {0,1,2,3,4,5,6,7,8,9,10};
+                                byte empleado = ask("Contrata algun empleado", opciones, "green");
+                                if(empleado < 10){
+                                    ArrayList<Empleado> tipAseador = new ArrayList<>();
+                                    tipAseador = Empleado.getTipoAseador();
+                                    Empleado nuevo_empleado_A = new Empleado(candidatos.get(empleado), idA.get(empleado), "Aseador");
+                                    tipAseador.add(nuevo_empleado_A);
+                                    Empleado.setTipoAseador(tipAseador);
+                                    customPrint("Se contrato a " + nuevo_empleado_A.getNombre());
+                                    repetidor = false;
                                 break;
+                                }
+                                else{
+                                    break;
+                                }
+
                             case 2:
-                                String Seguridad = "Seguridad";
-                                int nombre_S = random.nextInt(nombres.length);
-                                int apellido_S = random.nextInt(Apellidos.length);
-                                long id_S = random.nextInt(1000000 - 100 + 1) + 100;
-                                Empleado nuevo_empleado_S = new Empleado(nombres[nombre_S] + " " + Apellidos[apellido_S], id_S, Seguridad);
-                                customPrint("Se contrato a " + nuevo_empleado_S.getNombre());
-                                repetidor = false;
+                                int a = 0;
+                                msgBase = "\n";
+                                ArrayList<String> candidatosS = new ArrayList<>();
+                                ArrayList<Long> idS = new ArrayList<>();
+                                do{
+                                    int nombre = random.nextInt(nombres.length);
+                                    int apellido = random.nextInt(Apellidos.length);
+                                    long id = random.nextInt(1000000 - 100 + 1) + 100;
+                                    String Nombre = nombres[nombre] + " " + Apellidos[apellido];
+                                    candidatosS.add(Nombre);
+                                    idS.add(id);
+                                    a = a + 1;
+                                }while (a<10);
+                                    int b = 0;
+                                for(String Nombre : candidatosS){
+                                    if(msgBase != "\n"){
+                                        msgBase = msgBase + b+". " + Nombre + " " +  idS.get(b) + "\n";
+                                        b = b + 1;
+                                    }
+                                    else{
+                                        msgBase = b +". " + Nombre + " " + idS.get(b) + msgBase;
+                                        b = b + 1;
+                                    }
+                                }
+                                msgBase = msgBase + "10. Salir";
+                                customPrint("Candidados a Seguridad", true);
+                                customPrint(msgBase);
+                                byte[] opcionesS = {0,1,2,3,4,5,6,7,8,9,10};
+                                byte empleadoS = ask("Contrata algun empleado", opcionesS, "green");
+                                if(empleadoS < 10){
+                                    ArrayList<Empleado> tipSeguridad = new ArrayList<>();
+                                    tipSeguridad = Empleado.getTipoSeguridad();
+                                    Empleado nuevo_empleado_S = new Empleado(candidatosS.get(empleadoS), idS.get(empleadoS), "Seguridad");
+                                    tipSeguridad.add(nuevo_empleado_S);
+                                    Empleado.setTipoSeguridad(tipSeguridad);
+                                    customPrint("Se contrato a " + nuevo_empleado_S.getNombre());
+                                    repetidor = false;
                                 break;
+                                }
+                                else{
+                                    break;
+                                }
                             case 3:
-                                String Profesor = "Profesor";
-                                int nombre_P = random.nextInt(nombres.length);
-                                int apellido_P = random.nextInt(Apellidos.length);
-                                long id_P = random.nextInt(1000000 - 100 + 1) + 100;
-                                Empleado nuevo_empleado_P = new Empleado(nombres[nombre_P] + " " + Apellidos[apellido_P], id_P, Profesor);
-                                customPrint("Se contrato a " + nuevo_empleado_P.getNombre());
-                                repetidor = false;
+                                int c = 0;
+                                msgBase = "\n";
+                                ArrayList<String> candidatosP = new ArrayList<>();
+                                ArrayList<Long> idP = new ArrayList<>();
+                                do{
+                                    int nombre = random.nextInt(nombres.length);
+                                    int apellido = random.nextInt(Apellidos.length);
+                                    long id = random.nextInt(1000000 - 100 + 1) + 100;
+                                    String Nombre = nombres[nombre] + " " + Apellidos[apellido];
+                                    candidatosP.add(Nombre);
+                                    idP.add(id);
+                                    c = c + 1;
+                                }while (c<10);
+                                    int d = 0;
+                                for(String Nombre : candidatosP){
+                                    if(msgBase != "\n"){
+                                        msgBase = msgBase + d +". " + Nombre + " " +  idP.get(d) + "\n";
+                                        d = d + 1;
+                                    }
+                                    else{
+                                        msgBase = d +". " + Nombre + " " + idP.get(d) + msgBase;
+                                        d = d + 1;
+                                    }
+                                }
+                                msgBase = msgBase + "10. Salir";
+                                customPrint("Candidados a Seguridad", true);
+                                customPrint(msgBase);
+                                byte[] opcionesP = {0,1,2,3,4,5,6,7,8,9,10};
+                                byte empleadoP = ask("Contrata algun empleado", opcionesP, "green");
+                                if(empleadoP < 10){
+                                    ArrayList<Empleado> tipProfesors = new ArrayList<>();
+                                    tipProfesors = Empleado.getTipoProfesor();
+                                    Empleado nuevo_empleado_P = new Profesor(candidatosP.get(empleadoP), idP.get(empleadoP));
+                                    tipProfesors.add(nuevo_empleado_P);
+                                    Empleado.setTipoProfesor(tipProfesors);
+                                    customPrint("Se contrato a " + nuevo_empleado_P.getNombre());
+                                    repetidor = false;
                                 break;
+                                }
+                                else{
+                                    break;
+                                }
                             case 0:
                                 repetidor = false;
                                 break;
@@ -1292,8 +1513,10 @@ public class Main {
                         if(answer == 2){
                             question = "Introduce el id del trabajador a despedir";
                             long buscar_id = longAsk(question);
+                            final boolean[] encontrado = {false};
                             Empleado.getEmpleadosPorRendimiento().removeIf(Persona ->{
                                 if(Persona.getId() == buscar_id){
+                                    encontrado[0] = true;
                                     double liquidacion = (Persona.calcularSueldo()*1.2) + Persona.getDeuda();
                                     tesoreria.getCuenta().transferencia(Persona.getCuenta(), liquidacion);
                                     customPrint("Se despidio a " + Persona.getNombre() + " y se le pago su respectiva liquidacion");
@@ -1312,6 +1535,9 @@ public class Main {
                                 }
                                 return false;
                             });
+                            if(!encontrado[0]){
+                                customPrint("No se encontro ningun trabajador con el id " + buscar_id);
+                            }
                         }
                         else{
                             repetidor = false;
@@ -1323,136 +1549,287 @@ public class Main {
                     repetidor = true;
             }
         } while(!repetidor);
-        //Asignacion de trabajos
-        //T
+        
+
+        //Organiza el ranking - Aseador - Seguridad - Profesor
+        ArrayList<Empleado> Aseador_order = Empleado.getTipoAseador();
+        ArrayList<Empleado> Seguridad_order = Empleado.getTipoSeguridad();
+        ArrayList<Empleado> Profesor_order = Empleado.getTipoProfesor();
+        
+        Collections.sort(Aseador_order, new Comparator<Empleado>() {
+            public int compare(Empleado E1, Empleado E2){
+                return Integer.compare(E2.getMetaSemanal(), E1.getMetaSemanal());
+            }
+        });
+        Collections.sort(Seguridad_order, new Comparator<Empleado>() {
+            public int compare(Empleado E1, Empleado E2){
+                return Integer.compare(E2.getMetaSemanal(), E1.getMetaSemanal());
+            }
+        });
+        Collections.sort(Profesor_order, new Comparator<Empleado>() {
+            public int compare(Empleado E1, Empleado E2){
+                return Integer.compare(E2.getMetaSemanal(), E1.getMetaSemanal());
+            }
+        });
+       
+        Empleado.setTipoAseador(Aseador_order);
+        Empleado.setTipoProfesor(Profesor_order);
+        Empleado.setTipoSeguridad(Seguridad_order);
+        
+        //Administrar Trabajadores
+        //Asignar horas y trabajos
+
+
+        //Hora inicio - Hora fin
+        //Asignar Horario Trabajador
+        //Automatico: Verificar metros de la sala y se asigan de acuerdo a la dificultad, verificar por meta
+        //Asigna el trabajo de una vez y se verifica
+        //Asignar Horario Seguridad
+        
+        //Asignar Horario Profesor LO HACE OSCAR
+
+        //Verificación del trabajo
+        
         try{
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             customPrint("La pausa fue interrumpida.");
             
         }
+        
         //Pagar nomina a empleados:
-        double fondos = tesoreria.getCuenta().getSaldo() + tesoreria.getDineroEnCaja();
+        
+        double fondos = tesoreria.getCuenta().getSaldo();
         double totalSaldos = 0;
         //Verificacion de fondos:
-        for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-            totalSaldos = totalSaldos + Persona.calcularSueldo();
-        }
-        //Realizar pago
-        if(totalSaldos > fondos){
-            double cantPagada = 0;
-            customPrint("Upps... No se puede realizar los pagos adecuadamente", "Red");
-            customPrint("Realizando pagos de manera equitativa...");
             for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                cantPagada = cantPagada + ((Persona.calcularSueldo() + Persona.getDeuda())*0.5);
-                Persona.setDeuda((Persona.getDeuda() + (Persona.calcularSueldo()) * 0.5));   //Establecer cuanto se le debe a la persona
-                tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.getDeuda() + Persona.calcularSueldo())*0.5);
+                totalSaldos = totalSaldos + Persona.calcularSueldo();
             }
-            customPrint("Pago existoso", true, "green");
-            String msg = "Se pago un total de " + cantPagada;
-            customPrint(msg);
-            customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
-            customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
-        }
-        else{
-            //Verificacion fondos Bonificacion
-            totalSaldos = 0;
-            double cantPagada = 0;
-            if(tesoreria.verificacionMeta() != true){
-                //Verificacion Metas Personales
-                for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                    if(Persona.verificacionMeta() != true){
-                        Persona.setMetaSemanal(Persona.getMetaSemanal()-5); //Disminucion de meta
-                        totalSaldos = totalSaldos + (Persona.calcularSueldo() + Persona.getDeuda());
-                    }
-                    else{
-                        Persona.setMetaSemanal(Persona.getMetaSemanal() + 10);  //Aumento en la meta
-                        totalSaldos = totalSaldos + ((Persona.calcularSueldo() * 1.15) + Persona.getDeuda());
-                    }
-                }
-                //Realizacion Pago Solo con Deuda
+        //Realizar pago
+        byte[] option = {1,2};
+        byte respuesta = ask("¿Desea realizar los pagos \n1. Si \n2. No", option, "green");
+        switch (respuesta) {
+            case 1:
                 if(totalSaldos > fondos){
-                    totalSaldos = 0;
-                    customPrint("Ups... No se pueden aplicar las bonificaciones personales");
-                    customPrint("Realizando Pagos");
+                    ArrayList<Empleado>  Cuentas_Pagadas = new ArrayList<>();
+                    double cantPagada = 0;
+                      customPrint("Upps... No se puede realizar los pagos adecuadamente", "Red");
+                    customPrint("Realizando pagos de manera equitativa...");
                     for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                        cantPagada = cantPagada + (Persona.calcularSueldo() + Persona.getDeuda());
-                        totalSaldos = totalSaldos + Persona.calcularSueldo();
-                    }
-                    if(cantPagada > fondos){
-                        customPrint("No se pudo realizar los pagos junto a la deuda");
-                        customPrint("Realizando pago del Sueldo Base");
-                        tesoreria.pagarSueldoBase(null, cantPagada);
-                        customPrint("Pago existoso", true, "green");
-                        String msg = "Se pago un total de " + totalSaldos;
-                        customPrint(msg);
-                        customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
-                        customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
-                        for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                            if(Persona.verificacionMeta() == true){
-                                Persona.setDeuda(Persona.getDeuda() + Persona.calcularSueldo()*0.15); //Se añade la bonificacion a la deuda solo a aquellas que la cumplieron
-                            }
-                        }
-                    }
-                    else{
-                        for(Empleado Persona: Empleado.getEmpleadosPorRendimiento()){
-                            tesoreria.getCuenta().transferencia(Persona.getCuenta(), Persona.getDeuda() + Persona.calcularSueldo());
-                        }
-                        customPrint("Pago existoso", true, "green");
-                        String msg = "Se pago un total de " + cantPagada;
-                        customPrint(msg);
-                        customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
-                        customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
-                    }
-                    
-                }
-                //Realizacion Pago Boni + Deuda
-                else{
-                    for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                        if(Persona.verificacionMeta() == true){
-                            tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.15) + Persona.getDeuda());
+                        boolean transaccion = tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.getDeuda() + Persona.calcularSueldo()) *0.5);  //Establecer cuanto se le debe a la persona
+                        if(transaccion != true){
+                            System.out.println("No se le puede pagar a " + Persona.getNombre());
+                            Persona.setDeuda(Persona.getDeuda() + Persona.calcularSueldo());
+                            System.out.println("nueva deuda: " + Persona.getDeuda() );
                         }
                         else{
-                            tesoreria.getCuenta().transferencia(Persona.getCuenta(), Persona.calcularSueldo() + Persona.getDeuda());
+                            cantPagada = cantPagada + ((Persona.calcularSueldo() + Persona.getDeuda())*0.5);
+                            Persona.setDeuda((Persona.getDeuda() + (Persona.calcularSueldo() + Persona.getDeuda())* 0.5));
+                            Cuentas_Pagadas.add(Persona); 
                         }
                     }
                     customPrint("Pago existoso", true, "green");
-                    String msg = "Se pago un total de " + totalSaldos;
+                    String msg = "Se pago un total de " + cantPagada;
                     customPrint(msg);
-                    customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
+                    customPrint("Se realizo el pago a " + Cuentas_Pagadas.size() + " cuentas en total");
                     customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
                 }
-            }
-            else{
-                for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                    if(Persona.verificacionMeta() != true){
-                        Persona.setMetaSemanal(Persona.getMetaSemanal()-5); //Disminucion de meta
-                        totalSaldos = totalSaldos + (Persona.calcularSueldo() * 1.3);
-                    }
-                    else{
-                        Persona.setMetaSemanal(Persona.getMetaSemanal() + 10);  //Aumento en la meta
-                        totalSaldos = totalSaldos + (Persona.calcularSueldo() * 1.45);
-                    }
-                }
-                //Sin fondos suficientes para todas las bonificaciones
-                if (totalSaldos > fondos) {
-                    
-                }
                 else{
-                    for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                        if(Persona.verificacionMeta() == true){
-                            tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.8) + Persona.getDeuda());
+                    //Verificacion fondos Bonificacion
+                    totalSaldos = 0;
+                    double cantPagada = 0;
+                    if(tesoreria.verificacionMeta() != true){
+                        //Verificacion Metas Personales
+                        for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                            if(Persona.verificacionMeta() != true){
+                                Persona.setMetaSemanal(Persona.getMetaSemanal()-5); //Disminucion de meta
+                                totalSaldos = totalSaldos + (Persona.calcularSueldo() + Persona.getDeuda());
+                            }
+                            else{
+                                Persona.setMetaSemanal(Persona.getMetaSemanal() + 10);  //Aumento en la meta
+                                totalSaldos = totalSaldos + ((Persona.calcularSueldo() * 1.15) + Persona.getDeuda());
+                            }
+                        }
+                        //Realizacion Pagos
+                        if(totalSaldos > fondos){
+                            //Verificacion
+                            totalSaldos = 0;
+                            customPrint("Ups... No se pueden aplicar las bonificaciones personales");
+                            customPrint("Realizando Pagos");
+                            for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                                cantPagada = cantPagada + (Persona.calcularSueldo() + Persona.getDeuda());
+                                totalSaldos = totalSaldos + Persona.calcularSueldo();
+                            }
+                            //Pago solo sueldo base
+                            if(cantPagada > fondos){
+                                System.out.println("Sueldo Base");
+                                customPrint("No se pudo realizar los pagos junto a la deuda");
+                                customPrint("Realizando pago del Sueldo Base");
+                                tesoreria.pagarSueldoBase(null, cantPagada);
+                                customPrint("Pago existoso", true, "green");
+                                String msg = "Se pago un total de " + totalSaldos;
+                                customPrint(msg);
+                                customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
+                                customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
+                                for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                                    if(Persona.verificacionMeta() == true){
+                                        Persona.setDeuda(Persona.getDeuda() + Persona.calcularSueldo()*0.15); //Se añade la bonificacion a la deuda solo a aquellas que la cumplieron
+                                    }
+                                }
+                            }
+                            else{
+                            //Pago Sueldo base + Deuda
+                                for(Empleado Persona: Empleado.getEmpleadosPorRendimiento()){
+                                    tesoreria.getCuenta().transferencia(Persona.getCuenta(), Persona.getDeuda() + Persona.calcularSueldo());
+                                }
+                                customPrint("Pago existoso", true, "green");
+                                String msg = "Se pago un total de " + cantPagada;
+                                customPrint(msg);
+                                customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
+                                customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
+                            }
+
+                        }
+                        //Realizacion Pago Boni + Deuda
+                        else{
+                            for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                                if(Persona.verificacionMeta() == true){
+                                    tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.15) + Persona.getDeuda());
+                                }
+                                else{
+                                    tesoreria.getCuenta().transferencia(Persona.getCuenta(), Persona.calcularSueldo() + Persona.getDeuda());
+                                }
+                            }
+                            customPrint("Pago existoso", true, "green");
+                            String msg = "Se pago un total de " + totalSaldos;
+                            customPrint(msg);
+                            customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
+                            customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
+                        }
+                    }
+                    //Pago Bonis Tesorerias + deuda
+                    else{
+                        for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                            if(Persona.verificacionMeta() != true){
+                                Persona.setMetaSemanal(Persona.getMetaSemanal()-5); //Disminucion de meta
+                                totalSaldos = totalSaldos + (Persona.calcularSueldo() * 1.3);
+                            }
+                            else{
+                                Persona.setMetaSemanal(Persona.getMetaSemanal() + 10);  //Aumento en la meta
+                                totalSaldos = totalSaldos + (Persona.calcularSueldo() * 1.45);
+                            }
+                        }
+                        //Sin fondos suficientes para todas las bonificaciones
+                        if (totalSaldos > fondos) {
+                            totalSaldos = 0;
+                            //Verificacion Metas Personales
+                            for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                                if(Persona.verificacionMeta() != true){
+                                    Persona.setMetaSemanal(Persona.getMetaSemanal());
+                                    totalSaldos = totalSaldos + (Persona.calcularSueldo() + Persona.getDeuda());
+                                }
+                                else{
+                                    Persona.setMetaSemanal(Persona.getMetaSemanal()); 
+                                    totalSaldos = totalSaldos + ((Persona.calcularSueldo() * 1.15) + Persona.getDeuda());
+                                }
+                            }
+                            //Realizacion Pagos
+                            if(totalSaldos > fondos){
+                                //Verificacion
+                                totalSaldos = 0;
+                                customPrint("Ups... No se pueden aplicar las bonificaciones personales");
+                                customPrint("Realizando Pagos");
+                                for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                                    cantPagada = cantPagada + (Persona.calcularSueldo() + Persona.getDeuda());
+                                    totalSaldos = totalSaldos + Persona.calcularSueldo();
+                                }
+                                //Pago solo sueldo base
+                                if(cantPagada > fondos){
+                                    customPrint("No se pudo realizar los pagos junto a la deuda");
+                                    customPrint("Realizando pago del Sueldo Base");
+                                    tesoreria.pagarSueldoBase(null, cantPagada);
+                                    customPrint("Pago existoso", true, "green");
+                                    String msg = "Se pago un total de " + totalSaldos;
+                                    customPrint(msg);
+                                    customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
+                                    customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
+                                    for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                                        if(Persona.verificacionMeta() == true){
+                                            Persona.setDeuda(Persona.getDeuda() + Persona.calcularSueldo()*0.15); //Se añade la bonificacion a la deuda solo a aquellas que la cumplieron
+                                        }
+                                    }
+                                }
+                                else{
+                                //Pago Sueldo base + Deuda
+                                    for(Empleado Persona: Empleado.getEmpleadosPorRendimiento()){
+                                        tesoreria.getCuenta().transferencia(Persona.getCuenta(), Persona.getDeuda() + Persona.calcularSueldo());
+                                    }
+                                    customPrint("Pago existoso", true, "green");
+                                    String msg = "Se pago un total de " + cantPagada;
+                                    customPrint(msg);
+                                    customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
+                                    customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
+                                }
+                            }
+                            else{
+                                for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                                    if(Persona.verificacionMeta() == true){
+                                        tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.45) + Persona.getDeuda());
+                                    }
+                                    else{
+                                        tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.3) + Persona.getDeuda());
+                                    }
+                                }
+                            }
                         }
                         else{
-                            tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.3) + Persona.getDeuda());
+                            for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                                if(Persona.verificacionMeta() == true){
+                                    tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.45) + Persona.getDeuda());
+                                }
+                                else{
+                                    tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.3) + Persona.getDeuda());
+                                }
+                            }
                         }
                     }
                 }
+                break;
+            case 2:
+                break;
+        }
+        
+        //Imprimir Ranking
+        ArrayList<Empleado> Ranking = Empleado.getEmpleadosPorRendimiento();
+        Collections.sort(Ranking, new Comparator<Empleado>() {
+            public int compare(Empleado E1, Empleado E2){
+                return Integer.compare(E2.getMetaSemanal(), E1.getMetaSemanal());
+            }
+        });
+        Empleado.setEmpleadosPorRendimiento(Ranking);
+        String msgBase = "\n";
+        int posicion = 1;
+        for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+            if(msgBase != "\n"){
+                msgBase = msgBase + posicion + ". " + Persona.getNombre() + "\n"; 
+                posicion = posicion + 1;
+            }
+            else{
+                msgBase = posicion + ". " + Persona.getNombre() + msgBase;
+                posicion = posicion + 1;
             }
         }
+        customPrint("Ranking de Empleados", true);
+        customPrint(msgBase);
+
     }
- //FUNCIONALIDAD 4
+
+    //FUNCIONALIDAD 4
     public static void gestionClases() throws InterruptedException {
+
+
+        //PRIMERA INTERACCIÓN
+
 
         byte[] dos = {1,2};
 
@@ -1481,6 +1858,7 @@ public class Main {
                     } else if (tipoArtista.equals("actor")) {
                         // Crear un nuevo actor
                         Actor nuevoActor = new Actor(nombreArtista, idArtista);
+
                         customPrint("Nuevo actor agregado: " + nombreArtista + " con ID " + idArtista, "green");
                         artista = nuevoActor; // Asignar al artista actual
                     } else {
@@ -1495,6 +1873,66 @@ public class Main {
             }
         }
         
+        if (artista.getCalificaciones().isEmpty()) {
+            customPrint("El artista es nuevo. Inicializando calificaciones...");  
+            Thread.sleep(2000);
+
+            // Llamar al método casting() para inicializar calificaciones de calificadores
+            boolean resultado = Empleado.casting(artista, Empleado.getTipoProfesor());
+            if (resultado == false){
+                customPrint("No hay profesores disponibles para inicializar las calificaciones del artista", "red");
+            }
+            else if(resultado == true) {
+                
+                // Seleccionar un profesor aleatorio
+                Profesor profesorAsignado = (Profesor) Empleado.getTipoProfesor().get((int) (Math.random() * Empleado.getTipoProfesor().size()));
+                
+                // Mostrar quién inicializó las calificaciones
+                customPrint("El profesor " + profesorAsignado.getNombre() + " inicializó las calificaciones del artista " + artista.getNombre() + ".");
+            }
+            // Inicializar calificaciones del público (simuladas aleatoriamente)
+            artista.inicializarCalificacionesPublico(artista);
+            customPrint("Calificaciones inicializadas exitosamente.", "green");
+        }
+
+        // Mostrar las calificaciones del artista, sea o no sea nuevo
+        customPrint("Calificaciones del artista: " + artista.getNombre());
+        customPrint("Calificaciones de calificadores: " + artista.getCalificaciones());
+        customPrint("Calificaciones del público: " + artista.getCalificacionesPublico());
+
+        //Se enseñan obras en "Estado Crítico"
+        ArrayList<Obra> obrasCritics = Obra.mostrarObrasCriticas();
+        // Mostrar todas las obras críticas
+        if (obrasCritics.isEmpty()) {
+            customPrint("No hay obras en estado crítico.", "yellow");
+        } else {
+            customPrint("Obras en estado crítico:");
+            for (Obra obra : obrasCritics) {
+                customPrint("- '" + obra.getNombre() + "' (Promedio de calificaciones: " + obra.promedioCalificacion() + ")");
+    
+                // Revisar aspectos críticos y las calificaciones de los actores
+                for (Aptitud aspecto : obra.getPapeles()) { // Obtenemos cada aptitud crítica de la obra
+                    boolean encontrado = false;
+                    for (Actor actor : obra.getReparto()) { // Revisamos cada actor en el reparto
+                        double calificacion = actor.getCalificacionPorAptitud(aspecto);
+                        if (calificacion != -1 && calificacion < 3.0) { // Si la calificación es baja
+                            customPrint("El aspecto '" + aspecto + "' tiene una calificación baja (" + calificacion + ").", "red");
+                            customPrint("Notificando al actor: " + actor.getNombre());
+                            encontrado = true;
+                            break;
+                        }
+                    }
+                    if (!encontrado) {
+                        customPrint("No hay actores con calificaciones bajas en el aspecto '" + aspecto + "'.", "yellow");
+                    }
+                }
+            }
+        }
+
+
+        //SEGUNDA INTERACCION
+
+
         // Si el artista no es un actor, finalizar el flujo
         if (artista instanceof Actor) {
             Actor actor = (Actor) artista;
@@ -1612,16 +2050,8 @@ public class Main {
                 + profesorAsignado.getNombre() + "' en la sala '" + salaAsignada.getNumeroSala() + "'.", "green");
 
 
+            //TERCERA INTERACCIÓN
 
-
-
-
-
-
-
-
-
-            //Pago de la clase
 
             // Cálculo del costo de matrícula
             double costoClase = 0;
@@ -1634,73 +2064,11 @@ public class Main {
             customPrint("El costo de la clase es: $" + costoClase, "blue");
 
             // Procesar el pago desde la cuenta del artista hacia la tesorería
-            CuentaBancaria cuentaArtista = actor.getCuenta(); 
-            cuentaArtista.transferencia(tesoreria.getCuenta(), costoClase);
+            boolean si_no = actor.getCuenta().transferencia(tesoreria.getCuenta(), costoClase);
+            if (si_no == true) {
 
-            // Asignación de calificador para la próxima función
-            Profesor calificador = null;
-            for (Empleado empleado : Empleado.getTipoProfesor()) {
-                if (empleado instanceof Profesor) {
-                    Profesor profesor = (Profesor) empleado;
-
-                    // Simular disponibilidad aleatoria
-                    boolean disponible = Math.random() > 0.5;
-                    if (profesor.tieneEspecializacion(areaSeleccionada) && disponible) {
-                        calificador = profesor;
-                        break;
-                    }
-                }
-            }
-
-            if (calificador != null) {
-                customPrint("Profesor calificador asignado: " + calificador.getNombre(), "green");
-            } else {
-                customPrint("No hay profesores disponibles para calificar la próxima función.", "red");
-            }
-
-            // Evaluación y retroalimentación
-            double calificacion = Math.random() * 5; // Generar calificación aleatoria
-            customPrint("El profesor calificó el desempeño del actor con un: " + calificacion, "yellow");
-
-            // Verificar si hubo mejora
-            if (!actor.huboMejora(areaSeleccionada)) {
-                customPrint("No hubo mejora en el desempeño. Se programará una nueva clase en el área deficiente...", "red");
-
-
-                // Reutilizar la lógica para programar otra clase
-
-
-                LocalDateTime nuevoInicio = solicitarHorario("inicio");
-                LocalDateTime nuevoFin = solicitarHorario("fin");
-
-                // Validar que el horario de fin sea posterior al de inicio
-                while (nuevoFin.isBefore(nuevoInicio)) {
-                    customPrint("El horario de fin debe ser posterior al horario de inicio. Intente nuevamente.", "red");
-                    nuevoInicio = solicitarHorario("inicio");
-                    nuevoFin = solicitarHorario("fin");
-                }
-
-                // Buscar una sala disponible para el nuevo horario
-                Sala nuevaSala = null;
-                for (Sala sala : Sala.getSalas()) {
-                    if (sala.getAseado() && sala.isDisponible(nuevoInicio, nuevoFin)) {
-                        nuevaSala = sala;
-                        break;
-                    }
-                }
-
-                if (nuevaSala == null) {
-                    customPrint("No hay salas disponibles en el nuevo horario deseado o no están limpias.", "red");
-                    return;
-                }
-
-
-
-                customPrint("Sala asignada para la nueva clase: " + nuevaSala.getNumeroSala());
-                nuevaSala.anadirHorario(new ArrayList<>(List.of(nuevoInicio, nuevoFin)));
-
-                // Reasignar profesor capacitado
-                Profesor nuevoProfesor = null;
+                // Asignación de calificador para la próxima función
+                Profesor calificador = null;
                 for (Empleado empleado : Empleado.getTipoProfesor()) {
                     if (empleado instanceof Profesor) {
                         Profesor profesor = (Profesor) empleado;
@@ -1708,46 +2076,123 @@ public class Main {
                         // Simular disponibilidad aleatoria
                         boolean disponible = Math.random() > 0.5;
                         if (profesor.tieneEspecializacion(areaSeleccionada) && disponible) {
-                            nuevoProfesor = profesor;
+                            calificador = profesor;
                             break;
                         }
                     }
                 }
 
-                if (nuevoProfesor == null) {
-                    customPrint("No hay profesores disponibles para la nueva clase en el área seleccionada.", "red");
-                    return;
+                if (calificador != null) {
+                    customPrint("Profesor calificador asignado: " + calificador.getNombre(), "green");
+                    // Evaluación y retroalimentación
+                    double calificacion = Math.random() * 5; // Generar calificación aleatoria
+                    customPrint("El profesor calificó el desempeño del actor con un: " + calificacion, "yellow");
+
+                    if (calificacion == 5) {
+                        // Reembolso del costo de la clase al artista
+                        boolean reembolso = tesoreria.getCuenta().transferencia(actor.getCuenta(), costoClase);
+                        if (reembolso) {
+                            customPrint("¡Felicitaciones! La calificación perfecta de 5 ha activado un reembolso. Se han reembolsado $" 
+                                + costoClase + " a la cuenta del artista.", "green");
+                        } else {
+                            customPrint("Error: No se pudo procesar el reembolso. Por favor, contacte al administrador.", "red");
+                        }
+                    }
+
+                    // Verificar si hubo mejora
+                    if (!actor.huboMejora(areaSeleccionada)) {
+                        customPrint("No hubo mejora en el desempeño. Se programará una nueva clase en el área deficiente...", "red");
+
+                        // Reutilizamos la lógica para programar otra clase
+
+                        LocalDateTime nuevoInicio = solicitarHorario("inicio");
+                        LocalDateTime nuevoFin = solicitarHorario("fin");
+
+                        // Validar que el horario de fin sea posterior al de inicio
+                        while (nuevoFin.isBefore(nuevoInicio)) {
+                            customPrint("El horario de fin debe ser posterior al horario de inicio. Intente nuevamente.", "red");
+                            nuevoInicio = solicitarHorario("inicio");
+                            nuevoFin = solicitarHorario("fin");
+                        }
+
+                        // Buscar una sala disponible para el nuevo horario
+                        Sala nuevaSala = null;
+                        for (Sala sala : Sala.getSalas()) {
+                            if (sala.getAseado() && sala.isDisponible(nuevoInicio, nuevoFin)) {
+                                nuevaSala = sala;
+                                break;
+                            }
+                        }
+
+                        if (nuevaSala == null) {
+                            customPrint("No hay salas disponibles en el nuevo horario deseado o no están limpias.", "red");
+                            return;
+                        }
+
+                        customPrint("Sala asignada para la nueva clase: " + nuevaSala.getNumeroSala());
+                        nuevaSala.anadirHorario(new ArrayList<>(List.of(nuevoInicio, nuevoFin)));
+
+                        // Reasignar profesor capacitado
+                        Profesor nuevoProfesor = null;
+                        for (Empleado empleado : Empleado.getTipoProfesor()) {
+                            if (empleado instanceof Profesor) {
+                                Profesor profesor = (Profesor) empleado;
+
+                                // Simular disponibilidad aleatoria
+                                boolean disponible = Math.random() > 0.5;
+                                if (profesor.tieneEspecializacion(areaSeleccionada) && disponible) {
+                                    nuevoProfesor = profesor;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (nuevoProfesor == null) {
+                            customPrint("No hay profesores disponibles para la nueva clase en el área seleccionada.", "red");
+                            return;
+                        }
+
+                        customPrint("Nuevo profesor asignado: " + nuevoProfesor.getNombre(), "green");
+                        customPrint("Clase reprogramada exitosamente con el profesor " + nuevoProfesor.getNombre() 
+                            + " en la sala " + nuevaSala.getNumeroSala() + ".", "green");
+                    }
+                } else {
+                    customPrint("No hay profesores disponibles para calificar la próxima función.", "red");
+                }
+                // Verificar si el actor debe bajar de nivel en el área seleccionada
+                if (actor.noHaMejoradoEnCuatroIntentos(areaSeleccionada)) {
+                    customPrint("El actor no ha mostrado mejora en el área '" + areaSeleccionada 
+                        + "' después de cuatro clases. Reduciendo el nivel en esta área...", "red");
+
+                    double nuevaCalificacion = Math.max(0, actor.getCalificacionPorAptitud(areaSeleccionada) - 1);
+                    actor.registrarCalificacion(areaSeleccionada, nuevaCalificacion); // Registrar la nueva calificación en el historial
+                    customPrint("Nuevo nivel del área '" + areaSeleccionada + "': " + nuevaCalificacion, "yellow");
                 }
 
-                customPrint("Nuevo profesor asignado: " + nuevoProfesor.getNombre(), "green");
-                customPrint("Clase reprogramada exitosamente con el profesor " + nuevoProfesor.getNombre() 
-                    + " en la sala " + nuevaSala.getNumeroSala() + ".", "green");
+                // Asignar puntos al profesor en función del nivel de la clase
+                int puntosPositivos = 0;
+
+                switch (nivelClase) {
+                    case "Introducción":
+                        puntosPositivos = 1;
+                        break;
+                    case "Profundización":
+                        puntosPositivos = 2;
+                        break;
+                    case "Perfeccionamiento":
+                        puntosPositivos = 3;
+                        break;
+                }
+
+                profesorAsignado.agregarPuntos(puntosPositivos);
+                customPrint("El profesor " + profesorAsignado.getNombre() + " ha recibido " 
+                + puntosPositivos + " puntos positivos. Total acumulado: " + profesorAsignado.getPuntosPositivos() + ".", "blue");
             }
-
-            
-
-            // Verificar si el actor debe bajar de nivel en el área seleccionada
-            if (actor.noHaMejoradoEnCuatroIntentos(areaSeleccionada)) {
-                customPrint("El actor no ha mostrado mejora en el área '" + areaSeleccionada 
-                    + "' después de cuatro clases. Reduciendo el nivel en esta área...", "red");
-
-                double nuevaCalificacion = Math.max(0, actor.getCalificacionPorAptitud(areaSeleccionada) - 1);
-                actor.actualizarCalificacion(areaSeleccionada, nuevaCalificacion); // Método que deberás agregar en Actor
-                customPrint("Nuevo nivel del área '" + areaSeleccionada + "': " + nuevaCalificacion, "yellow");
+            else {
+                customPrint("El actor cuenta con saldo insuficiente para pagar la clases");
             }
         } else {
             customPrint("Solo los actores pueden recibir clases.", "red");
         }
-
-
-
-
-
-
-
-        
-        
-        
     }// Fin del método
 }
-

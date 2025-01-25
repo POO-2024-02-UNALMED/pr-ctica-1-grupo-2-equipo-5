@@ -28,7 +28,7 @@ public class Actor extends Artista{
     private List <Aptitud> aptitudes = new ArrayList<>();
     public static NumberFormat cop = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
     private ArrayList<Double> calificacionesAptitudes = new ArrayList<>(Arrays.asList(0.0, 0.0, 0.0, 0.0, 0.0)); // Calificaciones asociadas a las aptitudes
-    private ArrayList<ArrayList<Double>> historialCalificaciones;
+    private ArrayList<ArrayList<Double>> historialCalificaciones = new ArrayList<>();
 
 
     public Actor(String nombre, long id){ 
@@ -151,9 +151,13 @@ public class Actor extends Artista{
         return index != -1 ? historialCalificaciones.get(index) : null;
     }
 
-    public double promedioCalificacion(Aptitud aptitud) {
-        List<Double> calificaciones = historialCalificaciones.get(aptitud);
-        return calificaciones == null ? 0 : calificaciones.stream().mapToDouble(Double::doubleValue).average().orElse(0);
+    public void registrarCalificacion(Aptitud aptitud, double calificacion) {
+        int index = aptitudes.indexOf(aptitud); // Busca la posición (índice) de la aptitud en la lista de aptitudes
+        if (index != -1) { 
+            historialCalificaciones.get(index).add(calificacion); // Agrega la calificación al historial correspondiente
+        } else { 
+            throw new IllegalArgumentException("La aptitud no existe en este actor."); // Lanza una excepción si la aptitud no se encuentra
+        }
     }
 
     public boolean huboMejora(Aptitud aptitud) {

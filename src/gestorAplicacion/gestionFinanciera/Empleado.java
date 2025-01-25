@@ -21,7 +21,7 @@ public class Empleado {
     private int TrabajoRealizado; //Es el total del trabajo realizado Pago
     private boolean trabajoCorrecto;
     private int metaSemanal;
-    private int puntosPositivos;
+    protected int puntosPositivos;
     private String ocupacion;
     private boolean disponible;
     private CuentaBancaria cuenta;
@@ -38,17 +38,6 @@ public class Empleado {
         this.ocupacion = ocupacion;
         this.deuda = 0;
         this.horario = new ArrayList<>(); //Lista donde se guarda el horario 
-        if(ocupacion != "Aseador"){
-            if(ocupacion !="Seguridad"){
-                tipoProfesor.add(this);
-            }
-            else{
-                tipoSeguridad.add(this);
-            }
-        }
-        else{
-            tipoAseador.add(this);
-        }
         empleadosPorRendimiento.add(this);
     }
 
@@ -56,19 +45,6 @@ public class Empleado {
 
     public Empleado() {}
 
-    //Metodo para verificar si se hizo el trabajo bien
-    public void VerificacionTrabajo(){
-        Random random = new Random();
-        double randomValue = random.nextDouble();
-        if (randomValue > 5.0){
-            this.setTrabajoCorrecto(true);
-            this.puntosPositivos += 1;
-        }
-        else{
-            this.setTrabajoCorrecto(false);
-            
-        }
-    }
 
     //Calcular sueldo
     public double calcularSueldo(){
