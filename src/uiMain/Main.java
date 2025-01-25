@@ -307,17 +307,18 @@ public class Main {
     }
 
     public static void gestionVentas(){
-        funci_1.prueba();
         
         
-        byte [] opciones_2 = {1,2};
+        float dineroTesoreria=0;
+        byte [] opciones_2 = {1,2,3};
         Cliente cliente= null;
         ArrayList <Integer> lista = new ArrayList<>();
         customPrint(
         "Ingrese la opcion correspondiente\n"+
         "Eres cliente nuevo? \n"+ 
         "1. NO\n"+
-        "2. SI\n");
+        "2. SI\n"+
+        "3. MENU PRINCIPAL");
         
 
         
@@ -330,7 +331,8 @@ public class Main {
             "Ingrese la opcion correspondiente\n"+
             "Eres cliente nuevo? \n"+ 
             "1. NO\n"+
-            "2. SI\n","red");
+            "2. SI\n"+
+            "3. MENU PRINCIPAL","red");
             a = in.nextByte();
             in.nextLine();
         }
@@ -367,24 +369,28 @@ public class Main {
                     "Ingrese la opcion correspondiente\n"+
                     "Tienes un codigo existente? : \n"+ 
                     "1. Si\n"+
-                    "2. NO\n","red");
+                    "2. NO\n"+
+                    "3. MENU PRINCIPAL","red");
                     
-                    byte [] opcion = {1,2};
+                    byte [] opcion = {1,2,3};
                     byte b = in.nextByte();
                     in.nextLine();
 
-                    while (!isIn(opciones_2, b)){
+                    while (!isIn(opcion, b)){
                         customPrint("La respuesta introducida no hace parte de las opciones. \n"+
                         "Intente de nuevo:\n"+
                         "Tienes un codigo existente? : \n"+ 
                         "1. NO\n"+
-                        "2. SI\n","red");
+                        "2. SI\n"+
+                        "3. MENU PRINCIPAL","red");
                         b = in.nextByte();
                         in.nextLine();
                     }
                     if (b == 1) {
                         break;
                         
+                    }else if(b==3){
+                        return;
                     }
 
                     
@@ -392,7 +398,8 @@ public class Main {
                     
                     
                 }
-            
+            case 3:
+                return;
                 
             case 2:
                 customPrint("Creando Nuevo Codigo...");
@@ -410,10 +417,17 @@ public class Main {
 
                 
                 salir = true;
+            
+            
                 
             }
         }
+        boolean antiguo = true;
         customPrint(cliente.consultarPerfil());
+        if (cliente.getSuscripcion().name().equals("Basica")){
+            antiguo = false;
+
+        }
         
 
         
@@ -421,18 +435,20 @@ public class Main {
         "Ingrese la opcion correspondiente\n"+
         "Desea mejorar su suscripcion? \n"+ 
         "1. Si\n"+
-        "2. No\n","blue");
+        "2. No\n"+
+        "3. MENU PRINCIPAL","blue");
         
 
         
         a = in.nextByte();
         in.nextLine();
-            while (a != 1 & a != 2) {
+            while (a != 1 & a != 2 & a !=3) {
                 customPrint("La respuesta introducida no hace parte de las opciones.\n"+
         "Ingrese la opcion correspondiente\n"+
         "Desea mejorar su suscripcion? \n"+ 
         "1. SI\n"+
-        "2. NO\n","red");
+        "2. NO\n"+
+        "3. MENU PRINCIPAL","red");
         a = in.nextByte();
         in.nextLine();
 
@@ -478,10 +494,13 @@ public class Main {
             customPrint("Suscripcion "+cliente.getSuscripcion()+" aplicada","green");
 
         }
-        customPrint("Estas son las funciones disponibles\n\n"+String.format("%30s %22s %22s %15s", "Nombre Obra", "Genero", "Duracion","Precio")+"\n"+Funcion.generarTabla());
+        else if (a==3){
+            return;
+        }
+        customPrint("Estas son las funciones disponibles\n\n"+String.format("%30s %22s %22s %15s", "Nombre Obra", "Genero", "Duracion","Precio")+"\n\n"+Funcion.generarTabla());
             customPrint("Que funcion desea comprar? \n");
             String input = in.nextLine().toLowerCase();
-            
+            float precioSus=0;
             while (Obra.nombres(input)){
                 customPrint("Funcion no encontrada \n"+
                 "Ingrese un nombre valido :","red");
@@ -491,28 +510,71 @@ public class Main {
             }
             customPrint("Funcion seleccionada: \n\n"+Obra.imprimirObra(Obra.buscarObra(input)));
             cliente.setObra(input);
-
+            
             float descuento=0;
             if (cliente.getSuscripcion().name().equals("Basica")) {
 
                 descuento = 0;
+                precioSus = 0;
 
 
             } else if (cliente.getSuscripcion().name().equals("Vip")) {
 
                 descuento = 0.25f;
+                precioSus = 18900;
+                
                 
 
             } else if (cliente.getSuscripcion().name().equals("Premium")) {
 
                 descuento = 0.10f;
+                precioSus = 11900;
                 
             } else if (cliente.getSuscripcion().name().equals("Elite")){
 
                 descuento = 1;
+                precioSus = 39900;
                 
             }
-            customPrint("El precio final luego de descuento es :"+String.format("$%,.2f",Funcion.mostrarPrecioFuncion(input))+"\n Realizando transaccion...");
+            if (antiguo==true){
+                precioSus = 0;
+            }
+            descuento = 1-descuento;
+            String mensajeDescuento="";
+            String mensaje;
+            if (descuento==0){
+                mensaje = "Su funcion es gratiss" ;
+            }else{
+                mensaje="";
+            }
+            if (descuento !=0){
+                mensajeDescuento = "luego de descuento es :";
+
+            }
+            customPrint(mensaje+"\nTotal a pagar \n\n "+mensajeDescuento+String.format("$%,.2f",((Funcion.mostrarPrecioFuncion(input)*descuento)+precioSus)));
+            customPrint(
+    "1. Realizar compra\n"+
+        "2. Cancelar Compra \n"
+        ,"blue");
+        
+
+        
+        a = in.nextByte();
+        in.nextLine();
+            while (a != 1 & a != 2 ) {
+                customPrint("La respuesta introducida no hace parte de las opciones.\n"+
+        "Ingrese la opcion correspondiente\n"+
+        "1. Realizar compra\n"+
+        "2. Cancelar Compra \n"
+        ,"red");
+        a = in.nextByte();
+        in.nextLine();
+
+                
+            }
+            if (a==1){
+                customPrint("Realizando Compra");
+                dineroTesoreria = ((Funcion.mostrarPrecioFuncion(input)*descuento)+precioSus);
             try {
                 // Pausa de 2 segundos (4000 milisegundos)
                 Thread.sleep(4000);
@@ -520,7 +582,19 @@ public class Main {
                 customPrint("La pausa fue interrumpida.");
                 
             }
-            customPrint("compra realizada");
+            customPrint("Compra Realizada","green");
+        }else{
+            customPrint("Cancelando Compra...");
+            try {
+                // Pausa de 2 segundos (4000 milisegundos)
+                Thread.sleep(4000);
+            } catch (InterruptedException e) {
+                customPrint("La pausa fue interrumpida.");
+                
+            }
+            customPrint("Compra Cancelada");
+            return;
+        }
             
         
                 

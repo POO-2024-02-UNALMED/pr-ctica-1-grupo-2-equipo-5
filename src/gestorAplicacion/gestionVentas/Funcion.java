@@ -6,6 +6,8 @@ import java.time.LocalTime;
 import java.time.LocalDate;
 
 import gestorAplicacion.gestionObras.*;
+import gestorAplicacion.herramientas.Suscripcion;
+import test.funci_1;
 
 public class Funcion {
     private Obra obra;
@@ -17,6 +19,9 @@ public class Funcion {
     static ArrayList <Funcion> funcionesCreadas= new ArrayList<>() ;
 
 
+    static{
+        funci_1.prueba();
+    }
     public Funcion(Obra obra){
         this.obra=obra;
         funcionesCreadas.add((this));
@@ -184,6 +189,7 @@ public static float precioFuncion(Funcion funcion){
         return precioBase;
 
     }
+
 public static String imprimirFuncion(Funcion funcion){
         String string = String.format("%30s %15s %10s %20s",funcion.obra.getNombre(),funcion.obra.getGenero(),funcion.obra.getDur(),String.format("$%,.2f",precioFuncion(funcion)));
         return string;
