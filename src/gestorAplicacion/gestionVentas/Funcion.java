@@ -19,19 +19,9 @@ public class Funcion {
     static ArrayList <Funcion> funcionesCreadas= new ArrayList<>() ;
 
 
-
-    public Funcion(Obra obra){
     static{
         funci_1.prueba();
     }
-    public Funcion(Obra obra,Sala sala){
-        this.sala = sala;
-        this.obra=obra;
-        funcionesCreadas.add((this));
-
-
-    }
-    
     public String tablaSillas(){
         String Nuevo="";
         ArrayList <Silla> s = this.getSala().getSillas();
@@ -47,6 +37,14 @@ public class Funcion {
         }
         return Nuevo;
     }
+    
+    public Funcion(Obra obra,Sala sala){
+        this.sala = sala;
+        this.obra=obra;
+        funcionesCreadas.add((this));
+
+
+    }
     //OBRA
     public Obra getObra() {
         return obra;
@@ -57,7 +55,7 @@ public class Funcion {
 
     //FUNCIONES
     public static ArrayList<Funcion> getFuncionesCreadas(){
-        return funcionesCreadas;5
+        return funcionesCreadas;
     }
     public static void setFuncionesCreadas(ArrayList<Funcion> newFunciones){
         funcionesCreadas = newFunciones;
@@ -187,8 +185,6 @@ public class Funcion {
     }
     public static String generarTabla(){
         String Nuevo="";
-        
-        
         for (Funcion funcion : funcionesCreadas) {
             String string = String.format("%30s %20s %20s %20s",funcion.obra.getNombre(),funcion.obra.getGenero(),funcion.obra.getDur(),String.format("$%,.2f",precioFuncion(funcion))+"\n");
         Nuevo = Nuevo +string;
@@ -235,10 +231,10 @@ public static String imprimirFuncion(Funcion funcion){
     }
     
 
-public static Funcion buscarFuncion(String nombre){
+public static Obra buscarFuncion(String nombre){
     for (Funcion funcion : funcionesCreadas) {
         if ((funcion.obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
-            return funcion;
+            return funcion.obra;
         }
         
     }
