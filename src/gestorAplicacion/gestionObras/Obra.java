@@ -409,7 +409,7 @@ public class Obra {
     
         // Recopilar las obras en estado crítico
         for (Obra obra : Obra.getObras()) {
-            if (obra.promedioCalificacion() <= 1.0) { // Estado crítico definido como <= 1.0
+            if (obra.promedioCalificacion() <= 2.0) { // Estado crítico definido como <= 2.0
                 obrasCriticas.add(obra);
             }
         }

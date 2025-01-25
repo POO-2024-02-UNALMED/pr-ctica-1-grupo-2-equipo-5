@@ -1874,7 +1874,7 @@ public class Main {
         }
         
         if (artista.getCalificaciones().isEmpty()) {
-            customPrint("El artista es nuevo. Inicializando calificaciones...");  
+            customPrint("El actor no tiene calficaciones. Inicializando calificaciones...");  
             Thread.sleep(2000);
 
             // Llamar al método casting() para inicializar calificaciones de calificadores
@@ -1888,17 +1888,20 @@ public class Main {
                 Profesor profesorAsignado = (Profesor) Empleado.getTipoProfesor().get((int) (Math.random() * Empleado.getTipoProfesor().size()));
                 
                 // Mostrar quién inicializó las calificaciones
-                customPrint("El profesor " + profesorAsignado.getNombre() + " inicializó las calificaciones del artista " + artista.getNombre() + ".");
+                customPrint("El/la profesor/a " + profesorAsignado.getNombre() + " inicializó las calificaciones de el actor " + artista.getNombre() + ".");
             }
             // Inicializar calificaciones del público (simuladas aleatoriamente)
             artista.inicializarCalificacionesPublico(artista);
-            customPrint("Calificaciones inicializadas exitosamente.", "green");
         }
-
+        Thread.sleep(2000);
         // Mostrar las calificaciones del artista, sea o no sea nuevo
         customPrint("Calificaciones del artista: " + artista.getNombre());
-        customPrint("Calificaciones de calificadores: " + artista.getCalificaciones());
+        Thread.sleep(2000);
+        if (artista.getCalificaciones() != null) {
+            customPrint("Calificaciones de calificadores: " + artista.getCalificaciones());
+        }
         customPrint("Calificaciones del público: " + artista.getCalificacionesPublico());
+        Thread.sleep(3500);
 
         //Se enseñan obras en "Estado Crítico"
         ArrayList<Obra> obrasCritics = Obra.mostrarObrasCriticas();
