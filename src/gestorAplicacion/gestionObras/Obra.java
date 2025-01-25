@@ -129,7 +129,6 @@ public class Obra {
         funciones = new ArrayList<>();
         funcionesRecomendadas = funcionesRecomendadas(promedioArt);
         obras.add(this);
-        System.out.println("heyy");
         this.franjaHoraria(genero);
     }
     public Obra(String nombre,Genero genero,String duracion){
@@ -145,7 +144,6 @@ public class Obra {
         this.genero = genero;
         this.nombre = nombre;
         this.franjaHoraria(genero);
-        System.out.println(funcionEstelar);
         this.duracion = Duration.between(funcionEstelar.getHorario().get(0), funcionEstelar.getHorario().get(1));
         obras.add(this);
     }
@@ -212,14 +210,10 @@ public class Obra {
         }
         for (Obra obra: obrasGenero){
             a = obra.funcionEstelar;
-            System.out.println(a);
             if (a != null) {
                 ArrayList<LocalTime> fstar = a.extraerHora(a.getHorario());
-                System.out.println("a " + a.getHorario());
                 if (!fstar.isEmpty() && fstar.size() <= 2) {
-                    System.out.println("fstar"); // Asegúrate de que i tenga al menos 2 elementos
                     if (fstar.get(0).isAfter(franja.get(0))) {
-                        System.out.println("o" + franja.get(0));
                         franja.set(0, fstar.get(0));
                     }
                     if (fstar.get(1).isBefore(franja.get(1))) {
@@ -228,10 +222,9 @@ public class Obra {
                 }
             } else {
                 // Manejo del caso donde funcionEstelar es null
-                System.out.println("La obra '" + obra.getNombre() + "' no tiene una función estelar asignada.");
+                break;
             }
         }
-        System.out.println(franja);
         setFranjaHoraria(franja);
         
     }

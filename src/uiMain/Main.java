@@ -780,6 +780,7 @@ public class Main {
                 }
                     customPrint("Por favor indica en qué se debe enfocar el actor \n (Solo puedes seleccionar una opción, sin embargo,\n varios actores pueden enfocarse en la misma opción) \nrecuerde digitar solo el número de la opción\n1. Canto\n2. Baile\n3. Discurso\n4. Emocionalidad\n5. Improvisación");
                     byte u = in.nextByte();
+                    in.nextLine();
                     switch (u){
                         case 1:
                             papeles.add(Aptitud.CANTO);
@@ -869,16 +870,15 @@ public class Main {
             x = 0;
                 
 
-            System.out.println("Por favor, ingresa el costo de producción");
+            ask("Por favor, ingresa el costo de producción");
             float costoProduccion = in.nextFloat();
 
-            System.out.println("Por favor ingresa la duración de la obra, usa el formato HHmmSS, no separes con :,- ni otro símbolo similar.");
+            askLong("Por favor ingresa la duración de la obra, usa el formato HHmmSS, no separes con :,- ni otro símbolo similar.");
             long dur = in.nextLong();
             
 
             eleccion = new Obra(nombre, reparto, papeles, director, costoProduccion, genero, dur);  
             }
-            customPrint(String.valueOf(eleccion.getPromedioArt()));
             customPrint("Has seleccionado" + " " + eleccion.getNombre());
             customPrint("¿Cuántas funciones te gustaría crear para esta obra?");
             int a = eleccion.getFuncionesRecomendadas();
@@ -923,17 +923,16 @@ public class Main {
                     drut = rut; // Acepta si la cantidad es adecuada
                 }
             } while (!continuar);   
-
-            if (!(drut==0)){
-                System.out.println("I work");
-            }
             
             for (int numeroFunciones = 0; numeroFunciones < drut; numeroFunciones++){
                 ArrayList<LocalDate> weekn = getWeek();
                 Funcion funcion = new Funcion(eleccion, weekn);
+                String calif = "";
                 eleccion.addFuncion(funcion);
-                customPrint("Funcion creada\nHora:  " + funcion.getHorario() + "\nSala: " + funcion.getSala());
-                customPrint("me too");
+                if (funcion.doWeNeedACalificador()){
+                    calif = "E";
+                }
+                customPrint("Funcion creada\n Obra: " + funcion.getObra().getNombre() + calif + "\nHorario:  " + funcion.getHorario() + "\nSala: " + funcion.getSala());
             }
         
     }
