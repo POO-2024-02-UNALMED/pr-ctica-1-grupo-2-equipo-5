@@ -1703,7 +1703,9 @@ public class Main {
         ArrayList<Funcion> funcionesDisponibles = new ArrayList<>(Funcion.getFuncionesCreadas());
         //Verificar si las listas no estan vacias
         System.out.println("entrar a asignacion trabajadores");
-        if(totalFunciones != 0 && totalTrabajadores_S != 0 && !Funcion.getFuncionesCreadas().isEmpty()){
+        System.out.println(totalFunciones);
+        System.out.println(totalTrabajadores_S);
+        if(totalFunciones != 0 && totalTrabajadores_S != 03){
             for(Empleado Persona : Empleado.getTipoSeguridad()){
                 if(Persona.getMetaSemanal() == base){
                     cant_trabajadores_principiantes += 1;
@@ -1854,6 +1856,8 @@ public class Main {
                     }
                 }
             }
+        }{
+            System.out.println("no esta haciendo nada");
         }
         
         
