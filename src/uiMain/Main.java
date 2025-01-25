@@ -1386,7 +1386,8 @@ public class Main {
                 }
             }
         }
-        customPrint("El saldo de tesoreria es: " + tesoreria.getCuenta().getSaldo());
+        String Saldo = String.format("$%,.2f",tesoreria.getCuenta().getSaldo());
+        customPrint("El saldo de tesoreria es: " + Saldo);
         
         try{
             Thread.sleep(2000);
@@ -1848,6 +1849,8 @@ public class Main {
         }
         
         //Pagar nomina a empleados:
+        Saldo = String.format("$%,.2f", tesoreria.getCuenta().getSaldo());
+        customPrint("El saldo de tesoreria es: " + Saldo);
         byte[] option = {1,2};
         byte respuesta = ask("¿Desea realizar los pagos \n1. Si \n2. No", option, "green");
         switch (respuesta) {
@@ -1920,7 +1923,7 @@ public class Main {
                                 String msg = "Se pago un total de " + totalSaldos;
                                 customPrint(msg);
                                 customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
-                                customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
+                                customPrint("Saldo disponible " + String.format("$%,.2f", tesoreria.getCuenta().getSaldo()));
                                 for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
                                     if(Persona.verificacionMeta() == true){
                                         Persona.setDeuda(Persona.getDeuda() + Persona.calcularSueldo()*0.15); //Se añade la bonificacion a la deuda solo a aquellas que la cumplieron
@@ -1936,7 +1939,7 @@ public class Main {
                                 String msg = "Se pago un total de " + cantPagada;
                                 customPrint(msg);
                                 customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
-                                customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
+                                customPrint("Saldo disponible " + String.format("$%,.2f", tesoreria.getCuenta().getSaldo()));
                             }
 
                         }
@@ -1954,7 +1957,7 @@ public class Main {
                             String msg = "Se pago un total de " + totalSaldos;
                             customPrint(msg);
                             customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
-                            customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
+                            customPrint("Saldo disponible " + String.format("$%,.2f", tesoreria.getCuenta().getSaldo()));
                         }
                     }
                     //Pago Bonis Tesorerias + deuda
@@ -2002,7 +2005,7 @@ public class Main {
                                     String msg = "Se pago un total de " + totalSaldos;
                                     customPrint(msg);
                                     customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
-                                    customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
+                                    customPrint("Saldo disponible " + String.format("$%,.2f", tesoreria.getCuenta().getSaldo()));
                                     for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
                                         if(Persona.verificacionMeta() == true){
                                             Persona.setDeuda(Persona.getDeuda() + Persona.calcularSueldo()*0.15); //Se añade la bonificacion a la deuda solo a aquellas que la cumplieron
@@ -2018,7 +2021,7 @@ public class Main {
                                     String msg = "Se pago un total de " + cantPagada;
                                     customPrint(msg);
                                     customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
-                                    customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
+                                    customPrint("Saldo disponible " + String.format("$%,.2f", tesoreria.getCuenta().getSaldo()));
                                 }
                             }
                             else{

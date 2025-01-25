@@ -2,7 +2,6 @@ package test;
 
 // import java.util.ArrayList;
 // import java.util.List;
-import java.util.Scanner;
 
 import gestorAplicacion.gestionClases.Profesor;
 import gestorAplicacion.gestionFinanciera.Empleado;
@@ -15,8 +14,7 @@ import gestorAplicacion.gestionFinanciera.Empleado;
 import uiMain.Main;
 
 public class funcionalidad2 {
-    public static Scanner in = new Scanner(System.in);
-        public static void main(String[] args){
+        public static void empezar(){
             Empleado Empleado1 = new Empleado("Roberto Perez", 1023524, "Aseador");
             Empleado Empleado2 = new Empleado("Alberto Hernandez", 1023525, "Aseador");
             Empleado Empleado3 = new Empleado("Juan Hernández", 1023526, "Seguridad");
