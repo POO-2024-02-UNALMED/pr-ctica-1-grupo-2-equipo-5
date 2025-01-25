@@ -1545,6 +1545,7 @@ public class Main {
             int totalTrabajadores = cant_trabajadores_principiantes;
             int sala_por_trabajador = totalSalas/totalTrabajadores;
             for(Empleado Persona : Empleado.getTipoSeguridad()){
+                ArrayList<Sala> Salas_trabajadas = new ArrayList<>();
                 int asignadas = 0;
                 ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>();
                 if(asignadas<sala_por_trabajador){
@@ -1561,6 +1562,7 @@ public class Main {
                         }
                         else{
                             localTime.add(Funciones.getHorario());
+                            Fu
                         }
                     }
                     Persona.setHorario(localTime);

@@ -36,6 +36,14 @@ public class Funcion {
         this.obra = obra;
     }
 
+    //FUNCIONES
+    public ArrayList<Funcion> getFuncionesCreadas(){
+        return funcionesCreadas;
+    }
+    public void setFuncionesCreadas(ArrayList<Funcion> newFunciones){
+        funcionesCreadas = newFunciones;
+    }
+
     //TIQUETES VENDIDOS
     public int getTiquetesVendidos() {
         return tiquetesVendidos;
