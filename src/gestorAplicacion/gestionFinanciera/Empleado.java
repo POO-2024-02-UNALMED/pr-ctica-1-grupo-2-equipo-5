@@ -17,8 +17,8 @@ public class Empleado {
     private static ArrayList<Empleado> tipoSeguridad = new ArrayList<>();
     private static ArrayList<Empleado> tipoAseador = new ArrayList<>();
     private static ArrayList<Empleado> tipoProfesor = new ArrayList<>();
-    private int TrabajoRealizado; //Es el total del trabajo realizado Pago
-    private boolean trabajoCorrecto;
+    private double TrabajoRealizado; //Es el total del trabajo realizado Pago
+    private ArrayList<Boolean> trabajoCorrecto = new ArrayList<>();
     private int metaSemanal;
     protected int puntosPositivos;
     private String ocupacion;
@@ -88,19 +88,19 @@ public class Empleado {
     }
 
     //Trabajo
-    public int getTrabajoRealizado() {
+    public double getTrabajoRealizado() {
         return TrabajoRealizado;
     }
 
-    public void setTrabajoRealizado(int trabajoRealizado) {
+    public void setTrabajoRealizado(double trabajoRealizado) {
         TrabajoRealizado = trabajoRealizado;
     }
 
-    public boolean isTrabajoCorrecto() {
+    public ArrayList<Boolean> getTrabajoCorrecto() {
         return trabajoCorrecto;
     }
 
-    public void setTrabajoCorrecto(boolean trabajoCorrecto) {
+    public void setTrabajoCorrecto(ArrayList<Boolean> trabajoCorrecto) {
         this.trabajoCorrecto = trabajoCorrecto;
     }
 
