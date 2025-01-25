@@ -19,7 +19,13 @@ public class Funcion {
     static ArrayList <Funcion> funcionesCreadas= new ArrayList<>() ;
 
 
+
     public Funcion(Obra obra){
+    static{
+        funci_1.prueba();
+    }
+    public Funcion(Obra obra,Sala sala){
+        this.sala = sala;
         this.obra=obra;
         funcionesCreadas.add((this));
 

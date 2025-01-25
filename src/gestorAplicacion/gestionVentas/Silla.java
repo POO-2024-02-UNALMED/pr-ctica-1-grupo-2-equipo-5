@@ -8,6 +8,10 @@ public class Silla {
     private Boolean disponibilidad;
     private Integer codigo;
 
+    public Silla(Asiento tipo){
+        this.tipo=tipo;
+
+    }
     //TIPO
     public Asiento getTipo() {
         return tipo;

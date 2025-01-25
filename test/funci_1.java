@@ -2,6 +2,7 @@ package test;
 
 import gestorAplicacion.gestionObras.Obra;
 import gestorAplicacion.gestionVentas.Funcion;
+import gestorAplicacion.gestionVentas.Sala;
 import gestorAplicacion.herramientas.Genero;
 
 public class funci_1 {
@@ -33,11 +34,15 @@ public class funci_1 {
         obra5.setCalificacion(10);
         obra5.setCalificacion(9);
         obra5.setCalificacion(8);
-        Funcion func1 = new Funcion(obra1);
-        Funcion func2 = new Funcion(obra2);
-        Funcion func3 = new Funcion(obra3);
-        Funcion func4 = new Funcion(obra4);
-        Funcion func5 = new Funcion(obra5);
+        Sala sala1 = new Sala(1, 100, 24);
+        Sala sala2 = new Sala(2, 200, 48);
+        Sala sala3 = new Sala(3, 50, 16);
+        Sala sala4 = new Sala(4, 150, 24);
+        Funcion func1 = new Funcion(obra1,sala1);
+        Funcion func2 = new Funcion(obra2,sala2);
+        Funcion func3 = new Funcion(obra3,sala3);
+        Funcion func4 = new Funcion(obra4,sala4);
+        
         
 
 
