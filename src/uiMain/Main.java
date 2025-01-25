@@ -312,7 +312,7 @@ public class Main {
 
     public static void gestionVentas(){
 
-        InterfaceTipos asiento = Asiento.Basico;
+        InterfaceTipos asiento = Asiento.BASICO;
         InterfaceTipos suscription = Suscripcion.Basica;
         String confirmacion="";
         float dineroTesoreria=0;
@@ -342,7 +342,7 @@ public class Main {
             a = in.nextByte();
             in.nextLine();
         }
-        Cliente c1 = new Cliente("null", 1);
+        
 
         boolean salir = false;
     
@@ -418,7 +418,7 @@ public class Main {
                 }
                 
                 code= Cliente.IdRandom();
-                cliente = new Cliente(null, code,Suscripcion.Basica,Asiento.Basico);
+                cliente = new Cliente(null, code,Suscripcion.Basica,Asiento.BASICO);
                 customPrint("Codigo "+cliente.getId()+ " creado","green");
 
                 
@@ -514,8 +514,10 @@ public class Main {
                 
 
             }
+            
             customPrint("Funcion seleccionada: \n\n"+Obra.imprimirObra(Obra.buscarObra(inputF)));
             cliente.setObra(inputF);
+            
             
             float descuento=0;
             if (cliente.getSuscripcion().name().equals("Basica")) {
@@ -553,7 +555,7 @@ public class Main {
             }
             if (confirmacion != ""){
                 customPrint(confirmacion);
-                cliente.setAsiento(Asiento.Gold);
+                cliente.setAsiento(Asiento.GOLD);
             }else{
             customPrint(asiento.tipos());
             customPrint("Que Asiento desea comprar? \n");
@@ -568,18 +570,18 @@ public class Main {
             }
             switch (input) {
                 case "basico":
-                    cliente.setAsiento(Asiento.Basico);
+                    cliente.setAsiento(Asiento.BASICO);
                     break;
                 case "comfort":
-                    cliente.setAsiento(Asiento.Comfort);
+                    cliente.setAsiento(Asiento.COMFORT);
                     precioSus = precioSus+(2900*descuento);
                     break;
                 case "premium":
-                    cliente.setAsiento(Asiento.Premium);
+                    cliente.setAsiento(Asiento.PREMIUM);
                     precioSus = precioSus+(5900*descuento);
                     break;
                 case "gold":
-                    cliente.setAsiento(Asiento.Gold);
+                    cliente.setAsiento(Asiento.GOLD);
                     precioSus = precioSus+(9900*descuento);
                     break;
     
@@ -613,7 +615,9 @@ public class Main {
             }
             if (a==1){
                 customPrint("Realizando Compra");
+                Obra.buscarObra(inputF).recurrencia();
                 dineroTesoreria = ((Funcion.mostrarPrecioFuncion(inputF)*descuento)+precioSus);
+                tesoreria.setDineroEnCaja(tesoreria.getDineroEnCaja()+dineroTesoreria);
             try {
                 // Pausa de 2 segundos (4000 milisegundos)
                 Thread.sleep(4000);
