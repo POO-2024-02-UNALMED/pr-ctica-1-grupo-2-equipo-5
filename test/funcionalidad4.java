@@ -5,6 +5,7 @@ import gestorAplicacion.gestionObras.Artista;
 import gestorAplicacion.gestionObras.Director;
 import gestorAplicacion.gestionObras.Obra;
 import gestorAplicacion.gestionVentas.Funcion;
+import gestorAplicacion.herramientas.Aptitud;
 import gestorAplicacion.herramientas.Genero;
 import gestorAplicacion.gestionFinanciera.Empleado;
 import gestorAplicacion.gestionClases.Profesor;
@@ -42,11 +43,6 @@ public class funcionalidad4 {
         obra5.setCalificacion(10);
         obra5.setCalificacion(9);
         obra5.setCalificacion(8);
-        Funcion func1 = new Funcion(obra1);
-        Funcion func2 = new Funcion(obra2);
-        Funcion func3 = new Funcion(obra3);
-        Funcion func4 = new Funcion(obra4);
-        Funcion func5 = new Funcion(obra5);
 
 
         
@@ -54,11 +50,20 @@ public class funcionalidad4 {
         // Crear profesores (se añadirán automáticamente a la lista tipoProfesor)
         Profesor profesor1 = new Profesor("Raúl Gómez", 1010);
         Profesor profesor2 = new Profesor("María López", 1011);
-
+        Profesor.getTipoProfesor().add(profesor1);
+        Profesor.getTipoProfesor().add(profesor2);
+        
         // Crear artistas (actores y un director)
         Artista actor1 = new Actor("Carlos Moreno", 1234567);
-        Artista actor2 = new Actor("Ana Pérez", 1111111);
+        Artista actor2 = new Actor("Ana Pérez", 11);
         Artista director1 = new Director("Luis Herrera", 2222222);
+
+        ((Actor) actor2).setCalificacionPorAptitud(Aptitud.CANTO, 5.0);
+        ((Actor) actor2).setCalificacionPorAptitud(Aptitud.BAILE, 3.0);
+        ((Actor) actor2).setCalificacionPorAptitud(Aptitud.DISCURSO, 3.0);
+        ((Actor) actor2).setCalificacionPorAptitud(Aptitud.EMOCIONALIDAD, 2.9);
+        ((Actor) actor2).setCalificacionPorAptitud(Aptitud.IMPROVISACION, 1.8);
+
 
         // Caso 1: Actor válido con profesores disponibles
         Main.gestionClases();

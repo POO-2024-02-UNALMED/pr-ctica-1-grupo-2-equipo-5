@@ -1710,11 +1710,8 @@ public class Main {
         int funcion_por_trabajador = totalFunciones/totalTrabajadores_S;
         
         ArrayList<Funcion> funcionesDisponibles = new ArrayList<>(Funcion.getFuncionesCreadas());
+
         //Verificar si las listas no estan vacias
-        System.out.println("entrar a asignacion trabajadores");
-        System.out.println(totalFunciones);
-        System.out.println(totalTrabajadores_S);
-        System.out.println("Funcion por trabajador:" + funcion_por_trabajador);
         if(totalFunciones != 0 && totalTrabajadores_S != 0){
             for(Empleado Persona : Empleado.getTipoSeguridad()){
                 if(Persona.getMetaSemanal() == base){
@@ -1723,20 +1720,21 @@ public class Main {
             }
             //Asignacion de tareas si todos los trabajadores son principiantes
             if(cant_trabajadores_principiantes == Empleado.getTipoSeguridad().size()){
+                int funciones = 1;
                 for(Empleado Persona : Empleado.getTipoSeguridad()){
                     int asignadas = 0;
-                    int funciones = 1;
+                    String cuidar = "\n";
                     ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
                     for(int i = 0; i < funcionesDisponibles.size(); i++){
                         if(asignadas < funcion_por_trabajador){
                             Funcion Funciones = funcionesDisponibles.get(i);
-                            System.out.println(Funciones.getObra().getNombre());
                             //Asignacion del horario y del Trabajo
                             //Verifica que la funcion tenga un horario
                             if(!Funciones.getHorario().isEmpty()){
                                 if(Persona.getHorario().size() != 0){
                                     if(Funciones.getHorario().get(0).isAfter(localTime.get(localTime.size()-1).get(1))){
                                         localTime.add(Funciones.getHorario());
+                                        cuidar = cuidar + "Funcion " + funciones + "\n";
                                         asignadas = asignadas + 1;
                                         funciones = funciones + 1;
                                         //CALCULAR DURACION DE LA FUNCION
@@ -1746,9 +1744,7 @@ public class Main {
                                         double duracionFuncion = Duration.between(inicio, fin).toMinutes()/60.0; // Para obtener las horas
                                         Persona.getTrabajos().add(duracionFuncion);
 
-                                        System.out.println(asignadas);
                                         funcionesDisponibles.remove(i);
-                                        System.out.println("Largo lista: " + funcionesDisponibles.size());
                                         i--;
                                     }
                                     else{
@@ -1759,23 +1755,23 @@ public class Main {
                                 else{
                                     localTime.add(Funciones.getHorario());
                                     funcionesDisponibles.remove(i);
-                                    System.out.println("Largo lista: " + funcionesDisponibles.size());
+                                    cuidar = "Funcion " + funciones + cuidar;
                                     funciones = funciones + 1;
                                     asignadas = asignadas + 1;
-                                    System.out.println("Asignadas: " + asignadas);
                                     
                                 }
                             }
                             else{
                                 funcionesDisponibles.remove(i);
-                                System.out.println("Largo lista: " + funcionesDisponibles.size());
                                 i--;
                                 customPrint("No hay horarios para aplicar", "red");
                             }
                         }
-                        Persona.setHorario(localTime);
-                        Persona.setDisponible(false);
+                        break;
                     }
+                    customPrint(Persona.getNombre() + " Cuidará: \n" + cuidar);
+                    Persona.setHorario(localTime);
+                    Persona.setDisponible(false);
                 }
             }
             else{
@@ -1787,86 +1783,108 @@ public class Main {
                         return Double.compare(duracionF2, duracionF1);
                     }
                 });
+                int funciones = 1;
                 for(Empleado Persona : Empleado.getTipoSeguridad()){
                     int asignadas = 0;
-                    ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>();
-                    if(asignadas < funcion_por_trabajador){
-                        for(Funcion Funciones : FuncionPorDuracion ){
+                    String cuidar = "\n";
+                    ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
+                    for(int i = 0; i < funcionesDisponibles.size(); i++){
+                        if(asignadas < funcion_por_trabajador){
+                            Funcion Funciones = funcionesDisponibles.get(i);
                             //Asignacion del horario y del Trabajo
-                            if(Persona.getHorario().size() != 0){
-                                if(Funciones.getHorario().get(0).isAfter(localTime.get(localTime.size()-1).get(1))){
-                                    localTime.add(Funciones.getHorario());
-                                    asignadas = asignadas + 1;
-                                    //CALCULAR DURACION DE LA FUNCION
-                                    LocalDateTime inicio = Funciones.getHorario().get(0);
-                                    LocalDateTime fin = Funciones.getHorario().get(1);
-    
-                                    double duracionFuncion = Duration.between(inicio, fin).toMinutes()/60.0; // Para obtener las horas
-                                    Persona.getTrabajos().add(duracionFuncion);
+                            //Verifica que la funcion tenga un horario
+                            if(!Funciones.getHorario().isEmpty()){
+                                if(Persona.getHorario().size() != 0){
+                                    if(Funciones.getHorario().get(0).isAfter(localTime.get(localTime.size()-1).get(1))){
+                                        localTime.add(Funciones.getHorario());
+                                        cuidar = cuidar + "Funcion " + funciones + "\n";
+                                        asignadas = asignadas + 1;
+                                        funciones = funciones + 1;
+                                        //CALCULAR DURACION DE LA FUNCION
+                                        LocalDateTime inicio = Funciones.getHorario().get(0);
+                                        LocalDateTime fin = Funciones.getHorario().get(1);
+        
+                                        double duracionFuncion = Duration.between(inicio, fin).toMinutes()/60.0; // Para obtener las horas
+                                        Persona.getTrabajos().add(duracionFuncion);
+
+                                        funcionesDisponibles.remove(i);
+                                        i--;
+                                    }
+                                    else{
+                                        funciones = funciones + 1;
+                                        continue;
+                                    }
                                 }
                                 else{
-                                    continue;
+                                    localTime.add(Funciones.getHorario());
+                                    funcionesDisponibles.remove(i);
+                                    cuidar = "Funcion " + funciones + cuidar;
+                                    funciones = funciones + 1;
+                                    asignadas = asignadas + 1;
+                                    
                                 }
                             }
                             else{
-                                localTime.add(Funciones.getHorario());
-                                asignadas = asignadas + 1;
+                                funcionesDisponibles.remove(i);
+                                i--;
+                                customPrint("No hay horarios para aplicar", "red");
                             }
                         }
+                        break;
                     }
+                    customPrint(Persona.getNombre() + " Cuidará: \n" + cuidar, "green");
+                    Persona.setHorario(localTime);
+                    Persona.setDisponible(false);
                 }
             }
+        }
+        else{
+            customPrint("No hay funciones para agregar");
+        }
     
-            customPrint("trabajos Asignados...");
-            customPrint("Desplegando Trabajadores");
+        customPrint("trabajos Asignados...");
+        customPrint("Desplegando Trabajadores");
             
-            //Verificacion del trabajo de Seguridad
-            cant_trabajadores_principiantes = 0;
-            for(Empleado Persona : Empleado.getTipoSeguridad()){
-                if(Persona.getMetaSemanal() == base){
-                    cant_trabajadores_principiantes += 1;
-                }
+        //Verificacion del trabajo de Seguridad
+        cant_trabajadores_principiantes = 0;
+        for(Empleado Persona : Empleado.getTipoSeguridad()){
+            if(Persona.getMetaSemanal() == base){
+                cant_trabajadores_principiantes += 1;
             }
-            if(cant_trabajadores_principiantes == Empleado.getTipoSeguridad().size()){
-                for(Empleado Persona : Empleado.getTipoSeguridad()){
-                    for(double Hora : Persona.getTrabajos()){
-                        Random random = new Random();
-                        double randomValue = random.nextDouble();
-                        if(randomValue > 0.5){
+        }
+        if(cant_trabajadores_principiantes == Empleado.getTipoSeguridad().size()){
+            System.out.println("Validacion Trabajo Principiantes");
+            for(Empleado Persona : Empleado.getTipoSeguridad()){
+                for(double Hora : Persona.getTrabajos()){
+                    Random random = new Random();
+                    double randomValue = random.nextDouble();
+                    if(randomValue > 0.5){
                             Persona.getTrabajoCorrecto().add(true);
                             Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Hora);
                             Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
                         }
-                        else{Persona.getTrabajoCorrecto().add(false);}
-                    }
-                    Persona.setDisponible(true);
+                    else{Persona.getTrabajoCorrecto().add(false);}
                 }
+                Persona.setDisponible(true);
             }
-            else{
-                for(Empleado Persona : Empleado.getTipoSeguridad()){
-                    for(double Hora : Persona.getTrabajos()){
-                        Random random = new Random();
-                        double randomValue = random.nextDouble();
-                        if(Persona.getMetaSemanal() > 20){
-                            if(Hora >= 4){
-                                if(randomValue > 0.65){
-                                    Persona.getTrabajoCorrecto().add(true);
-                                    Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Hora);
-                                    Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
-                                }
-                                else {Persona.getTrabajoCorrecto().add(false);}
+        }
+        else{
+            System.out.println("validacion trabajo general");
+            for(Empleado Persona : Empleado.getTipoSeguridad()){
+                for(double Hora : Persona.getTrabajos()){
+                    Random random = new Random();
+                    double randomValue = random.nextDouble();
+                    if(Persona.getMetaSemanal() > 20){
+                        if(Hora >= 4){
+                            if(randomValue > 0.65){
+                                Persona.getTrabajoCorrecto().add(true);
+                                Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Hora);
+                                Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
                             }
-                            else{
-                                if(randomValue > 0.45){
-                                    Persona.getTrabajoCorrecto().add(true);
-                                    Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Hora);
-                                    Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
-                                }
-                                else{Persona.getTrabajoCorrecto().add(false);}
-                            }
+                            else {Persona.getTrabajoCorrecto().add(false);}
                         }
                         else{
-                            if(randomValue > 0.5){
+                            if(randomValue > 0.45){
                                 Persona.getTrabajoCorrecto().add(true);
                                 Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Hora);
                                 Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
@@ -1874,12 +1892,18 @@ public class Main {
                             else{Persona.getTrabajoCorrecto().add(false);}
                         }
                     }
+                    else{
+                        if(randomValue > 0.5){
+                            Persona.getTrabajoCorrecto().add(true);
+                            Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Hora);
+                            Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
+                        }
+                        else{Persona.getTrabajoCorrecto().add(false);}
+                    }
                 }
             }
         }
-        else{
-            System.out.println("no esta haciendo nada");
-        }
+
         
         
         
@@ -2128,9 +2152,6 @@ public class Main {
         customPrint("Ranking de Empleados \n" + msgBase, true, "green");
     }
 
-
-
-
     //FUNCIONALIDAD 4
     public static void gestionClases() throws InterruptedException {
 
@@ -2140,7 +2161,7 @@ public class Main {
 
         byte[] dos = {1,2};
 
-        customPrint("Bienvenido a la gestión de clases.");
+        customPrint("Bienvenido a la gestión de clases.", "blue");
         Thread.sleep(2000);
         long idArtista = longAsk("Ingrese el ID del artista:");
         
@@ -2178,6 +2199,9 @@ public class Main {
                     customPrint("Finalizando gestión de clases.", "blue");
                     return; // Salir si no desea crear un nuevo artista
             }
+        } else {
+            customPrint("El actor ya existe en nuestra base de datos", "green");
+            Thread.sleep(1500);
         }
         
         if (artista.getCalificaciones().isEmpty()) {
@@ -2206,6 +2230,7 @@ public class Main {
         Thread.sleep(2000);
         if (artista.getCalificaciones() != null) {
             customPrint("Calificaciones de calificadores: " + artista.getCalificaciones());
+            Thread.sleep(2000);
         }
         customPrint("Calificaciones del público: " + artista.getCalificacionesPublico());
         Thread.sleep(3500);
@@ -2216,7 +2241,8 @@ public class Main {
         if (obrasCritics.isEmpty()) {
             customPrint("No hay obras en estado crítico.", "yellow");
         } else {
-            customPrint("Obras en estado crítico:");
+            customPrint("Obras en estado crítico del teatro:", "red");
+            Thread.sleep(3000);
             for (Obra obra : obrasCritics) {
                 customPrint("- '" + obra.getNombre() + "' (Promedio de calificaciones: " + obra.promedioCalificacion() + ")");
     
@@ -2227,6 +2253,7 @@ public class Main {
                         double calificacion = actor.getCalificacionPorAptitud(aspecto);
                         if (calificacion != -1 && calificacion < 3.0) { // Si la calificación es baja
                             customPrint("El aspecto '" + aspecto + "' tiene una calificación baja (" + calificacion + ").", "red");
+                            Thread.sleep(1500);
                             customPrint("Notificando al actor: " + actor.getNombre());
                             encontrado = true;
                             break;
@@ -2236,9 +2263,9 @@ public class Main {
                         customPrint("No hay actores con calificaciones bajas en el aspecto '" + aspecto + "'.", "yellow");
                     }
                 }
+                Thread.sleep(1500);
             }
         }
-
 
         //SEGUNDA INTERACCION
 
@@ -2246,16 +2273,19 @@ public class Main {
         // Si el artista no es un actor, finalizar el flujo
         if (artista instanceof Actor) {
             Actor actor = (Actor) artista;
-        
+            Thread.sleep(3000);
             // Mostrar áreas de mejora recomendadas
             List<Aptitud> areasDeMejora = actor.obtenerAreasDeMejora();
-            customPrint("Áreas recomendadas para mejorar:");
+            customPrint("Áreas recomendadas para mejorar:", "yellow");
+            Thread.sleep(2000);
+            String areas = "";
             for (int i = 0; i < Math.min(3, areasDeMejora.size()); i++) {
                 Aptitud aptitud = areasDeMejora.get(i);
                 double calificacion = actor.getCalificacionPorAptitud(aptitud);
-                customPrint("- " + aptitud + " (Calificación: " + calificacion + ")", "yellow");
+                areas.concat("- " + aptitud + " (Calificación: " + calificacion + ")" + "\n");
             }
-        
+            
+            customPrint(areas, "yellow");
             // Preguntar si quiere seguir la recomendación
             byte respuesta = ask("¿Desea programar una clase basada en las áreas recomendadas?\n1. Sí\n2. No", dos, "");
             Aptitud areaSeleccionada = null;
