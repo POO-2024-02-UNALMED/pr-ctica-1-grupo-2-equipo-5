@@ -216,9 +216,10 @@ public class Obra {
             if (a != null) {
                 ArrayList<LocalTime> fstar = a.extraerHora(a.getHorario());
                 System.out.println("a " + a.getHorario());
-                if (!fstar.isEmpty() && fstar.size() < 2) {
+                if (!fstar.isEmpty() && fstar.size() <= 2) {
                     System.out.println("fstar"); // Asegúrate de que i tenga al menos 2 elementos
                     if (fstar.get(0).isAfter(franja.get(0))) {
+                        System.out.println("o" + franja.get(0));
                         franja.set(0, fstar.get(0));
                     }
                     if (fstar.get(1).isBefore(franja.get(1))) {
