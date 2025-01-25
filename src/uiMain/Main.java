@@ -525,7 +525,19 @@ public class Main {
 
 
             }
-            
+            customPrint(Funcion.buscarFuncion(inputF).tablaSillas());
+            Integer num=in.nextInt();
+            in.nextLine();
+            Funcion.buscarFuncion(inputF).eliminarSilla(num);
+            customPrint(Funcion.buscarFuncion(inputF).tablaSillas());
+             num=in.nextInt();
+            in.nextLine();
+            Funcion.buscarFuncion(inputF).eliminarSilla(num);
+            customPrint(Funcion.buscarFuncion(inputF).tablaSillas());
+            num=in.nextInt();
+            in.nextLine();
+            Funcion.buscarFuncion(inputF).eliminarSilla(num);
+            customPrint(Funcion.buscarFuncion(inputF).tablaSillas());
 
 
             
@@ -567,6 +579,10 @@ public class Main {
                 mensajeDescuento = "luego de descuento es :";
 
             }
+            if (confirmacion != ""){
+                customPrint(confirmacion);
+                cliente.tiquete.setSilla(silla);
+            }else{
             customPrint(asiento.tipos());
             customPrint("Que Asiento desea comprar? \n");
             String input=in.nextLine().toLowerCase();
@@ -576,12 +592,11 @@ public class Main {
                 "Ingrese un asiendo valido :","red");
                 input = in.nextLine().toLowerCase();
                 
-            
+
             }
-            Integer codigo = in.nextInt();
             switch (input) {
                 case "basico":
-                    cliente.asignarSilla(codigo);
+                    cliente.tiquete.setSilla(silla);
                     break;
                 case "comfort":
                     cliente.tiquete.setSilla(silla);
