@@ -10,12 +10,12 @@ import uiMain.Main;
 import gestorAplicacion.herramientas.*;
 import gestorAplicacion.gestionObras.*;
 import gestorAplicacion.gestionFinanciera.CuentaBancaria;
-import gestorAplicacion.gestionObras.Actor;
 import gestorAplicacion.gestionVentas.Funcion;
 import gestorAplicacion.gestionVentas.Tiquete;
-import gestorAplicacion.herramientas.Genero;
-
 import gestorAplicacion.gestionFinanciera.Tesoreria;
+import gestorAplicacion.gestionObras.Actor;
+
+import gestorAplicacion.herramientas.Genero;
 
 public class Cliente {
     private String obra;
@@ -229,6 +229,26 @@ public class Cliente {
 
         return string+string2+string3;
 
+    }
+    public void asignarSilla(Integer i){
+        ArrayList <Silla> s = this.getTiquete().getFuncion().getSala().getSillas();
+        for (int k = 0; k < s.size(); k++) {
+            if(s.get(k).getCodigo().equals(i)){
+                this.tiquete.setSilla(s.get(k));
+
+            }
+
+        }
+        
+    
+    }
+
+    public Tiquete getTiquete() {
+        return tiquete;
+    }
+
+    public void setTiquete(Tiquete tiquete) {
+        this.tiquete = tiquete;
     }
 
 
