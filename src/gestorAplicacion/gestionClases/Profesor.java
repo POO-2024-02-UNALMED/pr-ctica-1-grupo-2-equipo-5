@@ -14,13 +14,11 @@ public class Profesor extends Empleado {
         super(nombre, id, "Profesor");
         this.nombre = nombre;
         this.especializaciones = new ArrayList<>();
-        getTipoProfesor().add(this);
     }
 
     public Profesor(String nombre, long id, ArrayList<Aptitud> especializaciones) {
         super(nombre, id, "Profesor");
         this.especializaciones = especializaciones;
-        getTipoProfesor().add(this);
     }
 
     public String getNombre() {
