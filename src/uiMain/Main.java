@@ -1369,7 +1369,7 @@ public class Main {
     public static void gestionEmpleados(){
         final String[] nombres = {"Miguel", "Juan", "Danna", "Carlos", "Oscar", "Julian", "Maria", "Paula", "Esteban", "Sara", "Frank", "Pablo", "Jimena", "Daniela", "Ana", "Emma", "Samuel"};
         final String [] Apellidos = {"Perez", "Hernandez", "Montoya", "Velez", "Aguirre", "Salazar", "Restrepo", "Rodriguez", "Garcia", "Lopez", "Sanchez", "Ramirez", "Gonzales", "Gomez", "Martinez"};
-        
+        tesoreria.transferenciaFondos();
         //Verifica si hay deudas y Pagar
         
         for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
@@ -1692,132 +1692,102 @@ public class Main {
         int totalFunciones = Funcion.getFuncionesCreadas().size();
         int totalTrabajadores_S = Empleado.getTipoSeguridad().size();
         int funcion_por_trabajador = totalFunciones/totalTrabajadores_S;
-        for(Empleado Persona : Empleado.getTipoSeguridad()){
-            if(Persona.getMetaSemanal() == base){
-                cant_trabajadores_principiantes += 1;
-            }
-        }
-        //Asignacion de tareas si todos los trabajadores son principiantes
-        if(cant_trabajadores_principiantes == Empleado.getTipoSeguridad().size()){
+        ArrayList<Funcion> funcionesDisponibles = new ArrayList<>(Funcion.getFuncionesCreadas());
+        //Verificar si las listas no estan vacias
+        if(totalFunciones != 0 && totalTrabajadores_S != 0 && !Funcion.getFuncionesCreadas().isEmpty()){
             for(Empleado Persona : Empleado.getTipoSeguridad()){
-                int asignadas = 0;
-                ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>();
-                if(asignadas < funcion_por_trabajador){
-                    for(Funcion Funciones : Funcion.getFuncionesCreadas()){
-                        //Asignacion del horario y del Trabajo
-                        if(Persona.getHorario() != null){
-                            if(Funciones.getHorario().get(0).isAfter(localTime.get(localTime.size()-1).get(1))){
-                                localTime.add(Funciones.getHorario());
-                                asignadas = asignadas + 1;
-                                //CALCULAR DURACION DE LA FUNCION
-                                LocalDateTime inicio = Funciones.getHorario().get(0);
-                                LocalDateTime fin = Funciones.getHorario().get(1);
-
-                                double duracionFuncion = Duration.between(inicio, fin).toMinutes()/60.0; // Para obtener las horas
-                                Persona.getTrabajos().add(duracionFuncion);
+                if(Persona.getMetaSemanal() == base){
+                    cant_trabajadores_principiantes += 1;
+                }
+            }
+            //Asignacion de tareas si todos los trabajadores son principiantes
+            if(cant_trabajadores_principiantes == Empleado.getTipoSeguridad().size()){
+                for(Empleado Persona : Empleado.getTipoSeguridad()){
+                    int asignadas = 0;
+                    ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>();
+                    if(asignadas < funcion_por_trabajador){
+                        for(Funcion Funciones : funcionesDisponibles){
+                            //Asignacion del horario y del Trabajo
+                            if(Persona.getHorario() != null){
+                                if(Funciones.getHorario().get(0).isAfter(localTime.get(localTime.size()-1).get(1))){
+                                    localTime.add(Funciones.getHorario());
+                                    asignadas = asignadas + 1;
+                                    //CALCULAR DURACION DE LA FUNCION
+                                    LocalDateTime inicio = Funciones.getHorario().get(0);
+                                    LocalDateTime fin = Funciones.getHorario().get(1);
+    
+                                    double duracionFuncion = Duration.between(inicio, fin).toMinutes()/60.0; // Para obtener las horas
+                                    Persona.getTrabajos().add(duracionFuncion);
+                                }
+                                else{
+                                    continue;
+                                }
                             }
                             else{
-                                continue;
-                            }
-                        }
-                        else{
-                            localTime.add(Funciones.getHorario());
-                            asignadas = asignadas + 1;
-                        }
-                    }
-                    Persona.setHorario(localTime);
-                    Persona.setDisponible(false);
-                }
-            }
-        }
-        else{
-            ArrayList<Funcion> FuncionPorDuracion = Funcion.getFuncionesCreadas();
-            Collections.sort(FuncionPorDuracion, new Comparator<Funcion>() {
-                public int compare(Funcion f1, Funcion f2){
-                    double duracionF1 = Duration.between(f1.getHorario().get(0), f1.getHorario().get(1)).toMinutes()/60.0;
-                    double duracionF2 = Duration.between(f2.getHorario().get(0), f2.getHorario().get(1)).toMinutes()/60.0;
-                    return Double.compare(duracionF2, duracionF1);
-                }
-            });
-            for(Empleado Persona : Empleado.getTipoSeguridad()){
-                int asignadas = 0;
-                ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>();
-                if(asignadas < funcion_por_trabajador){
-                    for(Funcion Funciones : FuncionPorDuracion ){
-                        //Asignacion del horario y del Trabajo
-                        if(Persona.getHorario() != null){
-                            if(Funciones.getHorario().get(0).isAfter(localTime.get(localTime.size()-1).get(1))){
                                 localTime.add(Funciones.getHorario());
                                 asignadas = asignadas + 1;
-                                //CALCULAR DURACION DE LA FUNCION
-                                LocalDateTime inicio = Funciones.getHorario().get(0);
-                                LocalDateTime fin = Funciones.getHorario().get(1);
-
-                                double duracionFuncion = Duration.between(inicio, fin).toMinutes()/60.0; // Para obtener las horas
-                                Persona.getTrabajos().add(duracionFuncion);
+                                
+                            }
+                        }
+                        Persona.setHorario(localTime);
+                        Persona.setDisponible(false);
+                    }
+                }
+            }
+            else{
+                ArrayList<Funcion> FuncionPorDuracion = Funcion.getFuncionesCreadas();
+                Collections.sort(FuncionPorDuracion, new Comparator<Funcion>() {
+                    public int compare(Funcion f1, Funcion f2){
+                        double duracionF1 = Duration.between(f1.getHorario().get(0), f1.getHorario().get(1)).toMinutes()/60.0;
+                        double duracionF2 = Duration.between(f2.getHorario().get(0), f2.getHorario().get(1)).toMinutes()/60.0;
+                        return Double.compare(duracionF2, duracionF1);
+                    }
+                });
+                for(Empleado Persona : Empleado.getTipoSeguridad()){
+                    int asignadas = 0;
+                    ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>();
+                    if(asignadas < funcion_por_trabajador){
+                        for(Funcion Funciones : FuncionPorDuracion ){
+                            //Asignacion del horario y del Trabajo
+                            if(Persona.getHorario() != null){
+                                if(Funciones.getHorario().get(0).isAfter(localTime.get(localTime.size()-1).get(1))){
+                                    localTime.add(Funciones.getHorario());
+                                    asignadas = asignadas + 1;
+                                    //CALCULAR DURACION DE LA FUNCION
+                                    LocalDateTime inicio = Funciones.getHorario().get(0);
+                                    LocalDateTime fin = Funciones.getHorario().get(1);
+    
+                                    double duracionFuncion = Duration.between(inicio, fin).toMinutes()/60.0; // Para obtener las horas
+                                    Persona.getTrabajos().add(duracionFuncion);
+                                }
+                                else{
+                                    continue;
+                                }
                             }
                             else{
-                                continue;
+                                localTime.add(Funciones.getHorario());
+                                asignadas = asignadas + 1;
                             }
-                        }
-                        else{
-                            localTime.add(Funciones.getHorario());
-                            asignadas = asignadas + 1;
                         }
                     }
                 }
             }
-        }
-
-        customPrint("trabajos Asignados...");
-        customPrint("Desplegando Trabajadores");
-        
-        //Verificacion del trabajo de Seguridad
-        cant_trabajadores_principiantes = 0;
-        for(Empleado Persona : Empleado.getTipoSeguridad()){
-            if(Persona.getMetaSemanal() == base){
-                cant_trabajadores_principiantes += 1;
-            }
-        }
-        if(cant_trabajadores_principiantes == Empleado.getTipoSeguridad().size()){
+    
+            customPrint("trabajos Asignados...");
+            customPrint("Desplegando Trabajadores");
+            
+            //Verificacion del trabajo de Seguridad
+            cant_trabajadores_principiantes = 0;
             for(Empleado Persona : Empleado.getTipoSeguridad()){
-                for(double Hora : Persona.getTrabajos()){
-                    Random random = new Random();
-                    double randomValue = random.nextDouble();
-                    if(randomValue > 0.5){
-                        Persona.getTrabajoCorrecto().add(true);
-                        Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Hora);
-                        Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
-                    }
-                    else{Persona.getTrabajoCorrecto().add(false);}
+                if(Persona.getMetaSemanal() == base){
+                    cant_trabajadores_principiantes += 1;
                 }
-                Persona.setDisponible(true);
             }
-        }
-        else{
-            for(Empleado Persona : Empleado.getTipoSeguridad()){
-                for(double Hora : Persona.getTrabajos()){
-                    Random random = new Random();
-                    double randomValue = random.nextDouble();
-                    if(Persona.getMetaSemanal() > 20){
-                        if(Hora >= 4){
-                            if(randomValue > 0.65){
-                                Persona.getTrabajoCorrecto().add(true);
-                                Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Hora);
-                                Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
-                            }
-                            else {Persona.getTrabajoCorrecto().add(false);}
-                        }
-                        else{
-                            if(randomValue > 0.45){
-                                Persona.getTrabajoCorrecto().add(true);
-                                Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Hora);
-                                Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
-                            }
-                            else{Persona.getTrabajoCorrecto().add(false);}
-                        }
-                    }
-                    else{
+            if(cant_trabajadores_principiantes == Empleado.getTipoSeguridad().size()){
+                for(Empleado Persona : Empleado.getTipoSeguridad()){
+                    for(double Hora : Persona.getTrabajos()){
+                        Random random = new Random();
+                        double randomValue = random.nextDouble();
                         if(randomValue > 0.5){
                             Persona.getTrabajoCorrecto().add(true);
                             Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Hora);
@@ -1825,9 +1795,45 @@ public class Main {
                         }
                         else{Persona.getTrabajoCorrecto().add(false);}
                     }
+                    Persona.setDisponible(true);
+                }
+            }
+            else{
+                for(Empleado Persona : Empleado.getTipoSeguridad()){
+                    for(double Hora : Persona.getTrabajos()){
+                        Random random = new Random();
+                        double randomValue = random.nextDouble();
+                        if(Persona.getMetaSemanal() > 20){
+                            if(Hora >= 4){
+                                if(randomValue > 0.65){
+                                    Persona.getTrabajoCorrecto().add(true);
+                                    Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Hora);
+                                    Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
+                                }
+                                else {Persona.getTrabajoCorrecto().add(false);}
+                            }
+                            else{
+                                if(randomValue > 0.45){
+                                    Persona.getTrabajoCorrecto().add(true);
+                                    Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Hora);
+                                    Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
+                                }
+                                else{Persona.getTrabajoCorrecto().add(false);}
+                            }
+                        }
+                        else{
+                            if(randomValue > 0.5){
+                                Persona.getTrabajoCorrecto().add(true);
+                                Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Hora);
+                                Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
+                            }
+                            else{Persona.getTrabajoCorrecto().add(false);}
+                        }
+                    }
                 }
             }
         }
+        
         
         
 
