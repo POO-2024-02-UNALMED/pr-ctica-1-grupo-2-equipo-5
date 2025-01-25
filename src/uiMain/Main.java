@@ -46,7 +46,7 @@ public class Main {
     //------------------HERRAMIENTAS-------------------------//
     //pregunta y devuelve cadena respuesta
     public static String ask(String question){
-        customPrint(question, true);
+        customPrint(question, true, "blue");
         String answer = in.nextLine();
         return answer;
     }
@@ -137,6 +137,24 @@ public class Main {
         }
     }
 
+    public static boolean canBeFloat(String cadena){
+        try{
+            Float.parseFloat(cadena);
+            return true;
+        } catch (Exception e){
+            return false;
+        }
+    }
+
+    public static boolean canBeInt(String cadena){
+        try{
+            Integer.parseInt(cadena);
+            return true;
+        } catch (Exception e){
+            return false;
+        }
+    }
+
     //pregunta y devuelve long
     public static long longAsk(String question){
         customPrint(question, "blue");
@@ -150,6 +168,34 @@ public class Main {
         }
         
         long answer = Long.parseLong(input);
+        return answer;
+    }
+    
+    public static int intAsk(String question){
+        customPrint(question, "blue");
+
+        String input = in.nextLine();
+
+        while(!canBeInt(input)){
+            customPrint("La respuesta introducida no es numérica o está fuera del rango. Intente de nuevo.", true, "red");
+            customPrint(question);
+            input = in.nextLine();
+        }
+        
+        int answer = Integer.parseInt(input);
+        return answer;
+    }
+
+    public static float floatAsk(String question){
+        customPrint(question, "blue");
+        String input = in.nextLine();
+
+        while (!canBeFloat(input)){
+            customPrint("La respuesta introducida no es numérica o está fuera del rango. Intente de nuevo.", true, "red");
+            customPrint(question);
+            input = in.nextLine();
+        }
+        float answer = Float.parseFloat(input);
         return answer;
     }
 
@@ -264,7 +310,7 @@ public class Main {
         ArrayList<LocalDate> week = new ArrayList<>();
 
         // Generar los próximos 7 días
-        for (int i = 0; i < 7; i++) {
+        for (int i = 1; i < 8; i++) {
             week.add(today.plusDays(i)); // Sumar días al día actual
         }
         return week;
@@ -742,28 +788,26 @@ public class Main {
             }
         }
         customPrint(menuObras + String.valueOf(i + 1) + ". Crear nueva obra");
-        customPrint("Por favor indique el número de su elección sin punto");
-        String obraSel = in.nextLine();
+        String obraSel = ask("Por favor indique el número de su elección sin punto");
         if (Integer.parseInt(obraSel) <= i){
             eleccion = Obra.getObras().get(Integer.parseInt(obraSel) - 1 + o);
         }
         else if (Integer.parseInt(obraSel) > i){
-            customPrint("Por favor ingrese el nombre de la nueva obra");
-            String nombre = in.nextLine();
-            customPrint("Por favor seleccione uno por uno el reparto de la nueva obra");
+            String nombre = ask("Por favor ingrese el nombre de la nueva obra");
             int f;
             f = 0;
+            String actores = "";
             for (Actor actor : Actor.getActors()){
                 f = f + 1;
-                System.out.println(String.valueOf(f) + "."+ actor.getNombre());
+                actores = actores + String.valueOf(f) + "."+ actor.getNombre();
             }
+            customPrint(actores);
             int s;
             s = 1;
             ArrayList<Actor> reparto = new ArrayList<>();
             ArrayList<Aptitud> papeles = new ArrayList<>();
             while (s != 0){
-                customPrint("Digita el número del actor que desea agregar sin punto\n Si ya terminaste de añadir el reparto por favor ingresa 0");
-                String d = in.nextLine();
+                String d = ask("Digita el número del actor que desea agregar sin punto\n Si ya terminaste de añadir el reparto por favor ingresa 0");
                 s = Integer.parseInt(d);
                 if (s == 0){
                     break;
@@ -772,8 +816,8 @@ public class Main {
                     Actor elegido = Actor.getActors().get(s - 1);
                     reparto.add(elegido);
                 }
-                    customPrint("Por favor indica en qué se debe enfocar el actor \n (Solo puedes seleccionar una opción, sin embargo,\n varios actores pueden enfocarse en la misma opción) \nrecuerde digitar solo el número de la opción\n1. Canto\n2. Baile\n3. Discurso\n4. Emocionalidad\n5. Improvisación");
-                    byte u = in.nextByte();
+                    byte[] listByte= {1, 2, 3, 4, 5};                
+                    byte u = ask("Por favor indica en qué se debe enfocar el actor \n (Solo puedes seleccionar una opción, sin embargo,\n varios actores pueden enfocarse en la misma opción) \nrecuerde digitar solo el número de la opción\n1. Canto\n2. Baile\n3. Discurso\n4. Emocionalidad\n5. Improvisación", listByte, "blue");
                     switch (u){
                         case 1:
                             papeles.add(Aptitud.CANTO);
@@ -793,16 +837,9 @@ public class Main {
                     }
             }
             
-            System.out.println("Por favor, elige el género de la obra, recuerda solo ingresar el número sin punto.");
-            System.out.println("1. Drama");
-            System.out.println("2. Comedia");
-            System.out.println("3. Musical");
-            System.out.println("4. Fantasía");
-            System.out.println("5. Terror");
-            System.out.println("6. Romace");
-            System.out.println("7. Circo");
-            System.out.println("8. Experimental");
-            byte l = in.nextByte();
+            customPrint("1. Drama \n2. Comedia \n3. Musical \n4. Fantasía \n5. Terror \n6. Romace \n7. Circo \n8. Experimental");
+            byte[] listBytesGen = {1, 2, 3, 4, 5, 6, 7, 8};
+            byte l = ask("Indica el número asociado al género <3", listBytesGen, "blue");
             Genero genero;
             genero = null;
             switch (l) {
@@ -832,7 +869,6 @@ public class Main {
                     break;
             }
 
-            System.out.println("Por favor, elige al director que se encarga de la obra");
             int x;
             x = 0;
             Director eleccionDir = null;
@@ -845,41 +881,30 @@ public class Main {
                 }
             }
             customPrint(menuDirectores + String.valueOf(x + 1) + ". Crear nuevo director");
-            customPrint("Indique <3");
-            if (in.hasNextLine()) {in.nextLine();};
-            String directorSel = in.nextLine();
+            String directorSel = ask("Indique el director de la obra <3");
             if (Integer.parseInt(directorSel) <= x){
                 eleccionDir = genero.getDirectores().get(Integer.parseInt(directorSel) - 1);
             }
             else if (Integer.parseInt(directorSel) > x){
-                customPrint("Por favor ingrese el nombre del nuevo director");
-                String nDirector = in.nextLine();
-                customPrint("Por favor ingrese el número de documento del nuevo director");
-                long idDirector = in.nextLong();
+                String nDirector = ask("Por favor ingrese el nombre del nuevo director");
+                long idDirector = longAsk("Por favor ingrese el número de documento del nuevo director");
                 eleccionDir = new Director(nDirector, idDirector, genero);
-                customPrint("Director creado: \n" + eleccionDir);
+                customPrint("Director creado: \n" + eleccionDir, "green");
                 }
             Director director = eleccionDir;
             x = 0;
-                
 
-            System.out.println("Por favor, ingresa el costo de producción");
-            float costoProduccion = in.nextFloat();
-
-            System.out.println("Por favor ingresa la duración de la obra, usa el formato HHmmSS, no separes con :,- ni otro símbolo similar.");
-            long dur = in.nextLong();
+            float costoProduccion = floatAsk("Por favor, ingresa el costo de producción");
+            long dur = longAsk("Por favor ingresa la duración de la obra, \nusa el formato HHmmSS, no separes con :,- ni otro símbolo similar.");
             
-
             eleccion = new Obra(nombre, reparto, papeles, director, costoProduccion, genero, dur);  
             }
-            customPrint(String.valueOf(eleccion.getPromedioArt()));
             customPrint("Has seleccionado" + " " + eleccion.getNombre());
-            customPrint("¿Cuántas funciones te gustaría crear para esta obra?");
             int a = eleccion.getFuncionesRecomendadas();
             boolean continuar = false;
             int drut = 0;
             do {
-                int rut = in.nextInt();
+                int rut = intAsk("¿Cuántas funciones te gustaría crear para esta obra?");
     
                 if (a + 2 < rut) {
                     customPrint("ALERTA, PUEDEN SER DEMASIADAS FUNCIONES PARA ESTA OBRA\n DESEA CONTINUAR?\n 1. Sí\n 2. No");
@@ -918,18 +943,13 @@ public class Main {
                 }
             } while (!continuar);   
 
-            if (!(drut==0)){
-                System.out.println("I work");
-            }
-            
             for (int numeroFunciones = 0; numeroFunciones < drut; numeroFunciones++){
                 ArrayList<LocalDate> weekn = getWeek();
                 Funcion funcion = new Funcion(eleccion, weekn);
                 eleccion.addFuncion(funcion);
                 customPrint("Funcion creada\nHora:  " + funcion.getHorario() + "\nSala: " + funcion.getSala());
-                customPrint("me too");
             }
-        
+            if (in.hasNextLine()) {in.nextLine();}
     }
 
     public static void ContratarActor(){
@@ -1694,7 +1714,7 @@ public class Main {
                 return Integer.compare(E2.getMetaSemanal(), E1.getMetaSemanal());
             }
         });
-       
+        
         Empleado.setTipoAseador(Aseador_order);
         Empleado.setTipoProfesor(Profesor_order);
         Empleado.setTipoSeguridad(Seguridad_order);
