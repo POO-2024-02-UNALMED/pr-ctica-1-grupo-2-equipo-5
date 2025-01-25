@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Locale;
 import java.util.Random;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -28,10 +28,10 @@ import gestorAplicacion.gestionObras.Actor;
 import gestorAplicacion.gestionObras.Artista;
 import gestorAplicacion.gestionObras.Obra;
 import gestorAplicacion.herramientas.Aptitud;
+import gestorAplicacion.herramientas.Asiento;
 import gestorAplicacion.herramientas.Genero;
+import gestorAplicacion.herramientas.InterfaceTipos;
 import gestorAplicacion.herramientas.Suscripcion;
-import test.funci_1;
-import test.funci_5;
 import gestorAplicacion.gestionObras.Director;
 
 
@@ -309,8 +309,10 @@ public class Main {
     }
 
     public static void gestionVentas(){
-        
-        
+
+        InterfaceTipos asiento = Asiento.Basico;
+        InterfaceTipos suscription = Suscripcion.Basica;
+        String confirmacion="";
         float dineroTesoreria=0;
         byte [] opciones_2 = {1,2,3};
         Cliente cliente= null;
@@ -414,7 +416,7 @@ public class Main {
                 }
                 
                 code= Cliente.IdRandom();
-                cliente = new Cliente(null, code,Suscripcion.Basica);
+                cliente = new Cliente(null, code,Suscripcion.Basica,Asiento.Basico);
                 customPrint("Codigo "+cliente.getId()+ " creado","green");
 
                 
@@ -460,18 +462,18 @@ public class Main {
             
         
         if(a == 1){
-            customPrint(Suscripcion.tiposSuscipcion());
+            customPrint(suscription.tipos());
                 
                 customPrint(
-            "Que suscripcion desea aadquirir?\n\n"
+            "Que suscripcion desea adquirir?\n\n"
             );
             String suscripcion = in.nextLine().toLowerCase();
                 
-            while (Suscripcion.tipos(suscripcion)){
+            while (suscription.imprimirTipos(suscripcion)){
 
             customPrint("La respuesta introducida no hace parte de las opciones. \n"+
             "Intente de nuevo:\n"+
-            "Que suscripcion desea aadquirir\n\n","red"
+            "Que suscripcion desea adquirir\n\n","red"
             
             );
             suscripcion = in.nextLine().toLowerCase();
@@ -501,59 +503,92 @@ public class Main {
         }
         customPrint("Estas son las funciones disponibles\n\n"+String.format("%30s %22s %22s %15s", "Nombre Obra", "Genero", "Duracion","Precio")+"\n\n"+Funcion.generarTabla());
             customPrint("Que funcion desea comprar? \n");
-            String input = in.nextLine().toLowerCase();
+            String inputF = in.nextLine().toLowerCase();
             float precioSus=0;
-            while (Obra.nombres(input)){
+            while (Obra.nombres(inputF)){
                 customPrint("Funcion no encontrada \n"+
                 "Ingrese un nombre valido :","red");
-                input = in.nextLine().toLowerCase();
+                inputF = in.nextLine().toLowerCase();
                 
 
             }
-            customPrint("Funcion seleccionada: \n\n"+Obra.imprimirObra(Obra.buscarObra(input)));
-            cliente.setObra(input);
+            customPrint("Funcion seleccionada: \n\n"+Obra.imprimirObra(Obra.buscarObra(inputF)));
+            cliente.setObra(inputF);
             
             float descuento=0;
             if (cliente.getSuscripcion().name().equals("Basica")) {
-
                 descuento = 0;
                 precioSus = 0;
-
-
             } else if (cliente.getSuscripcion().name().equals("Vip")) {
-
                 descuento = 0.25f;
                 precioSus = 18900;
-                
-                
-
             } else if (cliente.getSuscripcion().name().equals("Premium")) {
-
                 descuento = 0.10f;
                 precioSus = 11900;
-                
             } else if (cliente.getSuscripcion().name().equals("Elite")){
-
+                confirmacion="Tienes un asiento Gold gratis";
                 descuento = 1;
-                precioSus = 39900;
-                
+                precioSus = 39900;              
             }
+
             if (antiguo==true){
                 precioSus = 0;
             }
+
+
+
             descuento = 1-descuento;
             String mensajeDescuento="";
             String mensaje;
             if (descuento==0){
-                mensaje = "Su funcion es gratiss" ;
+                mensaje = "Su funcion es gratiss\n" ;
             }else{
                 mensaje="";
             }
-            if (descuento !=0){
+            if (descuento !=1.0f){
                 mensajeDescuento = "luego de descuento es :";
 
             }
-            customPrint(mensaje+"\nTotal a pagar \n\n "+mensajeDescuento+String.format("$%,.2f",((Funcion.mostrarPrecioFuncion(input)*descuento)+precioSus)));
+            if (confirmacion != ""){
+                customPrint(confirmacion);
+                cliente.setAsiento(Asiento.Gold);
+            }else{
+            customPrint(asiento.tipos());
+            customPrint("Que Asiento desea comprar? \n");
+            String input=in.nextLine().toLowerCase();
+        
+            while (asiento.imprimirTipos(input)){
+                customPrint(
+                "Ingrese un asiendo valido :","red");
+                input = in.nextLine().toLowerCase();
+                
+
+            }
+            switch (input) {
+                case "basico":
+                    cliente.setAsiento(Asiento.Basico);
+                    break;
+                case "comfort":
+                    cliente.setAsiento(Asiento.Comfort);
+                    precioSus = precioSus+(2900*descuento);
+                    break;
+                case "premium":
+                    cliente.setAsiento(Asiento.Premium);
+                    precioSus = precioSus+(5900*descuento);
+                    break;
+                case "gold":
+                    cliente.setAsiento(Asiento.Gold);
+                    precioSus = precioSus+(9900*descuento);
+                    break;
+    
+                    
+            
+            }
+        }
+
+        
+        
+            customPrint(mensaje+"\nTotal a pagar\n\n "+mensajeDescuento+String.format("$%,.2f",((Funcion.mostrarPrecioFuncion(inputF)*descuento)+precioSus)));
             customPrint(
     "1. Realizar compra\n"+
         "2. Cancelar Compra \n"
@@ -576,7 +611,7 @@ public class Main {
             }
             if (a==1){
                 customPrint("Realizando Compra");
-                dineroTesoreria = ((Funcion.mostrarPrecioFuncion(input)*descuento)+precioSus);
+                dineroTesoreria = ((Funcion.mostrarPrecioFuncion(inputF)*descuento)+precioSus);
             try {
                 // Pausa de 2 segundos (4000 milisegundos)
                 Thread.sleep(4000);
@@ -1369,7 +1404,7 @@ public class Main {
                     byte[] options2 = {0,1,2};
                     byte answer = ask(question, options2, "green");
                     if(answer == 1){
-                        String pregunta = "Que tipo de Empleado deseas: 0. Salir \n1. Aseador \n2. Seguridad \n3. Profesor";
+                        String pregunta = "Que tipo de Empleado deseas: \n0. Salir \n1. Aseador \n2. Seguridad \n3. Profesor";
                         byte[] option = {0,1,2,3};
                         byte res = ask(pregunta, option, "red");
                         Random random = new Random();
@@ -1388,7 +1423,7 @@ public class Main {
                                     idA.add(id);
                                     n = n + 1;
                                 }while (n<10);
-                                    int j = 0;
+                                int j = 0;
                                 for(String Nombre : candidatos){
                                     if(msgBase != "\n"){
                                         msgBase = msgBase + j +". " + Nombre + " " +  idA.get(j) + "\n";
@@ -1415,6 +1450,7 @@ public class Main {
                                 break;
                                 }
                                 else{
+                                    customPrint("No se contrato ningun empleado", true);
                                     break;
                                 }
 
@@ -1435,7 +1471,7 @@ public class Main {
                                     int b = 0;
                                 for(String Nombre : candidatosS){
                                     if(msgBase != "\n"){
-                                        msgBase = msgBase + b+". " + Nombre + " " +  idS.get(b) + "\n";
+                                        msgBase = msgBase + b +". " + Nombre + " " +  idS.get(b) + "\n";
                                         b = b + 1;
                                     }
                                     else{
@@ -1459,6 +1495,7 @@ public class Main {
                                 break;
                                 }
                                 else{
+                                    customPrint("No se contrato ningun empleado", true);
                                     break;
                                 }
                             case 3:
@@ -1502,6 +1539,7 @@ public class Main {
                                 break;
                                 }
                                 else{
+                                    customPrint("No se contrato ningun empleado", true);
                                     break;
                                 }
                             case 0:
@@ -1551,11 +1589,16 @@ public class Main {
         } while(!repetidor);
         
 
-        //Organiza el ranking - Aseador - Seguridad - Profesor
+        //Organiza el ranking - Aseador - Seguridad - Profesor - Salas
         ArrayList<Empleado> Aseador_order = Empleado.getTipoAseador();
         ArrayList<Empleado> Seguridad_order = Empleado.getTipoSeguridad();
         ArrayList<Empleado> Profesor_order = Empleado.getTipoProfesor();
-        
+        ArrayList<Sala> SalasPorTamano = Sala.getSalas();
+        Collections.sort(SalasPorTamano, new Comparator<Sala>(){
+            public int compare(Sala S1, Sala S2){
+                return Integer.compare(S2.getMetrosCuadrados(), S1.getMetrosCuadrados());
+            }
+        });
         Collections.sort(Aseador_order, new Comparator<Empleado>() {
             public int compare(Empleado E1, Empleado E2){
                 return Integer.compare(E2.getMetaSemanal(), E1.getMetaSemanal());
@@ -1575,10 +1618,53 @@ public class Main {
         Empleado.setTipoAseador(Aseador_order);
         Empleado.setTipoProfesor(Profesor_order);
         Empleado.setTipoSeguridad(Seguridad_order);
-        
         //Administrar Trabajadores
         //Asignar horas y trabajos
+        //Para Seguridad
+        int cant_trabajadores_principiantes = 0;
+        int base = 1;
+        for(Empleado Persona : Empleado.getTipoSeguridad()){
+            if(Persona.getMetaSemanal() == base){
+                cant_trabajadores_principiantes += 1;
+            }
+        }
+        //Asignacion de tareas si todos los trabajadores son principiantes
+        if(cant_trabajadores_principiantes == Empleado.getTipoSeguridad().size()){
+            int totalSalas = Sala.getSalas().size();
+            int totalTrabajadores = cant_trabajadores_principiantes;
+            int sala_por_trabajador = totalSalas/totalTrabajadores;
+            for(Empleado Persona : Empleado.getTipoSeguridad()){
+                ArrayList<Sala> Salas_trabajadas = new ArrayList<>();
+                int asignadas = 0;
+                ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>();
+                if(asignadas<sala_por_trabajador){
+                    for(Funcion Funciones : Funcion.getFuncionesCreadas()){
+                        //Asignacion del horario
+                        if(Persona.getHorario() != null){
+                            if(Funciones.getHorario().get(0).isAfter(localTime.get(localTime.size()-1).get(1))){
+                                localTime.add(Funciones.getHorario());
+                                
+                                Salas_trabajadas.add(Funciones.getSala()); //Guarda las salas en las que trabajara
+                                asignadas = asignadas + 1;
+                            }
+                            else{
+                                continue;
+                            }
+                        }
+                        else{
+                            localTime.add(Funciones.getHorario());
 
+                            Salas_trabajadas.add(Funciones.getSala()); //Guarda las salas en las que trabajara
+                            asignadas = asignadas + 1;
+                        }
+                    }
+                    Persona.setHorario(localTime);
+                }
+            }
+        }
+        else{
+
+        }
 
         //Hora inicio - Hora fin
         //Asignar Horario Trabajador
@@ -1598,22 +1684,22 @@ public class Main {
         }
         
         //Pagar nomina a empleados:
-        
-        double fondos = tesoreria.getCuenta().getSaldo();
-        double totalSaldos = 0;
-        //Verificacion de fondos:
-            for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                totalSaldos = totalSaldos + Persona.calcularSueldo();
-            }
-        //Realizar pago
         byte[] option = {1,2};
         byte respuesta = ask("¿Desea realizar los pagos \n1. Si \n2. No", option, "green");
         switch (respuesta) {
             case 1:
+                tesoreria.setTotal(tesoreria.getTotal() + tesoreria.getDineroEnCaja());
+                double fondos = tesoreria.getCuenta().getSaldo();
+                double totalSaldos = 0;
+                //Verificacion de fondos:
+                for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                    totalSaldos = totalSaldos + Persona.calcularSueldo();
+                }
+                //Realizar pago
                 if(totalSaldos > fondos){
                     ArrayList<Empleado>  Cuentas_Pagadas = new ArrayList<>();
                     double cantPagada = 0;
-                      customPrint("Upps... No se puede realizar los pagos adecuadamente", "Red");
+                    customPrint("Upps... No se puede realizar los pagos adecuadamente", "Red");
                     customPrint("Realizando pagos de manera equitativa...");
                     for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
                         boolean transaccion = tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.getDeuda() + Persona.calcularSueldo()) *0.5);  //Establecer cuanto se le debe a la persona
@@ -1798,7 +1884,7 @@ public class Main {
             case 2:
                 break;
         }
-        
+    
         //Imprimir Ranking
         ArrayList<Empleado> Ranking = Empleado.getEmpleadosPorRendimiento();
         Collections.sort(Ranking, new Comparator<Empleado>() {
@@ -1823,6 +1909,9 @@ public class Main {
         customPrint(msgBase);
 
     }
+
+
+
 
     //FUNCIONALIDAD 4
     public static void gestionClases() throws InterruptedException {

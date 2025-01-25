@@ -28,19 +28,20 @@ public class Funcion {
 
 
     }
-    //FUNCIONES CREADAS
-    public static ArrayList<Funcion> getFuncionesCreadas(){
-        return funcionesCreadas;
-    }
-    public static void setFuncionesCreadas(ArrayList<Funcion> nuevasFunciones){
-        funcionesCreadas = nuevasFunciones;
-    }
     //OBRA
     public Obra getObra() {
         return obra;
     }
     public void setObra(Obra obra) {
         this.obra = obra;
+    }
+
+    //FUNCIONES
+    public static ArrayList<Funcion> getFuncionesCreadas(){
+        return funcionesCreadas;
+    }
+    public static void setFuncionesCreadas(ArrayList<Funcion> newFunciones){
+        funcionesCreadas = newFunciones;
     }
 
     //TIQUETES VENDIDOS
