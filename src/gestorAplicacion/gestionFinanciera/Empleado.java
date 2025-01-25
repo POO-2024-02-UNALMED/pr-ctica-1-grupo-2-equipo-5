@@ -25,7 +25,7 @@ public class Empleado {
     private boolean disponible;
     private CuentaBancaria cuenta;
     private double deuda;
-    private ArrayList<Float> trabajos = new ArrayList<>(); //Aqui se almacenan los trabajos que realizo ya sea que fue correcto o no.
+    private ArrayList<Double> trabajos = new ArrayList<>(); //Aqui se almacenan los trabajos que realizo ya sea que fue correcto o no.
     private ArrayList<ArrayList<LocalDateTime>> horario = new ArrayList<>();
 
     //Constructor
@@ -159,11 +159,11 @@ public class Empleado {
     }
 
     //Trabajos
-    public ArrayList<Float> getTrabajos() {
+    public ArrayList<Double> getTrabajos() {
         return this.trabajos;
     }
 
-    public void setTrabajos(ArrayList<Float> trabajos) {
+    public void setTrabajos(ArrayList<Double> trabajos) {
         this.trabajos = trabajos;
     }
 

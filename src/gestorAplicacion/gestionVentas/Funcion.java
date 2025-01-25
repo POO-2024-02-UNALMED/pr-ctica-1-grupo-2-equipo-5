@@ -37,10 +37,10 @@ public class Funcion {
     }
 
     //FUNCIONES
-    public ArrayList<Funcion> getFuncionesCreadas(){
+    public static ArrayList<Funcion> getFuncionesCreadas(){
         return funcionesCreadas;
     }
-    public void setFuncionesCreadas(ArrayList<Funcion> newFunciones){
+    public static void setFuncionesCreadas(ArrayList<Funcion> newFunciones){
         funcionesCreadas = newFunciones;
     }
 
