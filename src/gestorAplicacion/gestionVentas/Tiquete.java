@@ -2,6 +2,7 @@ package gestorAplicacion.gestionVentas;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import gestorAplicacion.gestionObras.Actor;
@@ -115,6 +116,18 @@ public class Tiquete {
     public void setSilla(Silla silla) {
         this.silla = silla;
     }
+    void dividirN(String s){
+        
+        String[] partes = s.split(" ");
+        int a = partes.length;
+        if (a >2){
+            for (int i =0;i < s.length();i++){
+
+            }
+        }
+
+    }
+   
     public String imprimirFactura(Cliente c,boolean b,float d,float p,float su){
         LocalDate fechaActual = LocalDate.now();
         String fechaFormateada = fechaActual.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
@@ -123,15 +136,23 @@ public class Tiquete {
         c.getTiquete().setId(Tiquete.idTiquete());
         s="================================\n";
         s =s+"Tiquete # "+c.getTiquete().getId();
+        s =s+"\n"+fechaFormateada;
+
         s=s+"\n================================\n";
         s=s+String.format("%10s %20s ","Producto","Precio")+"\n";
         s=s+"\n--------------------------------\n";
         s=s+String.format("%10s %20s ","Funcion",String.format("$%,.2f",p)+"\n");
         if (!b & !c.getSuscripcion().name().equals("Basica")){
             s=s+String.format("%10s %20s ","Suscripcion",String.format("$%,.2f",su))+"\n";
+            s=s+String.format("%10s %20s ",c.getSuscripcion(),"")+"\n";
+            
+        }
+        if (!c.getSuscripcion().name().equals("Basica")){
+            s=s+"\nDescuento por ser "+c.getSuscripcion();
+            s=s+"\n-"+String.format("$%,.2f",d);
         }
         s=s+"\n--------------------------------";
-        s=s+"\n\n Valor total"+String.format("$%,.2f",c.getTiquete().getValor());
+        s=s+"\n\n Valor total "+String.format("$%,.2f",c.getTiquete().getValor());
         s=s+"\nUsted ahorro "+String.format("$%,.2f",d);
         s=s+"\n================================\n";
         s=s+"GRACIAS POR SU COMPRA\n";
