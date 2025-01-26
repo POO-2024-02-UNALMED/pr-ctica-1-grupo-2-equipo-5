@@ -1577,7 +1577,7 @@ public class Main {
                 customPrint("La pausa fue interrumpida.");    
             }
 
-            String question = "Deseas Contratar o Despedir a algun empleado \n1. Si \n2. No";
+            String question = "Deseas Contratar o Despedir a algún empleado\n1. Si\n2. No";
             byte[] options = {1,2};
             byte respuesta = ask(question, options, "blue");
 
