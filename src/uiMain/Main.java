@@ -1815,9 +1815,7 @@ public class Main {
             f1.getHorario().get(0).compareTo(f2.getHorario().get(0))
             );
         }
-        catch(IndexOutOfBoundsException e){
-            System.out.println("no hay horarios para organizar");
-        }
+        catch(IndexOutOfBoundsException e){}
 
 
         //Verificar si las listas no estan vacias
@@ -1832,8 +1830,10 @@ public class Main {
                 //CASO NORMAL, SE ASIGNAN EN IGUAL CANTIDAD A CADA EMPLEADO
                 for(Empleado Persona : Empleado.getTipoSeguridad()){
                     int asignadas = 0; 
+                    int funciones = 0;
                     ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
                     for(int i = 0; i < funcionesDisponibles.size(); i ++){
+                        funciones += 1;
                         if(asignadas < funcion_por_trabajador){
                             Funcion Funciones = funcionesDisponibles.get(i);
                             //Asignacion del horario y del Trabajo
@@ -1871,7 +1871,7 @@ public class Main {
                             else{
                                 funcionesDisponibles.remove(i);
                                 i--;
-                                customPrint("No hay horarios para aplicar", "red");
+                                customPrint("La funcion: " + funciones + " no tiene horarios para aplicar", "red");
                             }
                         }
                         else{
