@@ -113,6 +113,24 @@ public class Tiquete {
     public void setSilla(Silla silla) {
         this.silla = silla;
     }
+    public String imprimirFactura(Cliente c,boolean b,float d){
+        String s;
+        c.getTiquete().setId(Tiquete.idTiquete());
+        s="================================\n";
+        s =s+"Tiquete # "+c.getTiquete().getId();
+        s=s+"\n================================\n";
+        s=s+String.format("%10s %20s ","Producto","Precio")+"\n";
+        s=s+String.format("%10s %20s ","Funcion",c.getTiquete().getFuncion().getObra().getNombre())+"\n";
+        if (b){
+            s=s+String.format("%10s %20s ","Suscripcion",c.getSuscripcion())+"\n";
+        }
+        s=s+"\n\n Valor total"+String.format("$%,.2f",c.getTiquete().getValor());
+        s=s+"\nUsted ahorro "+String.format("$%,.2f",d);
+
+        return s;
+
+    }
+    
 
     
 

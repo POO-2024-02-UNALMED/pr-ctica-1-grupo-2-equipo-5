@@ -586,14 +586,15 @@ public class Main {
             }
             
             
-        
+        String suscripcion="";
         if(p1_ == 1){
+            
             customPrint(suscription.tipos());
                 
                 customPrint(
             "Que suscripcion desea adquirir?\n\n"
             );
-            String suscripcion = in.nextLine().toLowerCase();
+            suscripcion = in.nextLine().toLowerCase();
                 
             while (suscription.imprimirTipos(suscripcion)){
 
@@ -604,23 +605,7 @@ public class Main {
             );
             suscripcion = in.nextLine().toLowerCase();
         }
-        switch (suscripcion) {
-            case "basica":
-                cliente.setSuscripcion(Suscripcion.Basica);
-                break;
-            case "vip":
-                cliente.setSuscripcion(Suscripcion.Vip);
-                break;
-            case "premium":
-                cliente.setSuscripcion(Suscripcion.Premium);
-                break;
-            case "elite":
-                cliente.setSuscripcion(Suscripcion.Elite);
-                break;
-
-                
         
-        }
             customPrint("Suscripcion "+cliente.getSuscripcion()+" aplicada","green");
 
         }
@@ -645,26 +630,26 @@ public class Main {
 
             
             customPrint("Funcion seleccionada: \n\n"+Obra.imprimirObra(Obra.buscarObra(inputF)));
-            cliente.setObra(inputF);
+            
             
             
             float descuento=0;
-            if (cliente.getSuscripcion().name().equals("Basica")) {
+            if (suscripcion.toLowerCase()=="basica") {
                 descuento = 0;
                 precioSus = 0;
-            } else if (cliente.getSuscripcion().name().equals("Vip")) {
+            } else if (suscripcion.toLowerCase()=="vip") {
                 descuento = 0.25f;
                 precioSus = 18900;
-            } else if (cliente.getSuscripcion().name().equals("Premium")) {
+            } else if (suscripcion.toLowerCase()=="premium") {
                 descuento = 0.10f;
                 precioSus = 11900;
-            } else if (cliente.getSuscripcion().name().equals("Elite")){
+            } else if (suscripcion.toLowerCase()=="elite"){
                 confirmacion="Tienes un asiento Gold gratis";
                 descuento = 1;
                 precioSus = 39900;              
             }
 
-            if (antiguo==true){
+            if (antiguo==true ){
                 precioSus = 0;
             }
             
@@ -682,23 +667,24 @@ public class Main {
                 mensajeDescuento = "luego de descuento es :";
 
             }
-            if (confirmacion != ""){
-                customPrint(confirmacion);
-                
-            }else{
+            
 
             customPrint(asiento.tipos());
-            customPrint("Que Asiento desea comprar? \n+"+
+            customPrint("Que Asiento desea comprar? \n"+
             "Ingrese solo el codigo \n"+
-            "La letra representa el tipo del asiento");
+            "La letra representa el tipo del asiento\n\n"+
+            "G- Sillas Gold Exclusivas Suscripcion Gold\n"+
+            "P- Sillas Premium Exclusivas Suscripcion Vip\n "+
+            "C- Sillas Comfort Exclusivas Suscripcion Premium\n"+
+            "B- Sillas Basicas ");
             
-
-            customPrint(Funcion.buscarFuncion(inputF).tablaSillas());
+            Funcion funcion=Funcion.buscarFuncion(inputF);
+            customPrint(funcion.tablaSillas());
             Integer codigo = in.nextInt();
-            while (Funcion.buscarFuncion(inputF).verificar(codigo) | cliente.verificarSuscripcion(Funcion.buscarFuncion(inputF).asignarTipoSilla(codigo))) {
+            while (Funcion.buscarFuncion(inputF).verificar(codigo) | cliente.verificarSuscripcion(funcion.asignarTipoSilla(codigo))) {
                 
             
-                while(cliente.verificarSuscripcion(Funcion.buscarFuncion(inputF).asignarTipoSilla(codigo))){
+                while(cliente.verificarSuscripcion(funcion.asignarTipoSilla(codigo))){
                     customPrint(
                     "Tu suscripcion "+cliente.getSuscripcion().name()+"\n"+
                     "No te permite acceder a este tipo de asientos\n"+
@@ -707,7 +693,7 @@ public class Main {
     
     
                 }
-            while(Funcion.buscarFuncion(inputF).verificar(codigo)){
+            while(funcion.verificar(codigo)){
                 customPrint(
                 "Ingrese un asiendo valido :\n"+
                 "Ingrese solo el codigo \n"+
@@ -716,25 +702,19 @@ public class Main {
 
             }
         }
-        tiquete.setSilla(Funcion.buscarFuncion(inputF).asignarSilla(codigo));
-        customPrint(""+(Funcion.buscarFuncion(inputF).asignarSilla(codigo)));
-        customPrint(""+tiquete.getSilla().getCodigo());
+        tiquete.setSilla(funcion.asignarSilla(codigo));
         
-        
-        customPrint(""+cliente.verificarSuscripcion(Funcion.buscarFuncion(inputF).asignarTipoSilla(codigo)));
 
             Funcion.buscarFuncion(inputF).eliminarSilla(codigo);
-            customPrint(Funcion.buscarFuncion(inputF).tablaSillas());
+            customPrint(funcion.tablaSillas());
             
             
-            
-        
-
-        }
 
         
+
         
-            customPrint(mensaje+"\nTotal a pagar\n\n "+mensajeDescuento+String.format("$%,.2f",((Funcion.mostrarPrecioFuncion(inputF)*descuento)+precioSus)));
+        float precioFuncion=Funcion.mostrarPrecioFuncion(inputF);
+            customPrint(mensaje+"\nTotal a pagar\n\n "+mensajeDescuento+String.format("$%,.2f",((precioFuncion*descuento)+precioSus)));
             customPrint(
     "1. Realizar compra\n"+
         "2. Cancelar Compra \n"
@@ -756,8 +736,24 @@ public class Main {
                 
             }
             if (a==1){
+                switch (suscripcion) {
+                    case "basica":
+                        cliente.setSuscripcion(Suscripcion.Basica);
+                        break;
+                    case "vip":
+                        cliente.setSuscripcion(Suscripcion.Vip);
+                        break;
+                    case "premium":
+                        cliente.setSuscripcion(Suscripcion.Premium);
+                        break;
+                    case "elite":
+                        cliente.setSuscripcion(Suscripcion.Elite);
+                        break;
+        
+                        
+                
+                }
                 customPrint("Realizando Compra");
-                Obra.buscarObra(inputF).recurrencia();
                 dineroTesoreria = ((Funcion.mostrarPrecioFuncion(inputF)*descuento)+precioSus);
                 tesoreria.setDineroEnCaja(tesoreria.getDineroEnCaja()+dineroTesoreria);
                 tesoreria.setTotal(tesoreria.getTotal()+dineroTesoreria);
@@ -768,7 +764,14 @@ public class Main {
                 customPrint("La pausa fue interrumpida.");
                 
             }
+            precioFuncion=precioSus+precioFuncion-dineroTesoreria;
             customPrint("Compra Realizada","green");
+            cliente.setObra(inputF);
+            cliente.setTiquete(tiquete);
+            tiquete.setFuncion(funcion);
+            tiquete.setValor(dineroTesoreria);
+            customPrint(tiquete.imprimirFactura(cliente,antiguo,precioFuncion));
+            Obra.buscarObra(inputF).recurrencia();
         }else{
             customPrint("Cancelando Compra...");
             try {
