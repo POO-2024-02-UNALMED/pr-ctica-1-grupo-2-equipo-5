@@ -1777,9 +1777,9 @@ public class Main {
             if(cant_trabajadores_principiantes == Empleado.getTipoSeguridad().size()){
                 //CASO NORMAL, SE ASIGNAN EN IGUAL CANTIDAD A CADA EMPLEADO
                 for(Empleado Persona : Empleado.getTipoSeguridad()){
-                    int asignadas = 0;
+                    int asignadas = 0; 
                     ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
-                    for(int i = 0; i < funcionesDisponibles.size(); i++){
+                    for(int i = 0; i < funcionesDisponibles.size(); i ++){
                         if(asignadas < funcion_por_trabajador){
                             Funcion Funciones = funcionesDisponibles.get(i);
                             //Asignacion del horario y del Trabajo
@@ -1819,6 +1819,9 @@ public class Main {
                                 i--;
                                 customPrint("No hay horarios para aplicar", "red");
                             }
+                        }
+                        else{
+                            break;
                         }
                     }
                     //Se organiza la lista para que no haya errores en caso de asignar las funciones restantes para que no haya solapamiento
@@ -1902,11 +1905,12 @@ public class Main {
                         return Double.compare(duracionF2, duracionF1);
                     }
                 });
+                funcionesDisponibles = FuncionPorDuracion;
                 //Evaluacion Normal, asignacion de trabajo equitativo
                 for(Empleado Persona : Empleado.getTipoSeguridad()){
                     int asignadas = 0;
                     ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
-                    for(int i = 0; i < funcionesDisponibles.size(); i++){
+                    for(int i = 0; i < funcionesDisponibles.size(); i ++){
                         if(asignadas < funcion_por_trabajador){
                             Funcion Funciones = funcionesDisponibles.get(i);
                             //Asignacion del horario y del Trabajo
@@ -1931,14 +1935,18 @@ public class Main {
                                     localTime.add(Funciones.getHorario());
                                     funcionesDisponibles.remove(i);
                                     asignadas = asignadas + 1;
+                                    i--;
                                     
                                 }
                             }
                             else{
                                 funcionesDisponibles.remove(i);
-                                i--;
+                                i--;                        
                                 customPrint("No hay horarios para aplicar", "red");
                             }
+                        }
+                        else{
+                            break;
                         }
                     }
                     Collections.sort(localTime, new Comparator<ArrayList<LocalDateTime>>(){
@@ -2033,10 +2041,100 @@ public class Main {
         int totalSalas = Sala.getSalas().size();
         int totalTrabajadores_A = Empleado.getTipoAseador().size();
         int cant_a_limpiar = totalFunciones/totalTrabajadores_A;
+        ArrayList<Funcion> funcionesLimpiadas = new ArrayList<>(Funcion.getFuncionesCreadas()); 
         if(totalSalas != 0 && totalTrabajadores_A != 0){
             for(Empleado Persona : Empleado.getTipoAseador()){
+                if(Persona.getMetaSemanal() == base){
+                    cant_trabajadores_principiantes += 1;
+                }
+            }
+            //En caso de que todos sean principiantes
+            if(cant_trabajadores_principiantes == totalTrabajadores_A){
+                for(Empleado Persona : Empleado.getTipoAseador()){
+                    //ASIGNACION EQUITATIVA DE TRABAJO
+                    int asignadas = 0;
+                    ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
+                    for(int i = 0; i  < funcionesLimpiadas.size(); i++){
+                        if(asignadas < cant_a_limpiar){
+                            Funcion Funciones = funcionesLimpiadas.get(i);
+                            //Verificar si la funcion tiene horario
+                            if(!Funciones.getHorario().isEmpty()){
+                                if(localTime.size() != 0){
+                                    boolean horarioValido = true;
+                                    LocalDateTime inicioNuevo = Funciones.getHorario().get(1);
+                                    LocalDateTime finNuevo = inicioNuevo.plusMinutes(15);
+                                    for(int j = 0; j < localTime.size(); j++){
+                                        //Se obtiene el horario en el q se itera
+                                        ArrayList<LocalDateTime> horarioActual = localTime.get(j);
+                                        //Se accede al ultimo indice de ese horario q es el fin 
+                                        LocalDateTime finActual = horarioActual.get(1);
+
+                                        //Verificar si hay un sublista despues
+                                        if(j + 1 < localTime.size()){
+                                            ArrayList<LocalDateTime> horarioSiguiente = localTime.get(j+1);
+                                            LocalDateTime inicioSiguiente = horarioSiguiente.get(0);
+
+                                            //Verificar si el horario nuevo no se solapa
+                                            if(!(inicioNuevo.isAfter(finActual) && finNuevo.isBefore(inicioSiguiente))){
+                                                horarioValido = false;
+                                                break;
+                                            }
+                                        }
+                                        else{
+                                            ArrayList<LocalDateTime> horarioSiguiente = funcionesLimpiadas.get(i+1).getHorario();
+                                            LocalDateTime inicioSiguiente = horarioSiguiente.get(0);
+                                            //Verificar el que el fin nuevo sea antes de la siguiente funcion y el inicio sea despues del horario ya existente
+                                           if(!(finNuevo.isBefore(inicioSiguiente) && inicioNuevo.isAfter(finActual))){
+                                            //Como no se cumple se tiene que pasar a revisar la siguiente funcion
+                                                horarioValido = false;
+                                                break;
+                                           }
+                                        }
+                                    }
+                                    if(horarioValido){
+
+                                    }
+                                }
+                                else{
+                                    //Se asigna la hora de fin de la funcion como el inicio del Empleado
+                                    asignadas = asignadas + 1;
+                                    ArrayList<LocalDateTime> sublista = new ArrayList<>();
+                                    LocalDateTime finFuncion = Funciones.getHorario().get(1);
+                                    //Se suma 15 minutos a la hora de fin de la funcion
+                                    LocalDateTime finEmpleado = finFuncion.plusMinutes(15);
+                                    //Se almacenan en la sublista
+                                    sublista.add(finFuncion);
+                                    sublista.add(finEmpleado);
+                                    // se agregan al localTime
+                                    localTime.add(sublista);
+                                    funcionesLimpiadas.remove(i);
+                                    Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                    Funciones.getSala().setAseado(true);
+                                    funcionesLimpiadas.remove(i);
+                                }
+                            }
+                            else{
+                                funcionesLimpiadas.remove(i);
+                                customPrint("No hay horario para aplicar");
+                            }
+                        }
+                        else{
+                            break;
+                        }
+                    }
+                    Collections.sort(localTime, new Comparator<ArrayList<LocalDateTime>>(){
+                        public int compare(ArrayList<LocalDateTime> horario1, ArrayList<LocalDateTime> horario2){
+                            return horario1.get(0).compareTo(horario2.get(0));
+                        }
+                    });
+                    Persona.setHorario(localTime);
+                    //Asignacion De las libres
+                }
+            }
+            else{
 
             }
+
         }
         else{
             if(totalSalas == 0){
