@@ -2434,7 +2434,7 @@ public class Main {
         Saldo = String.format("$%,.2f", tesoreria.getCuenta().getSaldo());
         customPrint("El saldo de tesoreria es: " + Saldo);
         byte[] option = {1,2};
-        byte respuesta = ask("¿Desea realizar los pagos \n1. Si \n2. No", option, "green");
+        byte respuesta = ask("¿Desea realizar los pagos \n1. Si\n2. No", option, "green");
         switch (respuesta) {
             case 1:
                 tesoreria.setTotal(tesoreria.getTotal() + tesoreria.getDineroEnCaja());
