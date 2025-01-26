@@ -74,8 +74,8 @@ public class Funcion {
     public boolean getTrabajador(){
         return trabajador;
     }
-    public void setTrabajador(boolean trabajador){
-        trabajador = trabajador;
+    public void setTrabajador(boolean newtrabajador){
+        trabajador = newtrabajador;
     }
     //FUNCIONES
     public static ArrayList<Funcion> getFuncionesCreadas(){
