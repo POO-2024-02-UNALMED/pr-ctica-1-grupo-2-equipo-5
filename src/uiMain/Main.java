@@ -559,6 +559,7 @@ public class Main {
 
         }
         
+        
 
         
             customPrint(
@@ -586,14 +587,15 @@ public class Main {
             }
             
             
-        
+        String suscripcion="";
         if(p1_ == 1){
+            
             customPrint(suscription.tipos());
                 
                 customPrint(
             "Que suscripcion desea adquirir?\n\n"
             );
-            String suscripcion = in.nextLine().toLowerCase();
+            suscripcion = in.nextLine().toLowerCase();
                 
             while (suscription.imprimirTipos(suscripcion)){
 
@@ -604,24 +606,25 @@ public class Main {
             );
             suscripcion = in.nextLine().toLowerCase();
         }
-        switch (suscripcion) {
-            case "basica":
-                cliente.setSuscripcion(Suscripcion.Basica);
-                break;
-            case "vip":
-                cliente.setSuscripcion(Suscripcion.Vip);
-                break;
-            case "premium":
-                cliente.setSuscripcion(Suscripcion.Premium);
-                break;
-            case "elite":
-                cliente.setSuscripcion(Suscripcion.Elite);
-                break;
-
-                
         
-        }
-            customPrint("Suscripcion "+cliente.getSuscripcion()+" aplicada","green");
+            customPrint("Suscripcion "+suscripcion+" aplicada","green");
+            switch (suscripcion) {
+                case "basica":
+                    cliente.setSuscripcion(Suscripcion.Basica);
+                    break;
+                case "vip":
+                    cliente.setSuscripcion(Suscripcion.Vip);
+                    break;
+                case "premium":
+                    cliente.setSuscripcion(Suscripcion.Premium);
+                    break;
+                case "elite":
+                    cliente.setSuscripcion(Suscripcion.Elite);
+                    break;
+    
+                    
+            
+            }
 
         }
         else if (p1_==3){
@@ -645,7 +648,7 @@ public class Main {
 
             
             customPrint("Funcion seleccionada: \n\n"+Obra.imprimirObra(Obra.buscarObra(inputF)));
-            cliente.setObra(inputF);
+            
             
             
             float descuento=0;
@@ -663,10 +666,20 @@ public class Main {
                 descuento = 1;
                 precioSus = 39900;              
             }
+            
 
-            if (antiguo==true){
+            if (antiguo==true ){
                 precioSus = 0;
             }
+            System.out.println(antiguo);
+            boolean antiguof;
+            if (antiguo){
+                antiguof=true;
+
+            }else{
+                antiguof=false;
+            }
+        
             
 
 
@@ -682,23 +695,25 @@ public class Main {
                 mensajeDescuento = "luego de descuento es :";
 
             }
-            if (confirmacion != ""){
-                customPrint(confirmacion);
-                
-            }else{
+            
+            
 
             customPrint(asiento.tipos());
-            customPrint("Que Asiento desea comprar? \n+"+
+            customPrint("Que Asiento desea comprar? \n"+
             "Ingrese solo el codigo \n"+
-            "La letra representa el tipo del asiento");
+            "La letra representa el tipo del asiento\n\n"+
+            "G- Sillas Gold Exclusivas Suscripcion Gold\n"+
+            "P- Sillas Premium Exclusivas Suscripcion Vip\n "+
+            "C- Sillas Comfort Exclusivas Suscripcion Premium\n"+
+            "B- Sillas Basicas ");
             
-
-            customPrint(Funcion.buscarFuncion(inputF).tablaSillas());
+            Funcion funcion=Funcion.buscarFuncion(inputF);
+            customPrint(funcion.tablaSillas());
             Integer codigo = in.nextInt();
-            while (Funcion.buscarFuncion(inputF).verificar(codigo) | cliente.verificarSuscripcion(Funcion.buscarFuncion(inputF).asignarTipoSilla(codigo))) {
+            while (Funcion.buscarFuncion(inputF).verificar(codigo) | cliente.verificarSuscripcion(funcion.asignarTipoSilla(codigo))) {
                 
             
-                while(cliente.verificarSuscripcion(Funcion.buscarFuncion(inputF).asignarTipoSilla(codigo))){
+                while(cliente.verificarSuscripcion(funcion.asignarTipoSilla(codigo))){
                     customPrint(
                     "Tu suscripcion "+cliente.getSuscripcion().name()+"\n"+
                     "No te permite acceder a este tipo de asientos\n"+
@@ -707,7 +722,7 @@ public class Main {
     
     
                 }
-            while(Funcion.buscarFuncion(inputF).verificar(codigo)){
+            while(funcion.verificar(codigo)){
                 customPrint(
                 "Ingrese un asiendo valido :\n"+
                 "Ingrese solo el codigo \n"+
@@ -716,25 +731,19 @@ public class Main {
 
             }
         }
-        tiquete.setSilla(Funcion.buscarFuncion(inputF).asignarSilla(codigo));
-        customPrint(""+(Funcion.buscarFuncion(inputF).asignarSilla(codigo)));
-        customPrint(""+tiquete.getSilla().getCodigo());
+        tiquete.setSilla(funcion.asignarSilla(codigo));
         
-        
-        customPrint(""+cliente.verificarSuscripcion(Funcion.buscarFuncion(inputF).asignarTipoSilla(codigo)));
 
             Funcion.buscarFuncion(inputF).eliminarSilla(codigo);
-            customPrint(Funcion.buscarFuncion(inputF).tablaSillas());
+            customPrint(funcion.tablaSillas());
             
             
-            
-        
-
-        }
 
         
+
         
-            customPrint(mensaje+"\nTotal a pagar\n\n "+mensajeDescuento+String.format("$%,.2f",((Funcion.mostrarPrecioFuncion(inputF)*descuento)+precioSus)));
+        float precioFuncion=Funcion.mostrarPrecioFuncion(inputF);
+            customPrint(mensaje+"\nTotal a pagar\n\n "+mensajeDescuento+String.format("$%,.2f",((precioFuncion*descuento)+precioSus)));
             customPrint(
     "1. Realizar compra\n"+
         "2. Cancelar Compra \n"
@@ -752,12 +761,16 @@ public class Main {
         ,"red");
         a = in.nextByte();
         in.nextLine();
+        
+        
+        
+        cliente.setSuscripcion(Suscripcion.Basica);
 
                 
             }
             if (a==1){
+                
                 customPrint("Realizando Compra");
-                Obra.buscarObra(inputF).recurrencia();
                 dineroTesoreria = ((Funcion.mostrarPrecioFuncion(inputF)*descuento)+precioSus);
                 tesoreria.setDineroEnCaja(tesoreria.getDineroEnCaja()+dineroTesoreria);
                 tesoreria.setTotal(tesoreria.getTotal()+dineroTesoreria);
@@ -768,7 +781,38 @@ public class Main {
                 customPrint("La pausa fue interrumpida.");
                 
             }
+            
+        
+        
+        
+            float precioTotalFuncion=precioSus+precioFuncion-dineroTesoreria;
             customPrint("Compra Realizada","green");
+            cliente.setObra(inputF);
+            cliente.setTiquete(tiquete);
+            tiquete.setFuncion(funcion);
+            tiquete.setValor(dineroTesoreria);
+            
+            Obra.buscarObra(inputF).recurrencia();
+            
+            switch (suscripcion) {
+                case "basica":
+                    cliente.setSuscripcion(Suscripcion.Basica);
+                    break;
+                case "vip":
+                    cliente.setSuscripcion(Suscripcion.Vip);
+                    break;
+                case "premium":
+                    cliente.setSuscripcion(Suscripcion.Premium);
+                    break;
+                case "elite":
+                    cliente.setSuscripcion(Suscripcion.Elite);
+                    break;
+    
+                    
+            
+            }
+            
+            customPrint(tiquete.imprimirFactura(cliente,antiguof,precioTotalFuncion,precioFuncion,precioSus));
         }else{
             customPrint("Cancelando Compra...");
             try {
@@ -2501,17 +2545,12 @@ public class Main {
                         }
                     }
                 }
-                //Se reinicia los trabajos Realizados y los puntos Positivos
-                for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                    Persona.setTrabajoRealizado(0);
-                    Persona.setPuntosPositivos(0);
-                }
                 break;
             case 2:
                 break;
         }
     
-
+        //Planes de mejora
         //Despedir si meta es negatica
         ArrayList<Empleado> NuevaLista = Empleado.getEmpleadosPorRendimiento();
         ArrayList<Empleado> Despedidos = new ArrayList<>();
@@ -2553,191 +2592,122 @@ public class Main {
         customPrint("Ranking de Empleados \n" + msgBase, true, "green");
     }
 
-
-
-
-
-
-
-
     //FUNCIONALIDAD 4
     public static void gestionClases() throws InterruptedException {
 
 
         //PRIMERA INTERACCIÓN
 
-        byte[] tres = {1,2,3};
+
         byte[] dos = {1,2};
 
         customPrint("Bienvenido a la gestión de clases.", "blue");
         Thread.sleep(2000);
-
-        int queDeseaHacer = ask("¿Que desea hacer?\n" + "1. Gestionar artistas\n" + "2. Ver obras en estado crítico del teatro\n"
-         + "3. Programar una clase", tres, "blue");
-
+        long idArtista = longAsk("Ingrese el ID del artista:");
         
-        switch (queDeseaHacer) {
-            case 1:
-
-            if (Artista.getArtistas().size() != 0) {
-                customPrint("Estos son los artistas que ya existen en nuestra base de datos");
-                Thread.sleep(1500);
-                StringBuilder artistas = new StringBuilder();
-                for (Artista artista : Artista.getArtistas()) {
-                    if (Actor.getActors().contains(artista)) {
-                        String lineaArtista = "- Actor " + artista.getNombre() + " con ID " + artista.getId(); 
-                        if (lineaArtista.length() > LARGO_LINEAS) {
-                            lineaArtista = lineaArtista.substring(0, LARGO_LINEAS - 3) + "..."; // Truncar si es necesario
-                        }
-                        artistas.append(lineaArtista).append("\n");
-                    }
-                    if (Director.getDirectors().contains(artista)) {
-                        String lineaArtista = "- Director " + artista.getNombre() + " con ID " + artista.getId(); 
-                        if (lineaArtista.length() > LARGO_LINEAS) {
-                            lineaArtista = lineaArtista.substring(0, LARGO_LINEAS - 3) + "..."; // Truncar si es necesario
-                        }
-                        artistas.append(lineaArtista).append("\n");
-                    }
-                }
-                customPrint(artistas.toString());
-            }
-            Thread.sleep(2000);
-            long idArtista = longAsk("Ingrese el ID del artista del cual desea conocer su información:\n" + "\n" + "(Puede escribir el ID de un actor o Director que no exista para inicializarlo)");
-            Artista artista = Artista.buscarArtistaPorId(idArtista);
+        Artista artista = Artista.buscarArtistaPorId(idArtista);
         
-            if (artista == null) {
-                customPrint("Artista no encontrado.", "red");
-                Thread.sleep(2000);
-                byte crearArtista = ask("¿Desea crear un nuevo Artista con este ID?\n" + "1. Sí\n" + "2. No", new byte[]{1, 2}, "");
-            
-                switch (crearArtista) {
-                    case 1:
-                        String nombreArtista = ask("Ingrese el nombre del nuevo artista:");
-                        Thread.sleep(2000);
-                        String tipoArtista = ask("Ingrese el tipo de artista (director/actor)");
-                        Thread.sleep(2000);
-            
-                        if (tipoArtista.equals("director")) {
-                            // Crear un nuevo director
-                            new Director(nombreArtista, idArtista);
-                            customPrint("Nuevo director agregado: " + nombreArtista + " con ID " + idArtista, "green");
-                            customPrint("Recuerde que los directores no reciben clases.", "yellow");
-                            return; // Salir del flujo de clases
-                        } else if (tipoArtista.equals("actor")) {
-                            // Crear un nuevo actor
-                            Actor nuevoActor = new Actor(nombreArtista, idArtista);
+        if (artista == null) {
+            customPrint("Artista no encontrado.", "red");
+            Thread.sleep(1000);
+            byte crearArtista = ask("¿Desea crear un nuevo Artista?\n" + "1. Sí\n" + "2. No", new byte[]{1, 2}, "");
+        
+            switch (crearArtista) {
+                case 1:
+                    String nombreArtista = ask("Ingrese el nombre del nuevo artista:");
+                    String tipoArtista = ask("Ingrese el tipo de artista (director/actor)");
+        
+                    if (tipoArtista.equals("director")) {
+                        // Crear un nuevo director
+                        new Director(nombreArtista, idArtista);
+                        customPrint("Nuevo director agregado: " + nombreArtista + " con ID " + idArtista, "green");
+                        customPrint("Recuerde que los directores no reciben clases.", "yellow");
+                        return; // Salir del flujo de clases
+                    } else if (tipoArtista.equals("actor")) {
+                        // Crear un nuevo actor
+                        Actor nuevoActor = new Actor(nombreArtista, idArtista);
 
-                            customPrint("Nuevo actor agregado: " + nombreArtista + " con ID " + idArtista, "green");
-                            artista = nuevoActor; // Asignar al artista actual
-                        } else {
-                            customPrint("Tipo de artista no válido. Debe ser 'director' o 'actor'.", "red");
-                            return; // Salir si el tipo es inválido
-                        }
-                        break;
-            
-                    case 2:
-                        customPrint("Finalizando gestión de clases.", "blue");
-                        return; // Salir si no desea crear un nuevo artista
-                }
-            } else {
-                customPrint("El actor ya existe en nuestra base de datos", "green");
-                Thread.sleep(2000);
-            };
-
-            if (((Actor)artista).sigueIgual()) {
-                customPrint("El actor no tiene calificaciones. Inicializando calificaciones...");  
-                Thread.sleep(2000);
-    
-                // Llamar al método casting() para inicializar calificaciones de calificadores
-                boolean resultado = Empleado.casting(artista, Empleado.getTipoProfesor());
-                if (resultado == false){
-                    customPrint("No hay profesores disponibles para inicializar las calificaciones del actor", "red");
-                }
-                else if(resultado == true) {
-                    
-                    // Seleccionar un profesor aleatorio
-                    Profesor profesorAsignado = (Profesor) Empleado.getTipoProfesor().get((int) (Math.random() * Empleado.getTipoProfesor().size()));
-                    
-                    // Mostrar quién inicializó las calificaciones
-                    customPrint("El/la profesor/a " + profesorAsignado.getNombre() + " es el/la responsable de inicializar las calificaciones\n" + "del actor " + artista.getNombre() + ".");
-                }
-                Thread.sleep(3000);
+                        customPrint("Nuevo actor agregado: " + nombreArtista + " con ID " + idArtista, "green");
+                        artista = nuevoActor; // Asignar al artista actual
+                    } else {
+                        customPrint("Tipo de artista no válido. Debe ser 'director' o 'actor'.", "red");
+                        return; // Salir si el tipo es inválido
+                    }
+                    break;
+        
+                case 2:
+                    customPrint("Finalizando gestión de clases.", "blue");
+                    return; // Salir si no desea crear un nuevo artista
             }
-    
-            // Inicializar calificaciones del público (simuladas aleatoriamente)
-            artista.inicializarCalificacionesPublico(artista);
-            Thread.sleep(2000);
-            
-            // Mostrar las calificaciones del artista, sea o no sea nuevo
-            customPrint("Estas son las calificaciones del artista: " + artista.getNombre());
+        } else {
+            customPrint("El actor ya existe en nuestra base de datos", "green");
+            Thread.sleep(1500);
+        }
+        
+        if (((Actor)artista).sigueIgual()) {
+            customPrint("El actor no tiene calificaciones. Inicializando calificaciones...");  
             Thread.sleep(2000);
 
-            StringBuilder cal = new StringBuilder();
-
-            if (artista.getCalificaciones() != null) {
-                String showCalificaciones = "Calificaciones de calificadores: " + ((Actor)artista).getCalificacionesAptitudes(); 
-                if (showCalificaciones.length() > LARGO_LINEAS) {
-                    showCalificaciones = showCalificaciones.substring(0, LARGO_LINEAS - 3) + "..."; // Truncar si es necesario
-                }
-                cal.append(showCalificaciones).append("\n");
+            // Llamar al método casting() para inicializar calificaciones de calificadores
+            boolean resultado = Empleado.casting(artista, Empleado.getTipoProfesor());
+            if (resultado == false){
+                customPrint("No hay profesores disponibles para inicializar las calificaciones del artista", "red");
             }
-            String showCalificaciones = "Calificaciones del público: " + artista.getCalificacionesPublico(); 
-                if (showCalificaciones.length() > LARGO_LINEAS) {
-                    showCalificaciones = showCalificaciones.substring(0, LARGO_LINEAS - 3) + "..."; // Truncar si es necesario
-                }
-                cal.append(showCalificaciones).append("\n");
-
-            customPrint(cal.toString());
-            
-            Thread.sleep(4500);
-        
-            case 2:
-                //Se enseñan obras en "Estado Crítico"
-            ArrayList<Obra> obrasCritics = Obra.mostrarObrasCriticas();
-            // Mostrar todas las obras críticas
-            if (obrasCritics.isEmpty()) {
-                customPrint("No hay obras en estado crítico en el teatro.", "yellow");
-            } else {
-                customPrint("Obras en estado crítico del teatro:", "red");
-                Thread.sleep(3000);
-                for (Obra obra : obrasCritics) {
-                    customPrint("- '" + obra.getNombre() + "' (Promedio de calificaciones: " + obra.promedioCalificacion() + ")");
-        
-                    // Revisar aspectos críticos y las calificaciones de los actores
-                    for (Aptitud aspecto : obra.getPapeles()) { // Obtenemos cada aptitud crítica de la obra
-                        boolean encontrado = false;
-                        for (Actor actor : obra.getReparto()) { // Revisamos cada actor en el reparto
-                            double calificacion = actor.getCalificacionPorAptitud(aspecto);
-                            if (calificacion != -1 && calificacion < 3.0) { // Si la calificación es baja
-                                customPrint("El aspecto '" + aspecto + "' tiene una calificación baja (" + calificacion + ").", "red");
-                                Thread.sleep(1500);
-                                customPrint("Notificando al actor: " + actor.getNombre());
-                                encontrado = true;
-                                break;
-                            }
-                        }
-                        if (!encontrado) {
-                            customPrint("No hay actores con calificaciones bajas en el aspecto '" + aspecto + "'.", "yellow");
-                        }
-                    }
-                    Thread.sleep(1500);
-                }
-            };
-
-            case 3:
-                break;
+            else if(resultado == true) {
+                
+                // Seleccionar un profesor aleatorio
+                Profesor profesorAsignado = (Profesor) Empleado.getTipoProfesor().get((int) (Math.random() * Empleado.getTipoProfesor().size()));
+                
+                // Mostrar quién inicializó las calificaciones
+                customPrint("El/la profesor/a " + profesorAsignado.getNombre() + " inicializó las calificaciones de el actor " + artista.getNombre() + ".");
+            }
         }
 
-
+        // Inicializar calificaciones del público (simuladas aleatoriamente)
+        artista.inicializarCalificacionesPublico(artista);
+        Thread.sleep(2000);
         
+        // Mostrar las calificaciones del artista, sea o no sea nuevo
+        customPrint("Calificaciones del artista: " + artista.getNombre());
+        Thread.sleep(2000);
+        if (artista.getCalificaciones() != null) {
+            customPrint("Calificaciones de calificadores: " + ((Actor)artista).getCalificacionesAptitudes());
+            Thread.sleep(2000);
+        }
+        customPrint("Calificaciones del público: " + artista.getCalificacionesPublico());
+        Thread.sleep(3500);
 
-
-        
-
-        
-        /*
-
-        
+        //Se enseñan obras en "Estado Crítico"
+        ArrayList<Obra> obrasCritics = Obra.mostrarObrasCriticas();
+        // Mostrar todas las obras críticas
+        if (obrasCritics.isEmpty()) {
+            customPrint("No hay obras en estado crítico en el teatro.", "yellow");
+        } else {
+            customPrint("Obras en estado crítico del teatro:", "red");
+            Thread.sleep(3000);
+            for (Obra obra : obrasCritics) {
+                customPrint("- '" + obra.getNombre() + "' (Promedio de calificaciones: " + obra.promedioCalificacion() + ")");
+    
+                // Revisar aspectos críticos y las calificaciones de los actores
+                for (Aptitud aspecto : obra.getPapeles()) { // Obtenemos cada aptitud crítica de la obra
+                    boolean encontrado = false;
+                    for (Actor actor : obra.getReparto()) { // Revisamos cada actor en el reparto
+                        double calificacion = actor.getCalificacionPorAptitud(aspecto);
+                        if (calificacion != -1 && calificacion < 3.0) { // Si la calificación es baja
+                            customPrint("El aspecto '" + aspecto + "' tiene una calificación baja (" + calificacion + ").", "red");
+                            Thread.sleep(1500);
+                            customPrint("Notificando al actor: " + actor.getNombre());
+                            encontrado = true;
+                            break;
+                        }
+                    }
+                    if (!encontrado) {
+                        customPrint("No hay actores con calificaciones bajas en el aspecto '" + aspecto + "'.", "yellow");
+                    }
+                }
+                Thread.sleep(1500);
+            }
+        }
 
         //SEGUNDA INTERACCION
 
@@ -3032,6 +3002,6 @@ public class Main {
             }
         } else {
             customPrint("Solo los actores pueden recibir clases.", "red");
-        }*/
-    } // Fin del método
+        }
+    }// Fin del método
 }

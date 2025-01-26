@@ -1,4 +1,6 @@
 package gestorAplicacion.gestionVentas;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -113,6 +115,32 @@ public class Tiquete {
     public void setSilla(Silla silla) {
         this.silla = silla;
     }
+    public String imprimirFactura(Cliente c,boolean b,float d,float p,float su){
+        LocalDate fechaActual = LocalDate.now();
+        String fechaFormateada = fechaActual.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        
+        String s;
+        c.getTiquete().setId(Tiquete.idTiquete());
+        s="================================\n";
+        s =s+"Tiquete # "+c.getTiquete().getId();
+        s=s+"\n================================\n";
+        s=s+String.format("%10s %20s ","Producto","Precio")+"\n";
+        s=s+"\n--------------------------------\n";
+        s=s+String.format("%10s %20s ","Funcion",String.format("$%,.2f",p)+"\n");
+        if (!b & !c.getSuscripcion().name().equals("Basica")){
+            s=s+String.format("%10s %20s ","Suscripcion",String.format("$%,.2f",su))+"\n";
+        }
+        s=s+"\n--------------------------------";
+        s=s+"\n\n Valor total"+String.format("$%,.2f",c.getTiquete().getValor());
+        s=s+"\nUsted ahorro "+String.format("$%,.2f",d);
+        s=s+"\n================================\n";
+        s=s+"GRACIAS POR SU COMPRA\n";
+        s=s+"================================\n";
+
+        return s;
+
+    }
+    
 
     
 
