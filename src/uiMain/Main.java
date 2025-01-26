@@ -671,6 +671,15 @@ public class Main {
             if (antiguo==true ){
                 precioSus = 0;
             }
+            System.out.println(antiguo);
+            boolean antiguof;
+            if (antiguo){
+                antiguof=true;
+
+            }else{
+                antiguof=false;
+            }
+        
             
 
 
@@ -752,6 +761,9 @@ public class Main {
         ,"red");
         a = in.nextByte();
         in.nextLine();
+        
+        
+        
         cliente.setSuscripcion(Suscripcion.Basica);
 
                 
@@ -769,7 +781,7 @@ public class Main {
                 customPrint("La pausa fue interrumpida.");
                 
             }
-            if (precioSus != 1)antiguo = true;
+            
         
         
         
@@ -799,7 +811,8 @@ public class Main {
                     
             
             }
-            customPrint(tiquete.imprimirFactura(cliente,antiguo,precioTotalFuncion,precioFuncion,precioSus));
+            
+            customPrint(tiquete.imprimirFactura(cliente,antiguof,precioTotalFuncion,precioFuncion,precioSus));
         }else{
             customPrint("Cancelando Compra...");
             try {

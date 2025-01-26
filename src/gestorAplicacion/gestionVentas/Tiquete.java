@@ -121,7 +121,7 @@ public class Tiquete {
         s=s+"\n================================\n";
         s=s+String.format("%10s %20s ","Producto","Precio")+"\n";
         s=s+String.format("%10s %20s ","Funcion",String.format("$%,.2f",p)+"\n");
-        if (b){
+        if (!b & !c.getSuscripcion().name().equals("Basica")){
             s=s+String.format("%10s %20s ","Suscripcion",String.format("$%,.2f",su))+"\n";
         }
         s=s+"\n\n Valor total"+String.format("$%,.2f",c.getTiquete().getValor());
