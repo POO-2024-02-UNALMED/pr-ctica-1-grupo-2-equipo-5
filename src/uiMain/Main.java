@@ -2021,12 +2021,18 @@ public class Main {
                 customPrint("No hay trabajadores de Seguridad");
             }
         }
-    
+        //Revisa si todavia quedan funciones que no se asignaron trabajador
+        //En este caso estas funciones no se pueden asignar por que existiria solapamiento
+        //Por tanto imprime cuantas funciones quedaron sin asiganr
+        if(funcionesDisponibles.size() != 0 ){
+            customPrint("Existen " + funcionesDisponibles.size() + " funcion/es sin posibilidad de seguridad");
+        }
+
         //Para Aseador
         cant_trabajadores_principiantes = 0;
         int totalSalas = Sala.getSalas().size();
         int totalTrabajadores_A = Empleado.getTipoAseador().size();
-        int salas_por_trabajador = totalSalas/totalTrabajadores_A;
+        int cant_a_limpiar = totalFunciones/totalTrabajadores_A;
         if(totalSalas != 0 && totalTrabajadores_A != 0){
 
         }
