@@ -1986,6 +1986,33 @@ public class Main {
     
         //Para Aseador
         cant_trabajadores_principiantes = 0;
+        int totalSalas = Sala.getSalas().size();
+        int totalTrabajadores_A = Empleado.getTipoAseador().size();
+        int salas_por_trabajador = totalSalas/totalTrabajadores_A;
+        int salas_aseadas = 0;
+        if(totalSalas != 0 && totalTrabajadores_A != 0){
+            for (Sala Salas : Sala.getSalas()){
+                if(Salas.getAseado()){
+                    salas_aseadas = salas_aseadas + 1;
+                }
+            }
+            if(salas_aseadas != totalSalas){
+
+            }
+            else{
+                customPrint("Todas las salas estan limpias", "green");
+            }
+        }
+        else{
+            if(totalSalas == 0){
+                customPrint("No hay salas Existentes");
+            }
+            else{
+                customPrint("No hay trabajadores de Aseador");
+            }
+        }
+
+
 
         customPrint("trabajos Asignados...");
         customPrint("Desplegando Trabajadores");
