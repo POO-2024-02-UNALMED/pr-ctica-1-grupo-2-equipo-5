@@ -383,10 +383,10 @@ public class Main {
         
 
         
-        byte a = in.nextByte();
+        byte p_ = in.nextByte();
         in.nextLine();
 
-        while (!isIn(opciones_2, a)){
+        while (!isIn(opciones_2, p_)){
 
             customPrint("La respuesta introducida no hace parte de las opciones. Intente de nuevo:\n\n"+
             "Ingrese la opcion correspondiente\n"+
@@ -394,7 +394,7 @@ public class Main {
             "1. NO\n"+
             "2. SI\n"+
             "3. MENU PRINCIPAL","red");
-            a = in.nextByte();
+            p_ = in.nextByte();
             in.nextLine();
         }
         
@@ -402,7 +402,7 @@ public class Main {
         boolean salir = false;
     
         while (!salir) {
-        switch (a) {
+        switch (p_) {
             case 1:
                 customPrint("Ingresa tu id :");
                 long code = in.nextLong();
@@ -434,23 +434,23 @@ public class Main {
                     "3. MENU PRINCIPAL","red");
                     
                     byte [] opcion = {1,2,3};
-                    byte b = in.nextByte();
+                    byte by = in.nextByte();
                     in.nextLine();
 
-                    while (!isIn(opcion, b)){
+                    while (!isIn(opcion, by)){
                         customPrint("La respuesta introducida no hace parte de las opciones. \n"+
                         "Intente de nuevo:\n"+
                         "Tienes un codigo existente? : \n"+ 
                         "1. NO\n"+
                         "2. SI\n"+
                         "3. MENU PRINCIPAL","red");
-                        b = in.nextByte();
+                        by = in.nextByte();
                         in.nextLine();
                     }
-                    if (b == 1) {
+                    if (by == 1) {
                         break;
                         
-                    }else if(b==3){
+                    }else if(by==3){
                         return;
                     }
 
@@ -501,16 +501,16 @@ public class Main {
         
 
         
-        a = in.nextByte();
+        Byte p1_ = in.nextByte();
         in.nextLine();
-            while (a != 1 & a != 2 & a !=3) {
+            while (p1_ != 1 & p1_ != 2 & p1_ !=3) {
                 customPrint("La respuesta introducida no hace parte de las opciones.\n"+
         "Ingrese la opcion correspondiente\n"+
         "Desea mejorar su suscripcion? \n"+ 
         "1. SI\n"+
         "2. NO\n"+
         "3. MENU PRINCIPAL","red");
-        a = in.nextByte();
+        p1_ = in.nextByte();
         in.nextLine();
 
                 
@@ -518,7 +518,7 @@ public class Main {
             
             
         
-        if(a == 1){
+        if(p1_ == 1){
             customPrint(suscription.tipos());
                 
                 customPrint(
@@ -555,7 +555,7 @@ public class Main {
             customPrint("Suscripcion "+cliente.getSuscripcion()+" aplicada","green");
 
         }
-        else if (a==3){
+        else if (p1_==3){
             return;
         }
         customPrint("Estas son las funciones disponibles\n\n"+String.format("%30s %22s %22s %15s", "Nombre Obra", "Genero", "Duracion","Precio")+"\n\n"+Funcion.generarTabla());
@@ -598,7 +598,7 @@ public class Main {
             if (antiguo==true){
                 precioSus = 0;
             }
-
+            
 
 
             descuento = 1-descuento;
@@ -615,45 +615,49 @@ public class Main {
             }
             if (confirmacion != ""){
                 customPrint(confirmacion);
-                cliente.tiquete.setSilla(silla);
+                
             }else{
+
             customPrint(asiento.tipos());
-            customPrint("Que Asiento desea comprar? \n");
+            customPrint("Que Asiento desea comprar? \n+"+
+            "Ingrese solo el codigo \n"+
+            "La letra representa el tipo del asiento");
+            
 
             customPrint(Funcion.buscarFuncion(inputF).tablaSillas());
             Integer codigo = in.nextInt();
-            Funcion.buscarFuncion(inputF).eliminarSilla(codigo);
-            String input=in.nextLine().toLowerCase();
-            customPrint(Funcion.buscarFuncion(inputF).tablaSillas());
-            
-        
-            while (asiento.imprimirTipos(input)){
-                customPrint(
-                "Ingrese un asiendo valido :","red");
-                input = in.nextLine().toLowerCase();
+            while (Funcion.buscarFuncion(inputF).verificar(codigo) | cliente.verificarSuscripcion(Funcion.buscarFuncion(inputF).asignarTipoSilla(codigo))) {
                 
+            
+                while(cliente.verificarSuscripcion(Funcion.buscarFuncion(inputF).asignarTipoSilla(codigo))){
+                    customPrint(
+                    "Tu suscripcion "+cliente.getSuscripcion().name()+"\n"+
+                    "No te permite acceder a este tipo de asientos\n"+
+                "Intente con uno nuevo","red");
+                codigo = in.nextInt();
+    
+    
+                }
+            while(Funcion.buscarFuncion(inputF).verificar(codigo)){
+                customPrint(
+                "Ingrese un asiendo valido :\n"+
+                "Ingrese solo el codigo \n"+
+            "La letra representa el tipo del asiento","red");
+            codigo = in.nextInt();
 
             }
-            switch (input) {
-                case "basico":
-                    cliente.tiquete.setSilla(silla);
-                    break;
-                case "comfort":
-                    cliente.tiquete.setSilla(silla);
-                    precioSus = precioSus+(2900*descuento);
-                    break;
-                case "premium":
-                    cliente.tiquete.setSilla(silla);
-                    precioSus = precioSus+(5900*descuento);
-                    break;
-                case "gold":
-                    cliente.tiquete.setSilla(silla);
-                    precioSus = precioSus+(9900*descuento);
-                    break;
-    
-                    
+        }
+        
+        
+        customPrint(""+cliente.verificarSuscripcion(Funcion.buscarFuncion(inputF).asignarTipoSilla(codigo)));
+
+            Funcion.buscarFuncion(inputF).eliminarSilla(codigo);
+            customPrint(Funcion.buscarFuncion(inputF).tablaSillas());
             
-            }
+            
+            
+        
+
         }
 
         
@@ -666,7 +670,7 @@ public class Main {
         
 
         
-        a = in.nextByte();
+        byte a = in.nextByte();
         in.nextLine();
             while (a != 1 & a != 2 ) {
                 customPrint("La respuesta introducida no hace parte de las opciones.\n"+

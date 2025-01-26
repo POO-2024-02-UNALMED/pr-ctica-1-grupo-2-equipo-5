@@ -13,6 +13,7 @@ public class Funcion {
     private Obra obra;
     private int tiquetesVendidos;
     private ArrayList<LocalDateTime> horario = new ArrayList<>();
+    private ArrayList <Silla> sillas = new ArrayList<>();
     private Sala sala;
     private boolean calificador;
     private int audienciaEsperada;
@@ -30,17 +31,17 @@ public class Funcion {
         for (int i = 0; i < s.size(); i++) {
                         
             if (s.get(i).getCodigo()==88){
-                Nuevo=Nuevo+"      ";
+                Nuevo=Nuevo+"        ";
             }else {
                 char primerCaracter = s.get(i).getTipo().name().charAt(0);
-                Nuevo=Nuevo+primerCaracter+String.format("%04d", s.get(i).getCodigo())+" "; 
+                Nuevo=Nuevo+primerCaracter+"-"+String.format("%04d", s.get(i).getCodigo())+"  "; 
             }
   
             if ((i + 1) % 8 == 0) { 
                 Nuevo = Nuevo+"\n";
             }
         }
-        return Nuevo;
+        return Nuevo+"\n\n-ESCENARIO-";
     }
     public void eliminarSilla(Integer i){
         Silla sillaVacia = new Silla(88);
@@ -57,6 +58,7 @@ public class Funcion {
     }
     
     public Funcion(Obra obra,Sala sala){
+        this.sillas=sala.getSillas();
         this.sala = sala;
         this.obra=obra;
         funcionesCreadas.add((this));
@@ -284,6 +286,28 @@ public static boolean nombres(String nombre){
 
 
 }
+public  boolean verificar(long elemento){
+    for (int i=0; i < sillas.size();i++){
+        if (sillas.get(i).getCodigo()==elemento) {
+            return false;
+            
+        }
+        
+    }
+    return true;
+}
+public String asignarTipoSilla(long elemento){
+    for (int i=0; i < sillas.size();i++){
+        if (sillas.get(i).getCodigo()==elemento) {
+           return ""+sillas.get(i).getTipo().name().charAt(0);
+            
+        }
+        
+    }
+    return "";
+
+}
+
 }
 
 
