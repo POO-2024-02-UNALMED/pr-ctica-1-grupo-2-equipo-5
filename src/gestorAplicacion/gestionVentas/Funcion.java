@@ -296,6 +296,16 @@ public  boolean verificar(long elemento){
     }
     return true;
 }
+public Silla asignarSilla(float elemento){
+    for (int i=0; i < sillas.size();i++){
+        if (sillas.get(i).getCodigo()==elemento) {
+           return sillas.get(i);
+        }
+        
+    }
+    return sillas.get(0);
+
+}
 public String asignarTipoSilla(long elemento){
     for (int i=0; i < sillas.size();i++){
         if (sillas.get(i).getCodigo()==elemento) {

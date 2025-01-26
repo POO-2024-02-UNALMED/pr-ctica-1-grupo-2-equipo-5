@@ -259,6 +259,14 @@ public class Cliente {
 
     }
 
+    public Tiquete getTiquete() {
+        return tiquete;
+    }
+
+    public void setTiquete(Tiquete tiquete) {
+        this.tiquete = tiquete;
+    }
+
 
 
     
