@@ -647,6 +647,9 @@ public class Main {
 
             }
         }
+        tiquete.setSilla(Funcion.buscarFuncion(inputF).asignarSilla(codigo));
+        customPrint(""+(Funcion.buscarFuncion(inputF).asignarSilla(codigo)));
+        customPrint(""+tiquete.getSilla().getCodigo());
         
         
         customPrint(""+cliente.verificarSuscripcion(Funcion.buscarFuncion(inputF).asignarTipoSilla(codigo)));
