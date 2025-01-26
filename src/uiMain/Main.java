@@ -304,7 +304,7 @@ public class Main {
         System.out.println(chosenColor + "╰" + "─".repeat(LARGO_LINEAS ) + "╯" + reset);
     }
 
-    public static LocalDateTime[] setSchedule(String pregunta, byte[] opciones, LocalTime horaMin, LocalTime horaMax, int duracionMinHoras, int duracionMaxHoras, boolean date){
+    public static LocalDateTime[] setSchedule(String pregunta, LocalTime horaMin, LocalTime horaMax, int duracionMinHoras, int duracionMaxHoras, boolean date){
 
         String preguntaCompleta = pregunta;
         LocalTime inicioHorario = null;
@@ -312,6 +312,7 @@ public class Main {
         LocalDateTime fechaInicio = null;
         LocalDateTime fechaFin = null;
         LocalDate diaEscogido = null;
+        byte[] seven = {1, 2, 3, 4, 5, 6, 7};
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, dd 'de' MMMM 'de' yyyy", new Locale("es"));
 
         if(date){
@@ -323,7 +324,7 @@ public class Main {
 
             }
 
-            byte dia = ask(preguntaCompleta, opciones, "");
+            byte dia = ask(preguntaCompleta, seven, "");
             diaEscogido = getWeek().get( dia-1 );
 
         } else{
@@ -1170,11 +1171,10 @@ public class Main {
 
         //PREGUNTA NO. 3, 4, 5 (HORARIOS)
         String diasCadena = "¿Para qué día se necesita la contratación?\n";
-        byte[] seven = {1, 2, 3, 4, 5, 6, 7};
         LocalTime horaMin = LocalTime.of(8, 0);
         LocalTime horaMax = LocalTime.of(22, 0); 
         
-        LocalDateTime[] horario = setSchedule(diasCadena, seven, horaMin, horaMax, 4, 8, true);
+        LocalDateTime[] horario = setSchedule(diasCadena, horaMin, horaMax, 4, 8, true);
 
         LocalDateTime fechaInicio = horario[0];
         LocalDateTime fechaFin = horario[1]; 
