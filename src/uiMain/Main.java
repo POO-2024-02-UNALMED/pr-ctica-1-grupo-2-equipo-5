@@ -1697,12 +1697,6 @@ public class Main {
         ArrayList<Empleado> Aseador_order = Empleado.getTipoAseador();
         ArrayList<Empleado> Seguridad_order = Empleado.getTipoSeguridad();
         ArrayList<Empleado> Profesor_order = Empleado.getTipoProfesor();
-        ArrayList<Sala> SalasPorTamano = Sala.getSalas();
-        Collections.sort(SalasPorTamano, new Comparator<Sala>(){
-            public int compare(Sala S1, Sala S2){
-                return Integer.compare(S2.getMetrosCuadrados(), S1.getMetrosCuadrados());
-            }
-        });
         Collections.sort(Aseador_order, new Comparator<Empleado>() {
             public int compare(Empleado E1, Empleado E2){
                 return Integer.compare(E2.getMetaSemanal(), E1.getMetaSemanal());
@@ -1982,14 +1976,22 @@ public class Main {
             }
         }
         else{
-            customPrint("No hay funciones para agregar");
+            if(totalFunciones == 0){
+                customPrint("No hay funciones para agregar");
+            }
+            else{
+                customPrint("No hay trabajadores de Seguridad");
+            }
         }
     
         //Para Aseador
+        cant_trabajadores_principiantes = 0;
+
         customPrint("trabajos Asignados...");
         customPrint("Desplegando Trabajadores");
             
         //Verificacion del trabajo de Seguridad
+        //Seguridad
         cant_trabajadores_principiantes = 0;
         for(Empleado Persona : Empleado.getTipoSeguridad()){
             if(Persona.getMetaSemanal() == base){
