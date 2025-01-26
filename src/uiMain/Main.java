@@ -1865,6 +1865,7 @@ public class Main {
                         return Double.compare(duracionF2, duracionF1);
                     }
                 });
+                //Evaluacion Normal, asignacion de trabajo equitativo
                 for(Empleado Persona : Empleado.getTipoSeguridad()){
                     int asignadas = 0;
                     ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
@@ -1905,8 +1906,64 @@ public class Main {
                     }
                     Persona.setHorario(localTime);
                     Persona.setDisponible(false);
-                    customPrint(Persona.getNombre() + " Cuidará: \n" + Persona.getHorario().size() +  "funcion/es" );
                 }
+                //EVALUACION DE SALAS SIN TRABAJADOR
+                if(funcionesDisponibles.size() != 0 ){
+                    System.out.println("funciones que quedaron libres");
+                    for(Empleado Persona : Empleado.getTipoSeguridad()){
+                        //Segunda iteracion
+                        ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
+                        for(int i = 0; i < funcionesDisponibles.size(); i++){
+                            Funcion Funciones = funcionesDisponibles.get(i);
+                            boolean horarioValido = true;
+                            LocalDateTime inicioNuevo = Funciones.getHorario().get(0);
+                            LocalDateTime finNuevo = Funciones.getHorario().get(1);
+                            //Verificar que no se solapa con otro horario
+                            //Se itera sobre las sublistas de localTime y verificar con la siguiente
+                            for(int j = 0; j < localTime.size(); j++){
+                                ArrayList<LocalDateTime> horarioActual = localTime.get(j);
+                                LocalDateTime finActual = horarioActual.get(1); //Fin del horario actual
+
+                                //Verificar si hay un sublista despues
+                                if(j + 1 < localTime.size()){
+                                    ArrayList<LocalDateTime> horarioSiguiente = localTime.get(j+1);
+                                    LocalDateTime inicioSiguiente = horarioSiguiente.get(0);
+
+                                    //Verificar si el horario nuevo no se solapa
+                                    if(!(inicioNuevo.isAfter(finActual) && finNuevo.isBefore(inicioSiguiente))){
+                                        horarioValido = false;
+                                        break;
+                                    }
+                                }
+                                else{
+                                    if(!(inicioNuevo.isAfter(finActual))){
+                                        horarioValido = false;
+                                        break;
+                                    }
+                                }
+                            }
+                            if(horarioValido){
+                                localTime.add(Funciones.getHorario());
+                                //CALCULAR DURACION DE LA FUNCION
+                                LocalDateTime inicio = Funciones.getHorario().get(0);
+                                LocalDateTime fin = Funciones.getHorario().get(1);
+        
+                                double duracionFuncion = Duration.between(inicio, fin).toMinutes()/60.0; // Para obtener las horas
+                                Persona.getTrabajos().add(duracionFuncion);
+                                Funciones.setTrabajador(true); // Se le asigna el trabajador
+                                funcionesDisponibles.remove(i);
+                                i--;
+                                break;
+                            }
+                        }
+                        Persona.setHorario(localTime);
+                    }
+                }
+                String msgBase = "";
+                for(Empleado Persona : Empleado.getTipoSeguridad()){
+                    msgBase = String.format("%-10s %10s", Persona.getNombre() + " cuidará: ", Persona.getHorario().size() + " funcion/es\n");
+                }
+                customPrint(msgBase);
             }
         }
         else{
