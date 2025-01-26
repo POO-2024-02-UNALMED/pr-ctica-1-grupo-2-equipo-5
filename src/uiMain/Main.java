@@ -1847,6 +1847,11 @@ public class Main {
                                 break;
                             }
                         }
+                        Collections.sort(localTime, new Comparator<ArrayList<LocalDateTime>>(){
+                            public int compare(ArrayList<LocalDateTime> horario1, ArrayList<LocalDateTime> horario2){
+                                return horario1.get(0).compareTo(horario2.get(0));
+                            }
+                        });
                         Persona.setHorario(localTime);
                     }
                 }
@@ -1904,6 +1909,11 @@ public class Main {
                             }
                         }
                     }
+                    Collections.sort(localTime, new Comparator<ArrayList<LocalDateTime>>(){
+                        public int compare(ArrayList<LocalDateTime> horario1, ArrayList<LocalDateTime> horario2){
+                            return horario1.get(0).compareTo(horario2.get(0));
+                        }
+                    });
                     Persona.setHorario(localTime);
                     Persona.setDisponible(false);
                 }
@@ -1956,6 +1966,11 @@ public class Main {
                                 break;
                             }
                         }
+                        Collections.sort(localTime, new Comparator<ArrayList<LocalDateTime>>(){
+                            public int compare(ArrayList<LocalDateTime> horario1, ArrayList<LocalDateTime> horario2){
+                                return horario1.get(0).compareTo(horario2.get(0));
+                            }
+                        });
                         Persona.setHorario(localTime);
                     }
                 }
@@ -1970,6 +1985,7 @@ public class Main {
             customPrint("No hay funciones para agregar");
         }
     
+        //Para Aseador
         customPrint("trabajos Asignados...");
         customPrint("Desplegando Trabajadores");
             
