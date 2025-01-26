@@ -2027,19 +2027,8 @@ public class Main {
         int totalSalas = Sala.getSalas().size();
         int totalTrabajadores_A = Empleado.getTipoAseador().size();
         int salas_por_trabajador = totalSalas/totalTrabajadores_A;
-        int salas_aseadas = 0;
         if(totalSalas != 0 && totalTrabajadores_A != 0){
-            for (Sala Salas : Sala.getSalas()){
-                if(Salas.getAseado()){
-                    salas_aseadas = salas_aseadas + 1;
-                }
-            }
-            if(salas_aseadas != totalSalas){
 
-            }
-            else{
-                customPrint("Todas las salas estan limpias", "green");
-            }
         }
         else{
             if(totalSalas == 0){
@@ -2055,7 +2044,7 @@ public class Main {
         customPrint("trabajos Asignados...");
         customPrint("Desplegando Trabajadores");
             
-        //Verificacion del trabajo de Seguridad
+        //Verificacion del trabajo
         //Seguridad
         cant_trabajadores_principiantes = 0;
         for(Empleado Persona : Empleado.getTipoSeguridad()){
@@ -2115,7 +2104,28 @@ public class Main {
             }
         }
 
-        
+        //Aseador
+        cant_trabajadores_principiantes = 0;
+        for(Empleado Persona : Empleado.getTipoAseador()){
+            if(Persona.getMetaSemanal() == base){
+                cant_trabajadores_principiantes += 1;
+            }
+        }
+        if(cant_trabajadores_principiantes == Empleado.getTipoAseador().size()){
+            for(Empleado Persona : Empleado.getTipoAseador()){
+                for(double Metros : Persona.getTrabajos()){
+                    Random random = new Random();
+                    double randomValue = random.nextDouble();
+                    if(randomValue > 0.5){
+                        Persona.getTrabajoCorrecto().add(true);
+                        Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Metros);
+                        Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
+                    }
+                    else{Persona.getTrabajoCorrecto().add(false);}
+                }
+            }
+        }else{
+        }
         
         
 
