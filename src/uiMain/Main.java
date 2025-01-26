@@ -1700,12 +1700,6 @@ public class Main {
         ArrayList<Empleado> Aseador_order = Empleado.getTipoAseador();
         ArrayList<Empleado> Seguridad_order = Empleado.getTipoSeguridad();
         ArrayList<Empleado> Profesor_order = Empleado.getTipoProfesor();
-        ArrayList<Sala> SalasPorTamano = Sala.getSalas();
-        Collections.sort(SalasPorTamano, new Comparator<Sala>(){
-            public int compare(Sala S1, Sala S2){
-                return Integer.compare(S2.getMetrosCuadrados(), S1.getMetrosCuadrados());
-            }
-        });
         Collections.sort(Aseador_order, new Comparator<Empleado>() {
             public int compare(Empleado E1, Empleado E2){
                 return Integer.compare(E2.getMetaSemanal(), E1.getMetaSemanal());
@@ -1746,6 +1740,7 @@ public class Main {
             }
             //Asignacion de tareas si todos los trabajadores son principiantes
             if(cant_trabajadores_principiantes == Empleado.getTipoSeguridad().size()){
+                //CASO NORMAL, SE ASIGNAN EN IGUAL CANTIDAD A CADA EMPLEADO
                 for(Empleado Persona : Empleado.getTipoSeguridad()){
                     int asignadas = 0;
                     ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
@@ -1755,7 +1750,6 @@ public class Main {
                             //Asignacion del horario y del Trabajo
                             //Verifica que la funcion tenga un horario
                             if(!Funciones.getHorario().isEmpty()){
-                                System.out.println("Entra");
                                 if(localTime.size() != 0){
                                     if(Funciones.getHorario().get(0).isAfter(localTime.get(localTime.size()-1).get(1))){
                                         localTime.add(Funciones.getHorario());
@@ -1766,7 +1760,7 @@ public class Main {
         
                                         double duracionFuncion = Duration.between(inicio, fin).toMinutes()/60.0; // Para obtener las horas
                                         Persona.getTrabajos().add(duracionFuncion);
-
+                                        Funciones.setTrabajador(true); // Se le asigna el trabajador
                                         funcionesDisponibles.remove(i);
                                         i--;
                                     }
@@ -1781,21 +1775,88 @@ public class Main {
         
                                     double duracionFuncion = Duration.between(inicio, fin).toMinutes()/60.0; // Para obtener las horas
                                     Persona.getTrabajos().add(duracionFuncion);
+                                    Funciones.setTrabajador(true); //Se le asigna el trabajador
                                     i--;
                                 }
                             }
                             else{
-                                System.out.println("Falla");
                                 funcionesDisponibles.remove(i);
                                 i--;
                                 customPrint("No hay horarios para aplicar", "red");
                             }
                         }
                     }
+                    //Se organiza la lista para que no haya errores en caso de asignar las funciones restantes para que no haya solapamiento
+                    Collections.sort(localTime, new Comparator<ArrayList<LocalDateTime>>(){
+                        public int compare(ArrayList<LocalDateTime> horario1, ArrayList<LocalDateTime> horario2){
+                            return horario1.get(0).compareTo(horario2.get(0));
+                        }
+                    });
                     Persona.setHorario(localTime);
                     Persona.setDisponible(false);
-                    customPrint(Persona.getNombre() + " Cuidará: \n" + Persona.getHorario().size() +  " funcion/es" );
                 }
+                //EVALUACION DE SALAS SIN TRABAJADOR
+                if(funcionesDisponibles.size() != 0 ){
+                    System.out.println("funciones que quedaron libres");
+                    for(Empleado Persona : Empleado.getTipoSeguridad()){
+                        //Segunda iteracion
+                        ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
+                        for(int i = 0; i < funcionesDisponibles.size(); i++){
+                            Funcion Funciones = funcionesDisponibles.get(i);
+                            boolean horarioValido = true;
+                            LocalDateTime inicioNuevo = Funciones.getHorario().get(0);
+                            LocalDateTime finNuevo = Funciones.getHorario().get(1);
+                            //Verificar que no se solapa con otro horario
+                            //Se itera sobre las sublistas de localTime y verificar con la siguiente
+                            for(int j = 0; j < localTime.size(); j++){
+                                ArrayList<LocalDateTime> horarioActual = localTime.get(j);
+                                LocalDateTime finActual = horarioActual.get(1); //Fin del horario actual
+
+                                //Verificar si hay un sublista despues
+                                if(j + 1 < localTime.size()){
+                                    ArrayList<LocalDateTime> horarioSiguiente = localTime.get(j+1);
+                                    LocalDateTime inicioSiguiente = horarioSiguiente.get(0);
+
+                                    //Verificar si el horario nuevo no se solapa
+                                    if(!(inicioNuevo.isAfter(finActual) && finNuevo.isBefore(inicioSiguiente))){
+                                        horarioValido = false;
+                                        break;
+                                    }
+                                }
+                                else{
+                                    if(!(inicioNuevo.isAfter(finActual))){
+                                        horarioValido = false;
+                                        break;
+                                    }
+                                }
+                            }
+                            if(horarioValido){
+                                localTime.add(Funciones.getHorario());
+                                //CALCULAR DURACION DE LA FUNCION
+                                LocalDateTime inicio = Funciones.getHorario().get(0);
+                                LocalDateTime fin = Funciones.getHorario().get(1);
+        
+                                double duracionFuncion = Duration.between(inicio, fin).toMinutes()/60.0; // Para obtener las horas
+                                Persona.getTrabajos().add(duracionFuncion);
+                                Funciones.setTrabajador(true); // Se le asigna el trabajador
+                                funcionesDisponibles.remove(i);
+                                i--;
+                                break;
+                            }
+                        }
+                        Collections.sort(localTime, new Comparator<ArrayList<LocalDateTime>>(){
+                            public int compare(ArrayList<LocalDateTime> horario1, ArrayList<LocalDateTime> horario2){
+                                return horario1.get(0).compareTo(horario2.get(0));
+                            }
+                        });
+                        Persona.setHorario(localTime);
+                    }
+                }
+                String msgBase = "";
+                for(Empleado Persona : Empleado.getTipoSeguridad()){
+                    msgBase = String.format("%-10s %10s", Persona.getNombre() + " cuidará: ", Persona.getHorario().size() + " funcion/es\n");
+                }
+                customPrint(msgBase);
             }
             else{
                 ArrayList<Funcion> FuncionPorDuracion = Funcion.getFuncionesCreadas();
@@ -1806,6 +1867,7 @@ public class Main {
                         return Double.compare(duracionF2, duracionF1);
                     }
                 });
+                //Evaluacion Normal, asignacion de trabajo equitativo
                 for(Empleado Persona : Empleado.getTipoSeguridad()){
                     int asignadas = 0;
                     ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
@@ -1844,20 +1906,95 @@ public class Main {
                             }
                         }
                     }
+                    Collections.sort(localTime, new Comparator<ArrayList<LocalDateTime>>(){
+                        public int compare(ArrayList<LocalDateTime> horario1, ArrayList<LocalDateTime> horario2){
+                            return horario1.get(0).compareTo(horario2.get(0));
+                        }
+                    });
                     Persona.setHorario(localTime);
                     Persona.setDisponible(false);
-                    customPrint(Persona.getNombre() + " Cuidará: \n" + Persona.getHorario().size() +  "funcion/es" );
                 }
+                //EVALUACION DE SALAS SIN TRABAJADOR
+                if(funcionesDisponibles.size() != 0 ){
+                    System.out.println("funciones que quedaron libres");
+                    for(Empleado Persona : Empleado.getTipoSeguridad()){
+                        //Segunda iteracion
+                        ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
+                        for(int i = 0; i < funcionesDisponibles.size(); i++){
+                            Funcion Funciones = funcionesDisponibles.get(i);
+                            boolean horarioValido = true;
+                            LocalDateTime inicioNuevo = Funciones.getHorario().get(0);
+                            LocalDateTime finNuevo = Funciones.getHorario().get(1);
+                            //Verificar que no se solapa con otro horario
+                            //Se itera sobre las sublistas de localTime y verificar con la siguiente
+                            for(int j = 0; j < localTime.size(); j++){
+                                ArrayList<LocalDateTime> horarioActual = localTime.get(j);
+                                LocalDateTime finActual = horarioActual.get(1); //Fin del horario actual
+
+                                //Verificar si hay un sublista despues
+                                if(j + 1 < localTime.size()){
+                                    ArrayList<LocalDateTime> horarioSiguiente = localTime.get(j+1);
+                                    LocalDateTime inicioSiguiente = horarioSiguiente.get(0);
+
+                                    //Verificar si el horario nuevo no se solapa
+                                    if(!(inicioNuevo.isAfter(finActual) && finNuevo.isBefore(inicioSiguiente))){
+                                        horarioValido = false;
+                                        break;
+                                    }
+                                }
+                                else{
+                                    if(!(inicioNuevo.isAfter(finActual))){
+                                        horarioValido = false;
+                                        break;
+                                    }
+                                }
+                            }
+                            if(horarioValido){
+                                localTime.add(Funciones.getHorario());
+                                //CALCULAR DURACION DE LA FUNCION
+                                LocalDateTime inicio = Funciones.getHorario().get(0);
+                                LocalDateTime fin = Funciones.getHorario().get(1);
+        
+                                double duracionFuncion = Duration.between(inicio, fin).toMinutes()/60.0; // Para obtener las horas
+                                Persona.getTrabajos().add(duracionFuncion);
+                                Funciones.setTrabajador(true); // Se le asigna el trabajador
+                                funcionesDisponibles.remove(i);
+                                i--;
+                                break;
+                            }
+                        }
+                        Collections.sort(localTime, new Comparator<ArrayList<LocalDateTime>>(){
+                            public int compare(ArrayList<LocalDateTime> horario1, ArrayList<LocalDateTime> horario2){
+                                return horario1.get(0).compareTo(horario2.get(0));
+                            }
+                        });
+                        Persona.setHorario(localTime);
+                    }
+                }
+                String msgBase = "";
+                for(Empleado Persona : Empleado.getTipoSeguridad()){
+                    msgBase = String.format("%-10s %10s", Persona.getNombre() + " cuidará: ", Persona.getHorario().size() + " funcion/es\n");
+                }
+                customPrint(msgBase);
             }
         }
         else{
-            customPrint("No hay funciones para agregar");
+            if(totalFunciones == 0){
+                customPrint("No hay funciones para agregar");
+            }
+            else{
+                customPrint("No hay trabajadores de Seguridad");
+            }
         }
     
+        //Para Aseador
+        cant_trabajadores_principiantes = 0;
+
         customPrint("trabajos Asignados...");
         customPrint("Desplegando Trabajadores");
             
         //Verificacion del trabajo de Seguridad
+        //Seguridad
         cant_trabajadores_principiantes = 0;
         for(Empleado Persona : Empleado.getTipoSeguridad()){
             if(Persona.getMetaSemanal() == base){
