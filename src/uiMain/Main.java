@@ -303,6 +303,74 @@ public class Main {
 
         System.out.println(chosenColor + "╰" + "─".repeat(LARGO_LINEAS ) + "╯" + reset);
     }
+
+    public static LocalDateTime[] setSchedule(String pregunta, byte[] opciones, LocalTime horaMin, LocalTime horaMax, int duracionMinHoras, int duracionMaxHoras, boolean date){
+
+        String preguntaCompleta = pregunta;
+        LocalTime inicioHorario = null;
+        LocalTime finHorario = null;
+        LocalDateTime fechaInicio = null;
+        LocalDateTime fechaFin = null;
+        LocalDate diaEscogido = null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, dd 'de' MMMM 'de' yyyy", new Locale("es"));
+
+        if(date){
+            
+            preguntaCompleta += "\n";
+
+            for (int i = 0; i < getWeek().size(); i++){
+                preguntaCompleta += (i+1) + ". " + getWeek().get(i).format(formatter) + "\n";
+
+            }
+
+            byte dia = ask(preguntaCompleta, opciones, "");
+            diaEscogido = getWeek().get( dia-1 );
+
+        } else{
+
+            customPrint(preguntaCompleta);
+        }
+
+        while(true){
+            inicioHorario = timeAsk("Introduzca horario de inicio de la contratación (Responda en formato HH:MM).");
+            finHorario = timeAsk("Introduzca horario de fin de la contratación (Responda en formato HH:MM).");
+
+
+            if ( inicioHorario.isBefore(horaMin) || finHorario.isAfter(horaMax) || finHorario.isBefore(inicioHorario) ){
+                customPrint("Existe una incompatibilidad del horario con el lineamiento.\n\nRevise si:\n1. El inicio del horario ocurre antes del fin del horario.\n2. Se exceden los límites de horario (muy temprano o muy tarde).\nIntente de nuevo.", true, "red");
+                continue;
+            }
+
+            if (date){
+            fechaInicio = diaEscogido.atTime(inicioHorario);
+            fechaFin = diaEscogido.atTime(finHorario);
+            
+            } else{
+
+                fechaInicio = getWeek().get(0).atTime(inicioHorario);
+                fechaFin = getWeek().get(0).atTime(finHorario);
+            }
+
+            Duration duration = Duration.between(fechaInicio, fechaFin);
+
+            long duracionHorario = duration.toHours();
+
+            if (duracionHorario < duracionMinHoras){
+                customPrint("El tiempo mínimo de contratación es de 4 horas.", true, "red"); 
+                continue;
+            }
+
+            if (duracionHorario > duracionMaxHoras){
+                customPrint("El tiempo máximo de contratación es de 8 horas.", true, "red");
+                continue;
+            }
+
+            break;
+        }
+
+        return new LocalDateTime[]{fechaInicio, fechaFin};
+
+    }
     //---------------------------------------------------------//
 
     public static ArrayList<LocalDate> getWeek(){
@@ -1102,48 +1170,14 @@ public class Main {
 
         //PREGUNTA NO. 3, 4, 5 (HORARIOS)
         String diasCadena = "¿Para qué día se necesita la contratación?\n";
-        
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, dd 'de' MMMM 'de' yyyy", new Locale("es"));
-
-        for (int i = 0; i < getWeek().size(); i++){
-            diasCadena += (i+1) + ". " + getWeek().get(i).format(formatter) + "\n";
-        }
-
         byte[] seven = {1, 2, 3, 4, 5, 6, 7};
-
-        byte dia = ask(diasCadena, seven, "");
-
-        LocalDate diaEscogido = getWeek().get( dia-1 );
-
-        customPrint("Lineamiento interno de horarios:\n1. El tiempo mínimo de contratación es de 4 horas.\n2. El tiempo máximo de contratación es de 8 horas.\n3. Solo se puede contratar desde las 10:00 hasta las 22:00.", true, "blue");
-
-        LocalTime inicioHorario = timeAsk("Introduzca horario de inicio de la contratación (Responda en formato HH:MM).");
-        LocalTime finHorario = timeAsk("Introduzca horario de fin de la contratación (Responda en formato HH:MM).");
-
         LocalTime horaMin = LocalTime.of(8, 0);
         LocalTime horaMax = LocalTime.of(22, 0); 
-
-        if (inicioHorario.isBefore(horaMin) || finHorario.isAfter(horaMax)){
-            customPrint("El horario de contratación ocurre fuera de los límites del lineamiento.", true, "red"); return;
-        }
-
-        LocalDateTime fechaInicio = diaEscogido.atTime(inicioHorario);
-        LocalDateTime fechaFin = diaEscogido.atTime(finHorario);
-
-        if (fechaFin.isBefore(fechaInicio)){
-            customPrint("La hora de fin del horario ocurre antes que la del inicio.", true, "red"); return;
-        }
-
-        Duration duration = Duration.between(fechaInicio, fechaFin);
-        long duracionContrato = duration.toHours();
         
-        if (duracionContrato < 4){
-            customPrint("El tiempo mínimo de contratación es de 4 horas.", true, "red"); return;
-        }
+        LocalDateTime[] horario = setSchedule(diasCadena, seven, horaMin, horaMax, 4, 8, true);
 
-        if (duracionContrato > 8){
-            customPrint("El tiempo máximo de contratación es de 8 horas.", true, "red"); return;
-        }
+        LocalDateTime fechaInicio = horario[0];
+        LocalDateTime fechaFin = horario[1]; 
 
         actorsForRental.removeIf(actor -> !actor.isDisponible(fechaInicio, fechaFin));
 
@@ -1265,6 +1299,7 @@ public class Main {
 
             }
 
+        long duracionContrato = Duration.between(fechaInicio, fechaFin).toHours();
         double minActorPrecio = actorsForRental.get(0).getPrecioContrato(duracionContrato);
         double maxActorPrecio = actorsForRental.get(0).getPrecioContrato(duracionContrato);
 
