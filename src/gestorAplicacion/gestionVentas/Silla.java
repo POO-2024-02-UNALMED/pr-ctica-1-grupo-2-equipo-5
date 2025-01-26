@@ -43,6 +43,7 @@ public class Silla {
         this.tipo = tipo;
         this.codigo = codigo;
     }
+    
 
     
     

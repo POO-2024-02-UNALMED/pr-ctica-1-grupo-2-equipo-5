@@ -10,11 +10,8 @@ import uiMain.Main;
 import gestorAplicacion.herramientas.*;
 import gestorAplicacion.gestionObras.*;
 import gestorAplicacion.gestionFinanciera.CuentaBancaria;
-import gestorAplicacion.gestionObras.Actor;
 import gestorAplicacion.gestionVentas.Funcion;
 import gestorAplicacion.gestionVentas.Tiquete;
-import gestorAplicacion.herramientas.Genero;
-
 import gestorAplicacion.gestionFinanciera.Tesoreria;
 
 public class Cliente {
@@ -127,6 +124,37 @@ public class Cliente {
             
         }
         return false;
+    }
+    public boolean verificarSuscripcion(String s){
+    
+        int a =0;
+        int b =0;
+        switch (s) {
+            case "G":
+            b=3;
+                break;
+        
+            case "P":
+            b=2;
+                break;
+            case "C":
+            b=1;
+                break;
+            case "B":
+            b=0;
+                break;
+        }
+        if (this.getSuscripcion().name().equals("Basica")) {
+            a=0;
+                
+            } else if (this.getSuscripcion().name().equals("Premium")) {
+                a=1;
+            } else if (this.getSuscripcion().name().equals("Vip")) {
+                a=2;
+            } else if (this.getSuscripcion().name().equals("Elite")){
+                a=3;       
+            }
+            return !(a >=b);
     }
     
     public static Cliente asignar(long id){
