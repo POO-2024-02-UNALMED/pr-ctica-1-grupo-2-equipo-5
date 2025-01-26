@@ -75,7 +75,7 @@ public class Funcion {
         return trabajador;
     }
     public void setTrabajador(boolean trabajador){
-        trabajador = trabajador
+        trabajador = trabajador;
     }
     //FUNCIONES
     public static ArrayList<Funcion> getFuncionesCreadas(){
