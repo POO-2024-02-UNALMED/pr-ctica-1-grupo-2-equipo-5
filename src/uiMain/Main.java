@@ -304,7 +304,7 @@ public class Main {
         System.out.println(chosenColor + "└" + "─".repeat(LARGO_LINEAS ) + "┘" + reset);
     }
 
-    public static LocalDateTime[] setSchedule(String pregunta, LocalTime horaMin, LocalTime horaMax, int duracionMinHoras, int duracionMaxHoras, boolean date){
+    public static LocalDateTime[] setSchedule(String pregunta, LocalTime horaMin, LocalTime horaMax, int duracionMinHoras, int duracionMaxHoras, boolean date, String advertenciaHorarioincompatible){
 
         String preguntaCompleta = pregunta;
         LocalTime inicioHorario = null;
@@ -333,12 +333,12 @@ public class Main {
         }
 
         while(true){
-            inicioHorario = timeAsk("Introduzca horario de inicio de la contratación (Responda en formato HH:MM).");
-            finHorario = timeAsk("Introduzca horario de fin de la contratación (Responda en formato HH:MM).");
+            inicioHorario = timeAsk("Introduzca horario de inicio (Responda en formato HH:MM).");
+            finHorario = timeAsk("Introduzca horario de fin (Responda en formato HH:MM).");
 
 
-            if ( inicioHorario.isBefore(horaMin) || finHorario.isAfter(horaMax) || finHorario.isBefore(inicioHorario) ){
-                customPrint("Existe una incompatibilidad del horario con el lineamiento.\n\nRevise si:\n1. El inicio del horario ocurre antes del fin del horario.\n2. Se exceden los límites de horario (muy temprano o muy tarde).\nIntente de nuevo.", true, "red");
+            if (inicioHorario.isBefore(horaMin) || finHorario.isAfter(horaMax) || finHorario.isBefore(inicioHorario) ){
+                customPrint(advertenciaHorarioincompatible, true, "red");
                 continue;
             }
 
@@ -357,12 +357,12 @@ public class Main {
             long duracionHorario = duration.toHours();
 
             if (duracionHorario < duracionMinHoras){
-                customPrint("El tiempo mínimo de contratación es de 4 horas.", true, "red"); 
+                customPrint("El tiempo mínimo de contratación es de " + duracionMinHoras + " horas.", true, "red"); 
                 continue;
             }
 
             if (duracionHorario > duracionMaxHoras){
-                customPrint("El tiempo máximo de contratación es de 8 horas.", true, "red");
+                customPrint("El tiempo máximo de contratación es de " + duracionMaxHoras + " horas.", true, "red");
                 continue;
             }
 
@@ -1262,8 +1262,9 @@ public class Main {
         String diasCadena = "¿Para qué día se necesita la contratación?\n";
         LocalTime horaMin = LocalTime.of(8, 0);
         LocalTime horaMax = LocalTime.of(22, 0); 
-        
-        LocalDateTime[] horario = setSchedule(diasCadena, horaMin, horaMax, 4, 8, true);
+        String advertencia5 = "Existe una incompatibilidad del horario con el lineamiento.\n\nRevise si:\n1. El inicio del horario ocurre antes del fin del horario.\n2. Se exceden los límites de horario (muy temprano o muy tarde).\nIntente de nuevo.";
+
+        LocalDateTime[] horario = setSchedule(diasCadena, horaMin, horaMax, 4, 8, true, advertencia5);
 
         LocalDateTime fechaInicio = horario[0];
         LocalDateTime fechaFin = horario[1]; 
