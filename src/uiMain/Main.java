@@ -1074,7 +1074,7 @@ public class Main {
 
     public static void ContratarActor(){
 
-    byte[] two = {1, 2};
+    byte[] two = {0, 1, 2};
     byte menuLog = ask("Seleccione:\n1. Empresa registrada.\n2. Empresa nueva.", two, "");
     byte ACTORES_POR_PAGINA = 5;
 
@@ -1084,8 +1084,18 @@ public class Main {
     menuSwitch:
     switch (menuLog){
 
+        case 0:
+        customPrint("Saliendo...", "red");
+        return;
+
         case 1:
         long idEntrada = longAsk("Ingrese el número de identificación.");
+
+        if (idEntrada == 0){
+            customPrint("Saliendo...", "red");
+            return;
+        }
+
         boolean idFlag = false;
         
         for (Cliente cliente : Cliente.clientes){
@@ -1107,17 +1117,32 @@ public class Main {
         case 2:
 
         long newId = longAsk("Genere un nuevo número de identificación.");
+
+        if (newId == 0){
+            customPrint("Saliendo...", "red");
+            return;
+        }
         
         for (Cliente cliente : Cliente.clientes){
             while (cliente.getId() == newId){
                 customPrint("Esta identificación ya existe en la base de datos, intente con una diferente.", true, "red");
                 newId = longAsk("Genere un nuevo número de identificación.");
+
+                if (newId == 0){
+                    customPrint("Saliendo...", "red");
+                    return;
+                }
             }
         }
 
         while (newId <= 0){
             customPrint("La identificación debe ser un número entero positivo.", true, "red");
             newId = longAsk("Genere un nuevo número de identificación.");
+
+            if (newId == 0){
+                customPrint("Saliendo...", "red");
+                return;
+            }
         }
 
         empresa = new Cliente("Empresa", newId);
@@ -1129,8 +1154,8 @@ public class Main {
         List<Actor> actorsForRental = new ArrayList<>(Actor.getActors());
 
         //primera ronda de preguntas
-        byte[] options = new byte[8];
-        options[0] = 1; options[1] = 2;
+        byte[] options = new byte[9];
+        options[0] = 0; options[1] = 1;
         
         //antes de empezar, remover aquellos actores en condición de reevaluación
         actorsForRental.removeIf(actor -> actor.isReevaluacion());
@@ -1139,12 +1164,24 @@ public class Main {
         byte rolActor = ask("¿Qué tipo de papel desempeñará el actor?\n1. Rol principal.\n 2. Rol secundario.", options, "");
 
         //reservar los de calificacion alta solo para roles principales
-        if (rolActor == 1){ 
-            actorsForRental.removeIf(actor -> actor.getCalificacion() < CALIFICACION_ALTA); 
-        } else {
-            actorsForRental.removeIf(actor -> actor.getCalificacion() > CALIFICACION_ALTA);}
 
-        options[2] = 3; options[3] = 4; options[4] = 5; options[5] = 6; options[6] = 7; options[7] = 8;
+        switch (rolActor){
+
+            case 0:
+                customPrint("Saliendo...", "red");
+                return;
+
+            case 1:
+                actorsForRental.removeIf(actor -> actor.getCalificacion() < CALIFICACION_ALTA);
+
+            case 2:
+                actorsForRental.removeIf(actor -> actor.getCalificacion() > CALIFICACION_ALTA);
+
+
+
+            }
+
+        options[2] = 2; options[3] = 3; options[4] = 4; options[5] = 5; options[6] = 6; options[7] = 7; options[8] = 8;
 
         //PREGUNTA NO. 2
         byte tipoObra = ask("¿Qué tipo de obra es?\n1. Circo.\n2. Comedia.\n3. Drama.\n4. Experimental.\n5. Fantasía.\n6. Musical.\n7. Romance.\n8. Terror.", options, "");
@@ -1152,64 +1189,72 @@ public class Main {
         //que se borren los actores que no tengan el género buscado en sus atributos
         switch(tipoObra){
 
+            case 0:
+                customPrint("Saliendo...", "red");
+                return;
+
             case 1:
-            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.CIRCO));
-            break;
+                actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.CIRCO));
+                break;
 
             case 2:
-            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.COMEDIA));
-            break;
+                actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.COMEDIA));
+                break;
 
             case 3:
-            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.DRAMA));
-            break;
+                actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.DRAMA));
+                break;
 
             case 4:
-            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.EXPERIMENTAL));
-            break;
+                actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.EXPERIMENTAL));
+                break;
 
             case 5:
-            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.FANTASIA));
-            break;
+                actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.FANTASIA));
+                break;
 
             case 6:
-            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.MUSICAL));
-            break;
+                actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.MUSICAL));
+                break;
 
             case 7:
-            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.ROMANCE));
-            break;
+                actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.ROMANCE));
+                break;
 
             case 8:
-            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.TERROR));
-            break;
+                actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.TERROR));
+                break;
         }
 
-        byte[] five = {1, 2, 3, 4, 5};
+        byte[] five = {0, 1, 2, 3, 4, 5};
         byte aptitud = ask("¿En qué aptitud debería sobresalir el actor?\n1. Canto.\n2. Baile.\n3. Discurso.\n4. Emocionalidad\n5. Improvisación.", five, "");
         byte CALIFICACION_APTITUD_ALTA = 4;
 
         switch (aptitud){
 
+            case 0:
+                customPrint("Saliendo...", "red");
+                return;
+
             case 1:
-            actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.CANTO) < CALIFICACION_APTITUD_ALTA);
-            break;
+                actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.CANTO) < CALIFICACION_APTITUD_ALTA);
+                break;
 
             case 2:
-            actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.BAILE) < CALIFICACION_APTITUD_ALTA);
-            break;
+                actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.BAILE) < CALIFICACION_APTITUD_ALTA);
+                break;
 
             case 3:
-            actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.DISCURSO) < CALIFICACION_APTITUD_ALTA);
-            break;
+                actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.DISCURSO) < CALIFICACION_APTITUD_ALTA);
+                break;
             
             case 4:
-            actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.EMOCIONALIDAD) < CALIFICACION_APTITUD_ALTA);
-            break;
+                actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.EMOCIONALIDAD) < CALIFICACION_APTITUD_ALTA);
+                break;
 
             case 5:
-            actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.IMPROVISACION) < CALIFICACION_APTITUD_ALTA);
-            break;
+                actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.IMPROVISACION) < CALIFICACION_APTITUD_ALTA);
+                break;
 
         }  
 
@@ -1258,90 +1303,104 @@ public class Main {
         //búsqueda avanzada
         byte advancedSearch = ask("¿Se desea hacer búsqueda avanzada? (incluye filtros por edad y sexo).\n1. Sí.\n2. No.", two, "blue");
 
-        if (advancedSearch == 1){
+        switch (advancedSearch){
 
-            List<ArrayList> contadores = new ArrayList<>();
-
-            for (Actor actor : actorsForRental){
-                ArrayList<Object> contador = new ArrayList<>();
-                contador.add(actor);
-                contador.add(0);
-                contadores.add(contador);
-            }
-
-            byte edad = ask("¿Qué tipo de edad se busca?\n1. Infantil\n2. Juvenil.\n3. Adulto.\n4. Adulto mayor", options, "");
-
-            switch (edad){
-
-                case 1: //infantil
-                actorsForRental.removeIf(actor -> actor.getEdad() >= 15);
-                break;
-
-                case 2: //juvenil
-                actorsForRental.removeIf(actor -> actor.getEdad() < 15);
-                actorsForRental.removeIf(actor -> actor.getEdad() >= 24);
-                break;
-
-                case 3: //adulto
-                actorsForRental.removeIf(actor -> actor.getEdad() < 24 );
-                actorsForRental.removeIf(actor -> actor.getEdad() >= 70);
-                break;
-
-                case 4: //adulto mayor
-                actorsForRental.removeIf(actor -> actor.getEdad() < 70);
-                break;
-            }
-
-            for (ArrayList contador : contadores){
-
-                if (isIn(actorsForRental, (Actor)contador.get(0))){ 
-                    
-                    int newVal = ((Integer)contador.get(1)) + 1;
-
-                    contador.set(1, newVal); 
-                
-                }
-
-            }
-
-
-            byte sexo = ask("¿Qué sexo debe tener el actor?\n1. Masculino.\n2. Femenino.", two, "");
-
-            if (sexo == 1){ //si es masculino, remueve el sexo femenino y viceversa
-                actorsForRental.removeIf(actor -> actor.getSexo() == 'F');
-            } else {
-                actorsForRental.removeIf(actor -> actor.getSexo() == 'M');
-            }
-
-            for (ArrayList contador : contadores){
-
-                if (isIn(actorsForRental, (Actor)contador.get(0))){ 
-                    
-                    int newVal = ((Integer)contador.get(1)) + 1;
-
-                    contador.set(1, newVal); 
-                
-                }
-
-            }
-
-            contadores.removeIf(contador -> ((Integer)contador.get(1)) < 2);
-
-            if (contadores.size() == 0){
-                customPrint("No se encontraron actores que se ajusten bien a las características.", true, "red"); return;}
-
-            List<Actor> advancedList = new ArrayList<Actor>();
-
-            for (ArrayList contador : contadores){
-                advancedList.add( (Actor)contador.get(0));
-            }
+            case 0:
+                customPrint("Saliendo", "red");
+                return;
             
-            actorsForRental = advancedList;
-            advancedList = null;
-            
-            customPrint(actorsForRental.size() + " actor/es se ajustaron a dos o más características avanzadas.", true, "green");
+            case 1:
 
-            }
+                List<ArrayList> contadores = new ArrayList<>();
+    
+                for (Actor actor : actorsForRental){
+                    ArrayList<Object> contador = new ArrayList<>();
+                    contador.add(actor);
+                    contador.add(0);
+                    contadores.add(contador);
+                }
+    
+                byte edad = ask("¿Qué tipo de edad se busca?\n1. Infantil\n2. Juvenil.\n3. Adulto.\n4. Adulto mayor", options, "");
+    
+                switch (edad){
+
+                    case 0:
+                        customPrint("Saliendo...", "red");
+                        return;
+    
+                    case 1: //infantil
+                        actorsForRental.removeIf(actor -> actor.getEdad() >= 15);
+                        break;
+    
+                    case 2: //juvenil
+                        actorsForRental.removeIf(actor -> actor.getEdad() < 15);
+                        actorsForRental.removeIf(actor -> actor.getEdad() >= 24);
+                        break;
+    
+                    case 3: //adulto
+                        actorsForRental.removeIf(actor -> actor.getEdad() < 24 );
+                        actorsForRental.removeIf(actor -> actor.getEdad() >= 70);
+                        break;
+    
+                    case 4: //adulto mayor
+                        actorsForRental.removeIf(actor -> actor.getEdad() < 70);
+                        break;
+                }
+    
+                for (ArrayList contador : contadores){
+    
+                    if (isIn(actorsForRental, (Actor)contador.get(0))){ 
+                        
+                        int newVal = ((Integer)contador.get(1)) + 1;
+    
+                        contador.set(1, newVal); 
+                    
+                    }
+    
+                }
+    
+    
+                byte sexo = ask("¿Qué sexo debe tener el actor?\n1. Masculino.\n2. Femenino.", two, "");
+    
+                if (sexo == 1){ //si es masculino, remueve el sexo femenino y viceversa
+                    actorsForRental.removeIf(actor -> actor.getSexo() == 'F');
+                } else if (sexo == 2){
+                    actorsForRental.removeIf(actor -> actor.getSexo() == 'M');
+                } else{
+
+                    customPrint("Saliendo...", "red");
+                    return;
+
+                }
+    
+                for (ArrayList contador : contadores){
+    
+                    if (isIn(actorsForRental, (Actor)contador.get(0))){ 
+                        
+                        int newVal = ((Integer)contador.get(1)) + 1;
+    
+                        contador.set(1, newVal); 
+                    
+                    }
+    
+                }
+    
+                contadores.removeIf(contador -> ((Integer)contador.get(1)) < 2);
+    
+                if (contadores.size() == 0){
+                    customPrint("No se encontraron actores que se ajusten bien a las características.", true, "red"); return;}
+    
+                List<Actor> advancedList = new ArrayList<Actor>();
+    
+                for (ArrayList contador : contadores){
+                    advancedList.add( (Actor)contador.get(0));
+                }
+                
+                actorsForRental = advancedList;
+                advancedList = null;
+                
+                customPrint(actorsForRental.size() + " actor/es se ajustaron a dos o más características avanzadas.", true, "green");
+        }
 
         long duracionContrato = Duration.between(fechaInicio, fechaFin).toHours();
         double minActorPrecio = actorsForRental.get(0).getPrecioContrato(duracionContrato);
@@ -1359,6 +1418,11 @@ public class Main {
         }    
 
         long presupuesto = longAsk("¿Cuál es el presupuesto máximo para el actor?" + "\nTenga en cuenta que el rango de los precios es de " + Actor.formatoPrecio(minActorPrecio) + " a " + Actor.formatoPrecio(maxActorPrecio));
+
+        if (presupuesto == 0){
+            customPrint("Saliendo...", "red");
+            return;
+        }
 
         actorsForRental.removeIf(actor -> actor.getPrecioContrato(duracionContrato) > presupuesto);
 
