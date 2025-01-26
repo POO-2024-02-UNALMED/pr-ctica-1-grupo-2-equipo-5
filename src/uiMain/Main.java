@@ -1319,7 +1319,7 @@ public class Main {
         actorsForRental.removeIf(actor -> actor.getPrecioContrato(duracionContrato) > presupuesto);
 
         if (actorsForRental.size() == 0){
-            customPrint("No se hallaron actores para el presupuesto");
+            customPrint("No se hallaron actores para el presupuesto", true, "red");
         } else {
 
             int lastIdx = 0;
