@@ -294,14 +294,14 @@ public class Main {
             chosenColor = reset;
         }
 
-        System.out.println(chosenColor + "╭" + "─".repeat(LARGO_LINEAS) + "╮" + reset);
+        System.out.println(chosenColor + "┌" + "─".repeat(LARGO_LINEAS) + "┐" + reset);
         String[] cadenas = cadena.split("\n");
 
         for (String linea : cadenas){
             System.out.println(chosenColor + formatString(linea, isCentrado) + reset);
         }
 
-        System.out.println(chosenColor + "╰" + "─".repeat(LARGO_LINEAS ) + "╯" + reset);
+        System.out.println(chosenColor + "└" + "─".repeat(LARGO_LINEAS ) + "┘" + reset);
     }
 
     public static LocalDateTime[] setSchedule(String pregunta, LocalTime horaMin, LocalTime horaMax, int duracionMinHoras, int duracionMaxHoras, boolean date){
