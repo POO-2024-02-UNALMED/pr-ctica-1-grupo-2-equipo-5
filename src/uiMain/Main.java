@@ -2034,7 +2034,9 @@ public class Main {
         int totalTrabajadores_A = Empleado.getTipoAseador().size();
         int cant_a_limpiar = totalFunciones/totalTrabajadores_A;
         if(totalSalas != 0 && totalTrabajadores_A != 0){
+            for(Empleado Persona : Empleado.getTipoAseador()){
 
+            }
         }
         else{
             if(totalSalas == 0){
@@ -2401,12 +2403,17 @@ public class Main {
                         }
                     }
                 }
+                //Se reinicia los trabajos Realizados y los puntos Positivos
+                for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                    Persona.setTrabajoRealizado(0);
+                    Persona.setPuntosPositivos(0);
+                }
                 break;
             case 2:
                 break;
         }
     
-        //Planes de mejora
+
         //Despedir si meta es negatica
         ArrayList<Empleado> NuevaLista = Empleado.getEmpleadosPorRendimiento();
         ArrayList<Empleado> Despedidos = new ArrayList<>();
