@@ -45,7 +45,7 @@ public class Sala {
     public double getMetrosCuadrados(){
         return this.metrosCuadrados;
     }
-    public void setMetrosCuadrados(int newMetros){
+    public void setMetrosCuadrados(double newMetros){
         this.metrosCuadrados = newMetros;
     }
 
