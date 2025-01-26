@@ -1809,6 +1809,16 @@ public class Main {
         int totalTrabajadores_S = Empleado.getTipoSeguridad().size();
         int funcion_por_trabajador = totalFunciones/totalTrabajadores_S;
         ArrayList<Funcion> funcionesDisponibles = new ArrayList<>(Funcion.getFuncionesCreadas());
+        //Se organiza la lista por fecha
+        try{
+            funcionesDisponibles.sort((f1, f2) ->
+            f1.getHorario().get(0).compareTo(f2.getHorario().get(0))
+            );
+        }
+        catch(IndexOutOfBoundsException e){
+            System.out.println("no hay horarios para organizar");
+        }
+
 
         //Verificar si las listas no estan vacias
         if(totalFunciones != 0 && totalTrabajadores_S != 0){
@@ -1950,6 +1960,14 @@ public class Main {
                     }
                 });
                 funcionesDisponibles = FuncionPorDuracion;
+                try{
+                    funcionesDisponibles.sort((f1, f2) ->
+                    f1.getHorario().get(0).compareTo(f2.getHorario().get(0))
+                    );
+                }
+                catch(IndexOutOfBoundsException e){
+                    System.out.println("no hay horarios para organizar");
+                }
                 //Evaluacion Normal, asignacion de trabajo equitativo
                 for(Empleado Persona : Empleado.getTipoSeguridad()){
                     int asignadas = 0;
