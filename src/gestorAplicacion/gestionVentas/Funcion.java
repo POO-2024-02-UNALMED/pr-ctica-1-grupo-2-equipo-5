@@ -17,11 +17,22 @@ public class Funcion {
     private boolean calificador;
     private int audienciaEsperada;
     static ArrayList <Funcion> funcionesCreadas= new ArrayList<>() ;
+    static ArrayList <Funcion> funcionesALaVenta= new ArrayList<>();
 
 
     static{
-         funci_1.prueba();
-     }
+        funci_1.prueba();
+    }
+
+    public ArrayList<Funcion> actualizarFuncionesVenta(ArrayList<Funcion> funcionesCreadas){
+        ArrayList<Funcion> funcionesALaVenta = new ArrayList<>();
+        for (Funcion funcion : funcionesCreadas){
+            if (funcion.getHorario().get(0).isAfter(LocalDateTime.now())){
+                funcionesALaVenta.add(funcion);
+            }
+        }
+        return funcionesALaVenta;
+    }
     public String tablaSillas(){
         String Nuevo="";
         ArrayList <Silla> s = this.getSala().getSillas();
@@ -34,7 +45,7 @@ public class Funcion {
                 char primerCaracter = s.get(i).getTipo().name().charAt(0);
                 Nuevo=Nuevo+primerCaracter+String.format("%04d", s.get(i).getCodigo())+" "; 
             }
-  
+
             if ((i + 1) % 8 == 0) { 
                 Nuevo = Nuevo+"\n";
             }
@@ -59,6 +70,7 @@ public class Funcion {
         this.sala = sala;
         this.obra=obra;
         funcionesCreadas.add((this));
+        funcionesALaVenta = actualizarFuncionesVenta(funcionesCreadas);
 
 
     }
@@ -276,6 +288,12 @@ public static boolean nombres(String nombre){
     return true;
 
 
+}
+public static ArrayList<Funcion> getFuncionesALaVenta() {
+    return funcionesALaVenta;
+}
+public static void setFuncionesALaVenta(ArrayList<Funcion> funcionesALaVenta) {
+    Funcion.funcionesALaVenta = funcionesALaVenta;
 }
 }
 
