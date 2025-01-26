@@ -196,5 +196,11 @@ public class Actor extends Artista{
                 && calificaciones.get(n - 2) <= calificaciones.get(n - 3)
                 && calificaciones.get(n - 3) <= calificaciones.get(n - 4);
     }
+    
+    public boolean sigueIgual() {
+        // Crear una lista con el valor inicial para comparar
+        ArrayList<Double> inicial = new ArrayList<>(Arrays.asList(0.0, 0.0, 0.0, 0.0, 0.0));
+        return calificacionesAptitudes.equals(inicial); // Devuelve true si sigue igual
+    }
 }
 

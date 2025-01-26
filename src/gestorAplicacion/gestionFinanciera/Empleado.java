@@ -3,7 +3,7 @@ import java.time.LocalDateTime;
 
 import gestorAplicacion.gestionObras.Actor;
 import gestorAplicacion.gestionObras.Artista;
-
+import gestorAplicacion.herramientas.Aptitud;
 
 import java.util.ArrayList;
 
@@ -227,10 +227,11 @@ public class Empleado {
         if (profesores == null || profesores.isEmpty()) {
             return false;
         }
+
+        Aptitud[] aptitud = Aptitud.values();
         // Generar calificaciones aleatorias
-        for (int i = 0; i < 5; i++) { // Por ejemplo, 5 calificaciones iniciales
-            
-            artista.agregarCalificacion((float) (Math.random() * 5) + 1);
+        for (int i = 0; i < 5; i++) { // Por ejemplo, 5 calificaciones iniciales   //
+            ((Actor)artista).setCalificacionPorAptitud(aptitud[i], (double) Math.round(Math.random() * 50) / 10.0);
         }
         return true;
     }

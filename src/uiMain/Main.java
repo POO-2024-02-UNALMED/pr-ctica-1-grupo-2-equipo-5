@@ -2209,8 +2209,8 @@ public class Main {
             Thread.sleep(1500);
         }
         
-        if (artista.getCalificaciones().isEmpty()) {
-            customPrint("El actor no tiene calficaciones. Inicializando calificaciones...");  
+        if (((Actor)artista).sigueIgual()) {
+            customPrint("El actor no tiene calificaciones. Inicializando calificaciones...");  
             Thread.sleep(2000);
 
             // Llamar al método casting() para inicializar calificaciones de calificadores
@@ -2226,15 +2226,17 @@ public class Main {
                 // Mostrar quién inicializó las calificaciones
                 customPrint("El/la profesor/a " + profesorAsignado.getNombre() + " inicializó las calificaciones de el actor " + artista.getNombre() + ".");
             }
-            // Inicializar calificaciones del público (simuladas aleatoriamente)
-            artista.inicializarCalificacionesPublico(artista);
         }
+
+        // Inicializar calificaciones del público (simuladas aleatoriamente)
+        artista.inicializarCalificacionesPublico(artista);
         Thread.sleep(2000);
+        
         // Mostrar las calificaciones del artista, sea o no sea nuevo
         customPrint("Calificaciones del artista: " + artista.getNombre());
         Thread.sleep(2000);
         if (artista.getCalificaciones() != null) {
-            customPrint("Calificaciones de calificadores: " + artista.getCalificaciones());
+            customPrint("Calificaciones de calificadores: " + ((Actor)artista).getCalificacionesAptitudes());
             Thread.sleep(2000);
         }
         customPrint("Calificaciones del público: " + artista.getCalificacionesPublico());
@@ -2244,7 +2246,7 @@ public class Main {
         ArrayList<Obra> obrasCritics = Obra.mostrarObrasCriticas();
         // Mostrar todas las obras críticas
         if (obrasCritics.isEmpty()) {
-            customPrint("No hay obras en estado crítico.", "yellow");
+            customPrint("No hay obras en estado crítico en el teatro.", "yellow");
         } else {
             customPrint("Obras en estado crítico del teatro:", "red");
             Thread.sleep(3000);
@@ -2283,14 +2285,28 @@ public class Main {
             List<Aptitud> areasDeMejora = actor.obtenerAreasDeMejora();
             customPrint("Áreas recomendadas para mejorar:", "yellow");
             Thread.sleep(2000);
-            String areas = "";
+            StringBuilder areas = new StringBuilder();
+
             for (int i = 0; i < Math.min(3, areasDeMejora.size()); i++) {
                 Aptitud aptitud = areasDeMejora.get(i);
                 double calificacion = actor.getCalificacionPorAptitud(aptitud);
-                areas.concat("- " + aptitud + " (Calificación: " + calificacion + ")" + "\n");
+
+                // Formato para la columna: "- {Aptitud} (Calificación: {calificación})"
+                String linea = "- " + aptitud + " (Calificación: " + String.format("%.1f", calificacion) + ")";
+
+                // Verificar si agregar esta línea excede el límite de caracteres; si no, agregar nueva línea
+                if (linea.length() > LARGO_LINEAS) {
+                    linea = linea.substring(0, LARGO_LINEAS - 3) + "..."; // Truncar si es necesario
+                }
+
+                areas.append(linea).append("\n"); // Agregar la línea con salto
             }
-            
-            customPrint(areas, "yellow");
+
+            // Imprimir usando customPrint con el formato final en columnas
+            customPrint(areas.toString(), "yellow");
+
+            Thread.sleep(1500);
+
             // Preguntar si quiere seguir la recomendación
             byte respuesta = ask("¿Desea programar una clase basada en las áreas recomendadas?\n1. Sí\n2. No", dos, "");
             Aptitud areaSeleccionada = null;
@@ -2299,21 +2315,33 @@ public class Main {
                 // Seleccionar el área de mejora más baja recomendada
                 areaSeleccionada = areasDeMejora.get(0);
                 customPrint("Se seleccionó el área '" + areaSeleccionada + "' automáticamente.");
+                Thread.sleep(1000);
             } else {
                 byte respuesta1 = ask("¿Desea programar otra clase?\n1. Sí\n2. No", dos, "");
                 if (respuesta1 == 1){
                 // Permitir al usuario elegir cualquier aptitud
+                StringBuilder areas2 = new StringBuilder();
                     customPrint("Seleccione un área para programar una clase:");
                     for (int i = 0; i < actor.getAptitudes().size(); i++) {
                         Aptitud aptitud = actor.getAptitudes().get(i);
-                        customPrint((i + 1) + ". " + aptitud);
+
+                        String linea2 = (i+1) + "." + aptitud;
+
+                        // Verificar si agregar esta línea excede el límite de caracteres; si no, agregar nueva línea
+                        if (linea2.length() > LARGO_LINEAS) {
+                            linea2 = linea2.substring(0, LARGO_LINEAS - 3) + "..."; // Truncar si es necesario
+                        }
+
+                        areas2.append(linea2).append("\n"); // Agregar la línea con salto
                     }
+                    customPrint(areas2.toString());
+
                     byte[] opcionesAptitudes = new byte[actor.getAptitudes().size()];
                     for (byte i = 0; i < opcionesAptitudes.length; i++) {
                         opcionesAptitudes[i] = (byte) (i + 1);
                     }
                     
-                    byte opcion = ask("Ingrese el número del área deseada:", opcionesAptitudes, "");
+                    byte opcion = ask("Ingrese el número del área deseada", opcionesAptitudes, "");
                     areaSeleccionada = actor.getAptitudes().get(opcion - 1);
                 }
                 else {
@@ -2334,6 +2362,7 @@ public class Main {
             }
 
             customPrint("Se seleccionó el área '" + areaSeleccionada + "' con nivel de clase: " + nivelClase);
+            Thread.sleep(1000);
 
             // Uso del método
             LocalDateTime inicio = solicitarHorario("inicio");
