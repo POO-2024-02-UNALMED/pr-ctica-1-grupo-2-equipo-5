@@ -1519,7 +1519,7 @@ public class Main {
         
         try{
             Thread.sleep(2000);
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             customPrint("La pausa fue interrumpida.");    
         }
         
@@ -1609,11 +1609,11 @@ public class Main {
                                 int j = 0;
                                 for(String Nombre : candidatos){
                                     if(msgBase != "\n"){
-                                        msgBase = msgBase + j +". " + Nombre + " " +  idA.get(j) + "\n";
+                                        msgBase = msgBase + String.format("%-20s %10s", j +". " + Nombre,"ID: " +  idA.get(j) + "\n");
                                         j = j + 1;
                                     }
                                     else{
-                                        msgBase = j +". " + Nombre + " " + idA.get(j) + msgBase;
+                                        msgBase = String.format("%-20s %10s",j +". " + Nombre, "ID: " + idA.get(j)) + msgBase;
                                         j = j + 1;
                                     }
                                 }
@@ -1653,11 +1653,11 @@ public class Main {
                                     int b = 0;
                                 for(String Nombre : candidatosS){
                                     if(msgBase != "\n"){
-                                        msgBase = msgBase + b +". " + Nombre + " " +  idS.get(b) + "\n";
+                                        msgBase = msgBase + String.format("%-20s %10s", b +". " + Nombre,"ID: " +  idS.get(b) + "\n");
                                         b = b + 1;
                                     }
                                     else{
-                                        msgBase = b +". " + Nombre + " " + idS.get(b) + msgBase;
+                                        msgBase = String.format("%-20s %10s",b +". " + Nombre, "ID: " + idS.get(b)) + msgBase;
                                         b = b + 1;
                                     }
                                 }
@@ -1696,11 +1696,11 @@ public class Main {
                                     int d = 0;
                                 for(String Nombre : candidatosP){
                                     if(msgBase != "\n"){
-                                        msgBase = msgBase + d +". " + Nombre + " " +  idP.get(d) + "\n";
+                                        msgBase = msgBase + String.format("%-20s %10s", d +". " + Nombre,"ID: " +  idP.get(d) + "\n");
                                         d = d + 1;
                                     }
                                     else{
-                                        msgBase = d +". " + Nombre + " " + idP.get(d) + msgBase;
+                                        msgBase = String.format("%-20s %10s",d +". " + Nombre, "ID: " + idP.get(d)) + msgBase;
                                         d = d + 1;
                                     }
                                 }
@@ -1771,7 +1771,7 @@ public class Main {
         customPrint("Asignando trabajos, por favor espere ...", true);
         try{
             Thread.sleep(2000);
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             customPrint("La pausa fue interrumpida.");    
         }
 
@@ -1815,7 +1815,7 @@ public class Main {
             f1.getHorario().get(0).compareTo(f2.getHorario().get(0))
             );
         }
-        catch(IndexOutOfBoundsException e){}
+        catch(Exception e){}
 
 
         //Verificar si las listas no estan vacias
@@ -1828,12 +1828,11 @@ public class Main {
             //Asignacion de tareas si todos los trabajadores son principiantes
             if(cant_trabajadores_principiantes == Empleado.getTipoSeguridad().size()){
                 //CASO NORMAL, SE ASIGNAN EN IGUAL CANTIDAD A CADA EMPLEADO
+                int funcionesSinHorarios = 0;
                 for(Empleado Persona : Empleado.getTipoSeguridad()){
                     int asignadas = 0; 
-                    int funciones = 0;
                     ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
                     for(int i = 0; i < funcionesDisponibles.size(); i ++){
-                        funciones += 1;
                         if(asignadas < funcion_por_trabajador){
                             Funcion Funciones = funcionesDisponibles.get(i);
                             //Asignacion del horario y del Trabajo
@@ -1869,9 +1868,9 @@ public class Main {
                                 }
                             }
                             else{
+                                funcionesSinHorarios += 1;
                                 funcionesDisponibles.remove(i);
                                 i--;
-                                customPrint("La funcion: " + funciones + " no tiene horarios para aplicar", "red");
                             }
                         }
                         else{
@@ -1886,6 +1885,12 @@ public class Main {
                     });
                     Persona.setHorario(localTime);
                     Persona.setDisponible(false);
+                }
+                if(funcionesSinHorarios == 1){
+                    customPrint("Hay 1 Funcion sin horarios", "red");
+                }
+                else if(funcionesSinHorarios > 1){
+                    customPrint("Hay " + funcionesSinHorarios + " Funciones sin horarios", "red");
                 }
                 //EVALUACION DE SALAS SIN TRABAJADOR
                 if(funcionesDisponibles.size() != 0 ){
@@ -2208,8 +2213,7 @@ public class Main {
         }
 
 
-
-        customPrint("trabajos Asignados...");
+        customPrint("trabajos Asignados...", "green");
         customPrint("Desplegando Trabajadores");
         
         try{
@@ -2235,8 +2239,7 @@ public class Main {
                 cant_trabajadores_principiantes += 1;
             }
         }
-        if(cant_trabajadores_principiantes == Empleado.getTipoSeguridad().size()){
-            System.out.println("Validacion Trabajo Principiantes");
+        if(cant_trabajadores_principiantes == Empleado.getTipoSeguridad().size()){;
             for(Empleado Persona : Empleado.getTipoSeguridad()){
                 for(double Hora : Persona.getTrabajos()){
                     Random random = new Random();
@@ -2252,7 +2255,6 @@ public class Main {
             }
         }
         else{
-            System.out.println("validacion trabajo general");
             for(Empleado Persona : Empleado.getTipoSeguridad()){
                 for(double Hora : Persona.getTrabajos()){
                     Random random = new Random();
