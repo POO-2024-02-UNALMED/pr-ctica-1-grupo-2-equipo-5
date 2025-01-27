@@ -3029,7 +3029,7 @@ public class Main {
             }
             continue;
         }
-        Empleado.setEmpleadosPorRendimiento(NuevaLista);
+        Teatro.getInstancia().setEmpleadosPorRendimiento(NuevaLista);
         if(!Despedidos.isEmpty()){
             customPrint("Personas Despedidas: \n" + msgBase);
         }
@@ -3043,7 +3043,7 @@ public class Main {
                 return Integer.compare(E2.getMetaSemanal(), E1.getMetaSemanal());
             }
         });
-        Empleado.setEmpleadosPorRendimiento(Ranking);
+        Teatro.getInstancia().setEmpleadosPorRendimiento(Ranking);
         msgBase = "\n";
         int posicion = 1;
         for(Empleado Persona : Teatro.getInstancia().getEmpleadosPorRendimiento()){

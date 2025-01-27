@@ -36,7 +36,7 @@ public class Empleado implements Serializable{
         this.ocupacion = ocupacion;
         this.deuda = 0;
         this.horario = new ArrayList<>(); //Lista donde se guarda el horario 
-        empleadosPorRendimiento.add(this);
+        Teatro.getInstancia().getEmpleadosPorRendimiento().add(this);
     }
 
     //Constructor para funcionalidad 4
@@ -164,39 +164,6 @@ public class Empleado implements Serializable{
 
     public void setTrabajos(ArrayList<Double> trabajos) {
         this.trabajos = trabajos;
-    }
-
-    //Empleados
-    public static ArrayList<Empleado> getEmpleadosPorRendimiento() {
-        return empleadosPorRendimiento;
-    }
-
-    public static void setEmpleadosPorRendimiento(ArrayList<Empleado> newEmpleadosPorRendimiento) {
-        empleadosPorRendimiento = newEmpleadosPorRendimiento;
-    }
-    
-    public static ArrayList<Empleado> getTipoSeguridad() {
-        return tipoSeguridad;
-    }
-
-    public static void setTipoSeguridad(ArrayList<Empleado> tipoSeguridad) {
-        Empleado.tipoSeguridad = tipoSeguridad;
-    }
-
-    public static ArrayList<Empleado> getTipoAseador() {
-        return tipoAseador;
-    }
-
-    public static void setTipoAseador(ArrayList<Empleado> tipoAseador) {
-        Empleado.tipoAseador = tipoAseador;
-    }
-
-    public static ArrayList<Empleado> getTipoProfesor() {
-        return tipoProfesor;
-    }
-
-    public static void setTipoProfesor(ArrayList<Empleado> tipoProfesor) {
-        Empleado.tipoProfesor = tipoProfesor;
     }
 
     //Horario
