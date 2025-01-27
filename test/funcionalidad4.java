@@ -66,9 +66,12 @@ public class funcionalidad4 {
         Artista actor1 = new Actor("Carlos Moreno", 12);
         Artista actor2 = new Actor("Ana Pérez", 11);
         Artista director1 = new Director("Luis Herrera", 22);
+
+        actor2.getCuenta().ingresar(100000);
         
         Empleado.getTipoProfesor().add(0,profesor1);
         Empleado.getTipoProfesor().add(profesor2);
+
 
 
         

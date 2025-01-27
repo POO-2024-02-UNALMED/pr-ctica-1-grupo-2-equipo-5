@@ -3396,7 +3396,7 @@ public class Main {
                             customPrint("Profesor calificador asignado: " + calificador.getNombre(), "green");
                             wait(1500);
                             // Evaluación y retroalimentación
-                            double calificacion = Math.random() * 5; // Generar calificación aleatoria
+                            double calificacion = Math.round(Math.random() * 50) / 10.0; // Generar calificación aleatoria
                             customPrint("El profesor calificó el desempeño del actor con un: " + calificacion, "yellow");
         
                             if (calificacion == 5) {
@@ -3650,7 +3650,7 @@ public class Main {
                     if (calificador != null) {
                         customPrint("Profesor calificador asignado: " + calificador.getNombre(), "green");
                         // Evaluación y retroalimentación
-                        double calificacion = Math.random() * 5; // Generar calificación aleatoria
+                        double calificacion = Math.round(Math.random() * 50) / 10.0; // Generar calificación aleatoria
                         customPrint("El profesor calificó el desempeño del actor con un: " + calificacion, "yellow");
     
                         if (calificacion == 5) {
