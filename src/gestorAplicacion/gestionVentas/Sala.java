@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import gestorAplicacion.gestionFinanciera.Empleado;
 import gestorAplicacion.herramientas.Asiento;
 public class Sala implements Serializable{
     private static ArrayList <Sala> salas = new ArrayList<>();

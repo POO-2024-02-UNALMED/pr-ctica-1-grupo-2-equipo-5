@@ -1,16 +1,16 @@
 package test;
 
-import gestorAplicacion.gestionFinanciera.Tesoreria;
+//import gestorAplicacion.gestionFinanciera.Tesoreria;
 import gestorAplicacion.gestionObras.Actor;
 import gestorAplicacion.gestionVentas.Cliente;
 import gestorAplicacion.herramientas.Aptitud;
 import gestorAplicacion.herramientas.Genero;
-import uiMain.Main;
+//import uiMain.Main;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.File;
-import baseDatos.Teatro;
+//import baseDatos.Teatro;
 import baseDatos.Deserializador;
 import baseDatos.Serializador;
 
@@ -22,7 +22,7 @@ public class funcionalidad5 {
             String filename = "teatro.txt";
             String path = "src" + File.separator + "baseDatos" + File.separator + "temp" + File.separator + filename;
             Deserializador.loadState(path);
-            Teatro teatro = Teatro.getInstancia();
+            //Teatro teatro = Teatro.getInstancia();
 
             //sujetos de prueba -------------------------//
             Actor actor1 = new Actor("Pedro Pascal", 10292122);
@@ -109,7 +109,7 @@ public class funcionalidad5 {
             Cliente warner = new Cliente("Empresa", 246);
             warner.getHistorial().add(actor3);
             warner.getCuentaBancaria().ingresar( (double) 3_700_000 );
-            Tesoreria tesoreria = new Tesoreria(0f, 100f);
+            //Tesoreria tesoreria = new Tesoreria(0f, 100f);
 
             //--------------------------------------------//
             //Main.ContratarActor();

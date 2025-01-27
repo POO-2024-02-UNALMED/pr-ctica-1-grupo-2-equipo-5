@@ -3,12 +3,10 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import gestorAplicacion.gestionObras.Actor;
 import gestorAplicacion.gestionObras.Obra;
-import gestorAplicacion.herramientas.Asiento;
 
 public class Tiquete implements Serializable{
     private Float valor;

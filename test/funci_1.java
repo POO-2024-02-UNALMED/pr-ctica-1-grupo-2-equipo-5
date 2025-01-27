@@ -6,7 +6,6 @@ import gestorAplicacion.gestionObras.Obra;
 import gestorAplicacion.gestionVentas.Funcion;
 import gestorAplicacion.gestionVentas.Sala;
 import gestorAplicacion.herramientas.Genero;
-import uiMain.Main;
 
 public class funci_1 {
     public static void prueba() {
