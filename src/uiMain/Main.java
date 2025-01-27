@@ -2,6 +2,11 @@ package uiMain;
 
 import java.util.List;
 import java.util.Scanner;
+
+import baseDatos.Deserializador;
+import baseDatos.Serializador;
+import baseDatos.Teatro;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
@@ -14,6 +19,8 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+
+import java.io.File;
 
 import gestorAplicacion.gestionVentas.Cliente;
 import gestorAplicacion.gestionClases.Clase;
@@ -42,6 +49,8 @@ public class Main {
     public static Scanner in = new Scanner(System.in);
     //public static boolean supportsColor = (System.console() != null && System.getenv().get("TERM") != null);
     public static boolean supportsColor = true;
+    public static String filename = "teatro.txt";
+    public static String path = "src" + File.separator + "baseDatos" + File.separator + "temp" + File.separator + filename;
 
     //------------------HERRAMIENTAS-------------------------//
     //pregunta y devuelve cadena respuesta
@@ -392,13 +401,17 @@ public class Main {
         return week;
     }
 // creación de salas
-    Sala sala1 = new Sala(1, 100, 24);
+//    Sala sala1 = new Sala(1, 100, 24);
 
     public static void main(String args[]) throws InterruptedException {  
         funcionalidad2.empezar();
         byte task = -1;
 
         while (task != 6){
+
+            Deserializador.loadState(path);
+            Teatro teatro = Teatro.getInstancia();
+
             String dash = "~";
             customPrint("Teatro Carlos Mayolo", true);
 
@@ -428,7 +441,8 @@ public class Main {
                 break;
 
                 case 6:
-                {}break;
+                Serializador.saveState(path);
+                break;
             }
         }
 
