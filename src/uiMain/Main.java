@@ -543,7 +543,7 @@ public class Main {
                 try {
                     // Pausa de 2 segundos (2000 milisegundos)
                     Thread.sleep(2000);
-                } catch (InterruptedException e) {
+                } catch (Exception e) {
                     customPrint("La pausa fue interrumpida.");
                     
                 }
@@ -637,12 +637,13 @@ public class Main {
         else if (p1_==3){
             return;
         }
-        customPrint("Estas son las funciones disponibles\n\n"+String.format("%30s %22s %22s %15s", "Nombre Obra", "Genero", "Duracion","Precio")+"\n\n"+Funcion.generarTabla());
-            customPrint("Que funcion desea comprar? \n");
+        
+        customPrint("Estas son las Obras disponibles\n\n"+String.format("%30s %22s %22s %15s", "Nombre Obra", "Genero", "Duracion","Precio")+"\n\n"+Obra.generarTabla());
+            customPrint("Que Obra desea comprar? \n");
             String inputF = in.nextLine().toLowerCase();
             float precioSus=0;
             while (Obra.nombres(inputF)){
-                customPrint("Funcion no encontrada \n"+
+                customPrint("Obra no encontrada \n"+
                 "Ingrese un nombre valido :","red");
                 inputF = in.nextLine().toLowerCase();
                 
