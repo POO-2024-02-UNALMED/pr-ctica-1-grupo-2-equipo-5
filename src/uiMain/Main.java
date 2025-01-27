@@ -655,7 +655,7 @@ public class Main {
 
 
             
-            customPrint("Funcion seleccionada: \n\n"+Obra.imprimirObra(Obra.buscarObra(inputF)));
+            customPrint("Obra seleccionada: \n\n"+Obra.imprimirObra(Obra.buscarObra(inputF)));
             
             
             
