@@ -25,7 +25,7 @@ public class Teatro implements Serializable{
     public static List<Director> directors = new ArrayList<Director>(); //lista que almacenará todos los actores creados
     
     //obras
-    public static ArrayList<Obra> obras=new ArrayList<>();
+    public static ArrayList<Obra> obras = new ArrayList<>();
     public static ArrayList<Obra> estadoCriticoS;
 
     //clientes
@@ -38,11 +38,5 @@ public class Teatro implements Serializable{
 
     //tiquetes
     private static ArrayList <Tiquete> tiquetes=new ArrayList<>();
-    
-    //
-
-
-
-
 
 }

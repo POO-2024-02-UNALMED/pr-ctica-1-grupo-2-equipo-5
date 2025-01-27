@@ -368,7 +368,7 @@ public class Obra {
     
         }
     public static String imprimirObra(Obra obra){
-            String string = String.format("%30s %15s %10s %20s",obra.getNombre(),obra.getGenero(),obra.getDuracionFormato());
+            String string = String.format("%30s %20s %20s %20s",obra.getNombre(),obra.getGenero(),obra.getDuracionFormato(),String.format("$%,.2f",precioObra(obra.nombre))+"\n");
             return string;
         }
         
