@@ -2683,159 +2683,322 @@ public class Main {
 
         //PRIMERA INTERACCIÓN
 
-
+        byte[] cuatro = {1,2,3,4};
         byte[] dos = {1,2};
 
         customPrint("Bienvenido a la gestión de clases.", "blue");
         Thread.sleep(2000);
-        long idArtista = longAsk("Ingrese el ID del artista:");
-        
-        Artista artista = Artista.buscarArtistaPorId(idArtista);
-        
-        if (artista == null) {
-            customPrint("Artista no encontrado.", "red");
-            Thread.sleep(1000);
-            byte crearArtista = ask("¿Desea crear un nuevo Artista?\n" + "1. Sí\n" + "2. No", new byte[]{1, 2}, "");
-        
-            switch (crearArtista) {
-                case 1:
-                    String nombreArtista = ask("Ingrese el nombre del nuevo artista:");
-                    String tipoArtista = ask("Ingrese el tipo de artista (director/actor)");
-        
-                    if (tipoArtista.equals("director")) {
-                        // Crear un nuevo director
-                        new Director(nombreArtista, idArtista);
-                        customPrint("Nuevo director agregado: " + nombreArtista + " con ID " + idArtista, "green");
-                        customPrint("Recuerde que los directores no reciben clases.", "yellow");
-                        return; // Salir del flujo de clases
-                    } else if (tipoArtista.equals("actor")) {
-                        // Crear un nuevo actor
-                        Actor nuevoActor = new Actor(nombreArtista, idArtista);
 
-                        customPrint("Nuevo actor agregado: " + nombreArtista + " con ID " + idArtista, "green");
-                        artista = nuevoActor; // Asignar al artista actual
-                    } else {
-                        customPrint("Tipo de artista no válido. Debe ser 'director' o 'actor'.", "red");
-                        return; // Salir si el tipo es inválido
-                    }
-                    break;
-        
-                case 2:
-                    customPrint("Finalizando gestión de clases.", "blue");
-                    return; // Salir si no desea crear un nuevo artista
-            }
-        } else {
-            customPrint("El actor ya existe en nuestra base de datos", "green");
-            Thread.sleep(1500);
-        }
-        
-        if (((Actor)artista).sigueIgual()) {
-            customPrint("El actor no tiene calificaciones. Inicializando calificaciones...");  
-            Thread.sleep(2000);
+        boolean continuar = true;
 
-            // Llamar al método casting() para inicializar calificaciones de calificadores
-            boolean resultado = Empleado.casting(artista, Empleado.getTipoProfesor());
-            if (resultado == false){
-                customPrint("No hay profesores disponibles para inicializar las calificaciones del artista", "red");
-            }
-            else if(resultado == true) {
-                
-                // Seleccionar un profesor aleatorio
-                Profesor profesorAsignado = (Profesor) Empleado.getTipoProfesor().get((int) (Math.random() * Empleado.getTipoProfesor().size()));
-                
-                // Mostrar quién inicializó las calificaciones
-                customPrint("El/la profesor/a " + profesorAsignado.getNombre() + " inicializó las calificaciones de el actor " + artista.getNombre() + ".");
-            }
-        }
+        while (continuar) {
 
-        // Inicializar calificaciones del público (simuladas aleatoriamente)
-        artista.inicializarCalificacionesPublico(artista);
-        Thread.sleep(2000);
+        int queDeseaHacer = ask("¿Que desea hacer?\n" + "1. Gestionar artistas\n" + "2. Ver obras en estado crítico del teatro\n"
+         + "3. Programar una clase\n" + "4. Salir", cuatro, "blue");
+
         
-        // Mostrar las calificaciones del artista, sea o no sea nuevo
-        customPrint("Calificaciones del artista: " + artista.getNombre());
-        Thread.sleep(2000);
-        if (artista.getCalificaciones() != null) {
-            customPrint("Calificaciones de calificadores: " + ((Actor)artista).getCalificacionesAptitudes());
-            Thread.sleep(2000);
-        }
-        customPrint("Calificaciones del público: " + artista.getCalificacionesPublico());
-        Thread.sleep(3500);
+        switch (queDeseaHacer) { //GESTIONAR ARTISTAS
+            case 1:
 
-        //Se enseñan obras en "Estado Crítico"
-        ArrayList<Obra> obrasCritics = Obra.mostrarObrasCriticas();
-        // Mostrar todas las obras críticas
-        if (obrasCritics.isEmpty()) {
-            customPrint("No hay obras en estado crítico en el teatro.", "yellow");
-        } else {
-            customPrint("Obras en estado crítico del teatro:", "red");
-            Thread.sleep(3000);
-            for (Obra obra : obrasCritics) {
-                customPrint("- '" + obra.getNombre() + "' (Promedio de calificaciones: " + obra.promedioCalificacion() + ")");
-    
-                // Revisar aspectos críticos y las calificaciones de los actores
-                for (Aptitud aspecto : obra.getPapeles()) { // Obtenemos cada aptitud crítica de la obra
-                    boolean encontrado = false;
-                    for (Actor actor : obra.getReparto()) { // Revisamos cada actor en el reparto
-                        double calificacion = actor.getCalificacionPorAptitud(aspecto);
-                        if (calificacion != -1 && calificacion < 3.0) { // Si la calificación es baja
-                            customPrint("El aspecto '" + aspecto + "' tiene una calificación baja (" + calificacion + ").", "red");
-                            Thread.sleep(1500);
-                            customPrint("Notificando al actor: " + actor.getNombre());
-                            encontrado = true;
-                            break;
+            if (Artista.getArtistas().size() != 0) {
+                customPrint("Estos son los artistas que ya existen en nuestra base de datos");
+                StringBuilder artistas = new StringBuilder();
+                for (Artista artista : Artista.getArtistas()) {
+                    if (Actor.getActors().contains(artista)) {
+                        String lineaArtista = "- Actor " + artista.getNombre() + " con ID " + artista.getId(); 
+                        if (lineaArtista.length() > LARGO_LINEAS) {
+                            lineaArtista = lineaArtista.substring(0, LARGO_LINEAS - 3) + "..."; // Truncar si es necesario
                         }
+                        artistas.append(lineaArtista).append("\n");
                     }
-                    if (!encontrado) {
-                        customPrint("No hay actores con calificaciones bajas en el aspecto '" + aspecto + "'.", "yellow");
+                    if (Director.getDirectors().contains(artista)) {
+                        String lineaArtista = "- Director " + artista.getNombre() + " con ID " + artista.getId(); 
+                        if (lineaArtista.length() > LARGO_LINEAS) {
+                            lineaArtista = lineaArtista.substring(0, LARGO_LINEAS - 3) + "..."; // Truncar si es necesario
+                        }
+                        artistas.append(lineaArtista).append("\n");
                     }
                 }
-                Thread.sleep(1500);
+                customPrint(artistas.toString());
             }
-        }
+            Thread.sleep(2000);
+            Thread.sleep(1500);
+            long idArtista = longAsk("Ingrese el ID del artista del cual desea conocer su información:\n" + "\n" + "(Puede escribir el ID de un actor o Director que no exista para inicializarlo)");
+            Artista artista = Artista.buscarArtistaPorId(idArtista);
+        
+            if (artista == null) {
+                customPrint("Artista no encontrado.", "red");
+                Thread.sleep(2000);
+                byte crearArtista = ask("¿Desea crear un nuevo Artista con este ID?\n" + "1. Sí\n" + "2. No", new byte[]{1, 2}, "");
+            
+                switch (crearArtista) {
+                    case 1:
+                        String nombreArtista = ask("Ingrese el nombre del nuevo artista:");
+                        Thread.sleep(1000);
+                        String tipoArtista = ask("Ingrese el tipo de artista (director/actor)");
+                        Thread.sleep(1000);
+            
+                        if (tipoArtista.equals("director")) {
+                            // Crear un nuevo director
+                            new Director(nombreArtista, idArtista);
+                            customPrint("Nuevo director agregado: " + nombreArtista + " con ID " + idArtista, "green");
+                            Thread.sleep(2000);
+                            customPrint("Recuerde que los directores no reciben clases.", "yellow");
+                        } else if (tipoArtista.equals("actor")) {
+                            // Crear un nuevo actor
+                            Actor nuevoActor = new Actor(nombreArtista, idArtista);
+                            customPrint("Nuevo actor agregado: " + nombreArtista + " con ID " + idArtista, "green");
+                            artista = nuevoActor; // Asignar al artista actual
+                            Thread.sleep(2000);
+                        } else {
+                            customPrint("Tipo de artista no válido. Debe ser 'director' o 'actor'.", "red");
+                            return; // Salir si el tipo es inválido
+                        }
+                        break;
+            
+                    case 2:
+                        break; // Salir si no desea crear un nuevo artista
+                }
+            } else {
+                customPrint("El actor ya existe en nuestra base de datos", "green");
+                Thread.sleep(2000);
+            };
 
+            if (artista != null) {
+                if (((Actor)artista).sigueIgual()) {
+                    customPrint("El actor no tiene calificaciones. Inicializando calificaciones...");  
+                    Thread.sleep(2000);
+        
+                    // Llamar al método casting() para inicializar calificaciones de calificadores
+                    boolean resultado = Empleado.casting(artista, Empleado.getTipoProfesor());
+                    if (resultado == false){
+                        customPrint("No hay profesores disponibles para inicializar las calificaciones del actor", "red");
+                    }
+                    else if(resultado == true) {
+                        
+                        // Seleccionar un profesor aleatorio
+                        Profesor profesorAsignado = (Profesor) Empleado.getTipoProfesor().get((int) (Math.random() * Empleado.getTipoProfesor().size()));
+                        
+                        // Mostrar quién inicializó las calificaciones
+                        customPrint("El/la profesor/a " + profesorAsignado.getNombre() + " es el/la responsable de inicializar las calificaciones\n" + "del actor " + artista.getNombre() + ".");
+                    }
+                    Thread.sleep(3000);
+                }
+        
+                // Inicializar calificaciones del público (simuladas aleatoriamente)
+
+                if (artista.getCalificacionesPublico().size()==0){
+                    artista.inicializarCalificacionesPublico(artista);
+                Thread.sleep(2000);
+                }
+                
+                // Mostrar las calificaciones del artista, sea o no sea nuevo
+                customPrint("Estas son las calificaciones del artista: " + artista.getNombre());
+                Thread.sleep(2000);
+
+                StringBuilder cal = new StringBuilder();
+
+                if (artista.getCalificaciones() != null) {
+                    String showCalificaciones = "Calificaciones de calificadores: " + ((Actor)artista).getCalificacionesAptitudes(); 
+                    if (showCalificaciones.length() > LARGO_LINEAS) {
+                        showCalificaciones = showCalificaciones.substring(0, LARGO_LINEAS - 3) + "..."; // Truncar si es necesario
+                    }
+                    cal.append(showCalificaciones).append("\n");
+                }
+                String showCalificaciones = "Calificaciones del público: " + artista.getCalificacionesPublico(); 
+                    if (showCalificaciones.length() > LARGO_LINEAS) {
+                        showCalificaciones = showCalificaciones.substring(0, LARGO_LINEAS - 3) + "..."; // Truncar si es necesario
+                    }
+                    cal.append(showCalificaciones).append("\n");
+
+                customPrint(cal.toString());
+                Thread.sleep(4500);
+
+                byte areas = ask("¿Desea ver las áreas que puede mejorar el artista según sus calificiaciones?\n" + "1. Sí\n" + "2. No\n", dos, "blue");
+                switch (areas) {
+                    case 1:
+                        
+                    if (artista instanceof Actor) {
+                        Actor actor = (Actor) artista;
+                        Thread.sleep(1000);
+                        // Mostrar áreas de mejora recomendadas
+                        List<Aptitud> areasDeMejora = actor.obtenerAreasDeMejora();
+                        customPrint("Áreas recomendadas para mejorar:", "yellow");
+                        Thread.sleep(2000);
+                        StringBuilder areasMejora = new StringBuilder();
+            
+                        for (int i = 0; i < Math.min(3, areasDeMejora.size()); i++) {
+                            Aptitud aptitud = areasDeMejora.get(i);
+                            double calificacion = actor.getCalificacionPorAptitud(aptitud);
+            
+                            // Formato para la columna: "- {Aptitud} (Calificación: {calificación})"
+                            String linea = "- " + aptitud + " (Calificación: " + String.format("%.1f", calificacion) + ")";
+            
+                            // Verificar si agregar esta línea excede el límite de caracteres; si no, agregar nueva línea
+                            if (linea.length() > LARGO_LINEAS) {
+                                linea = linea.substring(0, LARGO_LINEAS - 3) + "..."; // Truncar si es necesario
+                            }
+            
+                            areasMejora.append(linea).append("\n"); // Agregar la línea con salto
+                        }
+            
+                        // Imprimir usando customPrint con el formato final en columnas
+                        customPrint(areasMejora.toString(), "yellow");
+
+                        Thread.sleep(1500);
+
+                        // Preguntar si quiere seguir la recomendación
+                        byte respuesta = ask("¿Desea programar una clase basada en las áreas recomendadas?\n1. Sí\n2. No", dos, "");
+                        Aptitud areaSeleccionada = null;
+                    
+                        if (respuesta == 1) {
+                            // Seleccionar el área de mejora más baja recomendada
+                            areaSeleccionada = areasDeMejora.get(0);
+
+                            // Determinar el nivel de la clase
+                            double calificacionActual = actor.getCalificacionPorAptitud(areaSeleccionada);
+                            String nivelClase;
+                            if (calificacionActual < 3.0) {
+                                nivelClase = "Introducción";
+                            } else if (calificacionActual < 4.0) {
+                                nivelClase = "Profundización";
+                            } else {
+                                nivelClase = "Perfeccionamiento";
+                            }
+
+                            customPrint("Se seleccionó, automáticamente, el área '" + areaSeleccionada + "' con nivel de clase: " + nivelClase);
+                            Thread.sleep(1000);
+
+                            // Uso del método
+                            LocalDateTime inicio = solicitarHorario("inicio");
+                            LocalDateTime fin = solicitarHorario("fin");
+
+                            // Validar que la hora de fin sea posterior a la de inicio
+                            if (fin.isBefore(inicio)) {
+                                customPrint("El horario de fin debe ser posterior al horario de inicio. Intente nuevamente.", "red");
+                                inicio = solicitarHorario("inicio");
+                                fin = solicitarHorario("fin");
+                            }
+                        
+                            // Buscar una sala disponible en el horario deseado
+                            Sala salaAsignada = null;
+                            for (Sala sala : Sala.getSalas()) {
+                                if (sala.getAseado() && sala.isDisponible(inicio, fin)) {
+                                    salaAsignada = sala;
+                                    break;
+                                }
+                            }
+                        
+                            if (salaAsignada == null) {
+                                customPrint("No hay salas disponibles en el horario deseado o no están limpias.", "red");
+                                return;
+                            }
+                        
+                            customPrint("Sala asignada: " + salaAsignada.getNumeroSala());
+                        
+                            // Asignar el horario a la sala
+                            ArrayList<LocalDateTime> nuevoHorario = new ArrayList<>();
+                            nuevoHorario.add(inicio);
+                            nuevoHorario.add(fin);
+                            salaAsignada.anadirHorario(nuevoHorario);
+                        
+                            // Buscar un profesor capacitado y disponible (aleatoriamente)
+                            Profesor profesorAsignado = null;
+                            for (Empleado empleado : Empleado.getTipoProfesor()) {
+                                if (empleado instanceof Profesor) {
+                                    Profesor profesor = (Profesor) empleado;
+                        
+                                    // Simular disponibilidad aleatoria
+                                    boolean disponible = Math.random() > 0.5; // 50% de probabilidad de estar disponible
+                                    if (profesor.tieneEspecializacion(areaSeleccionada) && disponible) {
+                                        profesorAsignado = profesor;
+                                        break;
+                                    }
+                                }
+                            }
+                        
+                            if (profesorAsignado == null) {
+                                customPrint("No hay profesores disponibles con especialización en el área seleccionada o están ocupados.", "red");
+                                return;
+                            }
+                        
+                            customPrint("Profesor asignado: " + profesorAsignado.getNombre());
+                        
+                            // Clase programada exitosamente
+                            customPrint("Clase programada exitosamente en el área '" + areaSeleccionada + "' con el profesor '" 
+                                + profesorAsignado.getNombre() + "' en la sala '" + salaAsignada.getNumeroSala() + "'.", "green");
+
+                        }
+                    }
+               
+                break;
+            
+                    case 2:
+
+                        break;
+                }
+            }
+        
+            break;
+            
+            
+            
+        
+            case 2: //OBRAS CRÍTICAS
+            
+            ArrayList<Obra> obrasCritics = Obra.mostrarObrasCriticas();
+            // Mostrar todas las obras críticas
+            if (obrasCritics.isEmpty()) {
+                customPrint("No hay obras en estado crítico en el teatro.", "yellow");
+            } else {
+                customPrint("Obras en estado crítico del teatro:", "red");
+                Thread.sleep(3000);
+                for (Obra obra : obrasCritics) {
+                    customPrint("- '" + obra.getNombre() + "' (Promedio de calificaciones: " + obra.promedioCalificacion() + ")");
+        
+                    // Revisar aspectos críticos y las calificaciones de los actores
+                    for (Aptitud aspecto : obra.getPapeles()) { // Obtenemos cada aptitud crítica de la obra
+                        boolean encontrado = false;
+                        for (Actor actor : obra.getReparto()) { // Revisamos cada actor en el reparto
+                            double calificacion = actor.getCalificacionPorAptitud(aspecto);
+                            if (calificacion != -1 && calificacion < 3.0) { // Si la calificación es baja
+                                customPrint("El aspecto '" + aspecto + "' tiene una calificación baja (" + calificacion + ").", "red");
+                                Thread.sleep(1500);
+                                customPrint("Notificando al actor: " + actor.getNombre());
+                                encontrado = true;
+                                break;
+                            }
+                        }
+                        if (!encontrado) {
+                            customPrint("No hay actores con calificaciones bajas en el aspecto '" + aspecto + "'.", "yellow");
+                        }
+                    }
+                    Thread.sleep(1500);
+                }
+            };
+        
+
+            case 3:
+                break;
+
+            case 4:
+            // Salir del programa
+            customPrint("Saliendo de la gestión de clases. ¡Hasta pronto!", "blue");
+            continuar = false; 
+            break;
+        }
+    }
+
+        
+        
+    /* 
         //SEGUNDA INTERACCION
 
 
         // Si el artista no es un actor, finalizar el flujo
-        if (artista instanceof Actor) {
-            Actor actor = (Actor) artista;
-            Thread.sleep(3000);
-            // Mostrar áreas de mejora recomendadas
-            List<Aptitud> areasDeMejora = actor.obtenerAreasDeMejora();
-            customPrint("Áreas recomendadas para mejorar:", "yellow");
-            Thread.sleep(2000);
-            StringBuilder areas = new StringBuilder();
-
-            for (int i = 0; i < Math.min(3, areasDeMejora.size()); i++) {
-                Aptitud aptitud = areasDeMejora.get(i);
-                double calificacion = actor.getCalificacionPorAptitud(aptitud);
-
-                // Formato para la columna: "- {Aptitud} (Calificación: {calificación})"
-                String linea = "- " + aptitud + " (Calificación: " + String.format("%.1f", calificacion) + ")";
-
-                // Verificar si agregar esta línea excede el límite de caracteres; si no, agregar nueva línea
-                if (linea.length() > LARGO_LINEAS) {
-                    linea = linea.substring(0, LARGO_LINEAS - 3) + "..."; // Truncar si es necesario
-                }
-
-                areas.append(linea).append("\n"); // Agregar la línea con salto
-            }
-
-            // Imprimir usando customPrint con el formato final en columnas
-            customPrint(areas.toString(), "yellow");
-
-            Thread.sleep(1500);
-
-            // Preguntar si quiere seguir la recomendación
-            byte respuesta = ask("¿Desea programar una clase basada en las áreas recomendadas?\n1. Sí\n2. No", dos, "");
-            Aptitud areaSeleccionada = null;
         
-            if (respuesta == 1) {
-                // Seleccionar el área de mejora más baja recomendada
-                areaSeleccionada = areasDeMejora.get(0);
-                customPrint("Se seleccionó el área '" + areaSeleccionada + "' automáticamente.");
-                Thread.sleep(1000);
+
+            
             } else {
                 byte respuesta1 = ask("¿Desea programar otra clase?\n1. Sí\n2. No", dos, "");
                 if (respuesta1 == 1){
@@ -3087,6 +3250,6 @@ public class Main {
             }
         } else {
             customPrint("Solo los actores pueden recibir clases.", "red");
-        }
+        }*/
     }// Fin del método
 }
