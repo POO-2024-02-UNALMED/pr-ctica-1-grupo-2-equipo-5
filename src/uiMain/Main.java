@@ -54,9 +54,7 @@ public class Main {
     public static void wait(int millis){
         try {
             Thread.sleep(millis);
-        } catch (Exception e) {
-            customPrint("La pausa fue interrumpida.");
-        }
+        } catch (Exception e) {}
 
     }
 
@@ -2021,11 +2019,17 @@ public class Main {
                             }
                         });
                         Persona.setHorario(localTime);
+                        Persona.setDisponible(false);
                     }
                 }
                 String msgBase = "";
                 for(Empleado Persona : Empleado.getTipoSeguridad()){
-                    msgBase = msgBase + String.format("%-10s %10s", Persona.getNombre() + " cuidará: ", Persona.getHorario().size() + " funcion/es\n");
+                    if(Persona.getHorario().size() == 1){
+                        msgBase = msgBase + String.format("%-10s %10s", Persona.getNombre() + " Cuidará: ", Persona.getHorario().size() + " Funcion\n");
+                    }
+                    else if(Persona.getHorario().size() > 1 || Persona.getHorario().size() == 0){
+                        msgBase = msgBase + String.format("%-10s %10s", Persona.getNombre() + " Cuidará: ", Persona.getHorario().size() + " Funciones\n");
+                    }            
                 }
                 customPrint(msgBase);
             }
@@ -2033,21 +2037,22 @@ public class Main {
                 ArrayList<Funcion> FuncionPorDuracion = Funcion.getFuncionesCreadas();
                 Collections.sort(FuncionPorDuracion, new Comparator<Funcion>() {
                     public int compare(Funcion f1, Funcion f2){
+                        LocalDateTime inicioF1 = f1.getHorario().get(0);
+                        LocalDateTime inicioF2 = f2.getHorario().get(0);
+                        
+                        int fechaCompare = inicioF2.compareTo(inicioF1);
+                        if(fechaCompare != 0){
+                            return fechaCompare;
+                        }
                         double duracionF1 = Duration.between(f1.getHorario().get(0), f1.getHorario().get(1)).toMinutes()/60.0;
                         double duracionF2 = Duration.between(f2.getHorario().get(0), f2.getHorario().get(1)).toMinutes()/60.0;
                         return Double.compare(duracionF2, duracionF1);
                     }
                 });
+
                 funcionesDisponibles = FuncionPorDuracion;
-                try{
-                    funcionesDisponibles.sort((f1, f2) ->
-                    f1.getHorario().get(0).compareTo(f2.getHorario().get(0))
-                    );
-                }
-                catch(IndexOutOfBoundsException e){
-                    System.out.println("no hay horarios para organizar");
-                }
                 //Evaluacion Normal, asignacion de trabajo equitativo
+                int funcionesSinHorarios = 0;
                 for(Empleado Persona : Empleado.getTipoSeguridad()){
                     int asignadas = 0;
                     ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
@@ -2081,9 +2086,9 @@ public class Main {
                                 }
                             }
                             else{
+                                funcionesSinHorarios += 1;
                                 funcionesDisponibles.remove(i);
                                 i--;                        
-                                customPrint("No hay horarios para aplicar", "red");
                             }
                         }
                         else{
@@ -2098,9 +2103,14 @@ public class Main {
                     Persona.setHorario(localTime);
                     Persona.setDisponible(false);
                 }
+                if(funcionesSinHorarios == 1){
+                    customPrint("Hay 1 Funcion sin horarios", "red");
+                }
+                else if(funcionesSinHorarios > 1){
+                    customPrint("Hay " + funcionesSinHorarios + " Funciones sin horarios", "red");
+                }
                 //EVALUACION DE SALAS SIN TRABAJADOR
                 if(funcionesDisponibles.size() != 0 ){
-                    System.out.println("funciones que quedaron libres");
                     for(Empleado Persona : Empleado.getTipoSeguridad()){
                         //Segunda iteracion
                         ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
@@ -2157,7 +2167,12 @@ public class Main {
                 }
                 String msgBase = "";
                 for(Empleado Persona : Empleado.getTipoSeguridad()){
-                    msgBase = String.format("%-10s %10s", Persona.getNombre() + " cuidará: ", Persona.getHorario().size() + " funcion/es\n");
+                    if(Persona.getHorario().size() == 1){
+                        msgBase = msgBase + String.format("%-10s %10s", Persona.getNombre() + " Cuidará: ", Persona.getHorario().size() + " Funcion\n");
+                    }
+                    else if(Persona.getHorario().size() > 1 || Persona.getHorario().size() == 0){
+                        msgBase = msgBase + String.format("%-10s %10s", Persona.getNombre() + " Cuidará: ", Persona.getHorario().size() + " Funciones\n");
+                    }                
                 }
                 customPrint(msgBase);
             }
@@ -2183,6 +2198,12 @@ public class Main {
         int totalTrabajadores_A = Empleado.getTipoAseador().size();
         int cant_a_limpiar = totalFunciones/totalTrabajadores_A;
         ArrayList<Funcion> funcionesLimpiadas = new ArrayList<>(Funcion.getFuncionesCreadas()); 
+        try{
+            funcionesLimpiadas.sort((f1, f2) ->
+            f1.getHorario().get(0).compareTo(f2.getHorario().get(0))
+            );
+        }
+        catch(Exception e){}
         if(totalSalas != 0 && totalTrabajadores_A != 0){
             for(Empleado Persona : Empleado.getTipoAseador()){
                 if(Persona.getMetaSemanal() == base){
@@ -2191,6 +2212,7 @@ public class Main {
             }
             //En caso de que todos sean principiantes
             if(cant_trabajadores_principiantes == totalTrabajadores_A){
+                int funcionesSinHorarios = 0;
                 for(Empleado Persona : Empleado.getTipoAseador()){
                     //ASIGNACION EQUITATIVA DE TRABAJO
                     int asignadas = 0;
@@ -2222,10 +2244,8 @@ public class Main {
                                             }
                                         }
                                         else{
-                                            ArrayList<LocalDateTime> horarioSiguiente = funcionesLimpiadas.get(i+1).getHorario();
-                                            LocalDateTime inicioSiguiente = horarioSiguiente.get(0);
-                                            //Verificar el que el fin nuevo sea antes de la siguiente funcion y el inicio sea despues del horario ya existente
-                                           if(!(finNuevo.isBefore(inicioSiguiente) && inicioNuevo.isAfter(finActual))){
+                                            //Verificar que el inicio sea despues del horario ya existente
+                                           if(!(inicioNuevo.isAfter(finActual))){
                                             //Como no se cumple se tiene que pasar a revisar la siguiente funcion
                                                 horarioValido = false;
                                                 break;
@@ -2233,7 +2253,15 @@ public class Main {
                                         }
                                     }
                                     if(horarioValido){
-
+                                        asignadas += 1;
+                                        ArrayList<LocalDateTime> sublista = new ArrayList<>();
+                                        sublista.add(inicioNuevo);
+                                        sublista.add(finNuevo);
+                                        localTime.add(sublista);
+                                        Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                        funcionesLimpiadas.remove(i);
+                                        Funciones.getSala().setAseado(true);
+                                        i--;
                                     }
                                 }
                                 else{
@@ -2252,11 +2280,13 @@ public class Main {
                                     Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
                                     Funciones.getSala().setAseado(true);
                                     funcionesLimpiadas.remove(i);
+                                    i--;
                                 }
                             }
                             else{
+                                funcionesSinHorarios += 1;
                                 funcionesLimpiadas.remove(i);
-                                customPrint("No hay horario para aplicar");
+                                i--;
                             }
                         }
                         else{
@@ -2271,9 +2301,151 @@ public class Main {
                     Persona.setHorario(localTime);
                     //Asignacion De las libres
                 }
+                if(funcionesSinHorarios == 1){
+                    customPrint("Hay 1 Funcion sin horarios", "red");
+                }
+                else if(funcionesSinHorarios > 1){
+                    customPrint("Hay " + funcionesSinHorarios + " Funciones sin horarios, invalidas para limpiar", "red");
+                }
+
+                String msgBase = "";
+                for(Empleado Persona : Empleado.getTipoSeguridad()){
+                    if(Persona.getHorario().size() == 1){
+                        msgBase = msgBase + String.format("%-10s %10s", Persona.getNombre() + " Limpiará: ", Persona.getHorario().size() + " vez\n");
+                    }
+                    else if(Persona.getHorario().size() > 1 || Persona.getHorario().size() == 0){
+                        msgBase = msgBase + String.format("%-10s %10s", Persona.getNombre() + " Limpiará: ", Persona.getHorario().size() + " veces\n");
+                    }
+                }
+                customPrint(msgBase);
             }
             else{
+                ArrayList<Funcion> funcionesPorMetros = new ArrayList<>(Funcion.getFuncionesCreadas());
+                Collections.sort(funcionesPorMetros, new Comparator<Funcion>() {
+                    public int compare(Funcion f1, Funcion f2){
+                        LocalDateTime fecha1 = f1.getHorario().get(0);
+                        LocalDateTime fecha2 = f2.getHorario().get(0);
 
+                        int fechaCompare = fecha2.toLocalDate().compareTo(fecha1.toLocalDate());
+
+                        if(fechaCompare != 0){
+                            return fechaCompare;
+                        }
+                        double metrosF1 = f1.getSala().getMetrosCuadrados();
+                        double metrosF2 = f2.getSala().getMetrosCuadrados();
+
+                        return Double.compare(metrosF2, metrosF1);
+                    }
+                });
+                funcionesLimpiadas = funcionesPorMetros;
+                
+                int funcionesSinHorarios = 0;
+                for(Empleado Persona : Empleado.getTipoAseador()){
+                    //ASIGNACION EQUITATIVA DE TRABAJO
+                    int asignadas = 0;
+                    ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
+                    for(int i = 0; i  < funcionesLimpiadas.size(); i++){
+                        if(asignadas < cant_a_limpiar){
+                            Funcion Funciones = funcionesLimpiadas.get(i);
+                            //Verificar si la funcion tiene horario
+                            if(!Funciones.getHorario().isEmpty()){
+                                if(localTime.size() != 0){
+                                    boolean horarioValido = true;
+                                    LocalDateTime inicioNuevo = Funciones.getHorario().get(1);
+                                    LocalDateTime finNuevo = inicioNuevo.plusMinutes(15);
+                                    for(int j = 0; j < localTime.size(); j++){
+                                        //Se obtiene el horario en el q se itera
+                                        ArrayList<LocalDateTime> horarioActual = localTime.get(j);
+                                        //Se accede al ultimo indice de ese horario q es el fin 
+                                        LocalDateTime finActual = horarioActual.get(1);
+
+                                        //Verificar si hay un sublista despues
+                                        if(j + 1 < localTime.size()){
+                                            ArrayList<LocalDateTime> horarioSiguiente = localTime.get(j+1);
+                                            LocalDateTime inicioSiguiente = horarioSiguiente.get(0);
+
+                                            //Verificar si el horario nuevo no se solapa
+                                            if(!(inicioNuevo.isAfter(finActual) && finNuevo.isBefore(inicioSiguiente))){
+                                                horarioValido = false;
+                                                break;
+                                            }
+                                        }
+                                        else{
+                                            //Verificar que el inicio sea despues del horario ya existente
+                                           if(!(inicioNuevo.isAfter(finActual))){
+                                            //Como no se cumple se tiene que pasar a revisar la siguiente funcion
+                                                horarioValido = false;
+                                                break;
+                                           }
+                                        }
+                                    }
+                                    if(horarioValido){
+                                        asignadas += 1;
+                                        ArrayList<LocalDateTime> sublista = new ArrayList<>();
+                                        sublista.add(inicioNuevo);
+                                        sublista.add(finNuevo);
+                                        localTime.add(sublista);
+                                        Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                        funcionesLimpiadas.remove(i);
+                                        Funciones.getSala().setAseado(true);
+                                        i--;
+                                    }
+                                }
+                                else{
+                                    //Se asigna la hora de fin de la funcion como el inicio del Empleado
+                                    asignadas = asignadas + 1;
+                                    ArrayList<LocalDateTime> sublista = new ArrayList<>();
+                                    LocalDateTime finFuncion = Funciones.getHorario().get(1);
+                                    //Se suma 15 minutos a la hora de fin de la funcion
+                                    LocalDateTime finEmpleado = finFuncion.plusMinutes(15);
+                                    //Se almacenan en la sublista
+                                    sublista.add(finFuncion);
+                                    sublista.add(finEmpleado);
+                                    // se agregan al localTime
+                                    localTime.add(sublista);
+                                    funcionesLimpiadas.remove(i);
+                                    Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                    Funciones.getSala().setAseado(true);
+                                    funcionesLimpiadas.remove(i);
+                                    i--;
+                                }
+                            }
+                            else{
+                                funcionesSinHorarios += 1;
+                                funcionesLimpiadas.remove(i);
+                                i--;
+                            }
+                        }
+                        else{
+                            break;
+                        }
+                    }
+                    Collections.sort(localTime, new Comparator<ArrayList<LocalDateTime>>(){
+                        public int compare(ArrayList<LocalDateTime> horario1, ArrayList<LocalDateTime> horario2){
+                            return horario1.get(0).compareTo(horario2.get(0));
+                        }
+                    });
+                    Persona.setHorario(localTime);
+                    //Asignacion De las libres
+                }
+                if(funcionesSinHorarios == 1){
+                    customPrint("Hay 1 Funcion sin horarios", "red");
+                }
+                else if(funcionesSinHorarios > 1){
+                    customPrint("Hay " + funcionesSinHorarios + " Funciones sin horarios, invalidas para limpiar", "red");
+                }
+                //Asignacion trabajos restantes
+
+                String msgBase = "";
+                for(Empleado Persona : Empleado.getTipoSeguridad()){
+                    if(Persona.getHorario().size() == 1){
+                        msgBase = msgBase + String.format("%-10s %10s", Persona.getNombre() + " Limpiará: ", Persona.getHorario().size() + " vez\n");
+                    }
+                    else if(Persona.getHorario().size() > 1 || Persona.getHorario().size() == 0){
+                        msgBase = msgBase + String.format("%-10s %10s", Persona.getNombre() + " Limpiará: ", Persona.getHorario().size() + " veces\n");
+                    }
+                }
+                customPrint(msgBase);
             }
 
         }
@@ -2311,6 +2483,7 @@ public class Main {
         for(Empleado Persona : Empleado.getTipoSeguridad()){
             if(Persona.getMetaSemanal() == base){
                 cant_trabajadores_principiantes += 1;
+                Persona.setDisponible(true);
             }
         }
         if(cant_trabajadores_principiantes == Empleado.getTipoSeguridad().size()){;
@@ -2325,7 +2498,6 @@ public class Main {
                         }
                     else{Persona.getTrabajoCorrecto().add(false);}
                 }
-                Persona.setDisponible(true);
             }
         }
         else{
@@ -2368,6 +2540,7 @@ public class Main {
         for(Empleado Persona : Empleado.getTipoAseador()){
             if(Persona.getMetaSemanal() == base){
                 cant_trabajadores_principiantes += 1;
+                Persona.setDisponible(true);
             }
         }
         if(cant_trabajadores_principiantes == Empleado.getTipoAseador().size()){
@@ -2639,13 +2812,21 @@ public class Main {
                         }
                     }
                 }
+                //Reseteo de Trabajo
+                for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                    Persona.setTrabajos(new ArrayList<>());
+                    Persona.setTrabajoCorrecto(new ArrayList<>());
+                    Persona.setTrabajoRealizado(0);
+                    Persona.setPuntosPositivos(0);
+                    
+                }
                 break;
             case 2:
                 break;
         }
     
         //Planes de mejora
-        //Despedir si meta es negatica
+        //Despedir si meta es negativa
         ArrayList<Empleado> NuevaLista = Empleado.getEmpleadosPorRendimiento();
         ArrayList<Empleado> Despedidos = new ArrayList<>();
         String msgBase = "";
@@ -2692,18 +2873,19 @@ public class Main {
 
         //PRIMERA INTERACCIÓN
 
+        byte[] inicioFun = {1,2,3,0};
         byte[] cuatro = {1,2,3,4};
         byte[] dos = {1,2};
 
         customPrint("Bienvenido a la gestión de clases.", "blue");
-        Thread.sleep(2000);
+        wait(2000);
 
         boolean continuar = true;
 
         while (continuar) {
 
         int queDeseaHacer = ask("¿Que desea hacer?\n" + "1. Gestionar artistas\n" + "2. Ver obras en estado crítico del teatro\n"
-         + "3. Programar una clase\n" + "4. Salir", cuatro, "blue");
+         + "3. Programar una clase\n" + "0. Salir", inicioFun, "blue");
 
         
         switch (queDeseaHacer) { //GESTIONAR ARTISTAS
@@ -2730,35 +2912,34 @@ public class Main {
                 }
                 customPrint(artistas.toString());
             }
-            Thread.sleep(2000);
-            Thread.sleep(1500);
+            wait(3500);
             long idArtista = longAsk("Ingrese el ID del artista del cual desea conocer su información:\n" + "\n" + "(Puede escribir el ID de un actor o Director que no exista para inicializarlo)");
             Artista artista = Artista.buscarArtistaPorId(idArtista);
         
             if (artista == null) {
                 customPrint("Artista no encontrado.", "red");
-                Thread.sleep(2000);
+                wait(2000);
                 byte crearArtista = ask("¿Desea crear un nuevo Artista con este ID?\n" + "1. Sí\n" + "2. No", new byte[]{1, 2}, "");
             
                 switch (crearArtista) {
                     case 1:
                         String nombreArtista = ask("Ingrese el nombre del nuevo artista:");
-                        Thread.sleep(1000);
+                        wait(1000);
                         String tipoArtista = ask("Ingrese el tipo de artista (director/actor)");
-                        Thread.sleep(1000);
+                        wait(1000);
             
                         if (tipoArtista.equals("director")) {
                             // Crear un nuevo director
                             new Director(nombreArtista, idArtista);
                             customPrint("Nuevo director agregado: " + nombreArtista + " con ID " + idArtista, "green");
-                            Thread.sleep(2000);
+                            wait(2000);
                             customPrint("Recuerde que los directores no reciben clases.", "yellow");
                         } else if (tipoArtista.equals("actor")) {
                             // Crear un nuevo actor
                             Actor nuevoActor = new Actor(nombreArtista, idArtista);
                             customPrint("Nuevo actor agregado: " + nombreArtista + " con ID " + idArtista, "green");
                             artista = nuevoActor; // Asignar al artista actual
-                            Thread.sleep(2000);
+                            wait(2000);
                         } else {
                             customPrint("Tipo de artista no válido. Debe ser 'director' o 'actor'.", "red");
                             return; // Salir si el tipo es inválido
@@ -2770,13 +2951,13 @@ public class Main {
                 }
             } else {
                 customPrint("El actor ya existe en nuestra base de datos", "green");
-                Thread.sleep(2000);
+                wait(2000);
             };
 
             if (artista != null) {
                 if (((Actor)artista).sigueIgual()) {
                     customPrint("El actor no tiene calificaciones. Inicializando calificaciones...");  
-                    Thread.sleep(2000);
+                    wait(2000);
         
                     // Llamar al método casting() para inicializar calificaciones de calificadores
                     boolean resultado = Empleado.casting(artista, Empleado.getTipoProfesor());
@@ -2791,19 +2972,19 @@ public class Main {
                         // Mostrar quién inicializó las calificaciones
                         customPrint("El/la profesor/a " + profesorAsignado.getNombre() + " es el/la responsable de inicializar las calificaciones\n" + "del actor " + artista.getNombre() + ".");
                     }
-                    Thread.sleep(3000);
+                    wait(3000);
                 }
         
                 // Inicializar calificaciones del público (simuladas aleatoriamente)
 
                 if (artista.getCalificacionesPublico().size()==0){
                     artista.inicializarCalificacionesPublico(artista);
-                Thread.sleep(2000);
+                wait(2000);
                 }
                 
                 // Mostrar las calificaciones del artista, sea o no sea nuevo
                 customPrint("Estas son las calificaciones del artista: " + artista.getNombre());
-                Thread.sleep(2000);
+                wait(2000);
 
                 StringBuilder cal = new StringBuilder();
 
@@ -2821,7 +3002,7 @@ public class Main {
                     cal.append(showCalificaciones).append("\n");
 
                 customPrint(cal.toString());
-                Thread.sleep(4500);
+                wait(4500);
 
                 byte areas = ask("¿Desea ver las áreas que puede mejorar el artista según sus calificiaciones?\n" + "1. Sí\n" + "2. No\n", dos, "blue");
                 switch (areas) {
@@ -2829,11 +3010,11 @@ public class Main {
                         
                     if (artista instanceof Actor) {
                         Actor actor = (Actor) artista;
-                        Thread.sleep(1000);
+                        wait(1000);
                         // Mostrar áreas de mejora recomendadas
                         List<Aptitud> areasDeMejora = actor.obtenerAreasDeMejora();
                         customPrint("Áreas recomendadas para mejorar:", "yellow");
-                        Thread.sleep(2000);
+                        wait(2000);
                         StringBuilder areasMejora = new StringBuilder();
             
                         for (int i = 0; i < Math.min(3, areasDeMejora.size()); i++) {
@@ -2854,7 +3035,7 @@ public class Main {
                         // Imprimir usando customPrint con el formato final en columnas
                         customPrint(areasMejora.toString(), "yellow");
 
-                        Thread.sleep(1500);
+                        wait(1500);
 
                         // Preguntar si quiere seguir la recomendación
                         byte respuesta = ask("¿Desea programar una clase basada en las áreas recomendadas?\n1. Sí\n2. No", dos, "");
@@ -2876,7 +3057,7 @@ public class Main {
                             }
 
                             customPrint("Se seleccionó, automáticamente, el área '" + areaSeleccionada + "' con nivel de clase: " + nivelClase);
-                            Thread.sleep(1000);
+                            wait(1000);
 
                             // Uso del método
                             LocalDateTime inicio = solicitarHorario("inicio");
@@ -2961,7 +3142,7 @@ public class Main {
                 customPrint("No hay obras en estado crítico en el teatro.", "yellow");
             } else {
                 customPrint("Obras en estado crítico del teatro:", "red");
-                Thread.sleep(3000);
+                wait(3000);
                 for (Obra obra : obrasCritics) {
                     customPrint("- '" + obra.getNombre() + "' (Promedio de calificaciones: " + obra.promedioCalificacion() + ")");
         
@@ -2972,7 +3153,7 @@ public class Main {
                             double calificacion = actor.getCalificacionPorAptitud(aspecto);
                             if (calificacion != -1 && calificacion < 3.0) { // Si la calificación es baja
                                 customPrint("El aspecto '" + aspecto + "' tiene una calificación baja (" + calificacion + ").", "red");
-                                Thread.sleep(1500);
+                                wait(1500);
                                 customPrint("Notificando al actor: " + actor.getNombre());
                                 encontrado = true;
                                 break;
@@ -2982,7 +3163,7 @@ public class Main {
                             customPrint("No hay actores con calificaciones bajas en el aspecto '" + aspecto + "'.", "yellow");
                         }
                     }
-                    Thread.sleep(1500);
+                    wait(1500);
                 }
             };
         
@@ -2990,7 +3171,7 @@ public class Main {
             case 3:
                 break;
 
-            case 4:
+            case 0:
             // Salir del programa
             customPrint("Saliendo de la gestión de clases. ¡Hasta pronto!", "blue");
             continuar = false; 
@@ -3054,7 +3235,7 @@ public class Main {
             }
 
             customPrint("Se seleccionó el área '" + areaSeleccionada + "' con nivel de clase: " + nivelClase);
-            Thread.sleep(1000);
+            wait(1000);
 
             // Uso del método
             LocalDateTime inicio = solicitarHorario("inicio");

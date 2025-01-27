@@ -12,7 +12,6 @@ public class Sala {
     private double metrosCuadrados;
     private Boolean aseado;
     private Boolean ocupado;
-    private Empleado trabajador;
     private ArrayList<ArrayList<LocalDateTime>> horario;
     private int capacidad;
 
@@ -65,15 +64,6 @@ public class Sala {
         salas = newSalas;
     }
 
-    //Presencia trabajador
-    public Empleado getTrabajador(){
-        return this.trabajador;
-    }
-    public void setTrabajador(Empleado newTrabajador){
-        this.trabajador = newTrabajador;
-    }
-
-
     public ArrayList<ArrayList<LocalDateTime>> getHorario() {
         return horario;
     }
@@ -110,14 +100,12 @@ public class Sala {
         y.add(a);
         setHorario(y);
     }
-    public Sala(ArrayList<Silla> sillas, int numeroSala, int metrosCuadrados, Boolean aseado, Boolean ocupado,
-            Empleado trabajador, ArrayList<ArrayList<LocalDateTime>> horario, int capacidad) {
+    public Sala(ArrayList<Silla> sillas, int numeroSala, int metrosCuadrados, Boolean aseado, Boolean ocupado, ArrayList<ArrayList<LocalDateTime>> horario, int capacidad) {
         this.sillas = sillas;
         this.numeroSala = numeroSala;
         this.metrosCuadrados = metrosCuadrados;
         this.aseado = aseado;
         this.ocupado = ocupado;
-        this.trabajador = trabajador;
         this.horario = horario;
         this.capacidad = capacidad;
     }
@@ -174,7 +162,6 @@ public class Sala {
         this.metrosCuadrados = metrosCuadrados;
         aseado = true;
         ocupado = false;
-        trabajador = null;
         horario = new ArrayList<>();
         this.capacidad = capacidad;
         salas.add(this);
