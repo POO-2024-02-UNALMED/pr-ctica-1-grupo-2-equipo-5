@@ -164,7 +164,7 @@ public abstract class Artista {
     // Método para inicializar calificaciones del público
     public void inicializarCalificacionesPublico(Artista artista) {
         for (int i = 0; i < 5; i++) { // Generar 5 calificaciones simuladas
-            artista.agregarCalificacionPublico((int) (Math.random() * 5) + 1);
+            artista.agregarCalificacionPublico((float) (Math.round(Math.random() * 50) / 10.0));
         }
     }
 }
