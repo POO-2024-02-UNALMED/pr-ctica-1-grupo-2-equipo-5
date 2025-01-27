@@ -801,8 +801,9 @@ public class Main {
                 
                 customPrint("Realizando Compra");
                 dineroTesoreria = ((Funcion.mostrarPrecioFuncion(inputF)*descuento)+precioSus);
-                tesoreria.setDineroEnCaja(tesoreria.getDineroEnCaja()+dineroTesoreria);
-                tesoreria.setTotal(tesoreria.getTotal()+dineroTesoreria);
+                Teatro.getInstancia().getTesoreria().setDineroEnCaja(Teatro.getInstancia().getTesoreria().getDineroEnCaja()+dineroTesoreria);
+                Teatro.getInstancia().getTesoreria().setTotal(Teatro.getInstancia().getTesoreria().getTotal()+dineroTesoreria);
+                
             try {
                 // Pausa de 2 segundos (4000 milisegundos)
                 Thread.sleep(4000);
