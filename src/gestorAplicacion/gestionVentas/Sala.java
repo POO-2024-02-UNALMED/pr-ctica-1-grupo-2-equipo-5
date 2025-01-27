@@ -1,11 +1,12 @@
 package gestorAplicacion.gestionVentas;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import gestorAplicacion.gestionFinanciera.Empleado;
 import gestorAplicacion.herramientas.Asiento;
-public class Sala {
+public class Sala implements Serializable{
     private static ArrayList <Sala> salas = new ArrayList<>();
     private ArrayList <Silla> sillas = new ArrayList<>();
     private int numeroSala;

@@ -1,11 +1,12 @@
 package gestorAplicacion.gestionObras;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import gestorAplicacion.gestionClases.Clase;
 import gestorAplicacion.gestionFinanciera.CuentaBancaria;
 
-public abstract class Artista {
+public abstract class Artista implements Serializable{
     private float calificacion;
     protected long id;
     private float promedio;

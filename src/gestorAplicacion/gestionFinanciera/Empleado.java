@@ -1,4 +1,5 @@
 package gestorAplicacion.gestionFinanciera;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import gestorAplicacion.gestionObras.Actor;
@@ -7,7 +8,7 @@ import gestorAplicacion.herramientas.Aptitud;
 
 import java.util.ArrayList;
 
-public class Empleado {
+public class Empleado implements Serializable{
     private String nombre;
     private Long id;
     private final int salarioSeguridad = 6500;
@@ -32,7 +33,7 @@ public class Empleado {
     public Empleado(String nombre, long ID, String ocupacion) {
         this.nombre = nombre;
         this.id = ID;
-        this.metaSemanal = 1;
+        this.metaSemanal = 6;
         this.cuenta = new CuentaBancaria(ID, 0);
         this.ocupacion = ocupacion;
         this.deuda = 0;

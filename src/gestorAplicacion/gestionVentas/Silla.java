@@ -1,8 +1,10 @@
 package gestorAplicacion.gestionVentas;
 
+import java.io.Serializable;
+
 import gestorAplicacion.herramientas.Asiento;
 
-public class Silla {
+public class Silla implements Serializable{
 
     private Asiento tipo;
     private Boolean disponibilidad;

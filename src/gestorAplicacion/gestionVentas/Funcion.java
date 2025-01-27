@@ -3,13 +3,15 @@ package gestorAplicacion.gestionVentas;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.time.LocalTime;
+import java.io.Serializable;
+import java.time.Duration;
 import java.time.LocalDate;
 
 import gestorAplicacion.gestionObras.*;
 import gestorAplicacion.herramientas.Suscripcion;
 import test.funci_1;
 
-public class Funcion {
+public class Funcion implements Serializable{
     private Obra obra;
     private int tiquetesVendidos;
     private ArrayList<LocalDateTime> horario = new ArrayList<>();
@@ -22,21 +24,9 @@ public class Funcion {
     static ArrayList <Funcion> funcionesALaVenta= new ArrayList<>();
 
 
-//    static{
-//        funci_1.prueba();
-//    }
+   
 
-    public ArrayList<Funcion> actualizarFuncionesVenta(ArrayList<Funcion> funcionesCreadas){
-        ArrayList<Funcion> funcionesALaVenta = new ArrayList<>();
-        if (funcionesCreadas.isEmpty()){
-            for (Funcion funcion : funcionesCreadas){
-            if (funcion.getHorario().get(0).isAfter(LocalDateTime.now())){
-                funcionesALaVenta.add(funcion);
-            }
-            }
-        }
-        return funcionesALaVenta;
-    }
+
     public String tablaSillas(){
         String Nuevo="";
         ArrayList <Silla> s = this.getSala().getSillas();
@@ -75,7 +65,7 @@ public class Funcion {
         this.sala = sala;
         this.obra=obra;
         funcionesCreadas.add((this));
-        funcionesALaVenta = actualizarFuncionesVenta(funcionesCreadas);
+        
 
 
     }
@@ -144,6 +134,15 @@ public class Funcion {
 
     public Sala salaDisponible(Sala sala){
         return sala;
+    }
+    public ArrayList<Funcion> actualizarFuncionesVenta(ArrayList<Funcion> funcionesCreadas){
+        ArrayList<Funcion> funcionesALaVenta = new ArrayList<>();
+        for (Funcion funcion : funcionesCreadas){
+            if (funcion.getHorario().get(0).isAfter(LocalDateTime.now())){
+                funcionesALaVenta.add(funcion);
+            }
+        }
+        return funcionesALaVenta;
     }
     public Funcion(Obra obra, ArrayList<LocalDate> week) {
         this.obra = obra;
@@ -216,14 +215,21 @@ public class Funcion {
         }
         return a;
     }
-    public static String generarTabla(){
+    
+    public static String generarTabla(String nombre){
         String Nuevo="";
+        String string ="";
         for (Funcion funcion : funcionesCreadas) {
-            String string = String.format("%30s %20s %20s %20s",funcion.obra.getNombre(),funcion.obra.getGenero(),funcion.obra.getDur(),String.format("$%,.2f",precioFuncion(funcion))+"\n");
+            if ((funcion.obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
+                string = String.format("%30s %20s %20s %20s",funcion.obra.getNombre(),funcion.obra.getGenero(),Duration.ofHours(funcion.obra.getDuracion().toHours()).plusMinutes(funcion.obra.getDuracion().toMinutes()% 60),String.format("$%,.2f",precioFuncion(funcion))+"\n");
+                
+            }
+            
+        }
         Nuevo = Nuevo +string;
 
         
-    }
+    
     return Nuevo;
 }
 public static boolean calificacionVacia(Obra obra){
@@ -259,7 +265,7 @@ public static boolean calificacionVacia(Obra obra){
     }
 
 public static String imprimirFuncion(Funcion funcion){
-        String string = String.format("%30s %15s %10s %20s",funcion.obra.getNombre(),funcion.obra.getGenero(),funcion.obra.getDur(),String.format("$%,.2f",precioFuncion(funcion)));
+        String string = String.format("%30s %15s %10s %20s",funcion.obra.getNombre(),funcion.obra.getGenero(),funcion.obra.getDuracion().toMinutes(),String.format("$%,.2f",precioFuncion(funcion)));
         return string;
     }
     

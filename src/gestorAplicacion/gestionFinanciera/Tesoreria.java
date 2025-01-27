@@ -1,6 +1,8 @@
 package gestorAplicacion.gestionFinanciera;
 
-public class Tesoreria {
+import java.io.Serializable;
+
+public class Tesoreria implements Serializable{
     private static double dineroEnCaja;
     private static double metaSemanal;
     private static CuentaBancaria cuenta;
@@ -44,18 +46,18 @@ public class Tesoreria {
         return dineroEnCaja;
     }
     public void setDineroEnCaja(double newDinero) {
-        dineroEnCaja = newDinero;
-    }
-    public double getMetaTotal() {
-        return metaSemanal;
-    }
-    public void setMetaTotal(Float metaTotal) {
-        metaSemanal = metaTotal;
+        Tesoreria.dineroEnCaja = newDinero;
     }
     public double getTotal() {
         return total;
     }
     public void setTotal(double total) {
         this.total = total;
+    }
+    public static double getMetaSemanal() {
+        return metaSemanal;
+    }
+    public static void setMetaSemanal(double metaSemanal) {
+        Tesoreria.metaSemanal = metaSemanal;
     }
 }

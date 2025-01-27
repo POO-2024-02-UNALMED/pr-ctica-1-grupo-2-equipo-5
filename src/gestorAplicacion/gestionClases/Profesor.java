@@ -1,11 +1,12 @@
 package gestorAplicacion.gestionClases;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import gestorAplicacion.gestionFinanciera.Empleado;
 import gestorAplicacion.herramientas.Aptitud;
 
-public class Profesor extends Empleado {
+public class Profesor extends Empleado implements Serializable{
     private String nombre;
     private ArrayList<Aptitud> especializaciones;
 

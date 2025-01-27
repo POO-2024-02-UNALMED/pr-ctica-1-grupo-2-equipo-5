@@ -1,11 +1,12 @@
 package gestorAplicacion.gestionObras;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import gestorAplicacion.herramientas.*;
 
-public class Director extends Artista {
+public class Director extends Artista implements Serializable{
 
     private Genero genero;
     private static List<Director> directors = new ArrayList<Director>(); //lista que almacenará todos los actores creados
