@@ -399,7 +399,7 @@ public class Main {
 //    Sala sala1 = new Sala(1, 100, 24);
 
     public static void main(String args[]) throws InterruptedException {  
-1
+
         byte task = -1;
 
         // DESERIALIZACIÓN -------------------------------------------------------//
