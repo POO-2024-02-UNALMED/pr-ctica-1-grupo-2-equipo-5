@@ -1191,7 +1191,7 @@ public class Main {
     }
 
         final float CALIFICACION_ALTA = 4.0f; //por ahora
-        List<Actor> actorsForRental = new ArrayList<>(Actor.getActors());
+        List<Actor> actorsForRental = new ArrayList<>(Teatro.getInstancia().getActores());
 
         //primera ronda de preguntas
         byte[] options = new byte[9];
@@ -1220,7 +1220,7 @@ public class Main {
 
 
             }
-
+                        
         options[3] = 3; options[4] = 4; options[5] = 5; options[6] = 6; options[7] = 7; options[8] = 8;
 
         //PREGUNTA NO. 2

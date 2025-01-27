@@ -112,7 +112,7 @@ public class funcionalidad5 {
             Tesoreria tesoreria = new Tesoreria(0f, 100f);
 
             //--------------------------------------------//
-            Main.ContratarActor();
-            //Serializador.saveState(path);
+            //Main.ContratarActor();
+            Serializador.saveState(path);
         }
     }

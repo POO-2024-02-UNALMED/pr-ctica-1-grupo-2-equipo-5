@@ -33,10 +33,6 @@ public class Actor extends Artista implements Serializable{
     private ArrayList<Double> calificacionesAptitudes = new ArrayList<>(Arrays.asList(0.0, 0.0, 0.0, 0.0, 0.0)); // Calificaciones asociadas a las aptitudes
     private ArrayList<ArrayList<Double>> historialCalificaciones = new ArrayList<>();
 
-    public Actor(){
-
-    }
-
     public Actor(String nombre, long id){ 
         super(nombre, id);
         actors.add(this); 
