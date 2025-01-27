@@ -1162,7 +1162,7 @@ public class Main {
 
         //primera ronda de preguntas
         byte[] options = new byte[9];
-        options[0] = 0; options[1] = 1;
+        options[0] = 0; options[1] = 1; options[2] = 2;
         
         //antes de empezar, remover aquellos actores en condición de reevaluación
         actorsForRental.removeIf(actor -> actor.isReevaluacion());
@@ -1188,7 +1188,7 @@ public class Main {
 
             }
 
-        options[2] = 2; options[3] = 3; options[4] = 4; options[5] = 5; options[6] = 6; options[7] = 7; options[8] = 8;
+        options[3] = 3; options[4] = 4; options[5] = 5; options[6] = 6; options[7] = 7; options[8] = 8;
 
         //PREGUNTA NO. 2
         byte tipoObra = ask("¿Qué tipo de obra es?\n1. Circo.\n2. Comedia.\n3. Drama.\n4. Experimental.\n5. Fantasía.\n6. Musical.\n7. Romance.\n8. Terror.", options, "");
