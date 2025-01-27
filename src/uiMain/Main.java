@@ -2741,7 +2741,6 @@ public class Main {
                 wait(1000);
                 return;
             case 1:
-                tesoreria.setTotal(tesoreria.getTotal() + tesoreria.getDineroEnCaja());
                 double fondos = tesoreria.getCuenta().getSaldo();
                 double totalSaldos = 0;
                 //Verificacion de fondos:
