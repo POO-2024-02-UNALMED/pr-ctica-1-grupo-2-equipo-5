@@ -6,7 +6,6 @@ import gestorAplicacion.gestionFinanciera.Empleado;
 import gestorAplicacion.herramientas.Aptitud;
 
 public class Profesor extends Empleado{
-    private String nombre;
     private ArrayList<Aptitud> especializaciones;
 
     // Constructor
@@ -22,7 +21,7 @@ public class Profesor extends Empleado{
     }
 
     public String getNombre() {
-        return nombre;
+        return super.nombre;
     }
 
     public void setNombre(String nombre) {

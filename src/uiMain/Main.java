@@ -229,7 +229,7 @@ public class Main {
         return false;       
     }
 
-    public static int LARGO_LINEAS = 100;
+    public static int LARGO_LINEAS = 120;
     public static char separador = '│';
     public static String vacio = " ";
 
@@ -400,15 +400,15 @@ public class Main {
 
     public static void main(String args[]) throws InterruptedException {  
 
+        funcionalidad2.empezar();
+        byte task = -1;
+
         // DESERIALIZACIÓN -------------------------------------------------------//
         String filename = "teatro.txt";
         String path = "src" + File.separator + "baseDatos" + File.separator + "temp" + File.separator + filename;
         Deserializador.loadState(path);
-        Teatro teatro = Teatro.getInstancia();
+        //Teatro teatro = Teatro.getInstancia();
         // -----------------------------------------------------------------------//
-
-        funcionalidad2.empezar();
-        byte task = -1;
 
         while (task != 6){
 
@@ -3354,6 +3354,7 @@ public class Main {
                 
                     customPrint("Profesor asignado: " + profesorAsignado.getNombre());
                     wait(2000);
+                                
                 
                     // Clase programada exitosamente
                     customPrint("Clase programada exitosamente en el área '" + areaSeleccionada + "' con el profesor '" 
@@ -3396,7 +3397,7 @@ public class Main {
                             customPrint("Profesor calificador asignado: " + calificador.getNombre(), "green");
                             wait(1500);
                             // Evaluación y retroalimentación
-                            double calificacion = Math.random() * 5; // Generar calificación aleatoria
+                            double calificacion = Math.round(Math.random() * 50) / 10.0; // Generar calificación aleatoria
                             customPrint("El profesor calificó el desempeño del actor con un: " + calificacion, "yellow");
         
                             if (calificacion == 5) {
@@ -3616,7 +3617,7 @@ public class Main {
     
     
                 // Cálculo del costo de matrícula
-                double costoClase = 0;
+                int costoClase = 0;
                 switch (nivelClase) {
                     case "Introducción": costoClase = 50000; break;
                     case "Profundización": costoClase = 75000; break;
@@ -3650,7 +3651,7 @@ public class Main {
                     if (calificador != null) {
                         customPrint("Profesor calificador asignado: " + calificador.getNombre(), "green");
                         // Evaluación y retroalimentación
-                        double calificacion = Math.random() * 5; // Generar calificación aleatoria
+                        double calificacion = Math.round(Math.random() * 50) / 10.0; // Generar calificación aleatoria
                         customPrint("El profesor calificó el desempeño del actor con un: " + calificacion, "yellow");
     
                         if (calificacion == 5) {

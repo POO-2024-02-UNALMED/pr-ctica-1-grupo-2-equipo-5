@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import baseDatos.Teatro;
 
 public class Empleado implements Serializable{
-    private String nombre;
+    protected String nombre;
     private Long id;
     private final int salarioSeguridad = 6500;
     private final int salarioAseador = 5500;

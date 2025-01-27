@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import baseDatos.Teatro;
 import uiMain.Main;
 
 
@@ -32,7 +33,8 @@ public class Cliente implements Serializable{
         this.tipo = tipo;
         this.id = id;
         this.cuentaBancaria = new CuentaBancaria(id, 0);
-        clientes.add(this);
+        Teatro.getInstancia().getClientes().add(this);
+        Teatro.getInstancia().getClientes().add(this);
     }    
 
     public String toString(){
@@ -115,8 +117,8 @@ public class Cliente implements Serializable{
     }
 
     public static boolean verificar(long elemento){
-        for (int i=0; i < clientes.size();i++){
-            if (clientes.get(i).getId()==elemento) {
+        for (int i=0; i < Teatro.getInstancia().getClientes().size();i++){
+            if (Teatro.getInstancia().getClientes().get(i).getId()==elemento) {
                 return true;
                 
             }
@@ -158,9 +160,9 @@ public class Cliente implements Serializable{
     
     public static Cliente asignar(long id){
         Cliente Asig = null;
-        for(int i = 0;i < clientes.size();i++){
-            if (clientes.get(i).getId()==id) {
-                Asig = clientes.get(i);
+        for(int i = 0;i < Teatro.getInstancia().getClientes().size();i++){
+            if (Teatro.getInstancia().getClientes().get(i).getId()==id) {
+                Asig = Teatro.getInstancia().getClientes().get(i);
                 
                     
             }
@@ -223,13 +225,13 @@ public class Cliente implements Serializable{
         this.suscripcion=suscripcion;
         this.cuentaBancaria = new CuentaBancaria(id, 0);
         this.tiquete.setSilla(silla);
-        clientes.add(this);
+        Teatro.getInstancia().getClientes().add(this);
     }
     public Cliente(long id,Suscripcion suscripcion){
         this.id = id;
         this.suscripcion=suscripcion;
         this.cuentaBancaria = new CuentaBancaria(id, 0);
-        clientes.add(this);
+        Teatro.getInstancia().getClientes().add(this);
     }
 
     public String getObra() {
