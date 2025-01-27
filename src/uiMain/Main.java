@@ -3179,7 +3179,7 @@ public class Main {
                 else if(resultado == true) {
                     
                     // Seleccionar un profesor aleatorio
-                    Profesor profesorAsignado = (Profesor) Teatro.getInstancia().getTipoProfesor().get((int) (Math.random() * Empleado.getTipoProfesor().size()));
+                    Profesor profesorAsignado = (Profesor) Teatro.getInstancia().getTipoProfesor().get((int) (Math.random() * Teatro.getInstancia().getTipoProfesor().size()));
                     
                     // Mostrar quién inicializó las calificaciones
                     customPrint("El/la profesor/a " + profesorAsignado.getNombre() + " es el/la responsable de inicializar las calificaciones\n" + "del actor " + artista.getNombre() + ".");
@@ -3381,7 +3381,7 @@ public class Main {
                         Teatro.getInstancia().getTesoreria().setDineroEnCaja(Teatro.getInstancia().getTesoreria().getDineroEnCaja() + costoClase);
                         // Asignación de calificador para la próxima función
                         Profesor calificador = null;
-                        for (Empleado empleado : Empleado.getTipoProfesor()) {
+                        for (Empleado empleado : Teatro.getInstancia().getTipoProfesor()) {
                             if (empleado instanceof Profesor) {
                                 Profesor profesor = (Profesor) empleado;
         
