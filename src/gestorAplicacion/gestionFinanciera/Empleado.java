@@ -8,16 +8,18 @@ import gestorAplicacion.herramientas.Aptitud;
 
 import java.util.ArrayList;
 
+import baseDatos.Teatro;
+
 public class Empleado implements Serializable{
     private String nombre;
     private Long id;
     private final int salarioSeguridad = 6500;
     private final int salarioAseador = 5500;
     private final int salarioProfesor = 5500;
-    private static ArrayList<Empleado> empleadosPorRendimiento = new ArrayList<>();
-    private static ArrayList<Empleado> tipoSeguridad = new ArrayList<>();
-    private static ArrayList<Empleado> tipoAseador = new ArrayList<>();
-    private static ArrayList<Empleado> tipoProfesor = new ArrayList<>();
+    private static ArrayList<Empleado> empleadosPorRendimiento = Teatro.getInstancia().getEmpleadosPorRendimiento();
+    private static ArrayList<Empleado> tipoSeguridad = Teatro.getInstancia().getTipoSeguridad();
+    private static ArrayList<Empleado> tipoAseador = Teatro.getInstancia().getTipoAseador();
+    private static ArrayList<Empleado> tipoProfesor = Teatro.getInstancia().getTipoProfesor();
     private double TrabajoRealizado; //Es el total del trabajo realizado Pago
     private ArrayList<Boolean> trabajoCorrecto = new ArrayList<>();
     private int metaSemanal;

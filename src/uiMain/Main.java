@@ -42,7 +42,6 @@ import test.funcionalidad2;
 
 public class Main {
 
-    static Tesoreria tesoreria = new Tesoreria(0, 100);
     public static Scanner in = new Scanner(System.in);
     //public static boolean supportsColor = (System.console() != null && System.getenv().get("TERM") != null);
     public static boolean supportsColor = true;
@@ -1667,17 +1666,18 @@ public class Main {
     }
 
     //Base para funcionalidad 2
+    //Interaccion 2
     public static void gestionEmpleados(){
         final String[] nombres = {"Miguel", "Juan", "Danna", "Carlos", "Oscar", "Julian", "Maria", "Paula", "Esteban", "Sara", "Frank", "Pablo", "Jimena", "Daniela", "Ana", "Emma", "Samuel"};
         final String [] Apellidos = {"Perez", "Hernandez", "Montoya", "Velez", "Aguirre", "Salazar", "Restrepo", "Rodriguez", "Garcia", "Lopez", "Sanchez", "Ramirez", "Gonzales", "Gomez", "Martinez"};
-        tesoreria.transferenciaFondos();
+        Teatro.getInstancia().getTesoreria().transferenciaFondos();
         //Verifica si hay deudas y Pagar
         customPrint("Verificando deudas ...");
         String Deudas = "";
-        for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+        for(Empleado Persona : Teatro.getInstancia().getEmpleadosPorRendimiento()){
             if(Persona.getDeuda() != 0){
-                if(tesoreria.getCuenta().getSaldo() > Persona.getDeuda()){
-                    boolean transaccion = tesoreria.getCuenta().transferencia(Persona.getCuenta(), Persona.getDeuda());
+                if(Teatro.getInstancia().getTesoreria().getCuenta().getSaldo() > Persona.getDeuda()){
+                    boolean transaccion = Teatro.getInstancia().getTesoreria().getCuenta().transferencia(Persona.getCuenta(), Persona.getDeuda());
                     if(transaccion == true){
                         Deudas = Deudas + "Se realizo el Pago a: " + Persona.getNombre() + " por un valor de: " + String.format("$%,.2f", Persona.getDeuda() ) + "\n";
                         Persona.setDeuda(0);
@@ -1685,7 +1685,7 @@ public class Main {
                 }
             }
         }
-        String Saldo = String.format("$%,.2f",tesoreria.getCuenta().getSaldo());
+        String Saldo = String.format("$%,.2f",Teatro.getInstancia().getTesoreria().getCuenta().getSaldo());
         customPrint(Deudas + "El saldo de tesoreria es: " + Saldo, "green");
         
         wait(1000);
@@ -1694,7 +1694,7 @@ public class Main {
         boolean repetidor = false;
         do{
             String msgBase = "\n";
-            for(Empleado Persona : Empleado.getTipoSeguridad()){
+            for(Empleado Persona : Teatro.getInstancia().getTipoSeguridad()){
                 if(msgBase != "\n"){
                     msgBase = msgBase + String.format("%-20s %10s", Persona.getNombre(), "ID: " +  Persona.getId()) + "\n";
                 }
@@ -1707,7 +1707,7 @@ public class Main {
 
             wait(1000);
             
-            for(Empleado Persona : Empleado.getTipoAseador()){
+            for(Empleado Persona : Teatro.getInstancia().getTipoAseador()){
                 if(msgBase != "\n"){
                     msgBase = msgBase + String.format("%-20s %10s", Persona.getNombre(), "ID: " +  Persona.getId()) + "\n";
                 }
@@ -1720,7 +1720,7 @@ public class Main {
             
             wait(1000);
             
-            for(Empleado Persona : Empleado.getTipoProfesor()){
+            for(Empleado Persona : Teatro.getInstancia().getTipoProfesor()){
                 if(msgBase != "\n"){
                     msgBase = msgBase + String.format("%-20s %10s", Persona.getNombre(), "ID: " +  Persona.getId()) + "\n";
                 }
@@ -1782,10 +1782,10 @@ public class Main {
                                 byte empleado = ask("Contrata algun empleado", opciones, "blue");
                                 if(empleado < 10){
                                     ArrayList<Empleado> tipAseador = new ArrayList<>();
-                                    tipAseador = Empleado.getTipoAseador();
+                                    tipAseador = Teatro.getInstancia().getTipoAseador();
                                     Empleado nuevo_empleado_A = new Empleado(candidatos.get(empleado), idA.get(empleado), "Aseador");
                                     tipAseador.add(nuevo_empleado_A);
-                                    Empleado.setTipoAseador(tipAseador);
+                                    Teatro.getInstancia().setTipoAseador(tipAseador);
                                     customPrint("Se contrato a " + nuevo_empleado_A.getNombre(), "green");
                                     repetidor = false;
                                 break;
@@ -1826,10 +1826,10 @@ public class Main {
                                 byte empleadoS = ask("Contrata algun empleado", opcionesS, "blue");
                                 if(empleadoS < 10){
                                     ArrayList<Empleado> tipSeguridad = new ArrayList<>();
-                                    tipSeguridad = Empleado.getTipoSeguridad();
+                                    tipSeguridad = Teatro.getInstancia().getTipoSeguridad();
                                     Empleado nuevo_empleado_S = new Empleado(candidatosS.get(empleadoS), idS.get(empleadoS), "Seguridad");
                                     tipSeguridad.add(nuevo_empleado_S);
-                                    Empleado.setTipoSeguridad(tipSeguridad);
+                                    Teatro.getInstancia().setTipoSeguridad(tipSeguridad);
                                     customPrint("Se contrato a " + nuevo_empleado_S.getNombre(), "green");
                                     repetidor = false;
                                 break;
@@ -1869,10 +1869,10 @@ public class Main {
                                 byte empleadoP = ask("Contrata algun empleado", opcionesP, "blue");
                                 if(empleadoP < 10){
                                     ArrayList<Empleado> tipProfesors = new ArrayList<>();
-                                    tipProfesors = Empleado.getTipoProfesor();
+                                    tipProfesors = Teatro.getInstancia().getTipoProfesor();
                                     Empleado nuevo_empleado_P = new Profesor(candidatosP.get(empleadoP), idP.get(empleadoP));
                                     tipProfesors.add(nuevo_empleado_P);
-                                    Empleado.setTipoProfesor(tipProfesors);
+                                    Teatro.getInstancia().setTipoProfesor(tipProfesors);
                                     customPrint("Se contrato a " + nuevo_empleado_P.getNombre(), "green");
                                     repetidor = false;
                                 break;
@@ -1891,22 +1891,22 @@ public class Main {
                             question = "Introduce el id del trabajador a despedir";
                             long buscar_id = longAsk(question);
                             boolean[] encontrado = {false};
-                            Empleado.getEmpleadosPorRendimiento().removeIf(Persona ->{
+                            Teatro.getInstancia().getEmpleadosPorRendimiento().removeIf(Persona ->{
                                 if(Persona.getId() == buscar_id){
                                     encontrado[0] = true;
                                     double liquidacion = (Persona.calcularSueldo()*1.2) + Persona.getDeuda();
-                                    tesoreria.getCuenta().transferencia(Persona.getCuenta(), liquidacion);
+                                    Teatro.getInstancia().getTesoreria().getCuenta().transferencia(Persona.getCuenta(), liquidacion);
                                     customPrint("Se despidio a " + Persona.getNombre() + " y se le pago su respectiva liquidacion", "green");
                                     if(Persona.getOcupacion() != "Aseador"){
                                         if (Persona.getOcupacion() != "Seguridad"){
-                                            Empleado.getTipoProfesor().remove(Persona);
+                                            Teatro.getInstancia().getTipoProfesor().remove(Persona);
                                         }
                                         else{
-                                            Empleado.getTipoSeguridad().remove(Persona);
+                                            Teatro.getInstancia().getTipoSeguridad().remove(Persona);
                                         }
                                     }
                                     else{
-                                        Empleado.getTipoAseador().remove(Persona);
+                                        Teatro.getInstancia().getTipoAseador().remove(Persona);
                                     }
                                     return true;
                                 }
@@ -1927,14 +1927,15 @@ public class Main {
             }
         } while(!repetidor);
         
+        //Interaccion 2
         customPrint("Asignando trabajos, por favor espere ...", true);
         
         wait(2000);
 
         //Organiza el ranking - Aseador - Seguridad - Profesor - Salas
-        ArrayList<Empleado> Aseador_order = Empleado.getTipoAseador();
-        ArrayList<Empleado> Seguridad_order = Empleado.getTipoSeguridad();
-        ArrayList<Empleado> Profesor_order = Empleado.getTipoProfesor();
+        ArrayList<Empleado> Aseador_order = Teatro.getInstancia().getTipoAseador();
+        ArrayList<Empleado> Seguridad_order = Teatro.getInstancia().getTipoSeguridad();
+        ArrayList<Empleado> Profesor_order = Teatro.getInstancia().getTipoProfesor();
         Collections.sort(Aseador_order, new Comparator<Empleado>() {
             public int compare(Empleado E1, Empleado E2){
                 return Integer.compare(E2.getMetaSemanal(), E1.getMetaSemanal());
@@ -1951,9 +1952,9 @@ public class Main {
             }
         });
         
-        Empleado.setTipoAseador(Aseador_order);
-        Empleado.setTipoProfesor(Profesor_order);
-        Empleado.setTipoSeguridad(Seguridad_order);
+        Teatro.getInstancia().setTipoAseador(Aseador_order);
+        Teatro.getInstancia().setTipoProfesor(Profesor_order);
+        Teatro.getInstancia().setTipoSeguridad(Seguridad_order);
 
         
         //Administrar Trabajadores
@@ -1963,10 +1964,10 @@ public class Main {
         boolean trabajoAsignadoA = true;
         int cant_trabajadores_principiantes = 0;
         int base = 6;
-        int totalFunciones = Funcion.getFuncionesCreadas().size();
-        int totalTrabajadores_S = Empleado.getTipoSeguridad().size();
+        int totalFunciones = Teatro.getInstancia().getFuncionesCreadas().size();
+        int totalTrabajadores_S = Teatro.getInstancia().getTipoSeguridad().size();
         int funcion_por_trabajador = totalFunciones/totalTrabajadores_S;
-        ArrayList<Funcion> funcionesDisponibles = new ArrayList<>(Funcion.getFuncionesCreadas());
+        ArrayList<Funcion> funcionesDisponibles = new ArrayList<>(Teatro.getInstancia().getFuncionesCreadas());
         //Se organiza la lista por fecha
         try{
             funcionesDisponibles.sort((f1, f2) ->
@@ -1978,16 +1979,16 @@ public class Main {
 
         //Verificar si las listas no estan vacias
         if(totalFunciones != 0 && totalTrabajadores_S != 0){
-            for(Empleado Persona : Empleado.getTipoSeguridad()){
+            for(Empleado Persona : Teatro.getInstancia().getTipoSeguridad()){
                 if(Persona.getMetaSemanal() == base){
                     cant_trabajadores_principiantes += 1;
                 }
             }
             //Asignacion de tareas si todos los trabajadores son principiantes
-            if(cant_trabajadores_principiantes == Empleado.getTipoSeguridad().size()){
+            if(cant_trabajadores_principiantes == Teatro.getInstancia().getTipoSeguridad().size()){
                 //CASO NORMAL, SE ASIGNAN EN IGUAL CANTIDAD A CADA EMPLEADO
                 int funcionesSinHorarios = 0;
-                for(Empleado Persona : Empleado.getTipoSeguridad()){
+                for(Empleado Persona : Teatro.getInstancia().getTipoSeguridad()){
                     int asignadas = 0; 
                     ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
                     for(int i = 0; i < funcionesDisponibles.size(); i ++){
@@ -2052,7 +2053,7 @@ public class Main {
                 }
                 //EVALUACION DE SALAS SIN TRABAJADOR
                 if(funcionesDisponibles.size() != 0 ){
-                    for(Empleado Persona : Empleado.getTipoSeguridad()){
+                    for(Empleado Persona : Teatro.getInstancia().getTipoSeguridad()){
                         //Segunda iteracion
                         ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
                         for(int i = 0; i < funcionesDisponibles.size(); i++){
@@ -2108,7 +2109,7 @@ public class Main {
                     }
                 }
                 String msgBase = "";
-                for(Empleado Persona : Empleado.getTipoSeguridad()){
+                for(Empleado Persona : Teatro.getInstancia().getTipoSeguridad()){
                     if(Persona.getHorario().size() == 1){
                         msgBase = msgBase + String.format("%-10s %10s", Persona.getNombre() + " Cuidará: ", Persona.getHorario().size() + " Funcion\n");
                     }
@@ -2120,7 +2121,7 @@ public class Main {
             }
             else{
                 try{
-                    ArrayList<Funcion> FuncionPorDuracion = Funcion.getFuncionesCreadas();
+                    ArrayList<Funcion> FuncionPorDuracion = new ArrayList<>(Teatro.getInstancia().getFuncionesCreadas());
                     Collections.sort(FuncionPorDuracion, new Comparator<Funcion>() {
                         public int compare(Funcion f1, Funcion f2){
                             LocalDateTime inicioF1 = f1.getHorario().get(0);
@@ -2140,7 +2141,7 @@ public class Main {
 
                 //Evaluacion Normal, asignacion de trabajo equitativo
                 int funcionesSinHorarios = 0;
-                for(Empleado Persona : Empleado.getTipoSeguridad()){
+                for(Empleado Persona : Teatro.getInstancia().getTipoSeguridad()){
                     int asignadas = 0;
                     ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
                     for(int i = 0; i < funcionesDisponibles.size(); i ++){
@@ -2198,7 +2199,7 @@ public class Main {
                 }
                 //EVALUACION DE SALAS SIN TRABAJADOR
                 if(funcionesDisponibles.size() != 0 ){
-                    for(Empleado Persona : Empleado.getTipoSeguridad()){
+                    for(Empleado Persona : Teatro.getInstancia().getTipoSeguridad()){
                         //Segunda iteracion
                         ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
                         for(int i = 0; i < funcionesDisponibles.size(); i++){
@@ -2253,7 +2254,7 @@ public class Main {
                     }
                 }
                 String msgBase = "";
-                for(Empleado Persona : Empleado.getTipoSeguridad()){
+                for(Empleado Persona : Teatro.getInstancia().getTipoSeguridad()){
                     if(Persona.getHorario().size() == 1){
                         msgBase = msgBase + String.format("%-10s %10s", Persona.getNombre() + " Cuidará: ", Persona.getHorario().size() + " Funcion\n");
                     }
@@ -2289,9 +2290,9 @@ public class Main {
         //Para Aseador
         cant_trabajadores_principiantes = 0;
         int totalSalas = Sala.getSalas().size();
-        int totalTrabajadores_A = Empleado.getTipoAseador().size();
+        int totalTrabajadores_A = Teatro.getInstancia().getTipoAseador().size();
         int cant_a_limpiar = totalFunciones/totalTrabajadores_A;
-        ArrayList<Funcion> funcionesLimpiadas = new ArrayList<>(Funcion.getFuncionesCreadas()); 
+        ArrayList<Funcion> funcionesLimpiadas = new ArrayList<>(Teatro.getInstancia().getFuncionesCreadas()); 
         try{
             funcionesLimpiadas.sort((f1, f2) ->
             f1.getHorario().get(0).compareTo(f2.getHorario().get(0))
@@ -2299,7 +2300,7 @@ public class Main {
         }
         catch(Exception e){}
         if(totalSalas != 0 && totalTrabajadores_A != 0){
-            for(Empleado Persona : Empleado.getTipoAseador()){
+            for(Empleado Persona : Teatro.getInstancia().getTipoAseador()){
                 if(Persona.getMetaSemanal() == base){
                     cant_trabajadores_principiantes += 1;
                 }
@@ -2307,7 +2308,7 @@ public class Main {
             //En caso de que todos sean principiantes
             if(cant_trabajadores_principiantes == totalTrabajadores_A){
                 int funcionesSinHorarios = 0;
-                for(Empleado Persona : Empleado.getTipoAseador()){
+                for(Empleado Persona : Teatro.getInstancia().getTipoAseador()){
                     //ASIGNACION EQUITATIVA DE TRABAJO
                     int asignadas = 0;
                     ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
@@ -2372,8 +2373,7 @@ public class Main {
                                     localTime.add(sublista);
                                     funcionesLimpiadas.remove(i);
                                     Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
-                                    Funciones.getSala().setAseado(true);
-                                    funcionesLimpiadas.remove(i);
+                                    Funciones.getSala().setAseado(true);                                    
                                     i--;
                                 }
                             }
@@ -2401,7 +2401,7 @@ public class Main {
                     customPrint("Hay " + funcionesSinHorarios + " Funciones sin horarios, invalidas para limpiar", "red");
                 }
                 if(funcionesLimpiadas.size() != 0){
-                    for(Empleado Persona : Empleado.getTipoAseador()){
+                    for(Empleado Persona : Teatro.getInstancia().getTipoAseador()){
                         ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
                         for(int i = 0; i < funcionesLimpiadas.size(); i++){
                             Funcion Funciones = funcionesLimpiadas.get(i);
@@ -2455,7 +2455,7 @@ public class Main {
                     }                                
                 }
                 String msgBase = "";
-                for(Empleado Persona : Empleado.getTipoSeguridad()){
+                for(Empleado Persona : Teatro.getInstancia().getTipoSeguridad()){
                     if(Persona.getHorario().size() == 1){
                         msgBase = msgBase + String.format("%-10s %10s", Persona.getNombre() + " Limpiará: ", Persona.getHorario().size() + " vez\n");
                     }
@@ -2466,7 +2466,7 @@ public class Main {
                 customPrint(msgBase);
             }
             else{
-                ArrayList<Funcion> funcionesPorMetros = new ArrayList<>(Funcion.getFuncionesCreadas());
+                ArrayList<Funcion> funcionesPorMetros = new ArrayList<>(Teatro.getInstancia().getFuncionesCreadas());
                 Collections.sort(funcionesPorMetros, new Comparator<Funcion>() {
                     public int compare(Funcion f1, Funcion f2){
                         LocalDateTime fecha1 = f1.getHorario().get(0);
@@ -2486,7 +2486,7 @@ public class Main {
                 funcionesLimpiadas = funcionesPorMetros;
                 
                 int funcionesSinHorarios = 0;
-                for(Empleado Persona : Empleado.getTipoAseador()){
+                for(Empleado Persona : Teatro.getInstancia().getTipoAseador()){
                     //ASIGNACION EQUITATIVA DE TRABAJO
                     int asignadas = 0;
                     ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
@@ -2582,7 +2582,7 @@ public class Main {
                 }
                 //Asignacion trabajos restantes
                 if(funcionesLimpiadas.size() != 0){
-                    for(Empleado Persona : Empleado.getTipoAseador()){
+                    for(Empleado Persona : Teatro.getInstancia().getTipoAseador()){
                         ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
                         for(int i = 0; i < funcionesLimpiadas.size(); i++){
                             Funcion Funciones = funcionesLimpiadas.get(i);
@@ -2636,7 +2636,7 @@ public class Main {
                     }                                
                 }
                 String msgBase = "";
-                for(Empleado Persona : Empleado.getTipoSeguridad()){
+                for(Empleado Persona : Teatro.getInstancia().getTipoSeguridad()){
                     if(Persona.getHorario().size() == 1){
                         msgBase = msgBase + String.format("%-10s %10s", Persona.getNombre() + " Limpiará: ", Persona.getHorario().size() + " vez\n");
                     }
@@ -2680,14 +2680,14 @@ public class Main {
             //Verificacion del trabajo
             //Seguridad
             cant_trabajadores_principiantes = 0;
-            for(Empleado Persona : Empleado.getTipoSeguridad()){
+            for(Empleado Persona : Teatro.getInstancia().getTipoSeguridad()){
                 if(Persona.getMetaSemanal() == base){
                     cant_trabajadores_principiantes += 1;
                     Persona.setDisponible(true);
                 }
             }
-            if(cant_trabajadores_principiantes == Empleado.getTipoSeguridad().size()){;
-                for(Empleado Persona : Empleado.getTipoSeguridad()){
+            if(cant_trabajadores_principiantes == Teatro.getInstancia().getTipoSeguridad().size()){;
+                for(Empleado Persona : Teatro.getInstancia().getTipoSeguridad()){
                     for(double Hora : Persona.getTrabajos()){
                         Random random = new Random();
                         double randomValue = random.nextDouble();
@@ -2701,7 +2701,7 @@ public class Main {
                 }
             }
             else{
-                for(Empleado Persona : Empleado.getTipoSeguridad()){
+                for(Empleado Persona : Teatro.getInstancia().getTipoSeguridad()){
                     for(double Hora : Persona.getTrabajos()){
                         Random random = new Random();
                         double randomValue = random.nextDouble();
@@ -2737,14 +2737,14 @@ public class Main {
 
             //Aseador
             cant_trabajadores_principiantes = 0;
-            for(Empleado Persona : Empleado.getTipoAseador()){
+            for(Empleado Persona : Teatro.getInstancia().getTipoAseador()){
                 if(Persona.getMetaSemanal() == base){
                     cant_trabajadores_principiantes += 1;
                     Persona.setDisponible(true);
                 }
             }
-            if(cant_trabajadores_principiantes == Empleado.getTipoAseador().size()){
-                for(Empleado Persona : Empleado.getTipoAseador()){
+            if(cant_trabajadores_principiantes == Teatro.getInstancia().getTipoAseador().size()){
+                for(Empleado Persona : Teatro.getInstancia().getTipoAseador()){
                     for(double Metros : Persona.getTrabajos()){
                         Random random = new Random();
                         double randomValue = random.nextDouble();
@@ -2758,7 +2758,7 @@ public class Main {
                 }
             }
             else{
-                for(Empleado Persona : Empleado.getTipoAseador()){
+                for(Empleado Persona : Teatro.getInstancia().getTipoAseador()){
                     for(double Metros : Persona.getTrabajos()){
                         Random random = new Random();
                         double randomValue = random.nextDouble();
@@ -2801,8 +2801,9 @@ public class Main {
 
         wait(2000);
 
+        //Interaccion 3
         //Pagar nomina a empleados:
-        Saldo = String.format("$%,.2f", tesoreria.getCuenta().getSaldo());
+        Saldo = String.format("$%,.2f", Teatro.getInstancia().getTesoreria().getCuenta().getSaldo());
         customPrint("El saldo de tesoreria es: " + Saldo);
         byte[] option = {0,1,2};
         byte respuesta = ask("¿Desea realizar los pagos \n1. Si\n2. No\n0. Salir", option, "green");
@@ -2812,10 +2813,10 @@ public class Main {
                 wait(1000);
                 return;
             case 1:
-                double fondos = tesoreria.getCuenta().getSaldo();
+                double fondos = Teatro.getInstancia().getTesoreria().getCuenta().getSaldo();
                 double totalSaldos = 0;
                 //Verificacion de fondos:
-                for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                for(Empleado Persona : Teatro.getInstancia().getEmpleadosPorRendimiento()){
                     totalSaldos = totalSaldos + Persona.calcularSueldo();
                 }
                 //Realizar pago
@@ -2824,8 +2825,8 @@ public class Main {
                     double cantPagada = 0;
                     customPrint("Upps... No se puede realizar los pagos adecuadamente", "Red");
                     customPrint("Realizando pagos de manera equitativa...");
-                    for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
-                        boolean transaccion = tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.getDeuda() + Persona.calcularSueldo()) *0.5);  //Establecer cuanto se le debe a la persona
+                    for(Empleado Persona : Teatro.getInstancia().getEmpleadosPorRendimiento()){
+                        boolean transaccion = Teatro.getInstancia().getTesoreria().getCuenta().transferencia(Persona.getCuenta(), (Persona.getDeuda() + Persona.calcularSueldo()) *0.5);  //Establecer cuanto se le debe a la persona
                         if(transaccion != true){
                             customPrint("No se le puede pagar a " + Persona.getNombre());
                             Persona.setDeuda(Persona.getDeuda() + Persona.calcularSueldo());
@@ -2841,15 +2842,15 @@ public class Main {
                     String msg = "Se pago un total de " + cantPagada;
                     customPrint(msg);
                     customPrint("Se realizo el pago a " + Cuentas_Pagadas.size() + " cuentas en total");
-                    customPrint("Saldo disponible " + tesoreria.getCuenta().getSaldo());
+                    customPrint("Saldo disponible " + Teatro.getInstancia().getTesoreria().getCuenta().getSaldo());
                 }
                 else{
                     //Verificacion fondos Bonificacion
                     totalSaldos = 0;
                     double cantPagada = 0;
-                    if(tesoreria.verificacionMeta() != true){
+                    if(Teatro.getInstancia().getTesoreria().verificacionMeta() != true){
                         //Verificacion Metas Personales
-                        for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                        for(Empleado Persona : Teatro.getInstancia().getEmpleadosPorRendimiento()){
                             if(Persona.verificacionMeta() != true){
                                 Persona.setMetaSemanal(Persona.getMetaSemanal()-5); //Disminucion de meta
                                 totalSaldos = totalSaldos + (Persona.calcularSueldo() + Persona.getDeuda());
@@ -2865,7 +2866,7 @@ public class Main {
                             totalSaldos = 0;
                             customPrint("Ups... No se pueden aplicar las bonificaciones personales");
                             customPrint("Realizando Pagos");
-                            for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                            for(Empleado Persona : Teatro.getInstancia().getEmpleadosPorRendimiento()){
                                 cantPagada = cantPagada + (Persona.calcularSueldo() + Persona.getDeuda());
                                 totalSaldos = totalSaldos + Persona.calcularSueldo();
                             }
@@ -2873,13 +2874,13 @@ public class Main {
                             if(cantPagada > fondos){
                                 customPrint("No se pudo realizar los pagos junto a la deuda");
                                 customPrint("Realizando pago del Sueldo Base");
-                                tesoreria.pagarSueldoBase(null, cantPagada);
+                                Teatro.getInstancia().getTesoreria().pagarSueldoBase(null, cantPagada);
                                 customPrint("Pago existoso", true, "green");
                                 String msg = "Se pago un total de " + totalSaldos;
                                 customPrint(msg);
-                                customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
-                                customPrint("Saldo disponible " + String.format("$%,.2f", tesoreria.getCuenta().getSaldo()));
-                                for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                                customPrint("Se realizo el pago a " + Teatro.getInstancia().getEmpleadosPorRendimiento().size() + " cuentas en total");
+                                customPrint("Saldo disponible " + String.format("$%,.2f", Teatro.getInstancia().getTesoreria().getCuenta().getSaldo()));
+                                for(Empleado Persona : Teatro.getInstancia().getEmpleadosPorRendimiento()){
                                     if(Persona.verificacionMeta() == true){
                                         Persona.setDeuda(Persona.getDeuda() + Persona.calcularSueldo()*0.15); //Se añade la bonificacion a la deuda solo a aquellas que la cumplieron
                                     }
@@ -2887,37 +2888,37 @@ public class Main {
                             }
                             else{
                             //Pago Sueldo base + Deuda
-                                for(Empleado Persona: Empleado.getEmpleadosPorRendimiento()){
-                                    tesoreria.getCuenta().transferencia(Persona.getCuenta(), Persona.getDeuda() + Persona.calcularSueldo());
+                                for(Empleado Persona: Teatro.getInstancia().getEmpleadosPorRendimiento()){
+                                    Teatro.getInstancia().getTesoreria().getCuenta().transferencia(Persona.getCuenta(), Persona.getDeuda() + Persona.calcularSueldo());
                                 }
                                 customPrint("Pago existoso", true, "green");
                                 String msg = "Se pago un total de " + cantPagada;
                                 customPrint(msg);
-                                customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
-                                customPrint("Saldo disponible " + String.format("$%,.2f", tesoreria.getCuenta().getSaldo()));
+                                customPrint("Se realizo el pago a " + Teatro.getInstancia().getEmpleadosPorRendimiento().size() + " cuentas en total");
+                                customPrint("Saldo disponible " + String.format("$%,.2f", Teatro.getInstancia().getTesoreria().getCuenta().getSaldo()));
                             }
 
                         }
                         //Realizacion Pago Boni + Deuda
                         else{
-                            for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                            for(Empleado Persona : Teatro.getInstancia().getEmpleadosPorRendimiento()){
                                 if(Persona.verificacionMeta() == true){
-                                    tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.15) + Persona.getDeuda());
+                                    Teatro.getInstancia().getTesoreria().getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.15) + Persona.getDeuda());
                                 }
                                 else{
-                                    tesoreria.getCuenta().transferencia(Persona.getCuenta(), Persona.calcularSueldo() + Persona.getDeuda());
+                                    Teatro.getInstancia().getTesoreria().getCuenta().transferencia(Persona.getCuenta(), Persona.calcularSueldo() + Persona.getDeuda());
                                 }
                             }
                             customPrint("Pago existoso", true, "green");
                             String msg = "Se pago un total de " + totalSaldos;
                             customPrint(msg);
-                            customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
-                            customPrint("Saldo disponible " + String.format("$%,.2f", tesoreria.getCuenta().getSaldo()));
+                            customPrint("Se realizo el pago a " + Teatro.getInstancia().getEmpleadosPorRendimiento().size() + " cuentas en total");
+                            customPrint("Saldo disponible " + String.format("$%,.2f", Teatro.getInstancia().getTesoreria().getCuenta().getSaldo()));
                         }
                     }
                     //Pago Bonis Tesorerias + deuda
                     else{
-                        for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                        for(Empleado Persona : Teatro.getInstancia().getEmpleadosPorRendimiento()){
                             if(Persona.verificacionMeta() != true){
                                 Persona.setMetaSemanal(Persona.getMetaSemanal()-5); //Disminucion de meta
                                 totalSaldos = totalSaldos + (Persona.calcularSueldo() * 1.3);
@@ -2931,7 +2932,7 @@ public class Main {
                         if (totalSaldos > fondos) {
                             totalSaldos = 0;
                             //Verificacion Metas Personales
-                            for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                            for(Empleado Persona : Teatro.getInstancia().getEmpleadosPorRendimiento()){
                                 if(Persona.verificacionMeta() != true){
                                     Persona.setMetaSemanal(Persona.getMetaSemanal());
                                     totalSaldos = totalSaldos + (Persona.calcularSueldo() + Persona.getDeuda());
@@ -2947,7 +2948,7 @@ public class Main {
                                 totalSaldos = 0;
                                 customPrint("Ups... No se pueden aplicar las bonificaciones personales");
                                 customPrint("Realizando Pagos");
-                                for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                                for(Empleado Persona : Teatro.getInstancia().getEmpleadosPorRendimiento()){
                                     cantPagada = cantPagada + (Persona.calcularSueldo() + Persona.getDeuda());
                                     totalSaldos = totalSaldos + Persona.calcularSueldo();
                                 }
@@ -2955,13 +2956,13 @@ public class Main {
                                 if(cantPagada > fondos){
                                     customPrint("No se pudo realizar los pagos junto a la deuda");
                                     customPrint("Realizando pago del Sueldo Base");
-                                    tesoreria.pagarSueldoBase(null, cantPagada);
+                                    Teatro.getInstancia().getTesoreria().pagarSueldoBase(null, cantPagada);
                                     customPrint("Pago existoso", true, "green");
                                     String msg = "Se pago un total de " + totalSaldos;
                                     customPrint(msg);
-                                    customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
-                                    customPrint("Saldo disponible " + String.format("$%,.2f", tesoreria.getCuenta().getSaldo()));
-                                    for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                                    customPrint("Se realizo el pago a " + Teatro.getInstancia().getEmpleadosPorRendimiento().size() + " cuentas en total");
+                                    customPrint("Saldo disponible " + String.format("$%,.2f", Teatro.getInstancia().getTesoreria().getCuenta().getSaldo()));
+                                    for(Empleado Persona : Teatro.getInstancia().getEmpleadosPorRendimiento()){
                                         if(Persona.verificacionMeta() == true){
                                             Persona.setDeuda(Persona.getDeuda() + Persona.calcularSueldo()*0.15); //Se añade la bonificacion a la deuda solo a aquellas que la cumplieron
                                         }
@@ -2969,41 +2970,41 @@ public class Main {
                                 }
                                 else{
                                 //Pago Sueldo base + Deuda
-                                    for(Empleado Persona: Empleado.getEmpleadosPorRendimiento()){
-                                        tesoreria.getCuenta().transferencia(Persona.getCuenta(), Persona.getDeuda() + Persona.calcularSueldo());
+                                    for(Empleado Persona: Teatro.getInstancia().getEmpleadosPorRendimiento()){
+                                        Teatro.getInstancia().getTesoreria().getCuenta().transferencia(Persona.getCuenta(), Persona.getDeuda() + Persona.calcularSueldo());
                                     }
                                     customPrint("Pago existoso", true, "green");
                                     String msg = "Se pago un total de " + cantPagada;
                                     customPrint(msg);
-                                    customPrint("Se realizo el pago a " + Empleado.getEmpleadosPorRendimiento().size() + " cuentas en total");
-                                    customPrint("Saldo disponible " + String.format("$%,.2f", tesoreria.getCuenta().getSaldo()));
+                                    customPrint("Se realizo el pago a " + Teatro.getInstancia().getEmpleadosPorRendimiento().size() + " cuentas en total");
+                                    customPrint("Saldo disponible " + String.format("$%,.2f", Teatro.getInstancia().getTesoreria().getCuenta().getSaldo()));
                                 }
                             }
                             else{
-                                for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                                for(Empleado Persona : Teatro.getInstancia().getEmpleadosPorRendimiento()){
                                     if(Persona.verificacionMeta() == true){
-                                        tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.45) + Persona.getDeuda());
+                                        Teatro.getInstancia().getTesoreria().getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.45) + Persona.getDeuda());
                                     }
                                     else{
-                                        tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.3) + Persona.getDeuda());
+                                        Teatro.getInstancia().getTesoreria().getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.3) + Persona.getDeuda());
                                     }
                                 }
                             }
                         }
                         else{
-                            for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                            for(Empleado Persona : Teatro.getInstancia().getEmpleadosPorRendimiento()){
                                 if(Persona.verificacionMeta() == true){
-                                    tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.45) + Persona.getDeuda());
+                                    Teatro.getInstancia().getTesoreria().getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.45) + Persona.getDeuda());
                                 }
                                 else{
-                                    tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.3) + Persona.getDeuda());
+                                    Teatro.getInstancia().getTesoreria().getCuenta().transferencia(Persona.getCuenta(), (Persona.calcularSueldo()*1.3) + Persona.getDeuda());
                                 }
                             }
                         }
                     }
                 }
                 //Reseteo de Trabajo
-                for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+                for(Empleado Persona : Teatro.getInstancia().getEmpleadosPorRendimiento()){
                     Persona.setTrabajos(new ArrayList<>());
                     Persona.setTrabajoCorrecto(new ArrayList<>());
                     Persona.setTrabajoRealizado(0);
@@ -3016,11 +3017,11 @@ public class Main {
         }
     
         //Despedir si meta es negativa
-        ArrayList<Empleado> ActEmpleados = Empleado.getEmpleadosPorRendimiento();
+        ArrayList<Empleado> ActEmpleados = Teatro.getInstancia().getEmpleadosPorRendimiento();
         ArrayList<Empleado> NuevaLista = new ArrayList<>(ActEmpleados);
         ArrayList<Empleado> Despedidos = new ArrayList<>();
         String msgBase = "";
-        for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+        for(Empleado Persona : Teatro.getInstancia().getEmpleadosPorRendimiento()){
             if(Persona.getMetaSemanal() < 0){
                 NuevaLista.remove(Persona);
                 Despedidos.add(Persona);
@@ -3036,7 +3037,7 @@ public class Main {
         wait(1000);
 
         //Imprimir Ranking
-        ArrayList<Empleado> Ranking = Empleado.getEmpleadosPorRendimiento();
+        ArrayList<Empleado> Ranking = new ArrayList<>(Teatro.getInstancia().getEmpleadosPorRendimiento());
         Collections.sort(Ranking, new Comparator<Empleado>() {
             public int compare(Empleado E1, Empleado E2){
                 return Integer.compare(E2.getMetaSemanal(), E1.getMetaSemanal());
@@ -3045,7 +3046,7 @@ public class Main {
         Empleado.setEmpleadosPorRendimiento(Ranking);
         msgBase = "\n";
         int posicion = 1;
-        for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
+        for(Empleado Persona : Teatro.getInstancia().getEmpleadosPorRendimiento()){
             if(msgBase != "\n"){
                 msgBase = msgBase + posicion + ". " + Persona.getNombre() + "\n"; 
                 posicion = posicion + 1;
