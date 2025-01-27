@@ -3108,134 +3108,10 @@ public class Main {
                 }
                 cal.append(showCalificaciones).append("\n");
 
+
             customPrint(cal.toString());
             wait(4500);
 
-                if (artista instanceof Actor) {
-                    Actor actor = (Actor) artista;
-                    wait(1000);
-                    // Mostrar áreas de mejora recomendadas
-                    List<Aptitud> areasDeMejora = actor.obtenerAreasDeMejora();
-                    customPrint("Áreas recomendadas para mejorar:", "yellow");
-                    wait(2000);
-                    StringBuilder areasMejora = new StringBuilder();
-        
-                    for (int i = 0; i < Math.min(3, areasDeMejora.size()); i++) {
-                        Aptitud aptitud = areasDeMejora.get(i);
-                        double calificacion = actor.getCalificacionPorAptitud(aptitud);
-        
-                        // Formato para la columna: "- {Aptitud} (Calificación: {calificación})"
-                        String linea = "- " + aptitud + " (Calificación: " + String.format("%.1f", calificacion) + ")";
-        
-                        // Verificar si agregar esta línea excede el límite de caracteres; si no, agregar nueva línea
-                        if (linea.length() > LARGO_LINEAS) {
-                            linea = linea.substring(0, LARGO_LINEAS - 3) + "..."; // Truncar si es necesario
-                        }
-        
-                        areasMejora.append(linea).append("\n"); // Agregar la línea con salto
-                    }
-        
-                    // Imprimir usando customPrint con el formato final en columnas
-                    customPrint(areasMejora.toString(), "yellow");
-
-                    wait(1500);
-
-                    // Preguntar si quiere seguir la recomendación
-                    byte respuesta = ask("¿Desea programar una clase basada en las áreas recomendadas?\n1. Sí\n2. No", dos, "");
-                    Aptitud areaSeleccionada = null;
-                
-                    if (respuesta == 1) {
-                        // Seleccionar el área de mejora más baja recomendada
-                        areaSeleccionada = areasDeMejora.get(0);
-
-                        // Determinar el nivel de la clase
-                        double calificacionActual = actor.getCalificacionPorAptitud(areaSeleccionada);
-                        String nivelClase;
-                        if (calificacionActual < 3.0) {
-                            nivelClase = "Introducción";
-                        } else if (calificacionActual < 4.0) {
-                            nivelClase = "Profundización";
-                        } else {
-                            nivelClase = "Perfeccionamiento";
-                        }
-
-                        customPrint("Se seleccionó, automáticamente, el área '" + areaSeleccionada + "' con nivel de clase: " + nivelClase);
-                        wait(1000);
-
-                        // Uso del método setSchedule
-
-                        String preguntaClase = "¿Para qué día quiere programar la clase?\n";
-                        String advertencia = "Existe una incompatibilidad del horario con el lineamiento.\n\nRevise si:\n1. El inicio del horario ocurre antes del fin del horario.\n2. Se exceden los límites de horario (muy temprano o muy tarde).\nIntente de nuevo.";
-                        LocalTime horaMin = LocalTime.of(8, 0);
-                        LocalTime horaMax = LocalTime.of(22, 0); 
-
-                        LocalDateTime[] clases = setSchedule(preguntaClase, horaMin, horaMax, 2, 4, true, advertencia);
-                        LocalDateTime inicio = clases[0];
-                        LocalDateTime fin = clases[1];
-
-                        // Validar que la hora de fin sea posterior a la de inicio
-                        if (fin.isBefore(inicio)) {
-                            customPrint("El horario de fin debe ser posterior al horario de inicio. Intente nuevamente.", "red");
-                            inicio = solicitarHorario("inicio");
-                            fin = solicitarHorario("fin");
-                        }
-                    
-                        // Buscar una sala disponible en el horario deseado
-                        Sala salaAsignada = null;
-                        for (Sala sala : Sala.getSalas()) {
-                            if (sala.getAseado() && sala.isDisponible(inicio, fin)) {
-                                salaAsignada = sala;
-                                break;
-                            }
-                        }
-                    
-                        if (salaAsignada == null) {
-                            customPrint("No hay salas disponibles en el horario deseado o no están limpias.", "red");
-                            return;
-                        }
-                    
-                        customPrint("Sala asignada: " + salaAsignada.getNumeroSala());
-                    
-                        // Asignar el horario a la sala
-                        ArrayList<LocalDateTime> nuevoHorario = new ArrayList<>();
-                        nuevoHorario.add(inicio);
-                        nuevoHorario.add(fin);
-                        salaAsignada.anadirHorario(nuevoHorario);
-                    
-                        // Buscar un profesor capacitado y disponible (aleatoriamente)
-                        Profesor profesorAsignado = null;
-                        for (Empleado empleado : Empleado.getTipoProfesor()) {
-                            if (empleado instanceof Profesor) {
-                                Profesor profesor = (Profesor) empleado;
-                    
-                                // Simular disponibilidad aleatoria
-                                boolean disponible = Math.random() > 0.5; // 50% de probabilidad de estar disponible
-                                if (profesor.tieneEspecializacion(areaSeleccionada) && disponible) {
-                                    profesorAsignado = profesor;
-                                    break;
-                                }
-                            }
-                        }
-                    
-                        if (profesorAsignado == null) {
-                            customPrint("No hay profesores disponibles con especialización en el área seleccionada o están ocupados.", "red");
-                            return;
-                        }
-                    
-                        customPrint("Profesor asignado: " + profesorAsignado.getNombre());
-                    
-                        // Clase programada exitosamente
-                        customPrint("Clase programada exitosamente en el área '" + areaSeleccionada + "' con el profesor '" 
-                            + profesorAsignado.getNombre() + "' en la sala '" + salaAsignada.getNumeroSala() + "'.", "green");
-
-                    }
-                }
-               
-                
-            
-            
-            
-            
             ArrayList<Obra> obrasCritics = Obra.mostrarObrasCriticas();
             // Mostrar todas las obras críticas
             if (obrasCritics.isEmpty()) {
@@ -3265,11 +3141,137 @@ public class Main {
                     }
                     wait(1500);
                 }
-            };
+            }
+
+            if (artista instanceof Actor) {
+                Actor actor = (Actor) artista;
+                wait(1000);
+                // Mostrar áreas de mejora recomendadas
+                List<Aptitud> areasDeMejora = actor.obtenerAreasDeMejora();
+                customPrint("Áreas recomendadas para mejorar:", "yellow");
+                wait(2000);
+                StringBuilder areasMejora = new StringBuilder();
+    
+                for (int i = 0; i < Math.min(3, areasDeMejora.size()); i++) {
+                    Aptitud aptitud = areasDeMejora.get(i);
+                    double calificacion = actor.getCalificacionPorAptitud(aptitud);
+    
+                    // Formato para la columna: "- {Aptitud} (Calificación: {calificación})"
+                    String linea = "- " + aptitud + " (Calificación: " + String.format("%.1f", calificacion) + ")";
+    
+                    // Verificar si agregar esta línea excede el límite de caracteres; si no, agregar nueva línea
+                    if (linea.length() > LARGO_LINEAS) {
+                        linea = linea.substring(0, LARGO_LINEAS - 3) + "..."; // Truncar si es necesario
+                    }
+    
+                    areasMejora.append(linea).append("\n"); // Agregar la línea con salto
+                }
+    
+                // Imprimir usando customPrint con el formato final en columnas
+                customPrint(areasMejora.toString(), "yellow");
+
+                wait(1500);
+
+                // Preguntar si quiere seguir la recomendación
+                byte respuesta = ask("¿Desea programar una clase basada en las áreas recomendadas?\n1. Sí\n2. No", dos, "");
+                Aptitud areaSeleccionada = null;
+            
+                if (respuesta == 1) {
+                    // Seleccionar el área de mejora más baja recomendada
+                    areaSeleccionada = areasDeMejora.get(0);
+
+                    // Determinar el nivel de la clase
+                    double calificacionActual = actor.getCalificacionPorAptitud(areaSeleccionada);
+                    String nivelClase;
+                    if (calificacionActual < 3.0) {
+                        nivelClase = "Introducción";
+                    } else if (calificacionActual < 4.0) {
+                        nivelClase = "Profundización";
+                    } else {
+                        nivelClase = "Perfeccionamiento";
+                    }
+
+                    customPrint("Se seleccionó, automáticamente, el área '" + areaSeleccionada + "' con nivel de clase: " + nivelClase);
+                    wait(1000);
+
+                    // Uso del método setSchedule
+
+                    String preguntaClase = "¿Para qué día quiere programar la clase?\n";
+                    String advertencia = "Existe una incompatibilidad del horario con el lineamiento.\n\nRevise si:\n1. El inicio del horario ocurre antes del fin del horario.\n2. Se exceden los límites de horario (muy temprano o muy tarde).\nIntente de nuevo.";
+                    LocalTime horaMin = LocalTime.of(8, 0);
+                    LocalTime horaMax = LocalTime.of(22, 0); 
+
+                    LocalDateTime[] clases = setSchedule(preguntaClase, horaMin, horaMax, 2, 4, true, advertencia);
+                    LocalDateTime inicio = clases[0];
+                    LocalDateTime fin = clases[1];
+
+                    // Validar que la hora de fin sea posterior a la de inicio
+                    if (fin.isBefore(inicio)) {
+                        customPrint("El horario de fin debe ser posterior al horario de inicio. Intente nuevamente.", "red");
+                        inicio = solicitarHorario("inicio");
+                        fin = solicitarHorario("fin");
+                    }
+                
+                    // Buscar una sala disponible en el horario deseado
+                    Sala salaAsignada = null;
+                    for (Sala sala : Sala.getSalas()) {
+                        if (sala.getAseado() && sala.isDisponible(inicio, fin)) {
+                            salaAsignada = sala;
+                            break;
+                        }
+                    }
+                
+                    if (salaAsignada == null) {
+                        customPrint("No hay salas disponibles en el horario deseado o no están limpias.", "red");
+                        return;
+                    }
+                
+                    customPrint("Sala asignada: " + salaAsignada.getNumeroSala());
+                
+                    // Asignar el horario a la sala
+                    ArrayList<LocalDateTime> nuevoHorario = new ArrayList<>();
+                    nuevoHorario.add(inicio);
+                    nuevoHorario.add(fin);
+                    salaAsignada.anadirHorario(nuevoHorario);
+                
+                    // Buscar un profesor capacitado y disponible (aleatoriamente)
+                    Profesor profesorAsignado = null;
+                    for (Empleado empleado : Empleado.getTipoProfesor()) {
+                        if (empleado instanceof Profesor) {
+                            Profesor profesor = (Profesor) empleado;
+                
+                            // Simular disponibilidad aleatoria
+                            boolean disponible = Math.random() > 0.5; // 50% de probabilidad de estar disponible
+                            if (profesor.tieneEspecializacion(areaSeleccionada) && disponible) {
+                                profesorAsignado = profesor;
+                                break;
+                            }
+                        }
+                    }
+                
+                    if (profesorAsignado == null) {
+                        customPrint("No hay profesores disponibles con especialización en el área seleccionada o están ocupados.", "red");
+                        return;
+                    }
+                
+                    customPrint("Profesor asignado: " + profesorAsignado.getNombre());
+                
+                    // Clase programada exitosamente
+                    customPrint("Clase programada exitosamente en el área '" + areaSeleccionada + "' con el profesor '" 
+                        + profesorAsignado.getNombre() + "' en la sala '" + salaAsignada.getNumeroSala() + "'.", "green");
+
+                }
+            }
+               
+                
+            
+            
+            
+            
+            
         
             // Salir del programa
             customPrint("Saliendo de la gestión de clases. ¡Hasta pronto!", "blue");
-            break;
         }
     }
 
@@ -3535,5 +3537,4 @@ public class Main {
         } else {
             customPrint("Solo los actores pueden recibir clases.", "red");
         }*/
-    }// Fin del método
-}
+}// Fin del método
