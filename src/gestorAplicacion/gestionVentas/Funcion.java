@@ -23,7 +23,9 @@ public class Funcion {
     static ArrayList <Funcion> funcionesALaVenta= new ArrayList<>();
 
 
-    
+//    static{
+//        funci_1.prueba();
+//    }
 
     public String tablaSillas(){
         String Nuevo="";
@@ -141,6 +143,8 @@ public class Funcion {
         this.calificador = doWeNeedACalificador();
         this.audienciaEsperada = obra.getAudienciaEsperada();
         funcionesCreadas.add(this);
+        funcionesALaVenta = actualizarFuncionesVenta(funcionesCreadas);
+        this.sillas = this.sala.getSillas();
     }
     public Funcion(){
 
