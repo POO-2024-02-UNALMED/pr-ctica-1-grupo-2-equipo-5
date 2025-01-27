@@ -11,12 +11,14 @@ public class Teatro implements Serializable{
 
     private static Sala sala1 = new Sala(1, 100, 24);
 
+    //empleados
     private static ArrayList<Empleado> empleadosPorRendimiento = new ArrayList<>();
     private static ArrayList<Empleado> tipoSeguridad = new ArrayList<>();
     private static ArrayList<Empleado> tipoAseador = new ArrayList<>();
     private static ArrayList<Empleado> tipoProfesor = new ArrayList<>();
     
-
+    //actores
+    private static List<Actor> actores = new ArrayList<Actor>();
 
 
 
