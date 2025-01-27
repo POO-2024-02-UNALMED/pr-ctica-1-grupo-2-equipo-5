@@ -3034,7 +3034,6 @@ public class Main {
                 wait(2000);
             };
 
-            if (artista != null) {
             if (artista != null && artista instanceof Actor) {
                 if (((Actor)artista).sigueIgual()) {
                     customPrint("El actor no tiene calificaciones. Inicializando calificaciones...");  
