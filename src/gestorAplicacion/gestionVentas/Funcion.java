@@ -8,8 +8,6 @@ import java.time.Duration;
 import java.time.LocalDate;
 
 import gestorAplicacion.gestionObras.*;
-import gestorAplicacion.herramientas.Suscripcion;
-import test.funci_1;
 
 public class Funcion implements Serializable{
     private Obra obra;
@@ -23,14 +21,9 @@ public class Funcion implements Serializable{
     static ArrayList <Funcion> funcionesCreadas= new ArrayList<>() ;
     static ArrayList <Funcion> funcionesALaVenta= new ArrayList<>();
 
-
-   
-
-
     public String tablaSillas(){
         String Nuevo="";
         ArrayList <Silla> s = this.getSala().getSillas();
-        int h = 0;
         for (int i = 0; i < s.size(); i++) {
                         
             if (s.get(i).getCodigo()==88){

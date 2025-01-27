@@ -11,8 +11,6 @@ import uiMain.Main;
 import gestorAplicacion.herramientas.*;
 import gestorAplicacion.gestionObras.*;
 import gestorAplicacion.gestionFinanciera.CuentaBancaria;
-import gestorAplicacion.gestionVentas.Funcion;
-import gestorAplicacion.gestionVentas.Tiquete;
 import gestorAplicacion.gestionFinanciera.Tesoreria;
 
 public class Cliente implements Serializable{

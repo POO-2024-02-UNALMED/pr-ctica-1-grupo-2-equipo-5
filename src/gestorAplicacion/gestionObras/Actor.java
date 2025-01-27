@@ -7,15 +7,12 @@ import java.util.Locale;
 
 import baseDatos.Teatro;
 
-import java.io.Serializable;
 import java.text.NumberFormat;
 
-import gestorAplicacion.gestionClases.Clase;
-import gestorAplicacion.gestionFinanciera.CuentaBancaria;
 import gestorAplicacion.herramientas.Aptitud;
 import gestorAplicacion.herramientas.Genero;
 
-public class Actor extends Artista implements Serializable{
+public class Actor extends Artista{
 
     private static final long serialVersionUID = 1L;
     private static final long TASA = 1_000_000;

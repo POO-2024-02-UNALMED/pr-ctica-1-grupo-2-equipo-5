@@ -3,7 +3,6 @@ package baseDatos;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import uiMain.Main;
-import baseDatos.Teatro;
 
 public class Deserializador {
     

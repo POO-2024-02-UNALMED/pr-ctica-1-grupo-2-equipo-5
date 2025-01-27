@@ -8,7 +8,6 @@ import baseDatos.Serializador;
 import baseDatos.Teatro;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.Collections;
 import java.util.Comparator;
@@ -23,14 +22,11 @@ import java.time.format.DateTimeParseException;
 import java.io.File;
 
 import gestorAplicacion.gestionVentas.Cliente;
-import gestorAplicacion.gestionClases.Clase;
 import gestorAplicacion.gestionClases.Profesor;
-import gestorAplicacion.gestionFinanciera.CuentaBancaria;
 import gestorAplicacion.gestionFinanciera.Empleado;
 import gestorAplicacion.gestionFinanciera.Tesoreria;
 import gestorAplicacion.gestionVentas.Sala;
 import gestorAplicacion.gestionVentas.Funcion;
-import gestorAplicacion.gestionVentas.Silla;
 import gestorAplicacion.gestionVentas.Tiquete;
 import gestorAplicacion.gestionObras.Actor;
 import gestorAplicacion.gestionObras.Artista;
@@ -69,7 +65,7 @@ public class Main {
 
     public static boolean canBeTime(String time){ //formato HH:MM
         try{
-            LocalTime hour = LocalTime.parse(time);
+            LocalTime.parse(time);
             return true;
         } catch (Exception e){
             return false;
@@ -417,7 +413,6 @@ public class Main {
 
         while (task != 6){
 
-            String dash = "~";
             customPrint("Teatro Carlos Mayolo", true);
 
             byte[] options = {1, 2, 3, 4, 5, 6};
@@ -459,16 +454,14 @@ public class Main {
     }
 
     public static void gestionVentas(){
-        Silla silla = new Silla(Asiento.BASICO);
         Tiquete tiquete = new Tiquete();
 
         InterfaceTipos asiento = Asiento.BASICO;
         InterfaceTipos suscription = Suscripcion.Basica;
-        String confirmacion="";
+        String confirmacion = "";
         float dineroTesoreria=0;
         byte [] opciones_2 = {1,2,3};
         Cliente cliente= null;
-        ArrayList <Integer> lista = new ArrayList<>();
         customPrint(
         "Ingrese la opcion correspondiente\n"+
         "Eres cliente nuevo? \n"+ 
@@ -1353,7 +1346,7 @@ public class Main {
             
             case 1:
 
-                List<ArrayList> contadores = new ArrayList<>();
+                List<ArrayList<Object>> contadores = new ArrayList<>();
     
                 for (Actor actor : actorsForRental){
                     ArrayList<Object> contador = new ArrayList<>();
@@ -1389,7 +1382,7 @@ public class Main {
                         break;
                 }
     
-                for (ArrayList contador : contadores){
+                for (ArrayList<Object> contador : contadores){
     
                     if (isIn(actorsForRental, (Actor)contador.get(0))){ 
                         
@@ -1415,7 +1408,7 @@ public class Main {
 
                 }
     
-                for (ArrayList contador : contadores){
+                for (ArrayList<Object> contador : contadores){
     
                     if (isIn(actorsForRental, (Actor)contador.get(0))){ 
                         
@@ -1434,7 +1427,7 @@ public class Main {
     
                 List<Actor> advancedList = new ArrayList<Actor>();
     
-                for (ArrayList contador : contadores){
+                for (ArrayList<Object> contador : contadores){
                     advancedList.add( (Actor)contador.get(0));
                 }
                 
