@@ -1179,48 +1179,60 @@ public class Main {
     menuSwitch:
     switch (menuLog){
 
-        case 0:
-        customPrint("Saliendo...", "red");
-        return;
-
-        case 1:
-        long idEntrada = longAsk("Ingrese el número de identificación.");
-
-        if (idEntrada == 0){
+        case 0:  //salir
             customPrint("Saliendo...", "red");
             return;
-        }
 
-        boolean idFlag = false;
-        
-        for (Cliente cliente : Cliente.clientes){
+        case 1: //empresa registrada
+            long idEntrada = longAsk("Ingrese el número de identificación.");
 
-            if (cliente.getId() == idEntrada){
-                customPrint("Cliente confirmado en base de datos.", true, "green");
-                historialEmpresa = cliente.getHistorial();
-                empresa = cliente;
-                idFlag = true;
-                break menuSwitch;
+            if (idEntrada == 0){
+                customPrint("Saliendo...", "red");
+                return;
             }
 
-        }
+            boolean idFlag = false;
 
-        if (!idFlag){
-            customPrint("El número de identificación no existe en la base de datos.", true, "red"); return;
-        }
+            
+            for (Cliente cliente : Teatro.getInstancia().getClientes()){
 
-        case 2:
+                if (cliente.getId() == idEntrada && cliente.getTipo().equals("Empresa")){
+                    customPrint("Cliente confirmado en base de datos.", true, "green");
+                    historialEmpresa = cliente.getHistorial();
+                    empresa = cliente;
+                    idFlag = true;
+                    break menuSwitch;
+                }
 
-        long newId = longAsk("Genere un nuevo número de identificación.");
+            }
 
-        if (newId == 0){
-            customPrint("Saliendo...", "red");
-            return;
-        }
-        
-        for (Cliente cliente : Cliente.clientes){
-            while (cliente.getId() == newId){
-                customPrint("Esta identificación ya existe en la base de datos, intente con una diferente.", true, "red");
+            if (!idFlag){
+                customPrint("El número de identificación no existe en la base de datos.", true, "red"); return;
+            }
+
+        case 2: //Empresa nueva
+
+            long newId = longAsk("Genere un nuevo número de identificación.");
+
+            if (newId == 0){
+                customPrint("Saliendo...", "red");
+                return;
+            }
+            
+            for (Cliente cliente : Teatro.getInstancia().getClientes()){
+                while (cliente.getId() == newId){
+                    customPrint("Esta identificación ya existe en la base de datos, intente con una diferente.", true, "red");
+                    newId = longAsk("Genere un nuevo número de identificación.");
+
+                    if (newId == 0){
+                        customPrint("Saliendo...", "red");
+                        return;
+                    }
+                }
+            }
+
+            while (newId <= 0){
+                customPrint("La identificación debe ser un número entero positivo.", true, "red");
                 newId = longAsk("Genere un nuevo número de identificación.");
 
                 if (newId == 0){
@@ -1228,20 +1240,9 @@ public class Main {
                     return;
                 }
             }
-        }
 
-        while (newId <= 0){
-            customPrint("La identificación debe ser un número entero positivo.", true, "red");
-            newId = longAsk("Genere un nuevo número de identificación.");
-
-            if (newId == 0){
-                customPrint("Saliendo...", "red");
-                return;
-            }
-        }
-
-        empresa = new Cliente("Empresa", newId);
-        customPrint("Cliente creado:\n" + empresa, true, "green");
+            empresa = new Cliente("Empresa", newId);
+            customPrint("Cliente creado:\n" + empresa, true, "green");
         
     }
 
@@ -1270,7 +1271,7 @@ public class Main {
                 return;
 
             case 1:
-                //actorsForRental.removeIf(actor -> (actor.getCalificacion() <= CALIFICACION_ALTA) );
+                ///actorsForRental.removeIf(actor -> (actor.getCalificacion() <= CALIFICACION_ALTA) );
                 for (int i = 0; i < actorsForRental.size(); i++){
                     Actor actor = actorsForRental.get(i);
                     if (actor.getCalificacion() >= CALIFICACION_ALTA){
@@ -1284,7 +1285,7 @@ public class Main {
             }
 
 
-        //System.out.println(newAct);
+        //System.out.println(actorsForRental);
         actorsForRental = newAct;
         options[3] = 3; options[4] = 4; options[5] = 5; options[6] = 6; options[7] = 7; options[8] = 8;
 
@@ -1412,7 +1413,7 @@ public class Main {
         switch (advancedSearch){
 
             case 0:
-                customPrint("Saliendo", "red");
+                customPrint("Saliendo...", "red");
                 return;
             
             case 1:
@@ -1650,7 +1651,7 @@ public class Main {
         }
 
         customPrint("El actor escogido fue " + actorEscogido.getNombre() + " por un precio de " +  Actor.formatoPrecio(actorEscogido.getPrecioContrato(duracionContrato)));
-        byte codigoCompra = empresa.pagarContratoActor(actorEscogido, duracionContrato, tesoreria);
+        byte codigoCompra = empresa.pagarContratoActor(actorEscogido, duracionContrato, Teatro.getInstancia().getTesoreria());
         if (codigoCompra == -1){
             customPrint("Saldo insuficiente", true, "red");
         } else{
