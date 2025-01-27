@@ -1639,7 +1639,7 @@ public class Main {
 
             switch (respuesta) {
                 case 0:
-                    customPrint("Saliendo...");
+                    customPrint("Saliendo...", "red");
                     wait(1000);
                     return;
                 case 1:
