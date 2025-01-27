@@ -230,7 +230,7 @@ public class Main {
         return false;       
     }
 
-    public static int LARGO_LINEAS = 100;
+    public static int LARGO_LINEAS = 120;
     public static char separador = '│';
     public static String vacio = " ";
 
@@ -401,15 +401,15 @@ public class Main {
 
     public static void main(String args[]) throws InterruptedException {  
 
+        funcionalidad2.empezar();
+        byte task = -1;
+
         // DESERIALIZACIÓN -------------------------------------------------------//
         String filename = "teatro.txt";
         String path = "src" + File.separator + "baseDatos" + File.separator + "temp" + File.separator + filename;
         Deserializador.loadState(path);
-        Teatro teatro = Teatro.getInstancia();
+        //Teatro teatro = Teatro.getInstancia();
         // -----------------------------------------------------------------------//
-
-        funcionalidad2.empezar();
-        byte task = -1;
 
         while (task != 6){
 
