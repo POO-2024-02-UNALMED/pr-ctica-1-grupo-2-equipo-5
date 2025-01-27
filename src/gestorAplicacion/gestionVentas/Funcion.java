@@ -23,6 +23,7 @@ public class Funcion {
     static ArrayList <Funcion> funcionesALaVenta= new ArrayList<>();
 
 
+<<<<<<< Updated upstream
 //    static{
 //        funci_1.prueba();
 //    }
@@ -35,6 +36,12 @@ public ArrayList<Funcion> actualizarFuncionesVenta(ArrayList<Funcion> funcionesC
     }
     return funcionesALaVenta;
 }
+=======
+    static{
+        funci_1.prueba();
+    }
+
+>>>>>>> Stashed changes
 
     public String tablaSillas(){
         String Nuevo="";
