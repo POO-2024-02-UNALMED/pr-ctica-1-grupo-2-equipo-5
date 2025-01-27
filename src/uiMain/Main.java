@@ -357,12 +357,12 @@ public class Main {
             long duracionHorario = duration.toHours();
 
             if (duracionHorario < duracionMinHoras){
-                customPrint("El tiempo mínimo de contratación es de " + duracionMinHoras + " horas.", true, "red"); 
+                customPrint("El tiempo mínimo es de " + duracionMinHoras + " horas.", true, "red"); 
                 continue;
             }
 
             if (duracionHorario > duracionMaxHoras){
-                customPrint("El tiempo máximo de contratación es de " + duracionMaxHoras + " horas.", true, "red");
+                customPrint("El tiempo máximo es de " + duracionMaxHoras + " horas.", true, "red");
                 continue;
             }
 
