@@ -9,6 +9,7 @@ import baseDatos.Teatro;
 
 import java.text.NumberFormat;
 
+import gestorAplicacion.gestionFinanciera.CuentaBancaria;
 import gestorAplicacion.herramientas.Aptitud;
 import gestorAplicacion.herramientas.Genero;
 
