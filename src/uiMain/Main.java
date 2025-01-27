@@ -51,6 +51,15 @@ public class Main {
         return answer;
     }
 
+    public static void wait(int millis){
+        try {
+            Thread.sleep(millis);
+        } catch (Exception e) {
+            customPrint("La pausa fue interrumpida.");
+        }
+
+    }
+
     public static boolean canBeTime(String time){ //formato HH:MM
         try{
             LocalTime hour = LocalTime.parse(time);
