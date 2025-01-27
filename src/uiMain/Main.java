@@ -2690,18 +2690,19 @@ public class Main {
 
         //PRIMERA INTERACCIÓN
 
+        byte[] inicioFun = {1,2,3,0};
         byte[] cuatro = {1,2,3,4};
         byte[] dos = {1,2};
 
         customPrint("Bienvenido a la gestión de clases.", "blue");
-        Thread.sleep(2000);
+        wait(2000);
 
         boolean continuar = true;
 
         while (continuar) {
 
         int queDeseaHacer = ask("¿Que desea hacer?\n" + "1. Gestionar artistas\n" + "2. Ver obras en estado crítico del teatro\n"
-         + "3. Programar una clase\n" + "4. Salir", cuatro, "blue");
+         + "3. Programar una clase\n" + "0. Salir", inicioFun, "blue");
 
         
         switch (queDeseaHacer) { //GESTIONAR ARTISTAS
@@ -2728,35 +2729,34 @@ public class Main {
                 }
                 customPrint(artistas.toString());
             }
-            Thread.sleep(2000);
-            Thread.sleep(1500);
+            wait(3500);
             long idArtista = longAsk("Ingrese el ID del artista del cual desea conocer su información:\n" + "\n" + "(Puede escribir el ID de un actor o Director que no exista para inicializarlo)");
             Artista artista = Artista.buscarArtistaPorId(idArtista);
         
             if (artista == null) {
                 customPrint("Artista no encontrado.", "red");
-                Thread.sleep(2000);
+                wait(2000);
                 byte crearArtista = ask("¿Desea crear un nuevo Artista con este ID?\n" + "1. Sí\n" + "2. No", new byte[]{1, 2}, "");
             
                 switch (crearArtista) {
                     case 1:
                         String nombreArtista = ask("Ingrese el nombre del nuevo artista:");
-                        Thread.sleep(1000);
+                        wait(1000);
                         String tipoArtista = ask("Ingrese el tipo de artista (director/actor)");
-                        Thread.sleep(1000);
+                        wait(1000);
             
                         if (tipoArtista.equals("director")) {
                             // Crear un nuevo director
                             new Director(nombreArtista, idArtista);
                             customPrint("Nuevo director agregado: " + nombreArtista + " con ID " + idArtista, "green");
-                            Thread.sleep(2000);
+                            wait(2000);
                             customPrint("Recuerde que los directores no reciben clases.", "yellow");
                         } else if (tipoArtista.equals("actor")) {
                             // Crear un nuevo actor
                             Actor nuevoActor = new Actor(nombreArtista, idArtista);
                             customPrint("Nuevo actor agregado: " + nombreArtista + " con ID " + idArtista, "green");
                             artista = nuevoActor; // Asignar al artista actual
-                            Thread.sleep(2000);
+                            wait(2000);
                         } else {
                             customPrint("Tipo de artista no válido. Debe ser 'director' o 'actor'.", "red");
                             return; // Salir si el tipo es inválido
@@ -2768,13 +2768,13 @@ public class Main {
                 }
             } else {
                 customPrint("El actor ya existe en nuestra base de datos", "green");
-                Thread.sleep(2000);
+                wait(2000);
             };
 
             if (artista != null) {
                 if (((Actor)artista).sigueIgual()) {
                     customPrint("El actor no tiene calificaciones. Inicializando calificaciones...");  
-                    Thread.sleep(2000);
+                    wait(2000);
         
                     // Llamar al método casting() para inicializar calificaciones de calificadores
                     boolean resultado = Empleado.casting(artista, Empleado.getTipoProfesor());
@@ -2789,19 +2789,19 @@ public class Main {
                         // Mostrar quién inicializó las calificaciones
                         customPrint("El/la profesor/a " + profesorAsignado.getNombre() + " es el/la responsable de inicializar las calificaciones\n" + "del actor " + artista.getNombre() + ".");
                     }
-                    Thread.sleep(3000);
+                    wait(3000);
                 }
         
                 // Inicializar calificaciones del público (simuladas aleatoriamente)
 
                 if (artista.getCalificacionesPublico().size()==0){
                     artista.inicializarCalificacionesPublico(artista);
-                Thread.sleep(2000);
+                wait(2000);
                 }
                 
                 // Mostrar las calificaciones del artista, sea o no sea nuevo
                 customPrint("Estas son las calificaciones del artista: " + artista.getNombre());
-                Thread.sleep(2000);
+                wait(2000);
 
                 StringBuilder cal = new StringBuilder();
 
@@ -2819,7 +2819,7 @@ public class Main {
                     cal.append(showCalificaciones).append("\n");
 
                 customPrint(cal.toString());
-                Thread.sleep(4500);
+                wait(4500);
 
                 byte areas = ask("¿Desea ver las áreas que puede mejorar el artista según sus calificiaciones?\n" + "1. Sí\n" + "2. No\n", dos, "blue");
                 switch (areas) {
@@ -2827,11 +2827,11 @@ public class Main {
                         
                     if (artista instanceof Actor) {
                         Actor actor = (Actor) artista;
-                        Thread.sleep(1000);
+                        wait(1000);
                         // Mostrar áreas de mejora recomendadas
                         List<Aptitud> areasDeMejora = actor.obtenerAreasDeMejora();
                         customPrint("Áreas recomendadas para mejorar:", "yellow");
-                        Thread.sleep(2000);
+                        wait(2000);
                         StringBuilder areasMejora = new StringBuilder();
             
                         for (int i = 0; i < Math.min(3, areasDeMejora.size()); i++) {
@@ -2852,7 +2852,7 @@ public class Main {
                         // Imprimir usando customPrint con el formato final en columnas
                         customPrint(areasMejora.toString(), "yellow");
 
-                        Thread.sleep(1500);
+                        wait(1500);
 
                         // Preguntar si quiere seguir la recomendación
                         byte respuesta = ask("¿Desea programar una clase basada en las áreas recomendadas?\n1. Sí\n2. No", dos, "");
@@ -2874,7 +2874,7 @@ public class Main {
                             }
 
                             customPrint("Se seleccionó, automáticamente, el área '" + areaSeleccionada + "' con nivel de clase: " + nivelClase);
-                            Thread.sleep(1000);
+                            wait(1000);
 
                             // Uso del método
                             LocalDateTime inicio = solicitarHorario("inicio");
@@ -2959,7 +2959,7 @@ public class Main {
                 customPrint("No hay obras en estado crítico en el teatro.", "yellow");
             } else {
                 customPrint("Obras en estado crítico del teatro:", "red");
-                Thread.sleep(3000);
+                wait(3000);
                 for (Obra obra : obrasCritics) {
                     customPrint("- '" + obra.getNombre() + "' (Promedio de calificaciones: " + obra.promedioCalificacion() + ")");
         
@@ -2970,7 +2970,7 @@ public class Main {
                             double calificacion = actor.getCalificacionPorAptitud(aspecto);
                             if (calificacion != -1 && calificacion < 3.0) { // Si la calificación es baja
                                 customPrint("El aspecto '" + aspecto + "' tiene una calificación baja (" + calificacion + ").", "red");
-                                Thread.sleep(1500);
+                                wait(1500);
                                 customPrint("Notificando al actor: " + actor.getNombre());
                                 encontrado = true;
                                 break;
@@ -2980,7 +2980,7 @@ public class Main {
                             customPrint("No hay actores con calificaciones bajas en el aspecto '" + aspecto + "'.", "yellow");
                         }
                     }
-                    Thread.sleep(1500);
+                    wait(1500);
                 }
             };
         
@@ -2988,7 +2988,7 @@ public class Main {
             case 3:
                 break;
 
-            case 4:
+            case 0:
             // Salir del programa
             customPrint("Saliendo de la gestión de clases. ¡Hasta pronto!", "blue");
             continuar = false; 
@@ -3052,7 +3052,7 @@ public class Main {
             }
 
             customPrint("Se seleccionó el área '" + areaSeleccionada + "' con nivel de clase: " + nivelClase);
-            Thread.sleep(1000);
+            wait(1000);
 
             // Uso del método
             LocalDateTime inicio = solicitarHorario("inicio");
