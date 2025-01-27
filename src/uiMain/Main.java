@@ -1589,11 +1589,7 @@ public class Main {
         String Saldo = String.format("$%,.2f",tesoreria.getCuenta().getSaldo());
         customPrint(Deudas + "El saldo de tesoreria es: " + Saldo, "green");
         
-        try{
-            Thread.sleep(2000);
-        } catch (Exception e) {
-            customPrint("La pausa fue interrumpida.");    
-        }
+        wait(1000);
         
         //Obtener lista de empleados por ocupacion:
         boolean repetidor = false;
@@ -1610,11 +1606,7 @@ public class Main {
             customPrint("Seguridad \n" + msgBase, true, "");
             msgBase = "\n";
 
-            try{
-                Thread.sleep(1500);
-            } catch (InterruptedException e) {
-                customPrint("La pausa fue interrumpida.");    
-            }
+            wait(1000);
             
             for(Empleado Persona : Empleado.getTipoAseador()){
                 if(msgBase != "\n"){
@@ -1627,11 +1619,7 @@ public class Main {
             customPrint("Aseador \n" + msgBase, true, "");
             msgBase = "\n";
             
-            try{
-                Thread.sleep(1500);
-            } catch (InterruptedException e) {
-                customPrint("La pausa fue interrumpida.");    
-            }
+            wait(1000);
             
             for(Empleado Persona : Empleado.getTipoProfesor()){
                 if(msgBase != "\n"){
@@ -1841,11 +1829,8 @@ public class Main {
         } while(!repetidor);
         
         customPrint("Asignando trabajos, por favor espere ...", true);
-        try{
-            Thread.sleep(2000);
-        } catch (Exception e) {
-            customPrint("La pausa fue interrumpida.");    
-        }
+        
+        wait(2000);
 
         //Organiza el ranking - Aseador - Seguridad - Profesor - Salas
         ArrayList<Empleado> Aseador_order = Empleado.getTipoAseador();
@@ -2570,10 +2555,10 @@ public class Main {
 
         if(funcionesLimpiadas.size() != 0 ){
             if(funcionesLimpiadas.size() == 1){
-                customPrint("Existen " + funcionesLimpiadas.size() + " funcion sin posibilidad de seguridad");
+                customPrint("Existen " + funcionesLimpiadas.size() + " funcion donde no es posible limpiar");
             }
             else if(funcionesLimpiadas.size() > 1){
-                customPrint("Existen " + funcionesLimpiadas.size() + " funciones sin posibilidad de seguridad");
+                customPrint("Existen " + funcionesLimpiadas.size() + " funciones donde no es posible limpiar");
             }
         }
 
@@ -2704,7 +2689,7 @@ public class Main {
             }
         }
         
-        //Automatico: Verificar metros de la sala y se asigan de acuerdo a la dificultad, verificar por meta
+
    
         wait(2000);
 
