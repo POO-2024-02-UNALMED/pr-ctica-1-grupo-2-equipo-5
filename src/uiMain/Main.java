@@ -2975,7 +2975,7 @@ public class Main {
     }
 
     //FUNCIONALIDAD 4
-    public static void gestionClases() throws InterruptedException {
+    public static void gestionClases() {
 
 
         //PRIMERA INTERACCIÓN
@@ -3220,13 +3220,6 @@ public class Main {
                     LocalDateTime[] clases = setSchedule(preguntaClase, horaMin, horaMax, 2, 4, true, advertencia);
                     LocalDateTime inicio = clases[0];
                     LocalDateTime fin = clases[1];
-
-                    // Validar que la hora de fin sea posterior a la de inicio
-                    if (fin.isBefore(inicio)) {
-                        customPrint("El horario de fin debe ser posterior al horario de inicio. Intente nuevamente.", "red");
-                        inicio = solicitarHorario("inicio");
-                        fin = solicitarHorario("fin");
-                    }
                 
                     // Buscar una sala disponible en el horario deseado
                     Sala salaAsignada = null;
@@ -3276,7 +3269,39 @@ public class Main {
                     customPrint("Clase programada exitosamente en el área '" + areaSeleccionada + "' con el profesor '" 
                         + profesorAsignado.getNombre() + "' en la sala '" + salaAsignada.getNumeroSala() + "'.", "green");
 
-                }
+                    } else {
+                        byte respuesta1 = ask("¿Desea programar otra clase?\n1. Sí\n2. No", dos, "");
+                        if (respuesta1 == 1){
+                        // Permitir al usuario elegir cualquier aptitud
+                        StringBuilder areas2 = new StringBuilder();
+                            customPrint("Seleccione un área para programar una clase:");
+                            for (int i = 0; i < actor.getAptitudes().size(); i++) {
+                                Aptitud aptitud = actor.getAptitudes().get(i);
+        
+                                String linea2 = (i+1) + "." + aptitud;
+        
+                                // Verificar si agregar esta línea excede el límite de caracteres; si no, agregar nueva línea
+                                if (linea2.length() > LARGO_LINEAS) {
+                                    linea2 = linea2.substring(0, LARGO_LINEAS - 3) + "..."; // Truncar si es necesario
+                                }
+        
+                                areas2.append(linea2).append("\n"); // Agregar la línea con salto
+                            }
+                            customPrint(areas2.toString());
+        
+                            byte[] opcionesAptitudes = new byte[actor.getAptitudes().size()];
+                            for (byte i = 0; i < opcionesAptitudes.length; i++) {
+                                opcionesAptitudes[i] = (byte) (i + 1);
+                            }
+                            
+                            byte opcion = ask("Ingrese el número del área deseada", opcionesAptitudes, "");
+                            areaSeleccionada = actor.getAptitudes().get(opcion - 1);
+                        }
+                        else {
+                            customPrint("Finalizando gestión de clases.", "blue");
+                            return;
+                        }
+                    }
             }
                
                 
