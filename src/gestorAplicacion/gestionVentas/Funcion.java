@@ -3,6 +3,7 @@ package gestorAplicacion.gestionVentas;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.time.LocalTime;
+import java.time.Duration;
 import java.time.LocalDate;
 
 import gestorAplicacion.gestionObras.*;
@@ -25,18 +26,16 @@ public class Funcion {
 //    static{
 //        funci_1.prueba();
 //    }
-
-    public ArrayList<Funcion> actualizarFuncionesVenta(ArrayList<Funcion> funcionesCreadas){
-        ArrayList<Funcion> funcionesALaVenta = new ArrayList<>();
-        if (funcionesCreadas.isEmpty()){
-            for (Funcion funcion : funcionesCreadas){
-            if (funcion.getHorario().get(0).isAfter(LocalDateTime.now())){
-                funcionesALaVenta.add(funcion);
-            }
-            }
+public ArrayList<Funcion> actualizarFuncionesVenta(ArrayList<Funcion> funcionesCreadas){
+    ArrayList<Funcion> funcionesALaVenta = new ArrayList<>();
+    for (Funcion funcion : funcionesCreadas){
+        if (funcion.getHorario().get(0).isAfter(LocalDateTime.now())){
+            funcionesALaVenta.add(funcion);
         }
-        return funcionesALaVenta;
     }
+    return funcionesALaVenta;
+}
+
     public String tablaSillas(){
         String Nuevo="";
         ArrayList <Silla> s = this.getSala().getSillas();
@@ -75,7 +74,7 @@ public class Funcion {
         this.sala = sala;
         this.obra=obra;
         funcionesCreadas.add((this));
-        funcionesALaVenta = actualizarFuncionesVenta(funcionesCreadas);
+        
 
 
     }
@@ -219,7 +218,7 @@ public class Funcion {
     public static String generarTabla(){
         String Nuevo="";
         for (Funcion funcion : funcionesCreadas) {
-            String string = String.format("%30s %20s %20s %20s",funcion.obra.getNombre(),funcion.obra.getGenero(),funcion.obra.getDur(),String.format("$%,.2f",precioFuncion(funcion))+"\n");
+            String string = String.format("%30s %20s %20s %20s",funcion.obra.getNombre(),funcion.obra.getGenero(),Duration.ofHours(funcion.obra.getDuracion().toHours()).plusMinutes(funcion.obra.getDuracion().toMinutes()% 60),String.format("$%,.2f",precioFuncion(funcion))+"\n");
         Nuevo = Nuevo +string;
 
         
@@ -259,7 +258,7 @@ public static boolean calificacionVacia(Obra obra){
     }
 
 public static String imprimirFuncion(Funcion funcion){
-        String string = String.format("%30s %15s %10s %20s",funcion.obra.getNombre(),funcion.obra.getGenero(),funcion.obra.getDur(),String.format("$%,.2f",precioFuncion(funcion)));
+        String string = String.format("%30s %15s %10s %20s",funcion.obra.getNombre(),funcion.obra.getGenero(),funcion.obra.getDuracion().toMinutes(),String.format("$%,.2f",precioFuncion(funcion)));
         return string;
     }
     

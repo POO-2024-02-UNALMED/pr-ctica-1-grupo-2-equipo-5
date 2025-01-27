@@ -6,6 +6,7 @@ import java.time.Duration;
 import java.time.LocalTime;
 
 import gestorAplicacion.herramientas.*;
+import test.funci_1;
 import gestorAplicacion.gestionVentas.*;
 
 public class Obra {
@@ -22,16 +23,19 @@ public class Obra {
     private boolean estadoCriticoA;
     private static ArrayList<Obra> estadoCriticoS;
     private ArrayList<Float> calificaciones=new ArrayList<>();
-    private static ArrayList<Obra> obras=new ArrayList<>();
+    static ArrayList<Obra> obras=new ArrayList<>();
     private ArrayList<LocalTime> franjaHoraria;
     private Duration duracion;
-    private String dur;
     private Funcion funcionEstelar;
     private ArrayList<Funcion> funciones;
     private int funcionesRecomendadas;
     private float promedioArt;
     private boolean repartoDisponible;
     private float Asistencia=0;
+
+    static{
+        funci_1.prueba();
+    }
 
     public int getAudienciaEsperada() {
         return audienciaEsperada;
@@ -106,6 +110,7 @@ public class Obra {
         this.genero = genero;
         this.tiquetesTotales = tiquetesTotales;
         this.estadoCriticoA = estadoCriticoA;
+        obras.add(this);
     }
 
     public Obra(String nombre, ArrayList<Actor> reparto, ArrayList<Aptitud> papeles, Director director, float costoProduccion, Genero genero, 
@@ -131,11 +136,12 @@ public class Obra {
         obras.add(this);
         this.franjaHoraria(genero);
     }
-    public Obra(String nombre,Genero genero,String duracion){
+    public Obra(String nombre,Genero genero,Duration duracion){
         this.nombre=nombre;
         this.genero=genero;
-        this.dur=duracion;
+        this.duracion=duracion;
         obras.add(this);
+
 
     }
     
@@ -230,7 +236,7 @@ public class Obra {
     public String getDuracionFormato() {
         long horas = duracion.toHours();
         long minutos = duracion.toMinutes() % 60;
-        return String.valueOf(horas) + String.valueOf(minutos);
+        return String.valueOf(horas) +":"+ String.valueOf(minutos);
     }
     public static ArrayList<Obra> getObras() {
         return obras;
@@ -362,7 +368,7 @@ public class Obra {
     
         }
     public static String imprimirObra(Obra obra){
-            String string = String.format("%30s %15s %10s %20s",obra.getNombre(),obra.getGenero(),obra.dur,String.format("$%,.2f",precioFuncion(obra)));
+            String string = String.format("%30s %15s %10s %20s",obra.getNombre(),obra.getGenero(),obra.getDuracionFormato());
             return string;
         }
         
@@ -441,12 +447,7 @@ public class Obra {
         }
         return f / i;
     }
-        public String getDur() {
-        return dur;
-    }
-    public void setDur(String dur) {
-        this.dur = dur;
-    }
+
     public float getPromedioArt() {
         return promedioArt;
     }
@@ -489,5 +490,16 @@ public class Obra {
     public void setAsistencia(float asistencia) {
         Asistencia = asistencia;
     }
+    public static String generarTabla(){
+        String Nuevo="";
+        
+        for (Obra obra : obras) {
+            String string = String.format("%30s %20s %20s %20s",obra.getNombre(),obra.getGenero(),obra.getDuracionFormato(),String.format("$%,.2f",precioObra(obra.nombre))+"\n");
+        Nuevo = Nuevo +string;
+
+        
+    }
+    return Nuevo;
+}
     
 }

@@ -543,7 +543,7 @@ public class Main {
                 try {
                     // Pausa de 2 segundos (2000 milisegundos)
                     Thread.sleep(2000);
-                } catch (InterruptedException e) {
+                } catch (Exception e) {
                     customPrint("La pausa fue interrumpida.");
                     
                 }
@@ -637,12 +637,13 @@ public class Main {
         else if (p1_==3){
             return;
         }
-        customPrint("Estas son las funciones disponibles\n\n"+String.format("%30s %22s %22s %15s", "Nombre Obra", "Genero", "Duracion","Precio")+"\n\n"+Funcion.generarTabla());
-            customPrint("Que funcion desea comprar? \n");
+        
+        customPrint("Estas son las Obras disponibles\n\n"+String.format("%30s %22s %22s %15s", "Nombre Obra", "Genero", "Duracion","Precio")+"\n\n"+Obra.generarTabla());
+            customPrint("Que Obra desea comprar? \n");
             String inputF = in.nextLine().toLowerCase();
             float precioSus=0;
             while (Obra.nombres(inputF)){
-                customPrint("Funcion no encontrada \n"+
+                customPrint("Obra no encontrada \n"+
                 "Ingrese un nombre valido :","red");
                 inputF = in.nextLine().toLowerCase();
                 
@@ -1162,7 +1163,7 @@ public class Main {
 
         //primera ronda de preguntas
         byte[] options = new byte[9];
-        options[0] = 0; options[1] = 1;
+        options[0] = 0; options[1] = 1; options[2] = 2;
         
         //antes de empezar, remover aquellos actores en condición de reevaluación
         actorsForRental.removeIf(actor -> actor.isReevaluacion());
@@ -1188,7 +1189,7 @@ public class Main {
 
             }
 
-        options[2] = 2; options[3] = 3; options[4] = 4; options[5] = 5; options[6] = 6; options[7] = 7; options[8] = 8;
+        options[3] = 3; options[4] = 4; options[5] = 5; options[6] = 6; options[7] = 7; options[8] = 8;
 
         //PREGUNTA NO. 2
         byte tipoObra = ask("¿Qué tipo de obra es?\n1. Circo.\n2. Comedia.\n3. Drama.\n4. Experimental.\n5. Fantasía.\n6. Musical.\n7. Romance.\n8. Terror.", options, "");

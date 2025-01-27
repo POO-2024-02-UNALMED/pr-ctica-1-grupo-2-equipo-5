@@ -1,19 +1,22 @@
 package test;
 
+import java.time.Duration;
+
 import gestorAplicacion.gestionObras.Obra;
 import gestorAplicacion.gestionVentas.Funcion;
 import gestorAplicacion.gestionVentas.Sala;
 import gestorAplicacion.herramientas.Genero;
+import uiMain.Main;
 
 public class funci_1 {
     public static void prueba() {
         
     
-    Obra obra1 = new Obra("El gran show", Genero.CIRCO, "1h 30min");
-        Obra obra2 = new Obra("La tragedia de Romeo", Genero.DRAMA, "2h");
-        Obra obra3 = new Obra("Risas aseguradas", Genero.COMEDIA, "45min");
-        Obra obra4 = new Obra("El misterio en la mansion", Genero.TERROR, "1h 15min");
-        Obra obra5 = new Obra("Bailando en el escenario", Genero.MUSICAL, "2h 20min");
+    Obra obra1 = new Obra("El gran show", Genero.CIRCO,Duration.ofHours(2).plusMinutes(30));
+        Obra obra2 = new Obra("La tragedia de Romeo", Genero.DRAMA,Duration.ofHours(2).plusMinutes(30));
+        Obra obra3 = new Obra("Risas aseguradas", Genero.COMEDIA, Duration.ofHours(2).plusMinutes(30));
+        Obra obra4 = new Obra("El misterio en la mansion", Genero.TERROR,Duration.ofHours(2).plusMinutes(30));
+        Obra obra5 = new Obra("Bailando en el escenario", Genero.MUSICAL, Duration.ofHours(2).plusMinutes(30));
 
         obra1.setCalificacion(8);
         obra1.setCalificacion(7);
@@ -42,6 +45,7 @@ public class funci_1 {
         Funcion func2 = new Funcion(obra2,sala2);
         Funcion func3 = new Funcion(obra3,sala3);
         Funcion func4 = new Funcion(obra4,sala4);
+        
         
         
 
