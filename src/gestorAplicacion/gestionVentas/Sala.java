@@ -9,7 +9,7 @@ public class Sala {
     private static ArrayList <Sala> salas = new ArrayList<>();
     private ArrayList <Silla> sillas = new ArrayList<>();
     private int numeroSala;
-    private int metrosCuadrados;
+    private double metrosCuadrados;
     private Boolean aseado;
     private Boolean ocupado;
     private Empleado trabajador;
@@ -42,10 +42,10 @@ public class Sala {
     }
 
     //Metros cuadrados
-    public int getMetrosCuadrados(){
+    public double getMetrosCuadrados(){
         return this.metrosCuadrados;
     }
-    public void setMetrosCuadrados(int newMetros){
+    public void setMetrosCuadrados(double newMetros){
         this.metrosCuadrados = newMetros;
     }
 
@@ -168,7 +168,7 @@ public class Sala {
 
         return sillas;
     }
-    public Sala(int numeroSala,  int metrosCuadrados, int capacidad){
+    public Sala(int numeroSala,  double metrosCuadrados, int capacidad){
         sillas = createSillas(capacidad);
         this.numeroSala = numeroSala;
         this.metrosCuadrados = metrosCuadrados;

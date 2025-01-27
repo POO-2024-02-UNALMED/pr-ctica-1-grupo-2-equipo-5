@@ -304,7 +304,7 @@ public class Main {
         System.out.println(chosenColor + "└" + "─".repeat(LARGO_LINEAS ) + "┘" + reset);
     }
 
-    public static LocalDateTime[] setSchedule(String pregunta, LocalTime horaMin, LocalTime horaMax, int duracionMinHoras, int duracionMaxHoras, boolean date){
+    public static LocalDateTime[] setSchedule(String pregunta, LocalTime horaMin, LocalTime horaMax, int duracionMinHoras, int duracionMaxHoras, boolean date, String advertenciaHorarioincompatible){
 
         String preguntaCompleta = pregunta;
         LocalTime inicioHorario = null;
@@ -333,12 +333,12 @@ public class Main {
         }
 
         while(true){
-            inicioHorario = timeAsk("Introduzca horario de inicio de la contratación (Responda en formato HH:MM).");
-            finHorario = timeAsk("Introduzca horario de fin de la contratación (Responda en formato HH:MM).");
+            inicioHorario = timeAsk("Introduzca horario de inicio (Responda en formato HH:MM).");
+            finHorario = timeAsk("Introduzca horario de fin (Responda en formato HH:MM).");
 
 
-            if ( inicioHorario.isBefore(horaMin) || finHorario.isAfter(horaMax) || finHorario.isBefore(inicioHorario) ){
-                customPrint("Existe una incompatibilidad del horario con el lineamiento.\n\nRevise si:\n1. El inicio del horario ocurre antes del fin del horario.\n2. Se exceden los límites de horario (muy temprano o muy tarde).\nIntente de nuevo.", true, "red");
+            if (inicioHorario.isBefore(horaMin) || finHorario.isAfter(horaMax) || finHorario.isBefore(inicioHorario) ){
+                customPrint(advertenciaHorarioincompatible, true, "red");
                 continue;
             }
 
@@ -357,12 +357,12 @@ public class Main {
             long duracionHorario = duration.toHours();
 
             if (duracionHorario < duracionMinHoras){
-                customPrint("El tiempo mínimo de contratación es de 4 horas.", true, "red"); 
+                customPrint("El tiempo mínimo de contratación es de " + duracionMinHoras + " horas.", true, "red"); 
                 continue;
             }
 
             if (duracionHorario > duracionMaxHoras){
-                customPrint("El tiempo máximo de contratación es de 8 horas.", true, "red");
+                customPrint("El tiempo máximo de contratación es de " + duracionMaxHoras + " horas.", true, "red");
                 continue;
             }
 
@@ -559,6 +559,7 @@ public class Main {
 
         }
         
+        
 
         
             customPrint(
@@ -586,14 +587,15 @@ public class Main {
             }
             
             
-        
+        String suscripcion="";
         if(p1_ == 1){
+            
             customPrint(suscription.tipos());
                 
                 customPrint(
             "Que suscripcion desea adquirir?\n\n"
             );
-            String suscripcion = in.nextLine().toLowerCase();
+            suscripcion = in.nextLine().toLowerCase();
                 
             while (suscription.imprimirTipos(suscripcion)){
 
@@ -604,24 +606,25 @@ public class Main {
             );
             suscripcion = in.nextLine().toLowerCase();
         }
-        switch (suscripcion) {
-            case "basica":
-                cliente.setSuscripcion(Suscripcion.Basica);
-                break;
-            case "vip":
-                cliente.setSuscripcion(Suscripcion.Vip);
-                break;
-            case "premium":
-                cliente.setSuscripcion(Suscripcion.Premium);
-                break;
-            case "elite":
-                cliente.setSuscripcion(Suscripcion.Elite);
-                break;
-
-                
         
-        }
-            customPrint("Suscripcion "+cliente.getSuscripcion()+" aplicada","green");
+            customPrint("Suscripcion "+suscripcion+" aplicada","green");
+            switch (suscripcion) {
+                case "basica":
+                    cliente.setSuscripcion(Suscripcion.Basica);
+                    break;
+                case "vip":
+                    cliente.setSuscripcion(Suscripcion.Vip);
+                    break;
+                case "premium":
+                    cliente.setSuscripcion(Suscripcion.Premium);
+                    break;
+                case "elite":
+                    cliente.setSuscripcion(Suscripcion.Elite);
+                    break;
+    
+                    
+            
+            }
 
         }
         else if (p1_==3){
@@ -645,7 +648,7 @@ public class Main {
 
             
             customPrint("Funcion seleccionada: \n\n"+Obra.imprimirObra(Obra.buscarObra(inputF)));
-            cliente.setObra(inputF);
+            
             
             
             float descuento=0;
@@ -663,10 +666,20 @@ public class Main {
                 descuento = 1;
                 precioSus = 39900;              
             }
+            
 
-            if (antiguo==true){
+            if (antiguo==true ){
                 precioSus = 0;
             }
+            System.out.println(antiguo);
+            boolean antiguof;
+            if (antiguo){
+                antiguof=true;
+
+            }else{
+                antiguof=false;
+            }
+        
             
 
 
@@ -682,23 +695,25 @@ public class Main {
                 mensajeDescuento = "luego de descuento es :";
 
             }
-            if (confirmacion != ""){
-                customPrint(confirmacion);
-                
-            }else{
+            
+            
 
             customPrint(asiento.tipos());
-            customPrint("Que Asiento desea comprar? \n+"+
+            customPrint("Que Asiento desea comprar? \n"+
             "Ingrese solo el codigo \n"+
-            "La letra representa el tipo del asiento");
+            "La letra representa el tipo del asiento\n\n"+
+            "G- Sillas Gold Exclusivas Suscripcion Gold\n"+
+            "P- Sillas Premium Exclusivas Suscripcion Vip\n "+
+            "C- Sillas Comfort Exclusivas Suscripcion Premium\n"+
+            "B- Sillas Basicas ");
             
-
-            customPrint(Funcion.buscarFuncion(inputF).tablaSillas());
+            Funcion funcion=Funcion.buscarFuncion(inputF);
+            customPrint(funcion.tablaSillas());
             Integer codigo = in.nextInt();
-            while (Funcion.buscarFuncion(inputF).verificar(codigo) | cliente.verificarSuscripcion(Funcion.buscarFuncion(inputF).asignarTipoSilla(codigo))) {
+            while (Funcion.buscarFuncion(inputF).verificar(codigo) | cliente.verificarSuscripcion(funcion.asignarTipoSilla(codigo))) {
                 
             
-                while(cliente.verificarSuscripcion(Funcion.buscarFuncion(inputF).asignarTipoSilla(codigo))){
+                while(cliente.verificarSuscripcion(funcion.asignarTipoSilla(codigo))){
                     customPrint(
                     "Tu suscripcion "+cliente.getSuscripcion().name()+"\n"+
                     "No te permite acceder a este tipo de asientos\n"+
@@ -707,7 +722,7 @@ public class Main {
     
     
                 }
-            while(Funcion.buscarFuncion(inputF).verificar(codigo)){
+            while(funcion.verificar(codigo)){
                 customPrint(
                 "Ingrese un asiendo valido :\n"+
                 "Ingrese solo el codigo \n"+
@@ -716,25 +731,19 @@ public class Main {
 
             }
         }
-        tiquete.setSilla(Funcion.buscarFuncion(inputF).asignarSilla(codigo));
-        customPrint(""+(Funcion.buscarFuncion(inputF).asignarSilla(codigo)));
-        customPrint(""+tiquete.getSilla().getCodigo());
+        tiquete.setSilla(funcion.asignarSilla(codigo));
         
-        
-        customPrint(""+cliente.verificarSuscripcion(Funcion.buscarFuncion(inputF).asignarTipoSilla(codigo)));
 
             Funcion.buscarFuncion(inputF).eliminarSilla(codigo);
-            customPrint(Funcion.buscarFuncion(inputF).tablaSillas());
+            customPrint(funcion.tablaSillas());
             
             
-            
-        
-
-        }
 
         
+
         
-            customPrint(mensaje+"\nTotal a pagar\n\n "+mensajeDescuento+String.format("$%,.2f",((Funcion.mostrarPrecioFuncion(inputF)*descuento)+precioSus)));
+        float precioFuncion=Funcion.mostrarPrecioFuncion(inputF);
+            customPrint(mensaje+"\nTotal a pagar\n\n "+mensajeDescuento+String.format("$%,.2f",((precioFuncion*descuento)+precioSus)));
             customPrint(
     "1. Realizar compra\n"+
         "2. Cancelar Compra \n"
@@ -752,12 +761,16 @@ public class Main {
         ,"red");
         a = in.nextByte();
         in.nextLine();
+        
+        
+        
+        cliente.setSuscripcion(Suscripcion.Basica);
 
                 
             }
             if (a==1){
+                
                 customPrint("Realizando Compra");
-                Obra.buscarObra(inputF).recurrencia();
                 dineroTesoreria = ((Funcion.mostrarPrecioFuncion(inputF)*descuento)+precioSus);
                 tesoreria.setDineroEnCaja(tesoreria.getDineroEnCaja()+dineroTesoreria);
                 tesoreria.setTotal(tesoreria.getTotal()+dineroTesoreria);
@@ -768,7 +781,38 @@ public class Main {
                 customPrint("La pausa fue interrumpida.");
                 
             }
+            
+        
+        
+        
+            float precioTotalFuncion=precioSus+precioFuncion-dineroTesoreria;
             customPrint("Compra Realizada","green");
+            cliente.setObra(inputF);
+            cliente.setTiquete(tiquete);
+            tiquete.setFuncion(funcion);
+            tiquete.setValor(dineroTesoreria);
+            
+            Obra.buscarObra(inputF).recurrencia();
+            
+            switch (suscripcion) {
+                case "basica":
+                    cliente.setSuscripcion(Suscripcion.Basica);
+                    break;
+                case "vip":
+                    cliente.setSuscripcion(Suscripcion.Vip);
+                    break;
+                case "premium":
+                    cliente.setSuscripcion(Suscripcion.Premium);
+                    break;
+                case "elite":
+                    cliente.setSuscripcion(Suscripcion.Elite);
+                    break;
+    
+                    
+            
+            }
+            
+            customPrint(tiquete.imprimirFactura(cliente,antiguof,precioTotalFuncion,precioFuncion,precioSus));
         }else{
             customPrint("Cancelando Compra...");
             try {
@@ -1030,7 +1074,7 @@ public class Main {
 
     public static void ContratarActor(){
 
-    byte[] two = {1, 2};
+    byte[] two = {0, 1, 2};
     byte menuLog = ask("Seleccione:\n1. Empresa registrada.\n2. Empresa nueva.", two, "");
     byte ACTORES_POR_PAGINA = 5;
 
@@ -1040,8 +1084,18 @@ public class Main {
     menuSwitch:
     switch (menuLog){
 
+        case 0:
+        customPrint("Saliendo...", "red");
+        return;
+
         case 1:
         long idEntrada = longAsk("Ingrese el número de identificación.");
+
+        if (idEntrada == 0){
+            customPrint("Saliendo...", "red");
+            return;
+        }
+
         boolean idFlag = false;
         
         for (Cliente cliente : Cliente.clientes){
@@ -1063,17 +1117,32 @@ public class Main {
         case 2:
 
         long newId = longAsk("Genere un nuevo número de identificación.");
+
+        if (newId == 0){
+            customPrint("Saliendo...", "red");
+            return;
+        }
         
         for (Cliente cliente : Cliente.clientes){
             while (cliente.getId() == newId){
                 customPrint("Esta identificación ya existe en la base de datos, intente con una diferente.", true, "red");
                 newId = longAsk("Genere un nuevo número de identificación.");
+
+                if (newId == 0){
+                    customPrint("Saliendo...", "red");
+                    return;
+                }
             }
         }
 
         while (newId <= 0){
             customPrint("La identificación debe ser un número entero positivo.", true, "red");
             newId = longAsk("Genere un nuevo número de identificación.");
+
+            if (newId == 0){
+                customPrint("Saliendo...", "red");
+                return;
+            }
         }
 
         empresa = new Cliente("Empresa", newId);
@@ -1085,8 +1154,8 @@ public class Main {
         List<Actor> actorsForRental = new ArrayList<>(Actor.getActors());
 
         //primera ronda de preguntas
-        byte[] options = new byte[8];
-        options[0] = 1; options[1] = 2;
+        byte[] options = new byte[9];
+        options[0] = 0; options[1] = 1;
         
         //antes de empezar, remover aquellos actores en condición de reevaluación
         actorsForRental.removeIf(actor -> actor.isReevaluacion());
@@ -1095,12 +1164,24 @@ public class Main {
         byte rolActor = ask("¿Qué tipo de papel desempeñará el actor?\n1. Rol principal.\n 2. Rol secundario.", options, "");
 
         //reservar los de calificacion alta solo para roles principales
-        if (rolActor == 1){ 
-            actorsForRental.removeIf(actor -> actor.getCalificacion() < CALIFICACION_ALTA); 
-        } else {
-            actorsForRental.removeIf(actor -> actor.getCalificacion() > CALIFICACION_ALTA);}
 
-        options[2] = 3; options[3] = 4; options[4] = 5; options[5] = 6; options[6] = 7; options[7] = 8;
+        switch (rolActor){
+
+            case 0:
+                customPrint("Saliendo...", "red");
+                return;
+
+            case 1:
+                actorsForRental.removeIf(actor -> actor.getCalificacion() < CALIFICACION_ALTA);
+
+            case 2:
+                actorsForRental.removeIf(actor -> actor.getCalificacion() > CALIFICACION_ALTA);
+
+
+
+            }
+
+        options[2] = 2; options[3] = 3; options[4] = 4; options[5] = 5; options[6] = 6; options[7] = 7; options[8] = 8;
 
         //PREGUNTA NO. 2
         byte tipoObra = ask("¿Qué tipo de obra es?\n1. Circo.\n2. Comedia.\n3. Drama.\n4. Experimental.\n5. Fantasía.\n6. Musical.\n7. Romance.\n8. Terror.", options, "");
@@ -1108,64 +1189,72 @@ public class Main {
         //que se borren los actores que no tengan el género buscado en sus atributos
         switch(tipoObra){
 
+            case 0:
+                customPrint("Saliendo...", "red");
+                return;
+
             case 1:
-            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.CIRCO));
-            break;
+                actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.CIRCO));
+                break;
 
             case 2:
-            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.COMEDIA));
-            break;
+                actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.COMEDIA));
+                break;
 
             case 3:
-            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.DRAMA));
-            break;
+                actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.DRAMA));
+                break;
 
             case 4:
-            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.EXPERIMENTAL));
-            break;
+                actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.EXPERIMENTAL));
+                break;
 
             case 5:
-            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.FANTASIA));
-            break;
+                actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.FANTASIA));
+                break;
 
             case 6:
-            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.MUSICAL));
-            break;
+                actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.MUSICAL));
+                break;
 
             case 7:
-            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.ROMANCE));
-            break;
+                actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.ROMANCE));
+                break;
 
             case 8:
-            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.TERROR));
-            break;
+                actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.TERROR));
+                break;
         }
 
-        byte[] five = {1, 2, 3, 4, 5};
+        byte[] five = {0, 1, 2, 3, 4, 5};
         byte aptitud = ask("¿En qué aptitud debería sobresalir el actor?\n1. Canto.\n2. Baile.\n3. Discurso.\n4. Emocionalidad\n5. Improvisación.", five, "");
         byte CALIFICACION_APTITUD_ALTA = 4;
 
         switch (aptitud){
 
+            case 0:
+                customPrint("Saliendo...", "red");
+                return;
+
             case 1:
-            actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.CANTO) < CALIFICACION_APTITUD_ALTA);
-            break;
+                actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.CANTO) < CALIFICACION_APTITUD_ALTA);
+                break;
 
             case 2:
-            actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.BAILE) < CALIFICACION_APTITUD_ALTA);
-            break;
+                actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.BAILE) < CALIFICACION_APTITUD_ALTA);
+                break;
 
             case 3:
-            actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.DISCURSO) < CALIFICACION_APTITUD_ALTA);
-            break;
+                actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.DISCURSO) < CALIFICACION_APTITUD_ALTA);
+                break;
             
             case 4:
-            actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.EMOCIONALIDAD) < CALIFICACION_APTITUD_ALTA);
-            break;
+                actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.EMOCIONALIDAD) < CALIFICACION_APTITUD_ALTA);
+                break;
 
             case 5:
-            actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.IMPROVISACION) < CALIFICACION_APTITUD_ALTA);
-            break;
+                actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.IMPROVISACION) < CALIFICACION_APTITUD_ALTA);
+                break;
 
         }  
 
@@ -1173,8 +1262,9 @@ public class Main {
         String diasCadena = "¿Para qué día se necesita la contratación?\n";
         LocalTime horaMin = LocalTime.of(8, 0);
         LocalTime horaMax = LocalTime.of(22, 0); 
-        
-        LocalDateTime[] horario = setSchedule(diasCadena, horaMin, horaMax, 4, 8, true);
+        String advertencia5 = "Existe una incompatibilidad del horario con el lineamiento.\n\nRevise si:\n1. El inicio del horario ocurre antes del fin del horario.\n2. Se exceden los límites de horario (muy temprano o muy tarde).\nIntente de nuevo.";
+
+        LocalDateTime[] horario = setSchedule(diasCadena, horaMin, horaMax, 4, 8, true, advertencia5);
 
         LocalDateTime fechaInicio = horario[0];
         LocalDateTime fechaFin = horario[1]; 
@@ -1214,90 +1304,104 @@ public class Main {
         //búsqueda avanzada
         byte advancedSearch = ask("¿Se desea hacer búsqueda avanzada? (incluye filtros por edad y sexo).\n1. Sí.\n2. No.", two, "blue");
 
-        if (advancedSearch == 1){
+        switch (advancedSearch){
 
-            List<ArrayList> contadores = new ArrayList<>();
-
-            for (Actor actor : actorsForRental){
-                ArrayList<Object> contador = new ArrayList<>();
-                contador.add(actor);
-                contador.add(0);
-                contadores.add(contador);
-            }
-
-            byte edad = ask("¿Qué tipo de edad se busca?\n1. Infantil\n2. Juvenil.\n3. Adulto.\n4. Adulto mayor", options, "");
-
-            switch (edad){
-
-                case 1: //infantil
-                actorsForRental.removeIf(actor -> actor.getEdad() >= 15);
-                break;
-
-                case 2: //juvenil
-                actorsForRental.removeIf(actor -> actor.getEdad() < 15);
-                actorsForRental.removeIf(actor -> actor.getEdad() >= 24);
-                break;
-
-                case 3: //adulto
-                actorsForRental.removeIf(actor -> actor.getEdad() < 24 );
-                actorsForRental.removeIf(actor -> actor.getEdad() >= 70);
-                break;
-
-                case 4: //adulto mayor
-                actorsForRental.removeIf(actor -> actor.getEdad() < 70);
-                break;
-            }
-
-            for (ArrayList contador : contadores){
-
-                if (isIn(actorsForRental, (Actor)contador.get(0))){ 
-                    
-                    int newVal = ((Integer)contador.get(1)) + 1;
-
-                    contador.set(1, newVal); 
-                
-                }
-
-            }
-
-
-            byte sexo = ask("¿Qué sexo debe tener el actor?\n1. Masculino.\n2. Femenino.", two, "");
-
-            if (sexo == 1){ //si es masculino, remueve el sexo femenino y viceversa
-                actorsForRental.removeIf(actor -> actor.getSexo() == 'F');
-            } else {
-                actorsForRental.removeIf(actor -> actor.getSexo() == 'M');
-            }
-
-            for (ArrayList contador : contadores){
-
-                if (isIn(actorsForRental, (Actor)contador.get(0))){ 
-                    
-                    int newVal = ((Integer)contador.get(1)) + 1;
-
-                    contador.set(1, newVal); 
-                
-                }
-
-            }
-
-            contadores.removeIf(contador -> ((Integer)contador.get(1)) < 2);
-
-            if (contadores.size() == 0){
-                customPrint("No se encontraron actores que se ajusten bien a las características.", true, "red"); return;}
-
-            List<Actor> advancedList = new ArrayList<Actor>();
-
-            for (ArrayList contador : contadores){
-                advancedList.add( (Actor)contador.get(0));
-            }
+            case 0:
+                customPrint("Saliendo", "red");
+                return;
             
-            actorsForRental = advancedList;
-            advancedList = null;
-            
-            customPrint(actorsForRental.size() + " actor/es se ajustaron a dos o más características avanzadas.", true, "green");
+            case 1:
 
-            }
+                List<ArrayList> contadores = new ArrayList<>();
+    
+                for (Actor actor : actorsForRental){
+                    ArrayList<Object> contador = new ArrayList<>();
+                    contador.add(actor);
+                    contador.add(0);
+                    contadores.add(contador);
+                }
+    
+                byte edad = ask("¿Qué tipo de edad se busca?\n1. Infantil\n2. Juvenil.\n3. Adulto.\n4. Adulto mayor", options, "");
+    
+                switch (edad){
+
+                    case 0:
+                        customPrint("Saliendo...", "red");
+                        return;
+    
+                    case 1: //infantil
+                        actorsForRental.removeIf(actor -> actor.getEdad() >= 15);
+                        break;
+    
+                    case 2: //juvenil
+                        actorsForRental.removeIf(actor -> actor.getEdad() < 15);
+                        actorsForRental.removeIf(actor -> actor.getEdad() >= 24);
+                        break;
+    
+                    case 3: //adulto
+                        actorsForRental.removeIf(actor -> actor.getEdad() < 24 );
+                        actorsForRental.removeIf(actor -> actor.getEdad() >= 70);
+                        break;
+    
+                    case 4: //adulto mayor
+                        actorsForRental.removeIf(actor -> actor.getEdad() < 70);
+                        break;
+                }
+    
+                for (ArrayList contador : contadores){
+    
+                    if (isIn(actorsForRental, (Actor)contador.get(0))){ 
+                        
+                        int newVal = ((Integer)contador.get(1)) + 1;
+    
+                        contador.set(1, newVal); 
+                    
+                    }
+    
+                }
+    
+    
+                byte sexo = ask("¿Qué sexo debe tener el actor?\n1. Masculino.\n2. Femenino.", two, "");
+    
+                if (sexo == 1){ //si es masculino, remueve el sexo femenino y viceversa
+                    actorsForRental.removeIf(actor -> actor.getSexo() == 'F');
+                } else if (sexo == 2){
+                    actorsForRental.removeIf(actor -> actor.getSexo() == 'M');
+                } else{
+
+                    customPrint("Saliendo...", "red");
+                    return;
+
+                }
+    
+                for (ArrayList contador : contadores){
+    
+                    if (isIn(actorsForRental, (Actor)contador.get(0))){ 
+                        
+                        int newVal = ((Integer)contador.get(1)) + 1;
+    
+                        contador.set(1, newVal); 
+                    
+                    }
+    
+                }
+    
+                contadores.removeIf(contador -> ((Integer)contador.get(1)) < 2);
+    
+                if (contadores.size() == 0){
+                    customPrint("No se encontraron actores que se ajusten bien a las características.", true, "red"); return;}
+    
+                List<Actor> advancedList = new ArrayList<Actor>();
+    
+                for (ArrayList contador : contadores){
+                    advancedList.add( (Actor)contador.get(0));
+                }
+                
+                actorsForRental = advancedList;
+                advancedList = null;
+                
+                customPrint(actorsForRental.size() + " actor/es se ajustaron a dos o más características avanzadas.", true, "green");
+        }
 
         long duracionContrato = Duration.between(fechaInicio, fechaFin).toHours();
         double minActorPrecio = actorsForRental.get(0).getPrecioContrato(duracionContrato);
@@ -1315,6 +1419,11 @@ public class Main {
         }    
 
         long presupuesto = longAsk("¿Cuál es el presupuesto máximo para el actor?" + "\nTenga en cuenta que el rango de los precios es de " + Actor.formatoPrecio(minActorPrecio) + " a " + Actor.formatoPrecio(maxActorPrecio));
+
+        if (presupuesto == 0){
+            customPrint("Saliendo...", "red");
+            return;
+        }
 
         actorsForRental.removeIf(actor -> actor.getPrecioContrato(duracionContrato) > presupuesto);
 
@@ -1475,7 +1584,7 @@ public class Main {
         
         try{
             Thread.sleep(2000);
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             customPrint("La pausa fue interrumpida.");    
         }
         
@@ -1533,7 +1642,7 @@ public class Main {
                 customPrint("La pausa fue interrumpida.");    
             }
 
-            String question = "Deseas Contratar o Despedir a algun empleado \n1. Si \n2. No";
+            String question = "Deseas Contratar o Despedir a algún empleado\n1. Si\n2. No";
             byte[] options = {1,2};
             byte respuesta = ask(question, options, "blue");
 
@@ -1565,11 +1674,11 @@ public class Main {
                                 int j = 0;
                                 for(String Nombre : candidatos){
                                     if(msgBase != "\n"){
-                                        msgBase = msgBase + j +". " + Nombre + " " +  idA.get(j) + "\n";
+                                        msgBase = msgBase + String.format("%-20s %10s", j +". " + Nombre,"ID: " +  idA.get(j) + "\n");
                                         j = j + 1;
                                     }
                                     else{
-                                        msgBase = j +". " + Nombre + " " + idA.get(j) + msgBase;
+                                        msgBase = String.format("%-20s %10s",j +". " + Nombre, "ID: " + idA.get(j)) + msgBase;
                                         j = j + 1;
                                     }
                                 }
@@ -1609,11 +1718,11 @@ public class Main {
                                     int b = 0;
                                 for(String Nombre : candidatosS){
                                     if(msgBase != "\n"){
-                                        msgBase = msgBase + b +". " + Nombre + " " +  idS.get(b) + "\n";
+                                        msgBase = msgBase + String.format("%-20s %10s", b +". " + Nombre,"ID: " +  idS.get(b) + "\n");
                                         b = b + 1;
                                     }
                                     else{
-                                        msgBase = b +". " + Nombre + " " + idS.get(b) + msgBase;
+                                        msgBase = String.format("%-20s %10s",b +". " + Nombre, "ID: " + idS.get(b)) + msgBase;
                                         b = b + 1;
                                     }
                                 }
@@ -1652,11 +1761,11 @@ public class Main {
                                     int d = 0;
                                 for(String Nombre : candidatosP){
                                     if(msgBase != "\n"){
-                                        msgBase = msgBase + d +". " + Nombre + " " +  idP.get(d) + "\n";
+                                        msgBase = msgBase + String.format("%-20s %10s", d +". " + Nombre,"ID: " +  idP.get(d) + "\n");
                                         d = d + 1;
                                     }
                                     else{
-                                        msgBase = d +". " + Nombre + " " + idP.get(d) + msgBase;
+                                        msgBase = String.format("%-20s %10s",d +". " + Nombre, "ID: " + idP.get(d)) + msgBase;
                                         d = d + 1;
                                     }
                                 }
@@ -1727,7 +1836,7 @@ public class Main {
         customPrint("Asignando trabajos, por favor espere ...", true);
         try{
             Thread.sleep(2000);
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             customPrint("La pausa fue interrumpida.");    
         }
 
@@ -1765,6 +1874,14 @@ public class Main {
         int totalTrabajadores_S = Empleado.getTipoSeguridad().size();
         int funcion_por_trabajador = totalFunciones/totalTrabajadores_S;
         ArrayList<Funcion> funcionesDisponibles = new ArrayList<>(Funcion.getFuncionesCreadas());
+        //Se organiza la lista por fecha
+        try{
+            funcionesDisponibles.sort((f1, f2) ->
+            f1.getHorario().get(0).compareTo(f2.getHorario().get(0))
+            );
+        }
+        catch(Exception e){}
+
 
         //Verificar si las listas no estan vacias
         if(totalFunciones != 0 && totalTrabajadores_S != 0){
@@ -1776,10 +1893,11 @@ public class Main {
             //Asignacion de tareas si todos los trabajadores son principiantes
             if(cant_trabajadores_principiantes == Empleado.getTipoSeguridad().size()){
                 //CASO NORMAL, SE ASIGNAN EN IGUAL CANTIDAD A CADA EMPLEADO
+                int funcionesSinHorarios = 0;
                 for(Empleado Persona : Empleado.getTipoSeguridad()){
-                    int asignadas = 0;
+                    int asignadas = 0; 
                     ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
-                    for(int i = 0; i < funcionesDisponibles.size(); i++){
+                    for(int i = 0; i < funcionesDisponibles.size(); i ++){
                         if(asignadas < funcion_por_trabajador){
                             Funcion Funciones = funcionesDisponibles.get(i);
                             //Asignacion del horario y del Trabajo
@@ -1815,10 +1933,13 @@ public class Main {
                                 }
                             }
                             else{
+                                funcionesSinHorarios += 1;
                                 funcionesDisponibles.remove(i);
                                 i--;
-                                customPrint("No hay horarios para aplicar", "red");
                             }
+                        }
+                        else{
+                            break;
                         }
                     }
                     //Se organiza la lista para que no haya errores en caso de asignar las funciones restantes para que no haya solapamiento
@@ -1829,6 +1950,12 @@ public class Main {
                     });
                     Persona.setHorario(localTime);
                     Persona.setDisponible(false);
+                }
+                if(funcionesSinHorarios == 1){
+                    customPrint("Hay 1 Funcion sin horarios", "red");
+                }
+                else if(funcionesSinHorarios > 1){
+                    customPrint("Hay " + funcionesSinHorarios + " Funciones sin horarios", "red");
                 }
                 //EVALUACION DE SALAS SIN TRABAJADOR
                 if(funcionesDisponibles.size() != 0 ){
@@ -1902,11 +2029,20 @@ public class Main {
                         return Double.compare(duracionF2, duracionF1);
                     }
                 });
+                funcionesDisponibles = FuncionPorDuracion;
+                try{
+                    funcionesDisponibles.sort((f1, f2) ->
+                    f1.getHorario().get(0).compareTo(f2.getHorario().get(0))
+                    );
+                }
+                catch(IndexOutOfBoundsException e){
+                    System.out.println("no hay horarios para organizar");
+                }
                 //Evaluacion Normal, asignacion de trabajo equitativo
                 for(Empleado Persona : Empleado.getTipoSeguridad()){
                     int asignadas = 0;
                     ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
-                    for(int i = 0; i < funcionesDisponibles.size(); i++){
+                    for(int i = 0; i < funcionesDisponibles.size(); i ++){
                         if(asignadas < funcion_por_trabajador){
                             Funcion Funciones = funcionesDisponibles.get(i);
                             //Asignacion del horario y del Trabajo
@@ -1931,14 +2067,18 @@ public class Main {
                                     localTime.add(Funciones.getHorario());
                                     funcionesDisponibles.remove(i);
                                     asignadas = asignadas + 1;
+                                    i--;
                                     
                                 }
                             }
                             else{
                                 funcionesDisponibles.remove(i);
-                                i--;
+                                i--;                        
                                 customPrint("No hay horarios para aplicar", "red");
                             }
+                        }
+                        else{
+                            break;
                         }
                     }
                     Collections.sort(localTime, new Comparator<ArrayList<LocalDateTime>>(){
@@ -2021,13 +2161,111 @@ public class Main {
                 customPrint("No hay trabajadores de Seguridad");
             }
         }
-    
+        //Revisa si todavia quedan funciones que no se asignaron trabajador
+        //En este caso estas funciones no se pueden asignar por que existiria solapamiento
+        //Por tanto imprime cuantas funciones quedaron sin asiganr
+        if(funcionesDisponibles.size() != 0 ){
+            customPrint("Existen " + funcionesDisponibles.size() + " funcion/es sin posibilidad de seguridad");
+        }
+
         //Para Aseador
         cant_trabajadores_principiantes = 0;
         int totalSalas = Sala.getSalas().size();
         int totalTrabajadores_A = Empleado.getTipoAseador().size();
-        int salas_por_trabajador = totalSalas/totalTrabajadores_A;
+        int cant_a_limpiar = totalFunciones/totalTrabajadores_A;
+        ArrayList<Funcion> funcionesLimpiadas = new ArrayList<>(Funcion.getFuncionesCreadas()); 
         if(totalSalas != 0 && totalTrabajadores_A != 0){
+            for(Empleado Persona : Empleado.getTipoAseador()){
+                if(Persona.getMetaSemanal() == base){
+                    cant_trabajadores_principiantes += 1;
+                }
+            }
+            //En caso de que todos sean principiantes
+            if(cant_trabajadores_principiantes == totalTrabajadores_A){
+                for(Empleado Persona : Empleado.getTipoAseador()){
+                    //ASIGNACION EQUITATIVA DE TRABAJO
+                    int asignadas = 0;
+                    ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
+                    for(int i = 0; i  < funcionesLimpiadas.size(); i++){
+                        if(asignadas < cant_a_limpiar){
+                            Funcion Funciones = funcionesLimpiadas.get(i);
+                            //Verificar si la funcion tiene horario
+                            if(!Funciones.getHorario().isEmpty()){
+                                if(localTime.size() != 0){
+                                    boolean horarioValido = true;
+                                    LocalDateTime inicioNuevo = Funciones.getHorario().get(1);
+                                    LocalDateTime finNuevo = inicioNuevo.plusMinutes(15);
+                                    for(int j = 0; j < localTime.size(); j++){
+                                        //Se obtiene el horario en el q se itera
+                                        ArrayList<LocalDateTime> horarioActual = localTime.get(j);
+                                        //Se accede al ultimo indice de ese horario q es el fin 
+                                        LocalDateTime finActual = horarioActual.get(1);
+
+                                        //Verificar si hay un sublista despues
+                                        if(j + 1 < localTime.size()){
+                                            ArrayList<LocalDateTime> horarioSiguiente = localTime.get(j+1);
+                                            LocalDateTime inicioSiguiente = horarioSiguiente.get(0);
+
+                                            //Verificar si el horario nuevo no se solapa
+                                            if(!(inicioNuevo.isAfter(finActual) && finNuevo.isBefore(inicioSiguiente))){
+                                                horarioValido = false;
+                                                break;
+                                            }
+                                        }
+                                        else{
+                                            ArrayList<LocalDateTime> horarioSiguiente = funcionesLimpiadas.get(i+1).getHorario();
+                                            LocalDateTime inicioSiguiente = horarioSiguiente.get(0);
+                                            //Verificar el que el fin nuevo sea antes de la siguiente funcion y el inicio sea despues del horario ya existente
+                                           if(!(finNuevo.isBefore(inicioSiguiente) && inicioNuevo.isAfter(finActual))){
+                                            //Como no se cumple se tiene que pasar a revisar la siguiente funcion
+                                                horarioValido = false;
+                                                break;
+                                           }
+                                        }
+                                    }
+                                    if(horarioValido){
+
+                                    }
+                                }
+                                else{
+                                    //Se asigna la hora de fin de la funcion como el inicio del Empleado
+                                    asignadas = asignadas + 1;
+                                    ArrayList<LocalDateTime> sublista = new ArrayList<>();
+                                    LocalDateTime finFuncion = Funciones.getHorario().get(1);
+                                    //Se suma 15 minutos a la hora de fin de la funcion
+                                    LocalDateTime finEmpleado = finFuncion.plusMinutes(15);
+                                    //Se almacenan en la sublista
+                                    sublista.add(finFuncion);
+                                    sublista.add(finEmpleado);
+                                    // se agregan al localTime
+                                    localTime.add(sublista);
+                                    funcionesLimpiadas.remove(i);
+                                    Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                    Funciones.getSala().setAseado(true);
+                                    funcionesLimpiadas.remove(i);
+                                }
+                            }
+                            else{
+                                funcionesLimpiadas.remove(i);
+                                customPrint("No hay horario para aplicar");
+                            }
+                        }
+                        else{
+                            break;
+                        }
+                    }
+                    Collections.sort(localTime, new Comparator<ArrayList<LocalDateTime>>(){
+                        public int compare(ArrayList<LocalDateTime> horario1, ArrayList<LocalDateTime> horario2){
+                            return horario1.get(0).compareTo(horario2.get(0));
+                        }
+                    });
+                    Persona.setHorario(localTime);
+                    //Asignacion De las libres
+                }
+            }
+            else{
+
+            }
 
         }
         else{
@@ -2040,8 +2278,7 @@ public class Main {
         }
 
 
-
-        customPrint("trabajos Asignados...");
+        customPrint("trabajos Asignados...", "green");
         customPrint("Desplegando Trabajadores");
         
         try{
@@ -2067,8 +2304,7 @@ public class Main {
                 cant_trabajadores_principiantes += 1;
             }
         }
-        if(cant_trabajadores_principiantes == Empleado.getTipoSeguridad().size()){
-            System.out.println("Validacion Trabajo Principiantes");
+        if(cant_trabajadores_principiantes == Empleado.getTipoSeguridad().size()){;
             for(Empleado Persona : Empleado.getTipoSeguridad()){
                 for(double Hora : Persona.getTrabajos()){
                     Random random = new Random();
@@ -2084,7 +2320,6 @@ public class Main {
             }
         }
         else{
-            System.out.println("validacion trabajo general");
             for(Empleado Persona : Empleado.getTipoSeguridad()){
                 for(double Hora : Persona.getTrabajos()){
                     Random random = new Random();
@@ -2200,7 +2435,7 @@ public class Main {
         Saldo = String.format("$%,.2f", tesoreria.getCuenta().getSaldo());
         customPrint("El saldo de tesoreria es: " + Saldo);
         byte[] option = {1,2};
-        byte respuesta = ask("¿Desea realizar los pagos \n1. Si \n2. No", option, "green");
+        byte respuesta = ask("¿Desea realizar los pagos \n1. Si\n2. No", option, "green");
         switch (respuesta) {
             case 1:
                 tesoreria.setTotal(tesoreria.getTotal() + tesoreria.getDineroEnCaja());
