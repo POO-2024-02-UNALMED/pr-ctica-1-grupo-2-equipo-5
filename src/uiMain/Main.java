@@ -1246,7 +1246,7 @@ public class Main {
         
     }
 
-        final float CALIFICACION_ALTA = 4.0f; //por ahora
+        final int CALIFICACION_ALTA = 4; //por ahora
         List<Actor> actorsForRental = new ArrayList<>(Teatro.getInstancia().getActores());
 
         //primera ronda de preguntas
@@ -1268,7 +1268,7 @@ public class Main {
                 return;
 
             case 1:
-                actorsForRental.removeIf(actor -> actor.getCalificacion() < CALIFICACION_ALTA);
+                actorsForRental.removeIf(actor -> (actor.getCalificacion() - CALIFICACION_ALTA) > 0);
 
             case 2:
                 actorsForRental.removeIf(actor -> actor.getCalificacion() > CALIFICACION_ALTA);
@@ -1276,7 +1276,7 @@ public class Main {
 
 
             }
-                        
+
         options[3] = 3; options[4] = 4; options[5] = 5; options[6] = 6; options[7] = 7; options[8] = 8;
 
         //PREGUNTA NO. 2
