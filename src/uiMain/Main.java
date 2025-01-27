@@ -1589,11 +1589,7 @@ public class Main {
         String Saldo = String.format("$%,.2f",tesoreria.getCuenta().getSaldo());
         customPrint(Deudas + "El saldo de tesoreria es: " + Saldo, "green");
         
-        try{
-            Thread.sleep(2000);
-        } catch (Exception e) {
-            customPrint("La pausa fue interrumpida.");    
-        }
+        wait(1000);
         
         //Obtener lista de empleados por ocupacion:
         boolean repetidor = false;
@@ -1610,11 +1606,7 @@ public class Main {
             customPrint("Seguridad \n" + msgBase, true, "");
             msgBase = "\n";
 
-            try{
-                Thread.sleep(1500);
-            } catch (InterruptedException e) {
-                customPrint("La pausa fue interrumpida.");    
-            }
+            wait(1000);
             
             for(Empleado Persona : Empleado.getTipoAseador()){
                 if(msgBase != "\n"){
@@ -1627,11 +1619,7 @@ public class Main {
             customPrint("Aseador \n" + msgBase, true, "");
             msgBase = "\n";
             
-            try{
-                Thread.sleep(1500);
-            } catch (InterruptedException e) {
-                customPrint("La pausa fue interrumpida.");    
-            }
+            wait(1000);
             
             for(Empleado Persona : Empleado.getTipoProfesor()){
                 if(msgBase != "\n"){
@@ -1841,11 +1829,8 @@ public class Main {
         } while(!repetidor);
         
         customPrint("Asignando trabajos, por favor espere ...", true);
-        try{
-            Thread.sleep(2000);
-        } catch (Exception e) {
-            customPrint("La pausa fue interrumpida.");    
-        }
+        
+        wait(2000);
 
         //Organiza el ranking - Aseador - Seguridad - Profesor - Salas
         ArrayList<Empleado> Aseador_order = Empleado.getTipoAseador();
@@ -2189,7 +2174,12 @@ public class Main {
         //En este caso estas funciones no se pueden asignar por que existiria solapamiento
         //Por tanto imprime cuantas funciones quedaron sin asiganr
         if(funcionesDisponibles.size() != 0 ){
-            customPrint("Existen " + funcionesDisponibles.size() + " funcion/es sin posibilidad de seguridad");
+            if(funcionesDisponibles.size() == 1){
+                customPrint("Existen " + funcionesDisponibles.size() + " funcion sin posibilidad de seguridad");
+            }
+            else{
+                customPrint("Existen " + funcionesDisponibles.size() + " funciones sin posibilidad de seguridad");
+            }
         }
 
         //Para Aseador
@@ -2299,7 +2289,6 @@ public class Main {
                         }
                     });
                     Persona.setHorario(localTime);
-                    //Asignacion De las libres
                 }
                 if(funcionesSinHorarios == 1){
                     customPrint("Hay 1 Funcion sin horarios", "red");
@@ -2307,7 +2296,60 @@ public class Main {
                 else if(funcionesSinHorarios > 1){
                     customPrint("Hay " + funcionesSinHorarios + " Funciones sin horarios, invalidas para limpiar", "red");
                 }
+                if(funcionesLimpiadas.size() != 0){
+                    for(Empleado Persona : Empleado.getTipoAseador()){
+                        ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
+                        for(int i = 0; i < funcionesLimpiadas.size(); i++){
+                            Funcion Funciones = funcionesLimpiadas.get(i);
+                            boolean horarioValido = true;
+                            LocalDateTime inicioNuevo = Funciones.getHorario().get(1);
+                            LocalDateTime finNuevo = inicioNuevo.plusMinutes(15);
+                            for(int j = 0; j < localTime.size(); j++){
+                                //Se obtiene el horario en el q se itera
+                                ArrayList<LocalDateTime> horarioActual = localTime.get(j);
+                                //Se accede al ultimo indice de ese horario q es el fin 
+                                LocalDateTime finActual = horarioActual.get(1);
 
+                                //Verificar si hay un sublista despues
+                                if(j + 1 < localTime.size()){
+                                    ArrayList<LocalDateTime> horarioSiguiente = localTime.get(j+1);
+                                    LocalDateTime inicioSiguiente = horarioSiguiente.get(0);
+
+                                    //Verificar si el horario nuevo no se solapa
+                                    if(!(inicioNuevo.isAfter(finActual) && finNuevo.isBefore(inicioSiguiente))){
+                                        horarioValido = false;
+                                        break;
+                                    }
+                                }
+                                else{
+                                    //Verificar que el inicio sea despues del horario ya existente
+                                   if(!(inicioNuevo.isAfter(finActual))){
+                                    //Como no se cumple se tiene que pasar a revisar la siguiente funcion
+                                        horarioValido = false;
+                                        break;
+                                   }
+                                }
+                            }
+                            if(horarioValido){
+                                ArrayList<LocalDateTime> sublista = new ArrayList<>();
+                                sublista.add(inicioNuevo);
+                                sublista.add(finNuevo);
+                                localTime.add(sublista);
+                                Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                funcionesLimpiadas.remove(i);
+                                Funciones.getSala().setAseado(true);
+                                i--;
+                                break;
+                            }
+                        }
+                        Collections.sort(localTime, new Comparator<ArrayList<LocalDateTime>>(){
+                            public int compare(ArrayList<LocalDateTime> horario1, ArrayList<LocalDateTime> horario2){
+                                return horario1.get(0).compareTo(horario2.get(0));
+                            }
+                        });
+                        Persona.setHorario(localTime); 
+                    }                                
+                }
                 String msgBase = "";
                 for(Empleado Persona : Empleado.getTipoSeguridad()){
                     if(Persona.getHorario().size() == 1){
@@ -2435,7 +2477,60 @@ public class Main {
                     customPrint("Hay " + funcionesSinHorarios + " Funciones sin horarios, invalidas para limpiar", "red");
                 }
                 //Asignacion trabajos restantes
+                if(funcionesLimpiadas.size() != 0){
+                    for(Empleado Persona : Empleado.getTipoAseador()){
+                        ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
+                        for(int i = 0; i < funcionesLimpiadas.size(); i++){
+                            Funcion Funciones = funcionesLimpiadas.get(i);
+                            boolean horarioValido = true;
+                            LocalDateTime inicioNuevo = Funciones.getHorario().get(1);
+                            LocalDateTime finNuevo = inicioNuevo.plusMinutes(15);
+                            for(int j = 0; j < localTime.size(); j++){
+                                //Se obtiene el horario en el q se itera
+                                ArrayList<LocalDateTime> horarioActual = localTime.get(j);
+                                //Se accede al ultimo indice de ese horario q es el fin 
+                                LocalDateTime finActual = horarioActual.get(1);
 
+                                //Verificar si hay un sublista despues
+                                if(j + 1 < localTime.size()){
+                                    ArrayList<LocalDateTime> horarioSiguiente = localTime.get(j+1);
+                                    LocalDateTime inicioSiguiente = horarioSiguiente.get(0);
+
+                                    //Verificar si el horario nuevo no se solapa
+                                    if(!(inicioNuevo.isAfter(finActual) && finNuevo.isBefore(inicioSiguiente))){
+                                        horarioValido = false;
+                                        break;
+                                    }
+                                }
+                                else{
+                                    //Verificar que el inicio sea despues del horario ya existente
+                                   if(!(inicioNuevo.isAfter(finActual))){
+                                    //Como no se cumple se tiene que pasar a revisar la siguiente funcion
+                                        horarioValido = false;
+                                        break;
+                                   }
+                                }
+                            }
+                            if(horarioValido){
+                                ArrayList<LocalDateTime> sublista = new ArrayList<>();
+                                sublista.add(inicioNuevo);
+                                sublista.add(finNuevo);
+                                localTime.add(sublista);
+                                Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                funcionesLimpiadas.remove(i);
+                                Funciones.getSala().setAseado(true);
+                                i--;
+                                break;
+                            }
+                        }
+                        Collections.sort(localTime, new Comparator<ArrayList<LocalDateTime>>(){
+                            public int compare(ArrayList<LocalDateTime> horario1, ArrayList<LocalDateTime> horario2){
+                                return horario1.get(0).compareTo(horario2.get(0));
+                            }
+                        });
+                        Persona.setHorario(localTime); 
+                    }                                
+                }
                 String msgBase = "";
                 for(Empleado Persona : Empleado.getTipoSeguridad()){
                     if(Persona.getHorario().size() == 1){
@@ -2458,24 +2553,24 @@ public class Main {
             }
         }
 
+        if(funcionesLimpiadas.size() != 0 ){
+            if(funcionesLimpiadas.size() == 1){
+                customPrint("Existen " + funcionesLimpiadas.size() + " funcion donde no es posible limpiar");
+            }
+            else if(funcionesLimpiadas.size() > 1){
+                customPrint("Existen " + funcionesLimpiadas.size() + " funciones donde no es posible limpiar");
+            }
+        }
+
 
         customPrint("trabajos Asignados...", "green");
         customPrint("Desplegando Trabajadores");
         
-        try{
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            customPrint("La pausa fue interrumpida.");    
-        }
+        wait(1000);
 
         customPrint("Verificando los trabajos...");
 
-        try{
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            customPrint("La pausa fue interrumpida.");    
-        }
-
+        wait(1000);
 
         //Verificacion del trabajo
         //Seguridad
@@ -2594,25 +2689,10 @@ public class Main {
             }
         }
         
-        
 
-        //Hora inicio - Hora fin
-        //Asignar Horario Trabajador
-        //Automatico: Verificar metros de la sala y se asigan de acuerdo a la dificultad, verificar por meta
-        //Asigna el trabajo de una vez y se verifica
-        //Asignar Horario Seguridad
-        
-        //Asignar Horario Profesor LO HACE OSCAR
+   
+        wait(2000);
 
-
-        
-        try{
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            customPrint("La pausa fue interrumpida.");
-            
-        }
-        
         //Pagar nomina a empleados:
         Saldo = String.format("$%,.2f", tesoreria.getCuenta().getSaldo());
         customPrint("El saldo de tesoreria es: " + Saldo);
