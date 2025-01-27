@@ -3537,6 +3537,7 @@ public class Main {
                     }
                     else {
                         customPrint("Finalizando gestión de clases.", "blue");
+                        return;
                     }
                 }
                 
