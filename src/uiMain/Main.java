@@ -931,7 +931,8 @@ public class Main {
         
         int i;
         i = 0;
-        int o = 0;
+        int o;
+        o = 0;
         Obra eleccion;
         eleccion = null;
         String menuObras = "";
@@ -949,117 +950,180 @@ public class Main {
             }
         }
         customPrint(menuObras + String.valueOf(i + 1) + ". Crear nueva obra");
+        boolean continuarSelObra = false;
+        while (continuarSelObra == false){        
         String obraSel = ask("Por favor indique el número de su elección sin punto");
-        if (Integer.parseInt(obraSel) <= i){
-            eleccion = Obra.getObras().get(Integer.parseInt(obraSel) - 1 + o);
-        }
-        else if (Integer.parseInt(obraSel) > i){
-            String nombre = ask("Por favor ingrese el nombre de la nueva obra");
-            int f;
-            f = 0;
-            String actores = "";
-            for (Actor actor : Actor.getActors()){
-                f = f + 1;
-                actores = actores + String.valueOf(f) + "."+ actor.getNombre();
+            if(canBeInt(obraSel)){
+            if (Integer.parseInt(obraSel) <= i){
+                eleccion = Obra.getObras().get(Integer.parseInt(obraSel) - 1 + o);
+                continuarSelObra = true;
             }
-            customPrint(actores);
-            int s;
-            s = 1;
-            ArrayList<Actor> reparto = new ArrayList<>();
-            ArrayList<Aptitud> papeles = new ArrayList<>();
-            while (s != 0){
-                String d = ask("Digita el número del actor que desea agregar sin punto\n Si ya terminaste de añadir el reparto por favor ingresa 0");
-                s = Integer.parseInt(d);
-                if (s == 0){
-                    break;
+            else if (Integer.parseInt(obraSel) > i){
+                String nombre = ask("Por favor ingrese el nombre de la nueva obra");
+                int f;
+                f = 0;
+                String actores = "";
+                for (Actor actor : Actor.getActors()){
+                    f = f + 1;
+                    actores = actores + String.valueOf(f) + "."+ actor.getNombre();
                 }
-                else{
-                    Actor elegido = Actor.getActors().get(s - 1);
-                    reparto.add(elegido);
-                }
-                    byte[] listByte= {1, 2, 3, 4, 5};                
-                    byte u = ask("Por favor indica en qué se debe enfocar el actor \n (Solo puedes seleccionar una opción, sin embargo,\n varios actores pueden enfocarse en la misma opción) \nrecuerde digitar solo el número de la opción\n1. Canto\n2. Baile\n3. Discurso\n4. Emocionalidad\n5. Improvisación", listByte, "blue");
-                    switch (u){
-                        case 1:
-                            papeles.add(Aptitud.CANTO);
-                            break;
-                        case 2:
-                            papeles.add(Aptitud.BAILE);
-                            break;
-                        case 3:
-                            papeles.add(Aptitud.DISCURSO);
-                            break;
-                        case 4:
-                            papeles.add(Aptitud.EMOCIONALIDAD);
-                            break;
-                        case 5: 
-                            papeles.add(Aptitud.IMPROVISACION);
-                            break;
+                customPrint(actores);
+                int s;
+                s = 1;
+                ArrayList<Actor> reparto = new ArrayList<>();
+                ArrayList<Aptitud> papeles = new ArrayList<>();
+                while (s != 0){
+                    customPrint("Digita el número del actor que desea agregar sin punto\n Si ya terminaste de añadir el reparto por favor ingresa 0", "blue");
+                    boolean continuarSelAct = false;
+                    while (!continuarSelAct){
+                        String d = in.nextLine();
+                        if(canBeInt(d)){
+                            s = Integer.parseInt(d);
+                            if (s == 0){
+                                continuarSelAct = true;                           
+                                break;
+
+                            }
+                            else if (s > Actor.getActors().size()){
+                                customPrint("Opción fuera de rango, intenta de nuevo", "red");
+                                break;
+                            }
+                            else{
+                                Actor elegido = Actor.getActors().get(s - 1);
+                                reparto.add(elegido);
+                                continuarSelAct = true;
+                            }
+                                byte[] listByte= {1, 2, 3, 4, 5};                
+                                byte u = ask("Por favor indica en qué se debe enfocar el actor \n (Solo puedes seleccionar una opción, sin embargo,\n varios actores pueden enfocarse en la misma opción) \nrecuerde digitar solo el número de la opción\n1. Canto\n2. Baile\n3. Discurso\n4. Emocionalidad\n5. Improvisación", listByte, "blue");
+                                switch (u){
+                                    case 1:
+                                        papeles.add(Aptitud.CANTO);
+                                        break;
+                                    case 2:
+                                        papeles.add(Aptitud.BAILE);
+                                        break;
+                                    case 3:
+                                        papeles.add(Aptitud.DISCURSO);
+                                        break;
+                                    case 4:
+                                        papeles.add(Aptitud.EMOCIONALIDAD);
+                                        break;
+                                    case 5: 
+                                        papeles.add(Aptitud.IMPROVISACION);
+                                        break;
+                                }
+                            }
+                        else{
+                            customPrint("oops, no pareces haber elegido una opción correcta, intenta de nuevo", "red");
+                        }
                     }
-            }
-            
-            customPrint("1. Drama \n2. Comedia \n3. Musical \n4. Fantasía \n5. Terror \n6. Romace \n7. Circo \n8. Experimental");
-            byte[] listBytesGen = {1, 2, 3, 4, 5, 6, 7, 8};
-            byte l = ask("Indica el número asociado al género <3", listBytesGen, "blue");
-            Genero genero;
-            genero = null;
-            switch (l) {
-                case 1:
-                    genero = Genero.DRAMA;
-                    break;
-                case 2:
-                    genero = Genero.COMEDIA;
-                    break;
-                case 3:
-                    genero = Genero.MUSICAL;
-                    break;
-                case 4:
-                    genero = Genero.FANTASIA;
-                    break;
-                case 5:
-                    genero = Genero.TERROR;
-                    break;
-                case 6:
-                    genero = Genero.ROMANCE;
-                    break;
-                case 7: 
-                    genero = Genero.CIRCO;
-                    break;
-                case 8:
-                    genero = Genero.EXPERIMENTAL;
-                    break;
-            }
-
-            int x;
-            x = 0;
-            Director eleccionDir = null;
-            String menuDirectores = "";
-            if (!genero.getDirectores().isEmpty()){
-                for (Director director : genero.getDirectores()){
-                    x = x + 1;
-                    String item =(String.valueOf(x) + "."+ director.getNombre() + "\n");
-                    menuDirectores = menuDirectores + item;
                 }
-            }
-            customPrint(menuDirectores + String.valueOf(x + 1) + ". Crear nuevo director");
-            String directorSel = ask("Indique el director de la obra <3");
-            if (Integer.parseInt(directorSel) <= x){
-                eleccionDir = genero.getDirectores().get(Integer.parseInt(directorSel) - 1);
-            }
-            else if (Integer.parseInt(directorSel) > x){
-                String nDirector = ask("Por favor ingrese el nombre del nuevo director");
-                long idDirector = longAsk("Por favor ingrese el número de documento del nuevo director");
-                eleccionDir = new Director(nDirector, idDirector, genero);
+                
+                customPrint("1. Drama \n2. Comedia \n3. Musical \n4. Fantasía \n5. Terror \n6. Romace \n7. Circo \n8. Experimental");
+                byte[] listBytesGen = {1, 2, 3, 4, 5, 6, 7, 8};
+                byte l = ask("Indica el número asociado al género <3", listBytesGen, "blue");
+                Genero genero;
+                genero = null;
+                switch (l) {
+                    case 1:
+                        genero = Genero.DRAMA;
+                        break;
+                    case 2:
+                        genero = Genero.COMEDIA;
+                        break;
+                    case 3:
+                        genero = Genero.MUSICAL;
+                        break;
+                    case 4:
+                        genero = Genero.FANTASIA;
+                        break;
+                    case 5:
+                        genero = Genero.TERROR;
+                        break;
+                    case 6:
+                        genero = Genero.ROMANCE;
+                        break;
+                    case 7: 
+                        genero = Genero.CIRCO;
+                        break;
+                    case 8:
+                        genero = Genero.EXPERIMENTAL;
+                        break;
+                }
+
+                int x;
+                x = 0;
+                Director eleccionDir = null;
+                String menuDirectores = "";
+                if (!genero.getDirectores().isEmpty()){
+                    for (Director director : genero.getDirectores()){
+                        x = x + 1;
+                        String item =(String.valueOf(x) + "."+ director.getNombre() + "\n");
+                        menuDirectores = menuDirectores + item;
+                    }
+                }
+                customPrint(menuDirectores + String.valueOf(x + 1) + ". Crear nuevo director");
+                customPrint("Indique el director de la obra <3", "blue");
+                boolean continuarDirectorSel = false;
+                while (continuarDirectorSel == false){
+                    String directorSel = in.nextLine();
+                    if(canBeInt(directorSel)){
+                        if (Integer.parseInt(directorSel) <= x){
+                            eleccionDir = genero.getDirectores().get(Integer.parseInt(directorSel) - 1);
+                            continuarDirectorSel = true;
+                        }
+                        else if (Integer.parseInt(directorSel) == x + 1){
+                            String nDirector = ask("Por favor ingrese el nombre del nuevo director");
+                            customPrint("Por favor ingrese el número de documento del nuevo director", "blue");
+                            boolean continuarIdDir = false;
+                            long idDirector = 0;
+                            while(!continuarIdDir){
+                                String idDirectorString = in.nextLine();
+                                if(canBeLong(idDirectorString)){
+                                    idDirector = Long.parseLong(idDirectorString);
+                                    continuarIdDir = true;
+                                }
+                                else{
+                                    customPrint("oops, parece que no ingresaste un número de documento, intenta de nuevo", "red");
+                                }
+                            }
+                            eleccionDir = new Director(nDirector, idDirector, genero);
+                            continuarDirectorSel = true;
+                            }
+                        else{
+                            customPrint("oops, número fuera de rango, intenta de nuevo", "red");
+                        }
+                    }
+                    else{
+                        customPrint("oops, parece que no ingresaste un número entero, intenta de nuevo", "red");
+                    }
+                }
                 customPrint("Director creado: \n" + eleccionDir, "green");
+                Director director = eleccionDir;
+                x = 0;
+                boolean continuarCostProdu = false;
+                float costoProduccion = 0;
+                while(!continuarCostProdu){
+                    customPrint("Por favor, ingresa el costo de producción", "blue");
+                    String costoProduccionSTR = in.nextLine();
+                    if(canBeFloat(costoProduccionSTR)){
+                        costoProduccion = Float.parseFloat(costoProduccionSTR);
+                        continuarCostProdu = true;
+                    }
+                    else{
+                        customPrint("oops, pareces no haber ingresado un valor numérico, intenta de nuevo", "red");
+                    }
                 }
-            Director director = eleccionDir;
-            x = 0;
-
-            float costoProduccion = floatAsk("Por favor, ingresa el costo de producción");
-            long dur = longAsk("Por favor ingresa la duración de la obra, \nusa el formato HHmmSS, no separes con :,- ni otro símbolo similar.");
-            
-            eleccion = new Obra(nombre, reparto, papeles, director, costoProduccion, genero, dur);  
+                long dur = longAsk("Por favor ingresa la duración de la obra, \nusa el formato HHmmSS, no separes con :,- ni otro símbolo similar.");
+                
+                eleccion = new Obra(nombre, reparto, papeles, director, costoProduccion, genero, dur);  
+                continuarSelObra = true;
+                }
             }
+            else {
+                customPrint("Opción invalida, intenta de nuevo");
+            }
+        }
             customPrint("Has seleccionado" + " " + eleccion.getNombre());
             int a = eleccion.getFuncionesRecomendadas();
             boolean continuar = false;
@@ -2274,11 +2338,11 @@ public class Main {
                                         }
                                         else{
                                             //Verificar que el inicio sea despues del horario ya existente
-                                           if(!(inicioNuevo.isAfter(finActual))){
+                                            if(!(inicioNuevo.isAfter(finActual))){
                                             //Como no se cumple se tiene que pasar a revisar la siguiente funcion
                                                 horarioValido = false;
                                                 break;
-                                           }
+                                            }
                                         }
                                     }
                                     if(horarioValido){
@@ -2362,11 +2426,11 @@ public class Main {
                                 }
                                 else{
                                     //Verificar que el inicio sea despues del horario ya existente
-                                   if(!(inicioNuevo.isAfter(finActual))){
+                                    if(!(inicioNuevo.isAfter(finActual))){
                                     //Como no se cumple se tiene que pasar a revisar la siguiente funcion
                                         horarioValido = false;
                                         break;
-                                   }
+                                    }
                                 }
                             }
                             if(horarioValido){
@@ -2453,11 +2517,11 @@ public class Main {
                                         }
                                         else{
                                             //Verificar que el inicio sea despues del horario ya existente
-                                           if(!(inicioNuevo.isAfter(finActual))){
+                                            if(!(inicioNuevo.isAfter(finActual))){
                                             //Como no se cumple se tiene que pasar a revisar la siguiente funcion
                                                 horarioValido = false;
                                                 break;
-                                           }
+                                            }
                                         }
                                     }
                                     if(horarioValido){
@@ -2543,11 +2607,11 @@ public class Main {
                                 }
                                 else{
                                     //Verificar que el inicio sea despues del horario ya existente
-                                   if(!(inicioNuevo.isAfter(finActual))){
+                                    if(!(inicioNuevo.isAfter(finActual))){
                                     //Como no se cumple se tiene que pasar a revisar la siguiente funcion
                                         horarioValido = false;
                                         break;
-                                   }
+                                    }
                                 }
                             }
                             if(horarioValido){

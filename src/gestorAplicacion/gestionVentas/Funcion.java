@@ -137,11 +137,13 @@ public class Funcion implements Serializable{
     }
     public ArrayList<Funcion> actualizarFuncionesVenta(ArrayList<Funcion> funcionesCreadas){
         ArrayList<Funcion> funcionesALaVenta = new ArrayList<>();
-        for (Funcion funcion : funcionesCreadas){
-            if (funcion.getHorario().get(0).isAfter(LocalDateTime.now())){
-                funcionesALaVenta.add(funcion);
+        if (!funcionesCreadas.isEmpty())
+            for (Funcion funcion : funcionesCreadas){
+                System.out.println(funcion.getHorario());
+                if (funcion.getHorario().get(0).isAfter(LocalDateTime.now())){
+                    funcionesALaVenta.add(funcion);
+                }
             }
-        }
         return funcionesALaVenta;
     }
     public Funcion(Obra obra, ArrayList<LocalDate> week) {
@@ -175,7 +177,7 @@ public class Funcion implements Serializable{
                 for (LocalDate day : week){
                     LocalTime inicioFranjaITE = inicioFranja;
                     while (inicioFranjaITE.isBefore(this.obra.getFranjaHoraria().get(1))
-                    && inicioFranjaITE.plusSeconds(this.getObra().getDuracionFormatoS()).isBefore(LocalTime.of(22,00)))
+                    && inicioFranjaITE.plusSeconds(this.getObra().getDuracionFormatoS()).plusMinutes(20).isBefore(LocalTime.of(22,00)))
                     {
                         LocalDateTime i = LocalDateTime.of(day, inicioFranjaITE) ;
                         LocalDateTime v = i.plusSeconds(this.obra.getDuracionFormatoS());
