@@ -23,25 +23,10 @@ public class Funcion {
     static ArrayList <Funcion> funcionesALaVenta= new ArrayList<>();
 
 
-<<<<<<< Updated upstream
-//    static{
-//        funci_1.prueba();
-//    }
-public ArrayList<Funcion> actualizarFuncionesVenta(ArrayList<Funcion> funcionesCreadas){
-    ArrayList<Funcion> funcionesALaVenta = new ArrayList<>();
-    for (Funcion funcion : funcionesCreadas){
-        if (funcion.getHorario().get(0).isAfter(LocalDateTime.now())){
-            funcionesALaVenta.add(funcion);
-        }
-    }
-    return funcionesALaVenta;
-}
-=======
     static{
         funci_1.prueba();
     }
 
->>>>>>> Stashed changes
 
     public String tablaSillas(){
         String Nuevo="";
@@ -150,6 +135,15 @@ public ArrayList<Funcion> actualizarFuncionesVenta(ArrayList<Funcion> funcionesC
 
     public Sala salaDisponible(Sala sala){
         return sala;
+    }
+    public ArrayList<Funcion> actualizarFuncionesVenta(ArrayList<Funcion> funcionesCreadas){
+        ArrayList<Funcion> funcionesALaVenta = new ArrayList<>();
+        for (Funcion funcion : funcionesCreadas){
+            if (funcion.getHorario().get(0).isAfter(LocalDateTime.now())){
+                funcionesALaVenta.add(funcion);
+            }
+        }
+        return funcionesALaVenta;
     }
     public Funcion(Obra obra, ArrayList<LocalDate> week) {
         this.obra = obra;

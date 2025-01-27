@@ -368,11 +368,7 @@ public class Obra {
     
         }
     public static String imprimirObra(Obra obra){
-<<<<<<< Updated upstream
             String string = String.format("%30s %15s %10s %20s",obra.getNombre(),obra.getGenero(),obra.getDuracionFormato());
-=======
-            String string = String.format("%30s %15s %10s %20s",obra.getNombre(),obra.getGenero(),obra.duracion,String.format("$%,.2f",precioFuncion(obra)));
->>>>>>> Stashed changes
             return string;
         }
         
