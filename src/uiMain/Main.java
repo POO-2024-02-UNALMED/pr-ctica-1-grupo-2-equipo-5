@@ -1631,17 +1631,17 @@ public class Main {
             }
             customPrint("Profesor \n" + msgBase, true, "");
             
-            try{
-                Thread.sleep(1500);
-            } catch (InterruptedException e) {
-                customPrint("La pausa fue interrumpida.");    
-            }
+            wait(1000);
 
-            String question = "Deseas Contratar o Despedir a algún empleado\n1. Si\n2. No";
-            byte[] options = {1,2};
+            String question = "Deseas Contratar o Despedir a algún empleado\n1. Si\n2. No\n0. Salir";
+            byte[] options = {0,1,2};
             byte respuesta = ask(question, options, "blue");
 
             switch (respuesta) {
+                case 0:
+                    customPrint("Saliendo...");
+                    wait(1000);
+                    return;
                 case 1:
                     question = "Operacion a realizar \n1.Contratar \n2.Despedir \n0. Salir";
                     byte[] options2 = {0,1,2};
@@ -2164,10 +2164,10 @@ public class Main {
         }
         else{
             if(totalFunciones == 0){
-                customPrint("No hay funciones para agregar");
+                customPrint("No hay funciones para agregar", "red");
             }
             else{
-                customPrint("No hay trabajadores de Seguridad");
+                customPrint("No hay trabajadores de Seguridad", "red");
             }
         }
         //Revisa si todavia quedan funciones que no se asignaron trabajador
@@ -2546,19 +2546,19 @@ public class Main {
         }
         else{
             if(totalSalas == 0){
-                customPrint("No hay salas Existentes");
+                customPrint("No hay salas Existentes", "red");
             }
             else{
-                customPrint("No hay trabajadores de Aseador");
+                customPrint("No hay trabajadores de Aseador", "red");
             }
         }
 
         if(funcionesLimpiadas.size() != 0 ){
             if(funcionesLimpiadas.size() == 1){
-                customPrint("Existen " + funcionesLimpiadas.size() + " funcion donde no es posible limpiar");
+                customPrint("Existen " + funcionesLimpiadas.size() + " funcion donde no es posible limpiar", "red");
             }
             else if(funcionesLimpiadas.size() > 1){
-                customPrint("Existen " + funcionesLimpiadas.size() + " funciones donde no es posible limpiar");
+                customPrint("Existen " + funcionesLimpiadas.size() + " funciones donde no es posible limpiar", "red");
             }
         }
 
@@ -2696,9 +2696,13 @@ public class Main {
         //Pagar nomina a empleados:
         Saldo = String.format("$%,.2f", tesoreria.getCuenta().getSaldo());
         customPrint("El saldo de tesoreria es: " + Saldo);
-        byte[] option = {1,2};
-        byte respuesta = ask("¿Desea realizar los pagos \n1. Si\n2. No", option, "green");
+        byte[] option = {0,1,2};
+        byte respuesta = ask("¿Desea realizar los pagos \n1. Si\n2. No\n0. Salir", option, "green");
         switch (respuesta) {
+            case 0:
+                customPrint("Saliendo...", "red");
+                wait(1000);
+                return;
             case 1:
                 tesoreria.setTotal(tesoreria.getTotal() + tesoreria.getDineroEnCaja());
                 double fondos = tesoreria.getCuenta().getSaldo();
@@ -2905,7 +2909,6 @@ public class Main {
                 break;
         }
     
-        //Planes de mejora
         //Despedir si meta es negativa
         ArrayList<Empleado> NuevaLista = Empleado.getEmpleadosPorRendimiento();
         ArrayList<Empleado> Despedidos = new ArrayList<>();
