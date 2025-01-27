@@ -2602,7 +2602,7 @@ public class Main {
             }
         }
 
-        if(trabajoAsignadoA && trabajoAsignadoS){
+        if(trabajoAsignadoA || trabajoAsignadoS){
             customPrint("trabajos Asignados...", "green");
             customPrint("Desplegando Trabajadores");
             
