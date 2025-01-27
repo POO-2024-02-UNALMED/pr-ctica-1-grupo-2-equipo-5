@@ -847,6 +847,7 @@ public class Main {
     }
 
     public static void gestionObras(){
+        //CREACIÓN DE OBRAS PREVIAS PARA SOLUCIÓN DE FRANJAS HORARIAS
         ArrayList<LocalDateTime> horarioEstObra1 = new ArrayList<>();
         ArrayList<LocalDateTime> horarioEstObra2 = new ArrayList<>();
         ArrayList<LocalDateTime> horarioEstObra3 = new ArrayList<>();
