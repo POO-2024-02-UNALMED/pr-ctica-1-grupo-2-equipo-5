@@ -1863,7 +1863,7 @@ public class Main {
         boolean trabajoAsignadoS = true;
         boolean trabajoAsignadoA = true;
         int cant_trabajadores_principiantes = 0;
-        int base = 1;
+        int base = 6;
         int totalFunciones = Funcion.getFuncionesCreadas().size();
         int totalTrabajadores_S = Empleado.getTipoSeguridad().size();
         int funcion_por_trabajador = totalFunciones/totalTrabajadores_S;
@@ -2020,23 +2020,25 @@ public class Main {
                 customPrint(msgBase);
             }
             else{
-                ArrayList<Funcion> FuncionPorDuracion = Funcion.getFuncionesCreadas();
-                Collections.sort(FuncionPorDuracion, new Comparator<Funcion>() {
-                    public int compare(Funcion f1, Funcion f2){
-                        LocalDateTime inicioF1 = f1.getHorario().get(0);
-                        LocalDateTime inicioF2 = f2.getHorario().get(0);
-                        
-                        int fechaCompare = inicioF2.compareTo(inicioF1);
-                        if(fechaCompare != 0){
-                            return fechaCompare;
-                        }
-                        double duracionF1 = Duration.between(f1.getHorario().get(0), f1.getHorario().get(1)).toMinutes()/60.0;
-                        double duracionF2 = Duration.between(f2.getHorario().get(0), f2.getHorario().get(1)).toMinutes()/60.0;
-                        return Double.compare(duracionF2, duracionF1);
-                    }
-                });
+                try{
+                    ArrayList<Funcion> FuncionPorDuracion = Funcion.getFuncionesCreadas();
+                    Collections.sort(FuncionPorDuracion, new Comparator<Funcion>() {
+                        public int compare(Funcion f1, Funcion f2){
+                            LocalDateTime inicioF1 = f1.getHorario().get(0);
+                            LocalDateTime inicioF2 = f2.getHorario().get(0);
 
-                funcionesDisponibles = FuncionPorDuracion;
+                            int fechaCompare = inicioF2.compareTo(inicioF1);
+                            if(fechaCompare != 0){
+                                return fechaCompare;
+                            }
+                            double duracionF1 = Duration.between(f1.getHorario().get(0), f1.getHorario().get(1)).toMinutes()/60.0;
+                            double duracionF2 = Duration.between(f2.getHorario().get(0), f2.getHorario().get(1)).toMinutes()/60.0;
+                            return Double.compare(duracionF2, duracionF1);
+                        }
+                    });
+                    funcionesDisponibles = FuncionPorDuracion;
+                }catch(Exception e){}
+
                 //Evaluacion Normal, asignacion de trabajo equitativo
                 int funcionesSinHorarios = 0;
                 for(Empleado Persona : Empleado.getTipoSeguridad()){
