@@ -656,6 +656,20 @@ public class Main {
 
             
             customPrint("Obra seleccionada: \n\n"+Obra.imprimirObra(Obra.buscarObra(inputF)));
+            customPrint("Estas son las Funciones disponibles\n\n"+String.format("%30s %22s %22s %15s", "Nombre Obra", "Genero", "Duracion","Precio")+"\n\n"+Funcion.generarTabla(inputF));
+            customPrint("Que Obra desea comprar? \n");
+            inputF = in.nextLine().toLowerCase();
+            precioSus=0;
+            while (Obra.nombres(inputF)){
+                customPrint("Obra no encontrada \n"+
+                "Ingrese un nombre valido :","red");
+                inputF = in.nextLine().toLowerCase();
+                
+
+
+
+            }
+            
             
             
             
