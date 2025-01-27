@@ -667,21 +667,19 @@ public class Main {
 
 
             
-            customPrint("Obra seleccionada: \n\n"+Obra.imprimirObra(Obra.buscarObra(inputF)));
-            customPrint("Estas son las Funciones disponibles\n\n"+String.format("%30s %22s %22s %15s", "Nombre Obra", "Genero", "Duracion","Precio")+"\n\n"+Funcion.generarTabla(inputF));
-            customPrint("Que Obra desea comprar? \n");
-            inputF = in.nextLine().toLowerCase();
-            precioSus=0;
-            while (Obra.nombres(inputF)){
-                customPrint("Obra no encontrada \n"+
-                "Ingrese un nombre valido :","red");
-                inputF = in.nextLine().toLowerCase();
-                
-
-
-
-            }
             
+            customPrint("Estas son las Funciones disponibles\n\n"+String.format("%20s %30s ", "Nombre Obra", "Horario")+"\n\n"+Funcion.generarTabla(inputF));
+            customPrint("Que Funcion desea comprar? \n");
+            byte numb = in.nextByte();
+            precioSus=0;
+            
+            while (!Funcion.indiceFuncion(numb,inputF) | numb ==0){
+                customPrint("Funcion no encontrada \n"+
+                "Ingrese un numero valido :","red");
+                numb = in.nextByte();
+                in.nextLine();
+                }
+            customPrint(Funcion.escogerFuncion(numb, inputF).getObra().getNombre());
             
             
             
@@ -740,7 +738,7 @@ public class Main {
             "C- Sillas Comfort Exclusivas Suscripcion Premium\n"+
             "B- Sillas Basicas ");
             
-            Funcion funcion=Funcion.buscarFuncion(inputF);
+            Funcion funcion=Funcion.escogerFuncion(numb, inputF);
             customPrint(funcion.tablaSillas());
             Integer codigo = in.nextInt();
             while (Funcion.buscarFuncion(inputF).verificar(codigo) | cliente.verificarSuscripcion(funcion.asignarTipoSilla(codigo))) {
@@ -767,7 +765,7 @@ public class Main {
         tiquete.setSilla(funcion.asignarSilla(codigo));
         
 
-            Funcion.buscarFuncion(inputF).eliminarSilla(codigo);
+            Funcion.escogerFuncion(numb, inputF).eliminarSilla(codigo);
             customPrint(funcion.tablaSillas());
             
             

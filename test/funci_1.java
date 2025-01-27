@@ -44,6 +44,8 @@ public class funci_1 {
         Funcion func2 = new Funcion(obra2,sala2);
         Funcion func3 = new Funcion(obra3,sala3);
         Funcion func4 = new Funcion(obra4,sala4);
+        Funcion func5 = new Funcion(obra1,sala4);
+        
         
         
         

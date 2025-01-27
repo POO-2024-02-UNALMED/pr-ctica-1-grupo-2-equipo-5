@@ -212,20 +212,50 @@ public class Funcion implements Serializable{
     }
     
     public static String generarTabla(String nombre){
+        int in=0;
         String Nuevo="";
         String string ="";
         for (Funcion funcion : funcionesCreadas) {
             if ((funcion.obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
-                string = String.format("%30s %20s %20s %20s",funcion.obra.getNombre(),funcion.obra.getGenero(),Duration.ofHours(funcion.obra.getDuracion().toHours()).plusMinutes(funcion.obra.getDuracion().toMinutes()% 60),String.format("$%,.2f",precioFuncion(funcion))+"\n");
+                in++;
+                string = in+String.format("%20s %30s",funcion.obra.getNombre(),"horario");
+                Nuevo = Nuevo +"\n"+string;
                 
             }
             
         }
-        Nuevo = Nuevo +string;
+        
 
         
     
     return Nuevo;
+}
+public static boolean indiceFuncion(int i,String nombre){
+    int in =0;
+    for (Funcion funcion : funcionesCreadas) {
+        if ((funcion.obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
+            in++;
+
+        }
+    }
+
+return in >= i;
+}
+public static Funcion escogerFuncion(int i,String nombre){
+    int in=0;
+    for (Funcion funcion : funcionesCreadas) {
+        if ((funcion.obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
+            in++;
+            if (in==i){
+                return funcion;
+            }
+            
+            
+        }
+        
+    }
+    return null;
+
 }
 public static boolean calificacionVacia(Obra obra){
     boolean valor = true;
