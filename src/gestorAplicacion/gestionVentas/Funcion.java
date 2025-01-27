@@ -22,9 +22,9 @@ public class Funcion {
     static ArrayList <Funcion> funcionesALaVenta= new ArrayList<>();
 
 
-    static{
-        funci_1.prueba();
-    }
+//    static{
+//        funci_1.prueba();
+//    }
 
     public ArrayList<Funcion> actualizarFuncionesVenta(ArrayList<Funcion> funcionesCreadas){
         ArrayList<Funcion> funcionesALaVenta = new ArrayList<>();
@@ -153,6 +153,8 @@ public class Funcion {
         this.calificador = doWeNeedACalificador();
         this.audienciaEsperada = obra.getAudienciaEsperada();
         funcionesCreadas.add(this);
+        funcionesALaVenta = actualizarFuncionesVenta(funcionesCreadas);
+        this.sillas = this.sala.getSillas();
     }
     public Funcion(){
 
