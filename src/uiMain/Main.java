@@ -679,7 +679,6 @@ public class Main {
             if (antiguo==true ){
                 precioSus = 0;
             }
-            System.out.println(antiguo);
             boolean antiguof;
             if (antiguo){
                 antiguof=true;
