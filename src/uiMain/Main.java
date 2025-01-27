@@ -1861,6 +1861,8 @@ public class Main {
         //Administrar Trabajadores
         //Asignar horas y trabajos
         //Para Seguridad
+        boolean trabajoAsignadoS = true;
+        boolean trabajoAsignadoA = true;
         int cant_trabajadores_principiantes = 0;
         int base = 1;
         int totalFunciones = Funcion.getFuncionesCreadas().size();
@@ -1952,7 +1954,6 @@ public class Main {
                 }
                 //EVALUACION DE SALAS SIN TRABAJADOR
                 if(funcionesDisponibles.size() != 0 ){
-                    System.out.println("funciones que quedaron libres");
                     for(Empleado Persona : Empleado.getTipoSeguridad()){
                         //Segunda iteracion
                         ArrayList<ArrayList<LocalDateTime>> localTime = new ArrayList<>(Persona.getHorario());
@@ -2166,9 +2167,11 @@ public class Main {
         else{
             if(totalFunciones == 0){
                 customPrint("No hay funciones para agregar", "red");
+                trabajoAsignadoS = false;
             }
             else{
                 customPrint("No hay trabajadores de Seguridad", "red");
+                trabajoAsignadoS = false;
             }
         }
         //Revisa si todavia quedan funciones que no se asignaron trabajador
@@ -2548,9 +2551,11 @@ public class Main {
         else{
             if(totalSalas == 0){
                 customPrint("No hay salas Existentes", "red");
+                trabajoAsignadoA = false;
             }
             else{
                 customPrint("No hay trabajadores de Aseador", "red");
+                trabajoAsignadoA = false;
             }
         }
 
@@ -2563,55 +2568,63 @@ public class Main {
             }
         }
 
-
-        customPrint("trabajos Asignados...", "green");
-        customPrint("Desplegando Trabajadores");
-        
-        wait(1000);
-
-        customPrint("Verificando los trabajos...");
-
-        wait(1000);
-
-        //Verificacion del trabajo
-        //Seguridad
-        cant_trabajadores_principiantes = 0;
-        for(Empleado Persona : Empleado.getTipoSeguridad()){
-            if(Persona.getMetaSemanal() == base){
-                cant_trabajadores_principiantes += 1;
-                Persona.setDisponible(true);
-            }
-        }
-        if(cant_trabajadores_principiantes == Empleado.getTipoSeguridad().size()){;
+        if(trabajoAsignadoA && trabajoAsignadoS){
+            customPrint("trabajos Asignados...", "green");
+            customPrint("Desplegando Trabajadores");
+            
+            wait(1000);
+    
+            customPrint("Verificando los trabajos...", "green");
+    
+            wait(1000);
+            //Verificacion del trabajo
+            //Seguridad
+            cant_trabajadores_principiantes = 0;
             for(Empleado Persona : Empleado.getTipoSeguridad()){
-                for(double Hora : Persona.getTrabajos()){
-                    Random random = new Random();
-                    double randomValue = random.nextDouble();
-                    if(randomValue > 0.5){
-                            Persona.getTrabajoCorrecto().add(true);
-                            Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Hora);
-                            Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
-                        }
-                    else{Persona.getTrabajoCorrecto().add(false);}
+                if(Persona.getMetaSemanal() == base){
+                    cant_trabajadores_principiantes += 1;
+                    Persona.setDisponible(true);
                 }
             }
-        }
-        else{
-            for(Empleado Persona : Empleado.getTipoSeguridad()){
-                for(double Hora : Persona.getTrabajos()){
-                    Random random = new Random();
-                    double randomValue = random.nextDouble();
-                    if(Persona.getMetaSemanal() > 20){
-                        if(Hora >= 4){
-                            if(randomValue > 0.65){
+            if(cant_trabajadores_principiantes == Empleado.getTipoSeguridad().size()){;
+                for(Empleado Persona : Empleado.getTipoSeguridad()){
+                    for(double Hora : Persona.getTrabajos()){
+                        Random random = new Random();
+                        double randomValue = random.nextDouble();
+                        if(randomValue > 0.5){
                                 Persona.getTrabajoCorrecto().add(true);
                                 Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Hora);
                                 Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
                             }
-                            else {Persona.getTrabajoCorrecto().add(false);}
+                        else{Persona.getTrabajoCorrecto().add(false);}
+                    }
+                }
+            }
+            else{
+                for(Empleado Persona : Empleado.getTipoSeguridad()){
+                    for(double Hora : Persona.getTrabajos()){
+                        Random random = new Random();
+                        double randomValue = random.nextDouble();
+                        if(Persona.getMetaSemanal() > 20){
+                            if(Hora >= 4){
+                                if(randomValue > 0.65){
+                                    Persona.getTrabajoCorrecto().add(true);
+                                    Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Hora);
+                                    Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
+                                }
+                                else {Persona.getTrabajoCorrecto().add(false);}
+                            }
+                            else{
+                                if(randomValue > 0.40){
+                                    Persona.getTrabajoCorrecto().add(true);
+                                    Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Hora);
+                                    Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
+                                }
+                                else{Persona.getTrabajoCorrecto().add(false);}
+                            }
                         }
                         else{
-                            if(randomValue > 0.40){
+                            if(randomValue > 0.5){
                                 Persona.getTrabajoCorrecto().add(true);
                                 Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Hora);
                                 Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
@@ -2619,79 +2632,73 @@ public class Main {
                             else{Persona.getTrabajoCorrecto().add(false);}
                         }
                     }
-                    else{
+                }
+            }
+
+            //Aseador
+            cant_trabajadores_principiantes = 0;
+            for(Empleado Persona : Empleado.getTipoAseador()){
+                if(Persona.getMetaSemanal() == base){
+                    cant_trabajadores_principiantes += 1;
+                    Persona.setDisponible(true);
+                }
+            }
+            if(cant_trabajadores_principiantes == Empleado.getTipoAseador().size()){
+                for(Empleado Persona : Empleado.getTipoAseador()){
+                    for(double Metros : Persona.getTrabajos()){
+                        Random random = new Random();
+                        double randomValue = random.nextDouble();
                         if(randomValue > 0.5){
                             Persona.getTrabajoCorrecto().add(true);
-                            Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Hora);
+                            Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Metros);
                             Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
                         }
                         else{Persona.getTrabajoCorrecto().add(false);}
                     }
                 }
             }
-        }
-
-        //Aseador
-        cant_trabajadores_principiantes = 0;
-        for(Empleado Persona : Empleado.getTipoAseador()){
-            if(Persona.getMetaSemanal() == base){
-                cant_trabajadores_principiantes += 1;
-                Persona.setDisponible(true);
-            }
-        }
-        if(cant_trabajadores_principiantes == Empleado.getTipoAseador().size()){
-            for(Empleado Persona : Empleado.getTipoAseador()){
-                for(double Metros : Persona.getTrabajos()){
-                    Random random = new Random();
-                    double randomValue = random.nextDouble();
-                    if(randomValue > 0.5){
-                        Persona.getTrabajoCorrecto().add(true);
-                        Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Metros);
-                        Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
-                    }
-                    else{Persona.getTrabajoCorrecto().add(false);}
-                }
-            }
-        }
-        else{
-            for(Empleado Persona : Empleado.getTipoAseador()){
-                for(double Metros : Persona.getTrabajos()){
-                    Random random = new Random();
-                    double randomValue = random.nextDouble();
-                    if(Persona.getMetaSemanal() > 20){
-                        if(Metros > 650){
-                            if(randomValue > 0.65){
+            else{
+                for(Empleado Persona : Empleado.getTipoAseador()){
+                    for(double Metros : Persona.getTrabajos()){
+                        Random random = new Random();
+                        double randomValue = random.nextDouble();
+                        if(Persona.getMetaSemanal() > 20){
+                            if(Metros > 650){
+                                if(randomValue > 0.65){
+                                    Persona.getTrabajoCorrecto().add(true);
+                                    Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Metros);
+                                    Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
+                                }
+                                else {Persona.getTrabajoCorrecto().add(false);}
+                            }
+                            else{
+                                if(randomValue > 0.40){
+                                    Persona.getTrabajoCorrecto().add(true);
+                                    Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Metros);
+                                    Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
+                                }
+                                else{Persona.getTrabajoCorrecto().add(false);}
+                            }
+                        }
+                        else{
+                            if(randomValue > 0.5){
                                 Persona.getTrabajoCorrecto().add(true);
                                 Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Metros);
                                 Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
                             }
-                            else {Persona.getTrabajoCorrecto().add(false);}
-                        }
-                        else{
-                            if(randomValue > 0.40){
-                                Persona.getTrabajoCorrecto().add(true);
-                                Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Metros);
-                                Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
+                            else{
+                                Persona.getTrabajoCorrecto().add(false);
                             }
-                            else{Persona.getTrabajoCorrecto().add(false);}
-                        }
-                    }
-                    else{
-                        if(randomValue > 0.5){
-                            Persona.getTrabajoCorrecto().add(true);
-                            Persona.setTrabajoRealizado(Persona.getTrabajoRealizado() + Metros);
-                            Persona.setPuntosPositivos(Persona.getPuntosPositivos() + 1);
-                        }
-                        else{
-                            Persona.getTrabajoCorrecto().add(false);
                         }
                     }
                 }
             }
         }
-        
+        else{
+            customPrint("No hay trabajos para asignar\n No se puede verificar los trabajos", "red");
+        }
 
-   
+
         wait(2000);
 
         //Pagar nomina a empleados:
@@ -2721,9 +2728,9 @@ public class Main {
                     for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
                         boolean transaccion = tesoreria.getCuenta().transferencia(Persona.getCuenta(), (Persona.getDeuda() + Persona.calcularSueldo()) *0.5);  //Establecer cuanto se le debe a la persona
                         if(transaccion != true){
-                            System.out.println("No se le puede pagar a " + Persona.getNombre());
+                            customPrint("No se le puede pagar a " + Persona.getNombre());
                             Persona.setDeuda(Persona.getDeuda() + Persona.calcularSueldo());
-                            System.out.println("nueva deuda: " + Persona.getDeuda() );
+                            customPrint("nueva deuda: " + Persona.getDeuda() );
                         }
                         else{
                             cantPagada = cantPagada + ((Persona.calcularSueldo() + Persona.getDeuda())*0.5);
@@ -2765,7 +2772,6 @@ public class Main {
                             }
                             //Pago solo sueldo base
                             if(cantPagada > fondos){
-                                System.out.println("Sueldo Base");
                                 customPrint("No se pudo realizar los pagos junto a la deuda");
                                 customPrint("Realizando pago del Sueldo Base");
                                 tesoreria.pagarSueldoBase(null, cantPagada);
@@ -2911,7 +2917,8 @@ public class Main {
         }
     
         //Despedir si meta es negativa
-        ArrayList<Empleado> NuevaLista = Empleado.getEmpleadosPorRendimiento();
+        ArrayList<Empleado> ActEmpleados = Empleado.getEmpleadosPorRendimiento();
+        ArrayList<Empleado> NuevaLista = new ArrayList<>(ActEmpleados);
         ArrayList<Empleado> Despedidos = new ArrayList<>();
         String msgBase = "";
         for(Empleado Persona : Empleado.getEmpleadosPorRendimiento()){
@@ -2927,6 +2934,7 @@ public class Main {
             customPrint("Personas Despedidas: \n" + msgBase);
         }
         
+        wait(1000);
 
         //Imprimir Ranking
         ArrayList<Empleado> Ranking = Empleado.getEmpleadosPorRendimiento();

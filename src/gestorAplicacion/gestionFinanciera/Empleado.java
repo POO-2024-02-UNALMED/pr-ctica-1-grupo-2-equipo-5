@@ -32,7 +32,7 @@ public class Empleado {
     public Empleado(String nombre, long ID, String ocupacion) {
         this.nombre = nombre;
         this.id = ID;
-        this.metaSemanal = 1;
+        this.metaSemanal = 6;
         this.cuenta = new CuentaBancaria(ID, 0);
         this.ocupacion = ocupacion;
         this.deuda = 0;
