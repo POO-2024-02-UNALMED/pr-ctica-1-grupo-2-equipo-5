@@ -9,11 +9,21 @@ import uiMain.Main;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.File;
+import baseDatos.Teatro;
+import baseDatos.Deserializador;
+import baseDatos.Serializador;
 
 public class funcionalidad5 {
 
     public static Scanner in = new Scanner(System.in);
        public static void main(String[] args){
+
+            String filename = "teatro.txt";
+            String path = "src" + File.separator + "baseDatos" + File.separator + "temp" + File.separator + filename;
+            Deserializador.loadState(path);
+            Teatro teatro = Teatro.getInstancia();
+
             //sujetos de prueba -------------------------//
             Actor actor1 = new Actor("Pedro Pascal", 10292122);
             List<Genero> genres = new ArrayList<>();
@@ -103,5 +113,6 @@ public class funcionalidad5 {
 
             //--------------------------------------------//
             Main.ContratarActor();
+            //Serializador.saveState(path);
         }
     }

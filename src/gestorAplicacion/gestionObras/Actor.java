@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+
+import baseDatos.Teatro;
+
 import java.io.Serializable;
 import java.text.NumberFormat;
 
@@ -14,7 +17,7 @@ import gestorAplicacion.herramientas.Genero;
 
 public class Actor extends Artista implements Serializable{
 
-    
+    private static final long serialVersionUID = 1L;
     private static final long TASA = 1_000_000;
 
     //lista que almacenará todos los actores creados
@@ -30,11 +33,15 @@ public class Actor extends Artista implements Serializable{
     private ArrayList<Double> calificacionesAptitudes = new ArrayList<>(Arrays.asList(0.0, 0.0, 0.0, 0.0, 0.0)); // Calificaciones asociadas a las aptitudes
     private ArrayList<ArrayList<Double>> historialCalificaciones = new ArrayList<>();
 
+    public Actor(){
+
+    }
 
     public Actor(String nombre, long id){ 
         super(nombre, id);
         actors.add(this); 
         getArtistas().add(this);
+        Teatro.getInstancia().getActores().add(this);
         // Inicializar todas las aptitudes del enum Aptitud, ya que todos los actores tienen todas las aptitudes
         for (Aptitud aptitud : Aptitud.values()) {
             aptitudes.add(aptitud); 

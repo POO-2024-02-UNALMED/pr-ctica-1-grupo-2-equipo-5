@@ -45,12 +45,12 @@ import test.funcionalidad2;
 
 
 public class Main {
+
     static Tesoreria tesoreria = new Tesoreria(0, 100);
     public static Scanner in = new Scanner(System.in);
     //public static boolean supportsColor = (System.console() != null && System.getenv().get("TERM") != null);
     public static boolean supportsColor = true;
-    public static String filename = "teatro.txt";
-    public static String path = "src" + File.separator + "baseDatos" + File.separator + "temp" + File.separator + filename;
+
 
     //------------------HERRAMIENTAS-------------------------//
     //pregunta y devuelve cadena respuesta
@@ -404,13 +404,18 @@ public class Main {
 //    Sala sala1 = new Sala(1, 100, 24);
 
     public static void main(String args[]) throws InterruptedException {  
+
+        // DESERIALIZACIÓN -------------------------------------------------------//
+        String filename = "teatro.txt";
+        String path = "src" + File.separator + "baseDatos" + File.separator + "temp" + File.separator + filename;
+        Deserializador.loadState(path);
+        Teatro teatro = Teatro.getInstancia();
+        // -----------------------------------------------------------------------//
+
         funcionalidad2.empezar();
         byte task = -1;
 
         while (task != 6){
-
-            Deserializador.loadState(path);
-            Teatro teatro = Teatro.getInstancia();
 
             String dash = "~";
             customPrint("Teatro Carlos Mayolo", true);
