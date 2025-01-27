@@ -3044,7 +3044,7 @@ public class Main {
                         new Director(nombreArtista, idArtista);
                         customPrint("Nuevo director agregado: " + nombreArtista + " con ID " + idArtista, "green");
                         wait(2000);
-                        customPrint("Recuerde que los directores no reciben clases.", "yellow");
+                        customPrint("Los directores no reciben clases.", "yellow");
                     } else if (tipoArtista.equals("actor")) {
                         // Crear un nuevo actor
                         Actor nuevoActor = new Actor(nombreArtista, idArtista);
@@ -3091,8 +3091,11 @@ public class Main {
                     return;
                 }
         } else {
-            customPrint("El actor ya existe en nuestra base de datos", "green");
+            customPrint("El artista ya existe en nuestra base de datos", "green");
             wait(2000);
+            if (artista instanceof Director) {
+                customPrint("Los directores no reciben clases.", "yellow");
+            }
         }
 
         if (artista != null && artista instanceof Actor) {
@@ -3123,7 +3126,7 @@ public class Main {
             }
             
             // Mostrar las calificaciones del artista, sea o no sea nuevo
-            customPrint("Estas son las calificaciones del artista: " + artista.getNombre());
+            customPrint("Estas son las calificaciones del actor: " + artista.getNombre());
             wait(2000);
 
             StringBuilder cal = new StringBuilder();
@@ -3181,7 +3184,7 @@ public class Main {
                 wait(1000);
                 // Mostrar áreas de mejora recomendadas
                 List<Aptitud> areasDeMejora = actor.obtenerAreasDeMejora();
-                customPrint("Áreas recomendadas para mejorar:", "yellow");
+                customPrint("Áreas del actor " + actor.getNombre() +  " recomendadas para mejorar:", "yellow");
                 wait(2000);
                 StringBuilder areasMejora = new StringBuilder();
     
@@ -3229,10 +3232,12 @@ public class Main {
 
                     // Uso del método setSchedule
 
-                    String preguntaClase = "¿Para qué día quiere programar la clase?\n";
+                    String preguntaClase = "¿Para cuál día quiere programar la clase?\n";
                     String advertencia = "Existe una incompatibilidad del horario con el lineamiento.\n\nRevise si:\n1. El inicio del horario ocurre antes del fin del horario.\n2. Se exceden los límites de horario (muy temprano o muy tarde).\nIntente de nuevo.";
-                    LocalTime horaMin = LocalTime.of(8, 0);
+                    LocalTime horaMin = LocalTime.of(10, 0);
                     LocalTime horaMax = LocalTime.of(22, 0); 
+
+                    customPrint("Tenga en cuenta que el horario de clases inicia a las 10 am y terminan a las 10 pm.\n" + "Las clases tienen como duración mínima 2 horas y máxima 4 horas.", "blue");
 
                     LocalDateTime[] clases = setSchedule(preguntaClase, horaMin, horaMax, 2, 4, true, advertencia);
                     LocalDateTime inicio = clases[0];
@@ -3287,39 +3292,184 @@ public class Main {
                     customPrint("Clase programada exitosamente en el área '" + areaSeleccionada + "' con el profesor '" 
                         + profesorAsignado.getNombre() + "' en la sala '" + salaAsignada.getNumeroSala() + "'.", "green");
 
-                    } else {
-                        byte respuesta1 = ask("¿Desea programar otra clase?\n1. Sí\n2. No", dos, "");
-                        if (respuesta1 == 1){
-                        // Permitir al usuario elegir cualquier aptitud
-                        StringBuilder areas2 = new StringBuilder();
-                            customPrint("Seleccione un área para programar una clase:");
-                            for (int i = 0; i < actor.getAptitudes().size(); i++) {
-                                Aptitud aptitud = actor.getAptitudes().get(i);
+                    // Cálculo del costo de matrícula
+                    double costoClase = 0;
+                    switch (nivelClase) {
+                        case "Introducción": costoClase = 50000; break;
+                        case "Profundización": costoClase = 75000; break;
+                        case "Perfeccionamiento": costoClase = 90000; break;
+                    }
         
-                                String linea2 = (i+1) + "." + aptitud;
+                    customPrint("El costo de la clase es: $" + costoClase, "blue");
+                    wait(2500);
         
-                                // Verificar si agregar esta línea excede el límite de caracteres; si no, agregar nueva línea
-                                if (linea2.length() > LARGO_LINEAS) {
-                                    linea2 = linea2.substring(0, LARGO_LINEAS - 3) + "..."; // Truncar si es necesario
+                    // Procesar el pago desde la cuenta del artista hacia la tesorería
+                    boolean si_no = actor.getCuenta().retirar(costoClase);
+    
+                    if (si_no == true) {
+                        
+                        tesoreria.setTotal(tesoreria.getTotal() + costoClase);
+                        tesoreria.setDineroEnCaja(tesoreria.getDineroEnCaja() + costoClase);
+                        // Asignación de calificador para la próxima función
+                        Profesor calificador = null;
+                        for (Empleado empleado : Empleado.getTipoProfesor()) {
+                            if (empleado instanceof Profesor) {
+                                Profesor profesor = (Profesor) empleado;
+        
+                                // Simular disponibilidad aleatoria
+                                boolean disponible = Math.random() > 0.5;
+                                if (profesor.tieneEspecializacion(areaSeleccionada) && disponible) {
+                                    calificador = profesor;
+                                    break;
+                                }
+                            }
+                        }
+        
+                        if (calificador != null) {
+                            customPrint("Profesor calificador asignado: " + calificador.getNombre(), "green");
+                            wait(1500);
+                            // Evaluación y retroalimentación
+                            double calificacion = Math.random() * 5; // Generar calificación aleatoria
+                            customPrint("El profesor calificó el desempeño del actor con un: " + calificacion, "yellow");
+        
+                            if (calificacion == 5) {
+                                // Reembolso del costo de la clase al artista
+                                boolean reembolso = tesoreria.getCuenta().transferencia(actor.getCuenta(), costoClase);
+                                if (reembolso) {
+                                    customPrint("¡Felicitaciones! La calificación perfecta de 5 ha activado un reembolso. Se han reembolsado $" 
+                                        + costoClase + " a la cuenta del artista.", "green");
+                                } else {
+                                    customPrint("Error: No se pudo procesar el reembolso. Por favor, contacte al administrador.", "red");
+                                }
+                            }
+        
+                            // Verificar si hubo mejora
+                            if (!actor.huboMejora(areaSeleccionada)) {
+                                wait(1000);
+                                customPrint("No hubo mejora en el desempeño. Se programará una nueva clase en el área deficiente...", "red"); 
+                                wait(2000);
+                                customPrint("Tenga en cuenta que el horario de clases inicia a las 10 am y terminan a las 10 pm.\n" + "Las clases tienen como duración mínima 2 horas y máxima 4 horas.", "blue");
+                                
+                                LocalDateTime nuevoInicio = null;
+                                LocalDateTime nuevoFin = null;
+                                while (true) {
+                                    LocalDateTime[] clasesNuevas = setSchedule(preguntaClase, horaMin, horaMax, 2, 4, true, advertencia);
+                                    nuevoInicio = clasesNuevas[0];
+                                    nuevoFin = clasesNuevas[1];
+                                    if (nuevoInicio.isAfter(fin)) {
+                                        break;
+                                    }
+                                    customPrint("Es imposbile que una clase se programe antes de otra que ya sucedió.");
                                 }
         
-                                areas2.append(linea2).append("\n"); // Agregar la línea con salto
-                            }
-                            customPrint(areas2.toString());
+                                // Buscar una sala disponible para el nuevo horario
+                                Sala nuevaSala = null;
+                                for (Sala sala : Sala.getSalas()) {
+                                    if (sala.getAseado() && sala.isDisponible(nuevoInicio, nuevoFin)) {
+                                        nuevaSala = sala;
+                                        break;
+                                    }
+                                }
         
-                            byte[] opcionesAptitudes = new byte[actor.getAptitudes().size()];
-                            for (byte i = 0; i < opcionesAptitudes.length; i++) {
-                                opcionesAptitudes[i] = (byte) (i + 1);
+                                if (nuevaSala == null) {
+                                    customPrint("No hay salas disponibles en el nuevo horario deseado o no están limpias.", "red");
+                                    return;
+                                }
+        
+                                customPrint("Sala asignada para la nueva clase: " + nuevaSala.getNumeroSala());
+                                nuevaSala.anadirHorario(new ArrayList<>(List.of(nuevoInicio, nuevoFin)));
+        
+                                // Reasignar profesor capacitado
+                                Profesor nuevoProfesor = null;
+                                for (Empleado empleado : Empleado.getTipoProfesor()) {
+                                    if (empleado instanceof Profesor) {
+                                        Profesor profesor = (Profesor) empleado;
+        
+                                        // Simular disponibilidad aleatoria
+                                        boolean disponible = Math.random() > 0.5;
+                                        if (profesor.tieneEspecializacion(areaSeleccionada) && disponible) {
+                                            nuevoProfesor = profesor;
+                                            break;
+                                        }
+                                    }
+                                }
+        
+                                if (nuevoProfesor == null) {
+                                    customPrint("No hay profesores disponibles para la nueva clase en el área seleccionada.", "red");
+                                    return;
+                                }
+        
+                                customPrint("Nuevo profesor asignado: " + nuevoProfesor.getNombre(), "green");
+                                customPrint("Clase reprogramada exitosamente con el profesor " + nuevoProfesor.getNombre() 
+                                    + " en la sala " + nuevaSala.getNumeroSala() + ".", "green");
                             }
-                            
-                            byte opcion = ask("Ingrese el número del área deseada", opcionesAptitudes, "");
-                            areaSeleccionada = actor.getAptitudes().get(opcion - 1);
+                        } else {
+                            customPrint("No hay profesores disponibles para calificar la próxima función.", "red");
                         }
-                        else {
-                            customPrint("Finalizando gestión de clases.", "blue");
-                            return;
+                        // Verificar si el actor debe bajar de nivel en el área seleccionada
+                        if (actor.noHaMejoradoEnCuatroIntentos(areaSeleccionada)) {
+                            customPrint("El actor no ha mostrado mejora en el área '" + areaSeleccionada 
+                                + "' después de cuatro clases. Reduciendo el nivel en esta área...", "red");
+        
+                            double nuevaCalificacion = Math.max(0, actor.getCalificacionPorAptitud(areaSeleccionada) - 1);
+                            actor.registrarCalificacion(areaSeleccionada, nuevaCalificacion); // Registrar la nueva calificación en el historial
+                            customPrint("Nuevo nivel del área '" + areaSeleccionada + "': " + nuevaCalificacion, "yellow");
                         }
+        
+                        // Asignar puntos al profesor en función del nivel de la clase
+                        int puntosPositivos = 0;
+        
+                        switch (nivelClase) {
+                            case "Introducción":
+                                puntosPositivos = 1;
+                                break;
+                            case "Profundización":
+                                puntosPositivos = 2;
+                                break;
+                            case "Perfeccionamiento":
+                                puntosPositivos = 3;
+                                break;
+                        }
+        
+                        profesorAsignado.agregarPuntos(puntosPositivos);
+                        customPrint("El profesor " + profesorAsignado.getNombre() + " ha recibido " 
+                        + puntosPositivos + " puntos positivos. Total acumulado: " + profesorAsignado.getPuntosPositivos() + ".", "blue");
+                    }else {
+                        customPrint("El actor cuenta con saldo insuficiente para pagar la clases");
+                    }                    
+                    return;
+                } else {
+                    byte respuesta1 = ask("¿Desea programar otra clase?\n1. Sí\n2. No", dos, "");
+                    if (respuesta1 == 1){
+                    // Permitir al usuario elegir cualquier aptitud
+                    StringBuilder areas2 = new StringBuilder();
+                        customPrint("Seleccione un área para programar una clase:");
+                        for (int i = 0; i < actor.getAptitudes().size(); i++) {
+                            Aptitud aptitud = actor.getAptitudes().get(i);
+    
+                            String linea2 = (i+1) + "." + aptitud;
+    
+                            // Verificar si agregar esta línea excede el límite de caracteres; si no, agregar nueva línea
+                            if (linea2.length() > LARGO_LINEAS) {
+                                linea2 = linea2.substring(0, LARGO_LINEAS - 3) + "..."; // Truncar si es necesario
+                            }
+    
+                            areas2.append(linea2).append("\n"); // Agregar la línea con salto
+                        }
+                        customPrint(areas2.toString());
+    
+                        byte[] opcionesAptitudes = new byte[actor.getAptitudes().size()];
+                        for (byte i = 0; i < opcionesAptitudes.length; i++) {
+                            opcionesAptitudes[i] = (byte) (i + 1);
+                        }
+                        
+                        byte opcion = ask("Ingrese el número del área deseada", opcionesAptitudes, "");
+                        areaSeleccionada = actor.getAptitudes().get(opcion - 1);
                     }
+                    else {
+                        customPrint("Finalizando gestión de clases.", "blue");
+                    }
+                }
                 
                 // Determinar el nivel de la clase
                 double calificacionActual = actor.getCalificacionPorAptitud(areaSeleccionada);
@@ -3335,16 +3485,16 @@ public class Main {
                 customPrint("Se seleccionó el área '" + areaSeleccionada + "' con nivel de clase: " + nivelClase);
                 wait(1000);
     
-                // Uso del método
-                LocalDateTime inicio = solicitarHorario("inicio");
-                LocalDateTime fin = solicitarHorario("fin");
-    
-                // Validar que la hora de fin sea posterior a la de inicio
-                if (fin.isBefore(inicio)) {
-                    customPrint("El horario de fin debe ser posterior al horario de inicio. Intente nuevamente.", "red");
-                    inicio = solicitarHorario("inicio");
-                    fin = solicitarHorario("fin");
-                }
+                String preguntaClase = "¿Para cuál día quiere programar la clase?\n";
+                String advertencia = "Existe una incompatibilidad del horario con el lineamiento.\n\nRevise si:\n1. El inicio del horario ocurre antes del fin del horario.\n2. Se exceden los límites de horario (muy temprano o muy tarde).\nIntente de nuevo.";
+                LocalTime horaMin = LocalTime.of(10, 0);
+                LocalTime horaMax = LocalTime.of(22, 0); 
+
+                customPrint("Tenga en cuenta que el horario de clases inicia a las 10 am y terminan a las 10 pm.\n" + "Las clases tienen como duración mínima 2 horas y máxima 4 horas.", "blue");
+
+                LocalDateTime[] clases = setSchedule(preguntaClase, horaMin, horaMax, 2, 4, true, advertencia);
+                LocalDateTime inicio = clases[0];
+                LocalDateTime fin = clases[1];
             
                 // Buscar una sala disponible en el horario deseado
                 Sala salaAsignada = null;
@@ -3401,17 +3551,20 @@ public class Main {
                 // Cálculo del costo de matrícula
                 double costoClase = 0;
                 switch (nivelClase) {
-                    case "Introducción": costoClase = 100; break;
-                    case "Profundización": costoClase = 150; break;
-                    case "Perfeccionamiento": costoClase = 180; break;
+                    case "Introducción": costoClase = 50000; break;
+                    case "Profundización": costoClase = 75000; break;
+                    case "Perfeccionamiento": costoClase = 90000; break;
                 }
     
                 customPrint("El costo de la clase es: $" + costoClase, "blue");
     
                 // Procesar el pago desde la cuenta del artista hacia la tesorería
-                boolean si_no = actor.getCuenta().transferencia(tesoreria.getCuenta(), costoClase);
+                boolean si_no = actor.getCuenta().retirar(costoClase);
+
                 if (si_no == true) {
-    
+                    
+                    tesoreria.setTotal(tesoreria.getTotal() + costoClase);
+                    tesoreria.setDineroEnCaja(tesoreria.getDineroEnCaja() + costoClase);
                     // Asignación de calificador para la próxima función
                     Profesor calificador = null;
                     for (Empleado empleado : Empleado.getTipoProfesor()) {
@@ -3446,18 +3599,20 @@ public class Main {
     
                         // Verificar si hubo mejora
                         if (!actor.huboMejora(areaSeleccionada)) {
-                            customPrint("No hubo mejora en el desempeño. Se programará una nueva clase en el área deficiente...", "red");
-    
-                            // Reutilizamos la lógica para programar otra clase
-    
-                            LocalDateTime nuevoInicio = solicitarHorario("inicio");
-                            LocalDateTime nuevoFin = solicitarHorario("fin");
-    
-                            // Validar que el horario de fin sea posterior al de inicio
-                            while (nuevoFin.isBefore(nuevoInicio)) {
-                                customPrint("El horario de fin debe ser posterior al horario de inicio. Intente nuevamente.", "red");
-                                nuevoInicio = solicitarHorario("inicio");
-                                nuevoFin = solicitarHorario("fin");
+                            customPrint("No hubo mejora en el desempeño. Se programará una nueva clase en el área deficiente...", "red"); 
+
+                            customPrint("Tenga en cuenta que el horario de clases inicia a las 10 am y terminan a las 10 pm.\n" + "Las clases tienen como duración mínima 2 horas y máxima 4 horas.", "blue");
+
+                            LocalDateTime nuevoInicio = null;
+                            LocalDateTime nuevoFin = null;
+                            while (true) {
+                                LocalDateTime[] clasesNuevas = setSchedule(preguntaClase, horaMin, horaMax, 2, 4, true, advertencia);
+                                nuevoInicio = clasesNuevas[0];
+                                nuevoFin = clasesNuevas[1];
+                                if (nuevoInicio.isAfter(fin)) {
+                                    break;
+                                }
+                                customPrint("Es imposbile que una clase se programe antes de otra que ya sucedió.");
                             }
     
                             // Buscar una sala disponible para el nuevo horario
