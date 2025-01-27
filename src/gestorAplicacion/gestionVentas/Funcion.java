@@ -23,9 +23,7 @@ public class Funcion {
     static ArrayList <Funcion> funcionesALaVenta= new ArrayList<>();
 
 
-    static{
-        funci_1.prueba();
-    }
+   
 
 
     public String tablaSillas(){
