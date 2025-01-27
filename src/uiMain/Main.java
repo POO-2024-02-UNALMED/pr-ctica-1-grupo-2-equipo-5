@@ -1256,10 +1256,13 @@ public class Main {
         //antes de empezar, remover aquellos actores en condición de reevaluación
         actorsForRental.removeIf(actor -> actor.isReevaluacion());
 
+        //System.out.println(actorsForRental);
+
         //PREGUNTA NO. 1
         byte rolActor = ask("¿Qué tipo de papel desempeñará el actor?\n1. Rol principal.\n 2. Rol secundario.", options, "");
 
         //reservar los de calificacion alta solo para roles principales
+        List<Actor> newAct = new ArrayList<>();
 
         switch (rolActor){
 
@@ -1268,15 +1271,22 @@ public class Main {
                 return;
 
             case 1:
-                actorsForRental.removeIf(actor -> (actor.getCalificacion() - CALIFICACION_ALTA) > 0);
-
+                //actorsForRental.removeIf(actor -> (actor.getCalificacion() <= CALIFICACION_ALTA) );
+                for (int i = 0; i < actorsForRental.size(); i++){
+                    Actor actor = actorsForRental.get(i);
+                    if (actor.getCalificacion() >= CALIFICACION_ALTA){
+                        newAct.add(actor);
+                    }
+                }
+                
             case 2:
-                actorsForRental.removeIf(actor -> actor.getCalificacion() > CALIFICACION_ALTA);
-
-
+                actorsForRental.removeIf(actor -> (actor.getCalificacion() > CALIFICACION_ALTA) );
 
             }
 
+
+        //System.out.println(newAct);
+        actorsForRental = newAct;
         options[3] = 3; options[4] = 4; options[5] = 5; options[6] = 6; options[7] = 7; options[8] = 8;
 
         //PREGUNTA NO. 2
