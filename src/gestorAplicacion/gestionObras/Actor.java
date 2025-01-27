@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-
+import java.io.Serializable;
 import java.text.NumberFormat;
 
 import gestorAplicacion.gestionClases.Clase;
@@ -12,7 +12,7 @@ import gestorAplicacion.gestionFinanciera.CuentaBancaria;
 import gestorAplicacion.herramientas.Aptitud;
 import gestorAplicacion.herramientas.Genero;
 
-public class Actor extends Artista{
+public class Actor extends Artista implements Serializable{
 
     
     private static final long TASA = 1_000_000;

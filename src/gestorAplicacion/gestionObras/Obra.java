@@ -2,6 +2,7 @@ package gestorAplicacion.gestionObras;
 
 import java.util.ArrayList;
 import java.time.LocalDateTime;
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalTime;
 
@@ -9,7 +10,7 @@ import gestorAplicacion.herramientas.*;
 import test.funci_1;
 import gestorAplicacion.gestionVentas.*;
 
-public class Obra {
+public class Obra implements Serializable{
     private int audienciaEsperada;
     private String nombre;
     private float calificacion;

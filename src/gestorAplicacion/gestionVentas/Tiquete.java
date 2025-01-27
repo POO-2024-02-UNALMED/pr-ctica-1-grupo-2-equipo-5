@@ -1,4 +1,5 @@
 package gestorAplicacion.gestionVentas;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import gestorAplicacion.gestionObras.Actor;
 import gestorAplicacion.gestionObras.Obra;
 import gestorAplicacion.herramientas.Asiento;
 
-public class Tiquete {
+public class Tiquete implements Serializable{
     private Float valor;
     private Long id;
     private Cliente cliente;

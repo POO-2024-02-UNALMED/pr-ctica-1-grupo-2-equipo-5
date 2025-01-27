@@ -3,6 +3,7 @@ package gestorAplicacion.gestionVentas;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.time.LocalTime;
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDate;
 
@@ -10,7 +11,7 @@ import gestorAplicacion.gestionObras.*;
 import gestorAplicacion.herramientas.Suscripcion;
 import test.funci_1;
 
-public class Funcion {
+public class Funcion implements Serializable{
     private Obra obra;
     private int tiquetesVendidos;
     private ArrayList<LocalDateTime> horario = new ArrayList<>();

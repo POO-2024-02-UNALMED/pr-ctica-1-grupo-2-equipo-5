@@ -1,6 +1,8 @@
 package gestorAplicacion.gestionFinanciera;
 
-public class Tesoreria {
+import java.io.Serializable;
+
+public class Tesoreria implements Serializable{
     private static double dineroEnCaja;
     private static double metaSemanal;
     private static CuentaBancaria cuenta;

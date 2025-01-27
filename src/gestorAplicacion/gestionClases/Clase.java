@@ -1,5 +1,6 @@
 package gestorAplicacion.gestionClases;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 import gestorAplicacion.gestionObras.Artista;
 import gestorAplicacion.gestionVentas.Sala;
 
-public class Clase{
+public class Clase implements Serializable{
     //private Aptitud area; Por ahora comento esta porque no sé exactamente como usarla
     private Profesor profesor;
     private Artista alumno;

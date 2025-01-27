@@ -1,5 +1,6 @@
 package gestorAplicacion.gestionVentas; 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -14,7 +15,7 @@ import gestorAplicacion.gestionVentas.Funcion;
 import gestorAplicacion.gestionVentas.Tiquete;
 import gestorAplicacion.gestionFinanciera.Tesoreria;
 
-public class Cliente {
+public class Cliente implements Serializable{
     private String obra;
     private Suscripcion suscripcion ;
     private long id;

@@ -11,6 +11,7 @@ public class Serializador {
             memoria.writeObject(Teatro.getInstancia());
             Main.customPrint("Estado del teatro guardado exitosamente", "green");
         } catch (Exception e){
+            System.out.println(e);
             Main.customPrint("Error al guardar el estado del teatro", "red");
         }
     }
