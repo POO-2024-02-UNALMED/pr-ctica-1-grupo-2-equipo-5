@@ -3,6 +3,7 @@ package gestorAplicacion.gestionObras;
 import java.util.ArrayList;
 import java.util.List;
 
+import baseDatos.Teatro;
 import gestorAplicacion.herramientas.*;
 
 public class Director extends Artista{
@@ -12,8 +13,8 @@ public class Director extends Artista{
 
     public Director(String nombre, long id){
         super(nombre, id);
-        directors.add(this);
-        getArtistas().add(this);
+        Teatro.getInstancia().getDirectors().add(this);
+        Teatro.getInstancia().getArtistas().add(this); 
     }
 
     public Director(String nombre, long id, Genero genero){

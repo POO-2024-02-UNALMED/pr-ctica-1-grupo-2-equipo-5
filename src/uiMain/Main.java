@@ -3069,18 +3069,18 @@ public class Main {
         customPrint("Bienvenido a la gestión de clases.", "blue");
         wait(2000);
 
-        if (Artista.getArtistas().size() != 0) {
+        if (Teatro.getInstancia().getArtistas().size() != 0) {
             customPrint("Estos son los artistas que ya existen en nuestra base de datos");
             StringBuilder artistas = new StringBuilder();
-            for (Artista artista : Artista.getArtistas()) {
-                if (Actor.getActors().contains(artista)) {
+            for (Artista artista : Teatro.getInstancia().getArtistas()) {
+                if (Teatro.getInstancia().getActores().contains(artista)) {
                     String lineaArtista = "- Actor " + artista.getNombre() + " con ID " + artista.getId(); 
                     if (lineaArtista.length() > LARGO_LINEAS) {
                         lineaArtista = lineaArtista.substring(0, LARGO_LINEAS - 3) + "..."; // Truncar si es necesario
                     }
                     artistas.append(lineaArtista).append("\n");
                 }
-                if (Director.getDirectors().contains(artista)) {
+                if (Teatro.getInstancia().getDirectors().contains(artista)) {
                     String lineaArtista = "- Director " + artista.getNombre() + " con ID " + artista.getId(); 
                     if (lineaArtista.length() > LARGO_LINEAS) {
                         lineaArtista = lineaArtista.substring(0, LARGO_LINEAS - 3) + "..."; // Truncar si es necesario
@@ -3089,8 +3089,9 @@ public class Main {
                 }
             }
             customPrint(artistas.toString());
+            wait(3500);
         }
-        wait(3500);
+        
         long idArtista = longAsk("Ingrese el ID del artista del cual desea conocer su información:\n" + "\n" + "(Puede escribir el ID de un actor o Director que no exista para inicializarlo)");
         Artista artista = Artista.buscarArtistaPorId(idArtista);
     
@@ -3171,14 +3172,14 @@ public class Main {
                 wait(2000);
     
                 // Llamar al método casting() para inicializar calificaciones de calificadores
-                boolean resultado = Empleado.casting(artista, Empleado.getTipoProfesor());
+                boolean resultado = Empleado.casting(artista, Teatro.getInstancia().getTipoProfesor());
                 if (resultado == false){
                     customPrint("No hay profesores disponibles para inicializar las calificaciones del actor", "red");
                 }
                 else if(resultado == true) {
                     
                     // Seleccionar un profesor aleatorio
-                    Profesor profesorAsignado = (Profesor) Empleado.getTipoProfesor().get((int) (Math.random() * Empleado.getTipoProfesor().size()));
+                    Profesor profesorAsignado = (Profesor) Teatro.getInstancia().getTipoProfesor().get((int) (Math.random() * Empleado.getTipoProfesor().size()));
                     
                     // Mostrar quién inicializó las calificaciones
                     customPrint("El/la profesor/a " + profesorAsignado.getNombre() + " es el/la responsable de inicializar las calificaciones\n" + "del actor " + artista.getNombre() + ".");
@@ -3312,7 +3313,7 @@ public class Main {
                 
                     // Buscar una sala disponible en el horario deseado
                     Sala salaAsignada = null;
-                    for (Sala sala : Sala.getSalas()) {
+                    for (Sala sala : Teatro.getInstancia().getSalas()) {
                         if (sala.getAseado() && sala.isDisponible(inicio, fin)) {
                             salaAsignada = sala;
                             break;
@@ -3334,7 +3335,7 @@ public class Main {
                 
                     // Buscar un profesor capacitado y disponible (aleatoriamente)
                     Profesor profesorAsignado = null;
-                    for (Empleado empleado : Empleado.getTipoProfesor()) {
+                    for (Empleado empleado : Teatro.getInstancia().getTipoProfesor()) {
                         if (empleado instanceof Profesor) {
                             Profesor profesor = (Profesor) empleado;
                 
@@ -3376,8 +3377,8 @@ public class Main {
     
                     if (si_no == true) {
                         
-                        tesoreria.setTotal(tesoreria.getTotal() + costoClase);
-                        tesoreria.setDineroEnCaja(tesoreria.getDineroEnCaja() + costoClase);
+                        Teatro.getInstancia().getTesoreria().setTotal(Teatro.getInstancia().getTesoreria().getTotal() + costoClase);
+                        Teatro.getInstancia().getTesoreria().setDineroEnCaja(Teatro.getInstancia().getTesoreria().getDineroEnCaja() + costoClase);
                         // Asignación de calificador para la próxima función
                         Profesor calificador = null;
                         for (Empleado empleado : Empleado.getTipoProfesor()) {
@@ -3402,7 +3403,7 @@ public class Main {
         
                             if (calificacion == 5) {
                                 // Reembolso del costo de la clase al artista
-                                boolean reembolso = tesoreria.getCuenta().transferencia(actor.getCuenta(), costoClase);
+                                boolean reembolso = Teatro.getInstancia().getTesoreria().getCuenta().transferencia(actor.getCuenta(), costoClase);
                                 if (reembolso) {
                                     customPrint("¡Felicitaciones! La calificación perfecta de 5 ha activado un reembolso. Se han reembolsado $" 
                                         + costoClase + " a la cuenta del artista.", "green");
@@ -3432,7 +3433,7 @@ public class Main {
         
                                 // Buscar una sala disponible para el nuevo horario
                                 Sala nuevaSala = null;
-                                for (Sala sala : Sala.getSalas()) {
+                                for (Sala sala : Teatro.getInstancia().getSalas()) {
                                     if (sala.getAseado() && sala.isDisponible(nuevoInicio, nuevoFin)) {
                                         nuevaSala = sala;
                                         break;
@@ -3449,7 +3450,7 @@ public class Main {
         
                                 // Reasignar profesor capacitado
                                 Profesor nuevoProfesor = null;
-                                for (Empleado empleado : Empleado.getTipoProfesor()) {
+                                for (Empleado empleado : Teatro.getInstancia().getTipoProfesor()) {
                                     if (empleado instanceof Profesor) {
                                         Profesor profesor = (Profesor) empleado;
         
@@ -3566,7 +3567,7 @@ public class Main {
             
                 // Buscar una sala disponible en el horario deseado
                 Sala salaAsignada = null;
-                for (Sala sala : Sala.getSalas()) {
+                for (Sala sala : Teatro.getInstancia().getSalas()) {
                     if (sala.getAseado() && sala.isDisponible(inicio, fin)) {
                         salaAsignada = sala;
                         break;
@@ -3588,7 +3589,7 @@ public class Main {
             
                 // Buscar un profesor capacitado y disponible (aleatoriamente)
                 Profesor profesorAsignado = null;
-                for (Empleado empleado : Empleado.getTipoProfesor()) {
+                for (Empleado empleado : Teatro.getInstancia().getTipoProfesor()) {
                     if (empleado instanceof Profesor) {
                         Profesor profesor = (Profesor) empleado;
             
@@ -3631,11 +3632,11 @@ public class Main {
 
                 if (si_no == true) {
                     
-                    tesoreria.setTotal(tesoreria.getTotal() + costoClase);
-                    tesoreria.setDineroEnCaja(tesoreria.getDineroEnCaja() + costoClase);
+                    Teatro.getInstancia().getTesoreria().setTotal(Teatro.getInstancia().getTesoreria().getTotal() + costoClase);
+                    Teatro.getInstancia().getTesoreria().setDineroEnCaja(Teatro.getInstancia().getTesoreria().getDineroEnCaja() + costoClase);
                     // Asignación de calificador para la próxima función
                     Profesor calificador = null;
-                    for (Empleado empleado : Empleado.getTipoProfesor()) {
+                    for (Empleado empleado : Teatro.getInstancia().getTipoProfesor()) {
                         if (empleado instanceof Profesor) {
                             Profesor profesor = (Profesor) empleado;
     
@@ -3656,7 +3657,7 @@ public class Main {
     
                         if (calificacion == 5) {
                             // Reembolso del costo de la clase al artista
-                            boolean reembolso = tesoreria.getCuenta().transferencia(actor.getCuenta(), costoClase);
+                            boolean reembolso = Teatro.getInstancia().getTesoreria().getCuenta().transferencia(actor.getCuenta(), costoClase);
                             if (reembolso) {
                                 customPrint("¡Felicitaciones! La calificación perfecta de 5 ha activado un reembolso. Se han reembolsado $" 
                                     + costoClase + " a la cuenta del artista.", "green");
@@ -3685,7 +3686,7 @@ public class Main {
     
                             // Buscar una sala disponible para el nuevo horario
                             Sala nuevaSala = null;
-                            for (Sala sala : Sala.getSalas()) {
+                            for (Sala sala : Teatro.getInstancia().getSalas()) {
                                 if (sala.getAseado() && sala.isDisponible(nuevoInicio, nuevoFin)) {
                                     nuevaSala = sala;
                                     break;
@@ -3702,7 +3703,7 @@ public class Main {
     
                             // Reasignar profesor capacitado
                             Profesor nuevoProfesor = null;
-                            for (Empleado empleado : Empleado.getTipoProfesor()) {
+                            for (Empleado empleado : Teatro.getInstancia().getTipoProfesor()) {
                                 if (empleado instanceof Profesor) {
                                     Profesor profesor = (Profesor) empleado;
     

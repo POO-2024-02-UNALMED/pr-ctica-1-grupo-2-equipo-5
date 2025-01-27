@@ -3,6 +3,8 @@ package gestorAplicacion.gestionObras;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+
+import baseDatos.Teatro;
 import gestorAplicacion.gestionClases.Clase;
 import gestorAplicacion.gestionFinanciera.CuentaBancaria;
 
@@ -155,7 +157,7 @@ public abstract class Artista implements Serializable{
     }
 
     public static Artista buscarArtistaPorId(long id) {
-        for (Artista artista : Artista.getArtistas()) {
+        for (Artista artista : Teatro.getInstancia().getArtistas()) {
             if (artista.getId() == id) {
                 return artista; // Retorna el artista si coincide el ID
             }

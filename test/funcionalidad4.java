@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import baseDatos.Deserializador;
+import baseDatos.Teatro;
 
 public class funcionalidad4 {
     public static void main(String[] args) throws InterruptedException {
@@ -69,8 +70,8 @@ public class funcionalidad4 {
 
         actor2.getCuenta().ingresar(100000);
         
-        Empleado.getTipoProfesor().add(0,profesor1);
-        Empleado.getTipoProfesor().add(profesor2);
+        Teatro.getInstancia().getTipoProfesor().add(0,profesor1);
+        Teatro.getInstancia().getTipoProfesor().add(profesor2);
 
 
 
