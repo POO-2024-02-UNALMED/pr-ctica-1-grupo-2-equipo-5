@@ -46,18 +46,18 @@ public class Tesoreria implements Serializable{
         return dineroEnCaja;
     }
     public void setDineroEnCaja(double newDinero) {
-        dineroEnCaja = newDinero;
-    }
-    public double getMetaTotal() {
-        return metaSemanal;
-    }
-    public void setMetaTotal(Float metaTotal) {
-        metaSemanal = metaTotal;
+        Tesoreria.dineroEnCaja = newDinero;
     }
     public double getTotal() {
         return total;
     }
     public void setTotal(double total) {
         this.total = total;
+    }
+    public static double getMetaSemanal() {
+        return metaSemanal;
+    }
+    public static void setMetaSemanal(double metaSemanal) {
+        Tesoreria.metaSemanal = metaSemanal;
     }
 }
