@@ -3353,6 +3353,7 @@ public class Main {
                 
                     customPrint("Profesor asignado: " + profesorAsignado.getNombre());
                     wait(2000);
+                                
                 
                     // Clase programada exitosamente
                     customPrint("Clase programada exitosamente en el área '" + areaSeleccionada + "' con el profesor '" 
@@ -3615,7 +3616,7 @@ public class Main {
     
     
                 // Cálculo del costo de matrícula
-                double costoClase = 0;
+                int costoClase = 0;
                 switch (nivelClase) {
                     case "Introducción": costoClase = 50000; break;
                     case "Profundización": costoClase = 75000; break;

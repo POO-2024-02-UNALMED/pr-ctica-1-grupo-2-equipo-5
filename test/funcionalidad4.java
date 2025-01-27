@@ -7,6 +7,7 @@ import gestorAplicacion.gestionObras.Obra;
 import gestorAplicacion.herramientas.Aptitud;
 import gestorAplicacion.herramientas.Genero;
 import gestorAplicacion.gestionClases.Profesor;
+import gestorAplicacion.gestionFinanciera.Empleado;
 import uiMain.Main;
 
 import java.io.File;
@@ -60,13 +61,15 @@ public class funcionalidad4 {
 
         Profesor profesor1 = new Profesor("Raúl Gómez", 1010131, aptitudesProfesor1);
         Profesor profesor2 = new Profesor("María López", 1011, aptitudesProfesor2);
-        Profesor.getTipoProfesor().add(profesor1);
-        Profesor.getTipoProfesor().add(profesor2);
         
         // Crear artistas (actores y un director)
         Artista actor1 = new Actor("Carlos Moreno", 12);
         Artista actor2 = new Actor("Ana Pérez", 11);
         Artista director1 = new Director("Luis Herrera", 22);
+        
+        Empleado.getTipoProfesor().add(0,profesor1);
+        Empleado.getTipoProfesor().add(profesor2);
+
 
         
         ((Actor) actor2).setCalificacionPorAptitud(Aptitud.BAILE, 3.0);
