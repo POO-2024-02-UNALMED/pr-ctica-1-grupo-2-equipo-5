@@ -28,9 +28,11 @@ public class Funcion {
 
     public ArrayList<Funcion> actualizarFuncionesVenta(ArrayList<Funcion> funcionesCreadas){
         ArrayList<Funcion> funcionesALaVenta = new ArrayList<>();
-        for (Funcion funcion : funcionesCreadas){
+        if (funcionesCreadas.isEmpty()){
+            for (Funcion funcion : funcionesCreadas){
             if (funcion.getHorario().get(0).isAfter(LocalDateTime.now())){
                 funcionesALaVenta.add(funcion);
+            }
             }
         }
         return funcionesALaVenta;
