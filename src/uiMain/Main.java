@@ -51,6 +51,13 @@ public class Main {
         return answer;
     }
 
+    public static void wait(int millis){
+        try {
+            Thread.sleep(millis);
+        } catch (Exception e) {}
+
+    }
+
     public static boolean canBeTime(String time){ //formato HH:MM
         try{
             LocalTime hour = LocalTime.parse(time);
@@ -304,7 +311,7 @@ public class Main {
         System.out.println(chosenColor + "└" + "─".repeat(LARGO_LINEAS ) + "┘" + reset);
     }
 
-    public static LocalDateTime[] setSchedule(String pregunta, LocalTime horaMin, LocalTime horaMax, int duracionMinHoras, int duracionMaxHoras, boolean date){
+    public static LocalDateTime[] setSchedule(String pregunta, LocalTime horaMin, LocalTime horaMax, int duracionMinHoras, int duracionMaxHoras, boolean date, String advertenciaHorarioincompatible){
 
         String preguntaCompleta = pregunta;
         LocalTime inicioHorario = null;
@@ -333,12 +340,12 @@ public class Main {
         }
 
         while(true){
-            inicioHorario = timeAsk("Introduzca horario de inicio de la contratación (Responda en formato HH:MM).");
-            finHorario = timeAsk("Introduzca horario de fin de la contratación (Responda en formato HH:MM).");
+            inicioHorario = timeAsk("Introduzca horario de inicio (Responda en formato HH:MM).");
+            finHorario = timeAsk("Introduzca horario de fin (Responda en formato HH:MM).");
 
 
-            if ( inicioHorario.isBefore(horaMin) || finHorario.isAfter(horaMax) || finHorario.isBefore(inicioHorario) ){
-                customPrint("Existe una incompatibilidad del horario con el lineamiento.\n\nRevise si:\n1. El inicio del horario ocurre antes del fin del horario.\n2. Se exceden los límites de horario (muy temprano o muy tarde).\nIntente de nuevo.", true, "red");
+            if (inicioHorario.isBefore(horaMin) || finHorario.isAfter(horaMax) || finHorario.isBefore(inicioHorario) ){
+                customPrint(advertenciaHorarioincompatible, true, "red");
                 continue;
             }
 
@@ -357,12 +364,12 @@ public class Main {
             long duracionHorario = duration.toHours();
 
             if (duracionHorario < duracionMinHoras){
-                customPrint("El tiempo mínimo de contratación es de 4 horas.", true, "red"); 
+                customPrint("El tiempo mínimo es de " + duracionMinHoras + " horas.", true, "red"); 
                 continue;
             }
 
             if (duracionHorario > duracionMaxHoras){
-                customPrint("El tiempo máximo de contratación es de 8 horas.", true, "red");
+                customPrint("El tiempo máximo es de " + duracionMaxHoras + " horas.", true, "red");
                 continue;
             }
 
@@ -1074,7 +1081,7 @@ public class Main {
 
     public static void ContratarActor(){
 
-    byte[] two = {1, 2};
+    byte[] two = {0, 1, 2};
     byte menuLog = ask("Seleccione:\n1. Empresa registrada.\n2. Empresa nueva.", two, "");
     byte ACTORES_POR_PAGINA = 5;
 
@@ -1084,8 +1091,18 @@ public class Main {
     menuSwitch:
     switch (menuLog){
 
+        case 0:
+        customPrint("Saliendo...", "red");
+        return;
+
         case 1:
         long idEntrada = longAsk("Ingrese el número de identificación.");
+
+        if (idEntrada == 0){
+            customPrint("Saliendo...", "red");
+            return;
+        }
+
         boolean idFlag = false;
         
         for (Cliente cliente : Cliente.clientes){
@@ -1107,17 +1124,32 @@ public class Main {
         case 2:
 
         long newId = longAsk("Genere un nuevo número de identificación.");
+
+        if (newId == 0){
+            customPrint("Saliendo...", "red");
+            return;
+        }
         
         for (Cliente cliente : Cliente.clientes){
             while (cliente.getId() == newId){
                 customPrint("Esta identificación ya existe en la base de datos, intente con una diferente.", true, "red");
                 newId = longAsk("Genere un nuevo número de identificación.");
+
+                if (newId == 0){
+                    customPrint("Saliendo...", "red");
+                    return;
+                }
             }
         }
 
         while (newId <= 0){
             customPrint("La identificación debe ser un número entero positivo.", true, "red");
             newId = longAsk("Genere un nuevo número de identificación.");
+
+            if (newId == 0){
+                customPrint("Saliendo...", "red");
+                return;
+            }
         }
 
         empresa = new Cliente("Empresa", newId);
@@ -1129,8 +1161,8 @@ public class Main {
         List<Actor> actorsForRental = new ArrayList<>(Actor.getActors());
 
         //primera ronda de preguntas
-        byte[] options = new byte[8];
-        options[0] = 1; options[1] = 2;
+        byte[] options = new byte[9];
+        options[0] = 0; options[1] = 1;
         
         //antes de empezar, remover aquellos actores en condición de reevaluación
         actorsForRental.removeIf(actor -> actor.isReevaluacion());
@@ -1139,12 +1171,24 @@ public class Main {
         byte rolActor = ask("¿Qué tipo de papel desempeñará el actor?\n1. Rol principal.\n 2. Rol secundario.", options, "");
 
         //reservar los de calificacion alta solo para roles principales
-        if (rolActor == 1){ 
-            actorsForRental.removeIf(actor -> actor.getCalificacion() < CALIFICACION_ALTA); 
-        } else {
-            actorsForRental.removeIf(actor -> actor.getCalificacion() > CALIFICACION_ALTA);}
 
-        options[2] = 3; options[3] = 4; options[4] = 5; options[5] = 6; options[6] = 7; options[7] = 8;
+        switch (rolActor){
+
+            case 0:
+                customPrint("Saliendo...", "red");
+                return;
+
+            case 1:
+                actorsForRental.removeIf(actor -> actor.getCalificacion() < CALIFICACION_ALTA);
+
+            case 2:
+                actorsForRental.removeIf(actor -> actor.getCalificacion() > CALIFICACION_ALTA);
+
+
+
+            }
+
+        options[2] = 2; options[3] = 3; options[4] = 4; options[5] = 5; options[6] = 6; options[7] = 7; options[8] = 8;
 
         //PREGUNTA NO. 2
         byte tipoObra = ask("¿Qué tipo de obra es?\n1. Circo.\n2. Comedia.\n3. Drama.\n4. Experimental.\n5. Fantasía.\n6. Musical.\n7. Romance.\n8. Terror.", options, "");
@@ -1152,64 +1196,72 @@ public class Main {
         //que se borren los actores que no tengan el género buscado en sus atributos
         switch(tipoObra){
 
+            case 0:
+                customPrint("Saliendo...", "red");
+                return;
+
             case 1:
-            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.CIRCO));
-            break;
+                actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.CIRCO));
+                break;
 
             case 2:
-            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.COMEDIA));
-            break;
+                actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.COMEDIA));
+                break;
 
             case 3:
-            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.DRAMA));
-            break;
+                actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.DRAMA));
+                break;
 
             case 4:
-            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.EXPERIMENTAL));
-            break;
+                actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.EXPERIMENTAL));
+                break;
 
             case 5:
-            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.FANTASIA));
-            break;
+                actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.FANTASIA));
+                break;
 
             case 6:
-            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.MUSICAL));
-            break;
+                actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.MUSICAL));
+                break;
 
             case 7:
-            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.ROMANCE));
-            break;
+                actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.ROMANCE));
+                break;
 
             case 8:
-            actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.TERROR));
-            break;
+                actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.TERROR));
+                break;
         }
 
-        byte[] five = {1, 2, 3, 4, 5};
+        byte[] five = {0, 1, 2, 3, 4, 5};
         byte aptitud = ask("¿En qué aptitud debería sobresalir el actor?\n1. Canto.\n2. Baile.\n3. Discurso.\n4. Emocionalidad\n5. Improvisación.", five, "");
         byte CALIFICACION_APTITUD_ALTA = 4;
 
         switch (aptitud){
 
+            case 0:
+                customPrint("Saliendo...", "red");
+                return;
+
             case 1:
-            actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.CANTO) < CALIFICACION_APTITUD_ALTA);
-            break;
+                actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.CANTO) < CALIFICACION_APTITUD_ALTA);
+                break;
 
             case 2:
-            actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.BAILE) < CALIFICACION_APTITUD_ALTA);
-            break;
+                actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.BAILE) < CALIFICACION_APTITUD_ALTA);
+                break;
 
             case 3:
-            actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.DISCURSO) < CALIFICACION_APTITUD_ALTA);
-            break;
+                actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.DISCURSO) < CALIFICACION_APTITUD_ALTA);
+                break;
             
             case 4:
-            actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.EMOCIONALIDAD) < CALIFICACION_APTITUD_ALTA);
-            break;
+                actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.EMOCIONALIDAD) < CALIFICACION_APTITUD_ALTA);
+                break;
 
             case 5:
-            actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.IMPROVISACION) < CALIFICACION_APTITUD_ALTA);
-            break;
+                actorsForRental.removeIf(actor -> actor.getCalificacionPorAptitud(Aptitud.IMPROVISACION) < CALIFICACION_APTITUD_ALTA);
+                break;
 
         }  
 
@@ -1217,8 +1269,9 @@ public class Main {
         String diasCadena = "¿Para qué día se necesita la contratación?\n";
         LocalTime horaMin = LocalTime.of(8, 0);
         LocalTime horaMax = LocalTime.of(22, 0); 
-        
-        LocalDateTime[] horario = setSchedule(diasCadena, horaMin, horaMax, 4, 8, true);
+        String advertencia5 = "Existe una incompatibilidad del horario con el lineamiento.\n\nRevise si:\n1. El inicio del horario ocurre antes del fin del horario.\n2. Se exceden los límites de horario (muy temprano o muy tarde).\nIntente de nuevo.";
+
+        LocalDateTime[] horario = setSchedule(diasCadena, horaMin, horaMax, 4, 8, true, advertencia5);
 
         LocalDateTime fechaInicio = horario[0];
         LocalDateTime fechaFin = horario[1]; 
@@ -1258,90 +1311,104 @@ public class Main {
         //búsqueda avanzada
         byte advancedSearch = ask("¿Se desea hacer búsqueda avanzada? (incluye filtros por edad y sexo).\n1. Sí.\n2. No.", two, "blue");
 
-        if (advancedSearch == 1){
+        switch (advancedSearch){
 
-            List<ArrayList> contadores = new ArrayList<>();
-
-            for (Actor actor : actorsForRental){
-                ArrayList<Object> contador = new ArrayList<>();
-                contador.add(actor);
-                contador.add(0);
-                contadores.add(contador);
-            }
-
-            byte edad = ask("¿Qué tipo de edad se busca?\n1. Infantil\n2. Juvenil.\n3. Adulto.\n4. Adulto mayor", options, "");
-
-            switch (edad){
-
-                case 1: //infantil
-                actorsForRental.removeIf(actor -> actor.getEdad() >= 15);
-                break;
-
-                case 2: //juvenil
-                actorsForRental.removeIf(actor -> actor.getEdad() < 15);
-                actorsForRental.removeIf(actor -> actor.getEdad() >= 24);
-                break;
-
-                case 3: //adulto
-                actorsForRental.removeIf(actor -> actor.getEdad() < 24 );
-                actorsForRental.removeIf(actor -> actor.getEdad() >= 70);
-                break;
-
-                case 4: //adulto mayor
-                actorsForRental.removeIf(actor -> actor.getEdad() < 70);
-                break;
-            }
-
-            for (ArrayList contador : contadores){
-
-                if (isIn(actorsForRental, (Actor)contador.get(0))){ 
-                    
-                    int newVal = ((Integer)contador.get(1)) + 1;
-
-                    contador.set(1, newVal); 
-                
-                }
-
-            }
-
-
-            byte sexo = ask("¿Qué sexo debe tener el actor?\n1. Masculino.\n2. Femenino.", two, "");
-
-            if (sexo == 1){ //si es masculino, remueve el sexo femenino y viceversa
-                actorsForRental.removeIf(actor -> actor.getSexo() == 'F');
-            } else {
-                actorsForRental.removeIf(actor -> actor.getSexo() == 'M');
-            }
-
-            for (ArrayList contador : contadores){
-
-                if (isIn(actorsForRental, (Actor)contador.get(0))){ 
-                    
-                    int newVal = ((Integer)contador.get(1)) + 1;
-
-                    contador.set(1, newVal); 
-                
-                }
-
-            }
-
-            contadores.removeIf(contador -> ((Integer)contador.get(1)) < 2);
-
-            if (contadores.size() == 0){
-                customPrint("No se encontraron actores que se ajusten bien a las características.", true, "red"); return;}
-
-            List<Actor> advancedList = new ArrayList<Actor>();
-
-            for (ArrayList contador : contadores){
-                advancedList.add( (Actor)contador.get(0));
-            }
+            case 0:
+                customPrint("Saliendo", "red");
+                return;
             
-            actorsForRental = advancedList;
-            advancedList = null;
-            
-            customPrint(actorsForRental.size() + " actor/es se ajustaron a dos o más características avanzadas.", true, "green");
+            case 1:
 
-            }
+                List<ArrayList> contadores = new ArrayList<>();
+    
+                for (Actor actor : actorsForRental){
+                    ArrayList<Object> contador = new ArrayList<>();
+                    contador.add(actor);
+                    contador.add(0);
+                    contadores.add(contador);
+                }
+    
+                byte edad = ask("¿Qué tipo de edad se busca?\n1. Infantil\n2. Juvenil.\n3. Adulto.\n4. Adulto mayor", options, "");
+    
+                switch (edad){
+
+                    case 0:
+                        customPrint("Saliendo...", "red");
+                        return;
+    
+                    case 1: //infantil
+                        actorsForRental.removeIf(actor -> actor.getEdad() >= 15);
+                        break;
+    
+                    case 2: //juvenil
+                        actorsForRental.removeIf(actor -> actor.getEdad() < 15);
+                        actorsForRental.removeIf(actor -> actor.getEdad() >= 24);
+                        break;
+    
+                    case 3: //adulto
+                        actorsForRental.removeIf(actor -> actor.getEdad() < 24 );
+                        actorsForRental.removeIf(actor -> actor.getEdad() >= 70);
+                        break;
+    
+                    case 4: //adulto mayor
+                        actorsForRental.removeIf(actor -> actor.getEdad() < 70);
+                        break;
+                }
+    
+                for (ArrayList contador : contadores){
+    
+                    if (isIn(actorsForRental, (Actor)contador.get(0))){ 
+                        
+                        int newVal = ((Integer)contador.get(1)) + 1;
+    
+                        contador.set(1, newVal); 
+                    
+                    }
+    
+                }
+    
+    
+                byte sexo = ask("¿Qué sexo debe tener el actor?\n1. Masculino.\n2. Femenino.", two, "");
+    
+                if (sexo == 1){ //si es masculino, remueve el sexo femenino y viceversa
+                    actorsForRental.removeIf(actor -> actor.getSexo() == 'F');
+                } else if (sexo == 2){
+                    actorsForRental.removeIf(actor -> actor.getSexo() == 'M');
+                } else{
+
+                    customPrint("Saliendo...", "red");
+                    return;
+
+                }
+    
+                for (ArrayList contador : contadores){
+    
+                    if (isIn(actorsForRental, (Actor)contador.get(0))){ 
+                        
+                        int newVal = ((Integer)contador.get(1)) + 1;
+    
+                        contador.set(1, newVal); 
+                    
+                    }
+    
+                }
+    
+                contadores.removeIf(contador -> ((Integer)contador.get(1)) < 2);
+    
+                if (contadores.size() == 0){
+                    customPrint("No se encontraron actores que se ajusten bien a las características.", true, "red"); return;}
+    
+                List<Actor> advancedList = new ArrayList<Actor>();
+    
+                for (ArrayList contador : contadores){
+                    advancedList.add( (Actor)contador.get(0));
+                }
+                
+                actorsForRental = advancedList;
+                advancedList = null;
+                
+                customPrint(actorsForRental.size() + " actor/es se ajustaron a dos o más características avanzadas.", true, "green");
+        }
 
         long duracionContrato = Duration.between(fechaInicio, fechaFin).toHours();
         double minActorPrecio = actorsForRental.get(0).getPrecioContrato(duracionContrato);
@@ -1359,6 +1426,11 @@ public class Main {
         }    
 
         long presupuesto = longAsk("¿Cuál es el presupuesto máximo para el actor?" + "\nTenga en cuenta que el rango de los precios es de " + Actor.formatoPrecio(minActorPrecio) + " a " + Actor.formatoPrecio(maxActorPrecio));
+
+        if (presupuesto == 0){
+            customPrint("Saliendo...", "red");
+            return;
+        }
 
         actorsForRental.removeIf(actor -> actor.getPrecioContrato(duracionContrato) > presupuesto);
 
@@ -2545,7 +2617,7 @@ public class Main {
         Saldo = String.format("$%,.2f", tesoreria.getCuenta().getSaldo());
         customPrint("El saldo de tesoreria es: " + Saldo);
         byte[] option = {1,2};
-        byte respuesta = ask("¿Desea realizar los pagos \n1. Si \n2. No", option, "green");
+        byte respuesta = ask("¿Desea realizar los pagos \n1. Si\n2. No", option, "green");
         switch (respuesta) {
             case 1:
                 tesoreria.setTotal(tesoreria.getTotal() + tesoreria.getDineroEnCaja());
@@ -2801,159 +2873,322 @@ public class Main {
 
         //PRIMERA INTERACCIÓN
 
-
+        byte[] cuatro = {1,2,3,4};
         byte[] dos = {1,2};
 
         customPrint("Bienvenido a la gestión de clases.", "blue");
         Thread.sleep(2000);
-        long idArtista = longAsk("Ingrese el ID del artista:");
-        
-        Artista artista = Artista.buscarArtistaPorId(idArtista);
-        
-        if (artista == null) {
-            customPrint("Artista no encontrado.", "red");
-            Thread.sleep(1000);
-            byte crearArtista = ask("¿Desea crear un nuevo Artista?\n" + "1. Sí\n" + "2. No", new byte[]{1, 2}, "");
-        
-            switch (crearArtista) {
-                case 1:
-                    String nombreArtista = ask("Ingrese el nombre del nuevo artista:");
-                    String tipoArtista = ask("Ingrese el tipo de artista (director/actor)");
-        
-                    if (tipoArtista.equals("director")) {
-                        // Crear un nuevo director
-                        new Director(nombreArtista, idArtista);
-                        customPrint("Nuevo director agregado: " + nombreArtista + " con ID " + idArtista, "green");
-                        customPrint("Recuerde que los directores no reciben clases.", "yellow");
-                        return; // Salir del flujo de clases
-                    } else if (tipoArtista.equals("actor")) {
-                        // Crear un nuevo actor
-                        Actor nuevoActor = new Actor(nombreArtista, idArtista);
 
-                        customPrint("Nuevo actor agregado: " + nombreArtista + " con ID " + idArtista, "green");
-                        artista = nuevoActor; // Asignar al artista actual
-                    } else {
-                        customPrint("Tipo de artista no válido. Debe ser 'director' o 'actor'.", "red");
-                        return; // Salir si el tipo es inválido
-                    }
-                    break;
-        
-                case 2:
-                    customPrint("Finalizando gestión de clases.", "blue");
-                    return; // Salir si no desea crear un nuevo artista
-            }
-        } else {
-            customPrint("El actor ya existe en nuestra base de datos", "green");
-            Thread.sleep(1500);
-        }
-        
-        if (((Actor)artista).sigueIgual()) {
-            customPrint("El actor no tiene calificaciones. Inicializando calificaciones...");  
-            Thread.sleep(2000);
+        boolean continuar = true;
 
-            // Llamar al método casting() para inicializar calificaciones de calificadores
-            boolean resultado = Empleado.casting(artista, Empleado.getTipoProfesor());
-            if (resultado == false){
-                customPrint("No hay profesores disponibles para inicializar las calificaciones del artista", "red");
-            }
-            else if(resultado == true) {
-                
-                // Seleccionar un profesor aleatorio
-                Profesor profesorAsignado = (Profesor) Empleado.getTipoProfesor().get((int) (Math.random() * Empleado.getTipoProfesor().size()));
-                
-                // Mostrar quién inicializó las calificaciones
-                customPrint("El/la profesor/a " + profesorAsignado.getNombre() + " inicializó las calificaciones de el actor " + artista.getNombre() + ".");
-            }
-        }
+        while (continuar) {
 
-        // Inicializar calificaciones del público (simuladas aleatoriamente)
-        artista.inicializarCalificacionesPublico(artista);
-        Thread.sleep(2000);
+        int queDeseaHacer = ask("¿Que desea hacer?\n" + "1. Gestionar artistas\n" + "2. Ver obras en estado crítico del teatro\n"
+         + "3. Programar una clase\n" + "4. Salir", cuatro, "blue");
+
         
-        // Mostrar las calificaciones del artista, sea o no sea nuevo
-        customPrint("Calificaciones del artista: " + artista.getNombre());
-        Thread.sleep(2000);
-        if (artista.getCalificaciones() != null) {
-            customPrint("Calificaciones de calificadores: " + ((Actor)artista).getCalificacionesAptitudes());
-            Thread.sleep(2000);
-        }
-        customPrint("Calificaciones del público: " + artista.getCalificacionesPublico());
-        Thread.sleep(3500);
+        switch (queDeseaHacer) { //GESTIONAR ARTISTAS
+            case 1:
 
-        //Se enseñan obras en "Estado Crítico"
-        ArrayList<Obra> obrasCritics = Obra.mostrarObrasCriticas();
-        // Mostrar todas las obras críticas
-        if (obrasCritics.isEmpty()) {
-            customPrint("No hay obras en estado crítico en el teatro.", "yellow");
-        } else {
-            customPrint("Obras en estado crítico del teatro:", "red");
-            Thread.sleep(3000);
-            for (Obra obra : obrasCritics) {
-                customPrint("- '" + obra.getNombre() + "' (Promedio de calificaciones: " + obra.promedioCalificacion() + ")");
-    
-                // Revisar aspectos críticos y las calificaciones de los actores
-                for (Aptitud aspecto : obra.getPapeles()) { // Obtenemos cada aptitud crítica de la obra
-                    boolean encontrado = false;
-                    for (Actor actor : obra.getReparto()) { // Revisamos cada actor en el reparto
-                        double calificacion = actor.getCalificacionPorAptitud(aspecto);
-                        if (calificacion != -1 && calificacion < 3.0) { // Si la calificación es baja
-                            customPrint("El aspecto '" + aspecto + "' tiene una calificación baja (" + calificacion + ").", "red");
-                            Thread.sleep(1500);
-                            customPrint("Notificando al actor: " + actor.getNombre());
-                            encontrado = true;
-                            break;
+            if (Artista.getArtistas().size() != 0) {
+                customPrint("Estos son los artistas que ya existen en nuestra base de datos");
+                StringBuilder artistas = new StringBuilder();
+                for (Artista artista : Artista.getArtistas()) {
+                    if (Actor.getActors().contains(artista)) {
+                        String lineaArtista = "- Actor " + artista.getNombre() + " con ID " + artista.getId(); 
+                        if (lineaArtista.length() > LARGO_LINEAS) {
+                            lineaArtista = lineaArtista.substring(0, LARGO_LINEAS - 3) + "..."; // Truncar si es necesario
                         }
+                        artistas.append(lineaArtista).append("\n");
                     }
-                    if (!encontrado) {
-                        customPrint("No hay actores con calificaciones bajas en el aspecto '" + aspecto + "'.", "yellow");
+                    if (Director.getDirectors().contains(artista)) {
+                        String lineaArtista = "- Director " + artista.getNombre() + " con ID " + artista.getId(); 
+                        if (lineaArtista.length() > LARGO_LINEAS) {
+                            lineaArtista = lineaArtista.substring(0, LARGO_LINEAS - 3) + "..."; // Truncar si es necesario
+                        }
+                        artistas.append(lineaArtista).append("\n");
                     }
                 }
-                Thread.sleep(1500);
+                customPrint(artistas.toString());
             }
-        }
+            Thread.sleep(2000);
+            Thread.sleep(1500);
+            long idArtista = longAsk("Ingrese el ID del artista del cual desea conocer su información:\n" + "\n" + "(Puede escribir el ID de un actor o Director que no exista para inicializarlo)");
+            Artista artista = Artista.buscarArtistaPorId(idArtista);
+        
+            if (artista == null) {
+                customPrint("Artista no encontrado.", "red");
+                Thread.sleep(2000);
+                byte crearArtista = ask("¿Desea crear un nuevo Artista con este ID?\n" + "1. Sí\n" + "2. No", new byte[]{1, 2}, "");
+            
+                switch (crearArtista) {
+                    case 1:
+                        String nombreArtista = ask("Ingrese el nombre del nuevo artista:");
+                        Thread.sleep(1000);
+                        String tipoArtista = ask("Ingrese el tipo de artista (director/actor)");
+                        Thread.sleep(1000);
+            
+                        if (tipoArtista.equals("director")) {
+                            // Crear un nuevo director
+                            new Director(nombreArtista, idArtista);
+                            customPrint("Nuevo director agregado: " + nombreArtista + " con ID " + idArtista, "green");
+                            Thread.sleep(2000);
+                            customPrint("Recuerde que los directores no reciben clases.", "yellow");
+                        } else if (tipoArtista.equals("actor")) {
+                            // Crear un nuevo actor
+                            Actor nuevoActor = new Actor(nombreArtista, idArtista);
+                            customPrint("Nuevo actor agregado: " + nombreArtista + " con ID " + idArtista, "green");
+                            artista = nuevoActor; // Asignar al artista actual
+                            Thread.sleep(2000);
+                        } else {
+                            customPrint("Tipo de artista no válido. Debe ser 'director' o 'actor'.", "red");
+                            return; // Salir si el tipo es inválido
+                        }
+                        break;
+            
+                    case 2:
+                        break; // Salir si no desea crear un nuevo artista
+                }
+            } else {
+                customPrint("El actor ya existe en nuestra base de datos", "green");
+                Thread.sleep(2000);
+            };
 
+            if (artista != null) {
+                if (((Actor)artista).sigueIgual()) {
+                    customPrint("El actor no tiene calificaciones. Inicializando calificaciones...");  
+                    Thread.sleep(2000);
+        
+                    // Llamar al método casting() para inicializar calificaciones de calificadores
+                    boolean resultado = Empleado.casting(artista, Empleado.getTipoProfesor());
+                    if (resultado == false){
+                        customPrint("No hay profesores disponibles para inicializar las calificaciones del actor", "red");
+                    }
+                    else if(resultado == true) {
+                        
+                        // Seleccionar un profesor aleatorio
+                        Profesor profesorAsignado = (Profesor) Empleado.getTipoProfesor().get((int) (Math.random() * Empleado.getTipoProfesor().size()));
+                        
+                        // Mostrar quién inicializó las calificaciones
+                        customPrint("El/la profesor/a " + profesorAsignado.getNombre() + " es el/la responsable de inicializar las calificaciones\n" + "del actor " + artista.getNombre() + ".");
+                    }
+                    Thread.sleep(3000);
+                }
+        
+                // Inicializar calificaciones del público (simuladas aleatoriamente)
+
+                if (artista.getCalificacionesPublico().size()==0){
+                    artista.inicializarCalificacionesPublico(artista);
+                Thread.sleep(2000);
+                }
+                
+                // Mostrar las calificaciones del artista, sea o no sea nuevo
+                customPrint("Estas son las calificaciones del artista: " + artista.getNombre());
+                Thread.sleep(2000);
+
+                StringBuilder cal = new StringBuilder();
+
+                if (artista.getCalificaciones() != null) {
+                    String showCalificaciones = "Calificaciones de calificadores: " + ((Actor)artista).getCalificacionesAptitudes(); 
+                    if (showCalificaciones.length() > LARGO_LINEAS) {
+                        showCalificaciones = showCalificaciones.substring(0, LARGO_LINEAS - 3) + "..."; // Truncar si es necesario
+                    }
+                    cal.append(showCalificaciones).append("\n");
+                }
+                String showCalificaciones = "Calificaciones del público: " + artista.getCalificacionesPublico(); 
+                    if (showCalificaciones.length() > LARGO_LINEAS) {
+                        showCalificaciones = showCalificaciones.substring(0, LARGO_LINEAS - 3) + "..."; // Truncar si es necesario
+                    }
+                    cal.append(showCalificaciones).append("\n");
+
+                customPrint(cal.toString());
+                Thread.sleep(4500);
+
+                byte areas = ask("¿Desea ver las áreas que puede mejorar el artista según sus calificiaciones?\n" + "1. Sí\n" + "2. No\n", dos, "blue");
+                switch (areas) {
+                    case 1:
+                        
+                    if (artista instanceof Actor) {
+                        Actor actor = (Actor) artista;
+                        Thread.sleep(1000);
+                        // Mostrar áreas de mejora recomendadas
+                        List<Aptitud> areasDeMejora = actor.obtenerAreasDeMejora();
+                        customPrint("Áreas recomendadas para mejorar:", "yellow");
+                        Thread.sleep(2000);
+                        StringBuilder areasMejora = new StringBuilder();
+            
+                        for (int i = 0; i < Math.min(3, areasDeMejora.size()); i++) {
+                            Aptitud aptitud = areasDeMejora.get(i);
+                            double calificacion = actor.getCalificacionPorAptitud(aptitud);
+            
+                            // Formato para la columna: "- {Aptitud} (Calificación: {calificación})"
+                            String linea = "- " + aptitud + " (Calificación: " + String.format("%.1f", calificacion) + ")";
+            
+                            // Verificar si agregar esta línea excede el límite de caracteres; si no, agregar nueva línea
+                            if (linea.length() > LARGO_LINEAS) {
+                                linea = linea.substring(0, LARGO_LINEAS - 3) + "..."; // Truncar si es necesario
+                            }
+            
+                            areasMejora.append(linea).append("\n"); // Agregar la línea con salto
+                        }
+            
+                        // Imprimir usando customPrint con el formato final en columnas
+                        customPrint(areasMejora.toString(), "yellow");
+
+                        Thread.sleep(1500);
+
+                        // Preguntar si quiere seguir la recomendación
+                        byte respuesta = ask("¿Desea programar una clase basada en las áreas recomendadas?\n1. Sí\n2. No", dos, "");
+                        Aptitud areaSeleccionada = null;
+                    
+                        if (respuesta == 1) {
+                            // Seleccionar el área de mejora más baja recomendada
+                            areaSeleccionada = areasDeMejora.get(0);
+
+                            // Determinar el nivel de la clase
+                            double calificacionActual = actor.getCalificacionPorAptitud(areaSeleccionada);
+                            String nivelClase;
+                            if (calificacionActual < 3.0) {
+                                nivelClase = "Introducción";
+                            } else if (calificacionActual < 4.0) {
+                                nivelClase = "Profundización";
+                            } else {
+                                nivelClase = "Perfeccionamiento";
+                            }
+
+                            customPrint("Se seleccionó, automáticamente, el área '" + areaSeleccionada + "' con nivel de clase: " + nivelClase);
+                            Thread.sleep(1000);
+
+                            // Uso del método
+                            LocalDateTime inicio = solicitarHorario("inicio");
+                            LocalDateTime fin = solicitarHorario("fin");
+
+                            // Validar que la hora de fin sea posterior a la de inicio
+                            if (fin.isBefore(inicio)) {
+                                customPrint("El horario de fin debe ser posterior al horario de inicio. Intente nuevamente.", "red");
+                                inicio = solicitarHorario("inicio");
+                                fin = solicitarHorario("fin");
+                            }
+                        
+                            // Buscar una sala disponible en el horario deseado
+                            Sala salaAsignada = null;
+                            for (Sala sala : Sala.getSalas()) {
+                                if (sala.getAseado() && sala.isDisponible(inicio, fin)) {
+                                    salaAsignada = sala;
+                                    break;
+                                }
+                            }
+                        
+                            if (salaAsignada == null) {
+                                customPrint("No hay salas disponibles en el horario deseado o no están limpias.", "red");
+                                return;
+                            }
+                        
+                            customPrint("Sala asignada: " + salaAsignada.getNumeroSala());
+                        
+                            // Asignar el horario a la sala
+                            ArrayList<LocalDateTime> nuevoHorario = new ArrayList<>();
+                            nuevoHorario.add(inicio);
+                            nuevoHorario.add(fin);
+                            salaAsignada.anadirHorario(nuevoHorario);
+                        
+                            // Buscar un profesor capacitado y disponible (aleatoriamente)
+                            Profesor profesorAsignado = null;
+                            for (Empleado empleado : Empleado.getTipoProfesor()) {
+                                if (empleado instanceof Profesor) {
+                                    Profesor profesor = (Profesor) empleado;
+                        
+                                    // Simular disponibilidad aleatoria
+                                    boolean disponible = Math.random() > 0.5; // 50% de probabilidad de estar disponible
+                                    if (profesor.tieneEspecializacion(areaSeleccionada) && disponible) {
+                                        profesorAsignado = profesor;
+                                        break;
+                                    }
+                                }
+                            }
+                        
+                            if (profesorAsignado == null) {
+                                customPrint("No hay profesores disponibles con especialización en el área seleccionada o están ocupados.", "red");
+                                return;
+                            }
+                        
+                            customPrint("Profesor asignado: " + profesorAsignado.getNombre());
+                        
+                            // Clase programada exitosamente
+                            customPrint("Clase programada exitosamente en el área '" + areaSeleccionada + "' con el profesor '" 
+                                + profesorAsignado.getNombre() + "' en la sala '" + salaAsignada.getNumeroSala() + "'.", "green");
+
+                        }
+                    }
+               
+                break;
+            
+                    case 2:
+
+                        break;
+                }
+            }
+        
+            break;
+            
+            
+            
+        
+            case 2: //OBRAS CRÍTICAS
+            
+            ArrayList<Obra> obrasCritics = Obra.mostrarObrasCriticas();
+            // Mostrar todas las obras críticas
+            if (obrasCritics.isEmpty()) {
+                customPrint("No hay obras en estado crítico en el teatro.", "yellow");
+            } else {
+                customPrint("Obras en estado crítico del teatro:", "red");
+                Thread.sleep(3000);
+                for (Obra obra : obrasCritics) {
+                    customPrint("- '" + obra.getNombre() + "' (Promedio de calificaciones: " + obra.promedioCalificacion() + ")");
+        
+                    // Revisar aspectos críticos y las calificaciones de los actores
+                    for (Aptitud aspecto : obra.getPapeles()) { // Obtenemos cada aptitud crítica de la obra
+                        boolean encontrado = false;
+                        for (Actor actor : obra.getReparto()) { // Revisamos cada actor en el reparto
+                            double calificacion = actor.getCalificacionPorAptitud(aspecto);
+                            if (calificacion != -1 && calificacion < 3.0) { // Si la calificación es baja
+                                customPrint("El aspecto '" + aspecto + "' tiene una calificación baja (" + calificacion + ").", "red");
+                                Thread.sleep(1500);
+                                customPrint("Notificando al actor: " + actor.getNombre());
+                                encontrado = true;
+                                break;
+                            }
+                        }
+                        if (!encontrado) {
+                            customPrint("No hay actores con calificaciones bajas en el aspecto '" + aspecto + "'.", "yellow");
+                        }
+                    }
+                    Thread.sleep(1500);
+                }
+            };
+        
+
+            case 3:
+                break;
+
+            case 4:
+            // Salir del programa
+            customPrint("Saliendo de la gestión de clases. ¡Hasta pronto!", "blue");
+            continuar = false; 
+            break;
+        }
+    }
+
+        
+        
+    /* 
         //SEGUNDA INTERACCION
 
 
         // Si el artista no es un actor, finalizar el flujo
-        if (artista instanceof Actor) {
-            Actor actor = (Actor) artista;
-            Thread.sleep(3000);
-            // Mostrar áreas de mejora recomendadas
-            List<Aptitud> areasDeMejora = actor.obtenerAreasDeMejora();
-            customPrint("Áreas recomendadas para mejorar:", "yellow");
-            Thread.sleep(2000);
-            StringBuilder areas = new StringBuilder();
-
-            for (int i = 0; i < Math.min(3, areasDeMejora.size()); i++) {
-                Aptitud aptitud = areasDeMejora.get(i);
-                double calificacion = actor.getCalificacionPorAptitud(aptitud);
-
-                // Formato para la columna: "- {Aptitud} (Calificación: {calificación})"
-                String linea = "- " + aptitud + " (Calificación: " + String.format("%.1f", calificacion) + ")";
-
-                // Verificar si agregar esta línea excede el límite de caracteres; si no, agregar nueva línea
-                if (linea.length() > LARGO_LINEAS) {
-                    linea = linea.substring(0, LARGO_LINEAS - 3) + "..."; // Truncar si es necesario
-                }
-
-                areas.append(linea).append("\n"); // Agregar la línea con salto
-            }
-
-            // Imprimir usando customPrint con el formato final en columnas
-            customPrint(areas.toString(), "yellow");
-
-            Thread.sleep(1500);
-
-            // Preguntar si quiere seguir la recomendación
-            byte respuesta = ask("¿Desea programar una clase basada en las áreas recomendadas?\n1. Sí\n2. No", dos, "");
-            Aptitud areaSeleccionada = null;
         
-            if (respuesta == 1) {
-                // Seleccionar el área de mejora más baja recomendada
-                areaSeleccionada = areasDeMejora.get(0);
-                customPrint("Se seleccionó el área '" + areaSeleccionada + "' automáticamente.");
-                Thread.sleep(1000);
+
+            
             } else {
                 byte respuesta1 = ask("¿Desea programar otra clase?\n1. Sí\n2. No", dos, "");
                 if (respuesta1 == 1){
@@ -3205,6 +3440,6 @@ public class Main {
             }
         } else {
             customPrint("Solo los actores pueden recibir clases.", "red");
-        }
+        }*/
     }// Fin del método
 }
