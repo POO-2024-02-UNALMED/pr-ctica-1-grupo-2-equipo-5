@@ -24,7 +24,7 @@ public abstract class Artista implements Serializable{
         this.calificacion = calificacion;
         this.id = id;
         this.promedio = promedio;
-        this.cuenta = cuenta;
+        this.cuenta = new CuentaBancaria(id, 0);
         this.horario = new ArrayList<>(); //Lista donde se guarda el horario del artista
         this.clase = clase;
     }
@@ -33,6 +33,7 @@ public abstract class Artista implements Serializable{
         this.nombre = nombre;
         this.horario = new ArrayList<>();
         this.id = id;
+        this.cuenta = new CuentaBancaria(id, 0);
     }
     
     //GETTERS Y SETTERS

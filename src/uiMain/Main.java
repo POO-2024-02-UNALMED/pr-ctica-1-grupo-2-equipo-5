@@ -3294,7 +3294,7 @@ public class Main {
                     }
 
                     customPrint("Se seleccionó, automáticamente, el área '" + areaSeleccionada + "' con nivel de clase: " + nivelClase);
-                    wait(1000);
+                    wait(2000);
 
                     // Uso del método setSchedule
 
@@ -3359,7 +3359,7 @@ public class Main {
                         + profesorAsignado.getNombre() + "' en la sala '" + salaAsignada.getNumeroSala() + "'.", "green");
 
                     // Cálculo del costo de matrícula
-                    double costoClase = 0;
+                    int costoClase = 0;
                     switch (nivelClase) {
                         case "Introducción": costoClase = 50000; break;
                         case "Profundización": costoClase = 75000; break;
