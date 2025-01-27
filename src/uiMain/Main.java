@@ -2955,6 +2955,7 @@ public class Main {
             };
 
             if (artista != null) {
+            if (artista != null && artista instanceof Actor) {
                 if (((Actor)artista).sigueIgual()) {
                     customPrint("El actor no tiene calificaciones. Inicializando calificaciones...");  
                     wait(2000);
@@ -3059,9 +3060,16 @@ public class Main {
                             customPrint("Se seleccionó, automáticamente, el área '" + areaSeleccionada + "' con nivel de clase: " + nivelClase);
                             wait(1000);
 
-                            // Uso del método
-                            LocalDateTime inicio = solicitarHorario("inicio");
-                            LocalDateTime fin = solicitarHorario("fin");
+                            // Uso del método setSchedule
+
+                            String preguntaClase = "¿Para qué día quiere programar la clase?\n";
+                            String advertencia = "Existe una incompatibilidad del horario con el lineamiento.\n\nRevise si:\n1. El inicio del horario ocurre antes del fin del horario.\n2. Se exceden los límites de horario (muy temprano o muy tarde).\nIntente de nuevo.";
+                            LocalTime horaMin = LocalTime.of(8, 0);
+                            LocalTime horaMax = LocalTime.of(22, 0); 
+
+                            LocalDateTime[] clases = setSchedule(preguntaClase, horaMin, horaMax, 2, 4, true, advertencia);
+                            LocalDateTime inicio = clases[0];
+                            LocalDateTime fin = clases[1];
 
                             // Validar que la hora de fin sea posterior a la de inicio
                             if (fin.isBefore(inicio)) {
