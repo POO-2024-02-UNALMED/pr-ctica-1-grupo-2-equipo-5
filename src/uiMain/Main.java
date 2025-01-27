@@ -54,9 +54,7 @@ public class Main {
     public static void wait(int millis){
         try {
             Thread.sleep(millis);
-        } catch (Exception e) {
-            customPrint("La pausa fue interrumpida.");
-        }
+        } catch (Exception e) {}
 
     }
 
