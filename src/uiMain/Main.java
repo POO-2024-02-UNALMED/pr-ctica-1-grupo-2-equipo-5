@@ -1174,7 +1174,7 @@ public class Main {
     byte ACTORES_POR_PAGINA = 5;
 
     List<Actor> historialEmpresa = new ArrayList<>();
-    Cliente empresa = new Cliente("auxiliar", 0);
+    Cliente empresa = null;
 
     menuSwitch:
     switch (menuLog){
@@ -1546,7 +1546,7 @@ public class Main {
             int x = 0;
             int idx = 0;
             int lastResidualIdx = 0;
-            Actor actorEscogido = null;//new Actor("auxiliar", 0);
+            Actor actorEscogido = null;
             String page = "";
             byte[] byteActores = null;
 
