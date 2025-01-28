@@ -415,7 +415,7 @@ public class Main {
 // creación de salas
 //    Sala sala1 = new Sala(1, 100, 24);
 
-    public static void main(String args[]) throws InterruptedException {  
+    public static void main(String args[]){  
 
         byte task = -1;
 
