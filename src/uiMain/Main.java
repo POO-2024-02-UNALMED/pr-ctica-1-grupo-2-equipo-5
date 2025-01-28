@@ -927,7 +927,7 @@ public class Main {
             for (Obra obra : Teatro.getInstancia().getObras()){  
                 if(!obra.getNombre().equals("NOTFORITE")){   
                     i = i + 1;
-                    String item = String.valueOf(i) + "." + obra.getNombre() + "\n";
+                    String item = String.valueOf(i) + ". " + obra.getNombre() + "\n";
                     menuObras = menuObras + item;
                 }
                 else{
@@ -1160,7 +1160,68 @@ public class Main {
                 eleccion.addFuncion(funcion);
                 customPrint("Funcion creada\nHora:  " + funcion.getHorario() + "\nSala: " + funcion.getSala());
             }
+
+            //Impresión del horario 
+        ArrayList<LocalDateTime> dias = new ArrayList<>();
+        LocalDateTime hoy = LocalDateTime.now();
+        for (int pio = 1; pio <= 7; pio++) {
+            dias.add(hoy.plusDays(pio).withHour(0).withMinute(0).withSecond(0).withNano(0));
+        }
+
+        // Crear un formato para imprimir fechas y horas
+        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("HH:mm");
+
+
+        for (Sala sala : Teatro.getInstancia().getSalas()) {
+            System.out.println("Horario para sala" + sala.getNumeroSala() + ":");
+            
+            // Crear columnas para los 7 días
+            ArrayList<ArrayList<String>> columnasDias = new ArrayList<>();
+            for (int qpi = 0; qpi < 7; qpi++) {
+                columnasDias.add(new ArrayList<>());
+            }
+
+            // Filtrar y organizar las funciones de esta sala
+            ArrayList<Funcion> funcionesSala = new ArrayList<>();
+            for (Funcion funcion : Teatro.getInstancia().getFuncionesCreadas()) {
+                if (funcion.getSala().equals(sala)) {
+                    funcionesSala.add(funcion);
+                }
+            }
+
+
+            //Distribuir funciones en los días correspondientes
+            for (Funcion funcion : funcionesSala) {
+                for (int pou = 0; pou < dias.size(); pou++) {
+                    LocalDateTime inicioDia = dias.get(pou);
+                    LocalDateTime finDia = inicioDia.plusDays(1);
+
+                    if (funcion.getHorario().get(0).isAfter(inicioDia) && funcion.getHorario().get(0).isBefore(finDia)) {
+                        columnasDias.get(i).add(
+                            funcion.getObra().getNombre() + " (" + 
+                            funcion.getHorario().get(0).format(formatoHora) + " - " + 
+                            funcion.getHorario().get(1).format(formatoHora) + ")"
+                        );
+                        break;
+                    }
+                }
+            }
+
+            //Imprimir el horario en columnas
+            for (int coo = 0; coo < 7; coo++) {
+                System.out.println("Día " + dias.get(coo).format(formatoFecha) + ":");
+                for (String detalleFuncion : columnasDias.get(coo)) {
+                    System.out.println("   " + detalleFuncion);
+                }
+                System.out.println();
+            }
+            System.out.println("-----------------------------------");
+        }
     }
+
+
+            
 
     public static void ContratarActor(){
 
