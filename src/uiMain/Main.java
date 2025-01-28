@@ -74,10 +74,18 @@ public class Main {
         customPrint(question);
         String input = in.nextLine();
 
+        if (input.equals("0")){
+            return null;
+        }
+
         while (!canBeTime(input)){
             customPrint("La respuesta introducida no está en el formato 24 horas (HH:MM). Intente de nuevo:", true, "red");
             customPrint(question);
             input = in.nextLine();     
+
+            if (input == "0"){
+                return null;
+            }
         }
 
         LocalTime answer = LocalTime.parse(input);
@@ -318,7 +326,7 @@ public class Main {
         LocalDateTime fechaInicio = null;
         LocalDateTime fechaFin = null;
         LocalDate diaEscogido = null;
-        byte[] seven = {1, 2, 3, 4, 5, 6, 7};
+        byte[] seven = {0, 1, 2, 3, 4, 5, 6, 7};
 
         if(date){
             
@@ -330,6 +338,10 @@ public class Main {
             }
 
             byte dia = ask(preguntaCompleta, seven, "");
+            if (dia == 0){
+                customPrint("Saliendo...", "red");
+                return null;
+            }
             diaEscogido = getWeek().get( dia-1 );
 
         } else{
@@ -339,7 +351,18 @@ public class Main {
 
         while(true){
             inicioHorario = timeAsk("Introduzca horario de inicio (Responda en formato HH:MM).");
+
+            if (inicioHorario == null){
+                customPrint("Saliendo...", "red");
+                return null;
+            }
+
             finHorario = timeAsk("Introduzca horario de fin (Responda en formato HH:MM).");
+
+            if (finHorario == null){
+                customPrint("saliendo...", "red");
+                return null;
+            }
 
 
             if (inicioHorario.isBefore(horaMin) || finHorario.isAfter(horaMax) || finHorario.isBefore(inicioHorario) || inicioHorario.isAfter(finHorario)){
@@ -400,7 +423,6 @@ public class Main {
         String filename = "teatro.txt";
         String path = "src" + File.separator + "baseDatos" + File.separator + "temp" + File.separator + filename;
         Deserializador.loadState(path);
-        //Teatro teatro = Teatro.getInstancia();
         // -----------------------------------------------------------------------//
 
         while (task != 6){
@@ -1344,6 +1366,10 @@ public class Main {
         String advertencia5 = "Existe una incompatibilidad del horario con el lineamiento.\n\nRevise si:\n1. El inicio del horario ocurre antes del fin del horario.\n2. Se exceden los límites de horario (muy temprano o muy tarde).\nIntente de nuevo.";
 
         LocalDateTime[] horario = setSchedule(diasCadena, horaMin, horaMax, 4, 8, true, advertencia5);
+
+        if (horario == null){
+            return;
+        }
 
         LocalDateTime fechaInicio = horario[0];
         LocalDateTime fechaFin = horario[1]; 
@@ -3276,6 +3302,11 @@ public class Main {
                     customPrint("Tenga en cuenta que el horario de clases inicia a las 10 am y terminan a las 10 pm.\n" + "Las clases tienen como duración mínima 2 horas y máxima 4 horas.", "blue");
 
                     LocalDateTime[] clases = setSchedule(preguntaClase, horaMin, horaMax, 2, 4, true, advertencia);
+
+                    if (clases == null){
+                        return;
+                    }
+
                     LocalDateTime inicio = clases[0];
                     LocalDateTime fin = clases[1];
                 
@@ -3391,6 +3422,11 @@ public class Main {
                                 LocalDateTime nuevoFin = null;
                                 while (true) {
                                     LocalDateTime[] clasesNuevas = setSchedule(preguntaClase, horaMin, horaMax, 2, 4, true, advertencia);
+                                    
+                                    if (clasesNuevas == null){
+                                        return;
+                                    }
+
                                     nuevoInicio = clasesNuevas[0];
                                     nuevoFin = clasesNuevas[1];
                                     if (nuevoInicio.isAfter(fin)) {
