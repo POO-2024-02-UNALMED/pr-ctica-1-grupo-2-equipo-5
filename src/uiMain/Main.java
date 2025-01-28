@@ -3175,27 +3175,29 @@ public class Main {
                 case 1:
                     String nombreArtista = ask("Ingrese el nombre del nuevo artista:");
                     wait(1000);
-                    String tipoArtista = ask("Ingrese el tipo de artista (director/actor)");
-                    wait(1000);
-        
-                    if (tipoArtista.equals("director")) {
-                        // Crear un nuevo director
-                        new Director(nombreArtista, idArtista);
-                        customPrint("Nuevo director agregado: " + nombreArtista + " con ID " + idArtista, "green");
-                        wait(2000);
-                        customPrint("Los directores no reciben clases.", "yellow");
-                    } else if (tipoArtista.equals("actor")) {
-                        // Crear un nuevo actor
-                        Actor nuevoActor = new Actor(nombreArtista, idArtista);
-                        customPrint("Nuevo actor agregado: " + nombreArtista + " con ID " + idArtista, "green");
-                        artista = nuevoActor; // Asignar al artista actual
-                        wait(2000);
-                    } else {
-                        customPrint("Tipo de artista no válido. Debe ser 'director' o 'actor'.", "red");
-                        return; // Salir si el tipo es inválido
+
+                    while (true) {
+                        String tipoArtista = ask("Ingrese el tipo de artista (director/actor)");
+                        wait(1000);
+                        
+                        if (tipoArtista.equals("director")) {
+                            // Crear un nuevo director
+                            new Director(nombreArtista, idArtista);
+                            customPrint("Nuevo director agregado: " + nombreArtista + " con ID " + idArtista, "green");
+                            wait(2000);
+                            customPrint("Los directores no reciben clases.", "yellow");
+                            break;
+                        } else if (tipoArtista.equals("actor")) {
+                            // Crear un nuevo actor
+                            Actor nuevoActor = new Actor(nombreArtista, idArtista);
+                            customPrint("Nuevo actor agregado: " + nombreArtista + " con ID " + idArtista, "green");
+                            artista = nuevoActor; // Asignar al artista actual
+                            wait(2000);
+                            break;
+                        } else {
+                            customPrint("Tipo de artista no válido. Debe ser 'director' o 'actor'.", "red");
+                        }
                     }
-                    break;
-        
                 case 2:
                     ArrayList<Obra> obrasCritics = Obra.mostrarObrasCriticas();
                     // Mostrar todas las obras críticas
