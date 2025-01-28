@@ -474,38 +474,32 @@ public class Main {
         InterfaceTipos suscription = Suscripcion.Basica;
         String confirmacion = "";
         float dineroTesoreria=0;
-        byte [] opciones_2 = {1,2,3};
+        byte [] opciones_2 = {1,2,0};
         Cliente cliente= null;
+        
         customPrint(
         "Ingrese la opcion correspondiente\n"+
         "Eres cliente nuevo? \n"+ 
-        "1. NO\n"+
-        "2. SI\n"+
-        "3. MENU PRINCIPAL");
+        "1. SI\n"+
+        "2. NO\n"+
+        "0. MENU PRINCIPAL");
         
 
+        byte [] res= {1,2,0};
+        int p_ =ask("Ingrese la opcion correspondiente\n"+
+        "Eres cliente nuevo? \n"+ 
+        "1. SI\n"+
+        "2. NO\n"+
+        "0. MENU PRINCIPAL", res, "");
+            
         
-        byte p_ = in.nextByte();
-        in.nextLine();
-
-        while (!isIn(opciones_2, p_)){
-
-            customPrint("La respuesta introducida no hace parte de las opciones. Intente de nuevo:\n\n"+
-            "Ingrese la opcion correspondiente\n"+
-            "Eres cliente nuevo? \n"+ 
-            "1. NO\n"+
-            "2. SI\n"+
-            "3. MENU PRINCIPAL","red");
-            p_ = in.nextByte();
-            in.nextLine();
-        }
         
 
         boolean salir = false;
     
         while (!salir) {
         switch (p_) {
-            case 1:
+            case 2:
                 customPrint("Ingresa tu id :");
                 long code = in.nextLong();
                 in.nextLine();                
@@ -523,27 +517,17 @@ public class Main {
                     
 
                 }else {
-                    customPrint("Codigo no encontrado\n"+
+                    byte [] opcion = {1,2,3};
+                    byte by=ask("Codigo no encontrado\n"+
                     "Ingrese la opcion correspondiente\n"+
                     "Tienes un codigo existente? : \n"+ 
                     "1. Si\n"+
                     "2. NO\n"+
-                    "3. MENU PRINCIPAL","red");
+                    "3. MENU PRINCIPAL",opcion,"");
                     
-                    byte [] opcion = {1,2,3};
-                    byte by = in.nextByte();
-                    in.nextLine();
+                    
 
-                    while (!isIn(opcion, by)){
-                        customPrint("La respuesta introducida no hace parte de las opciones. \n"+
-                        "Intente de nuevo:\n"+
-                        "Tienes un codigo existente? : \n"+ 
-                        "1. NO\n"+
-                        "2. SI\n"+
-                        "3. MENU PRINCIPAL","red");
-                        by = in.nextByte();
-                        in.nextLine();
-                    }
+                    
                     if (by == 1) {
                         break;
                         
@@ -558,7 +542,7 @@ public class Main {
                 }
             
                 
-            case 2:
+            case 1:
                 customPrint("Creando Nuevo Codigo...");
                 wait(2000);
                 
@@ -569,7 +553,7 @@ public class Main {
                 
                 salir = true;
                 break;
-            case 3:
+            case 0:
                 return;
             
             
@@ -586,29 +570,16 @@ public class Main {
         
 
         
-            customPrint(
+            byte p1_=ask(
         "Ingrese la opcion correspondiente\n"+
         "Desea mejorar su suscripcion? \n"+ 
         "1. Si\n"+
         "2. No\n"+
-        "3. MENU PRINCIPAL","blue");
+        "0. MENU PRINCIPAL",opciones_2,"");
         
 
         
-        Byte p1_ = in.nextByte();
-        in.nextLine();
-            while (p1_ != 1 & p1_ != 2 & p1_ !=3) {
-                customPrint("La respuesta introducida no hace parte de las opciones.\n"+
-        "Ingrese la opcion correspondiente\n"+
-        "Desea mejorar su suscripcion? \n"+ 
-        "1. SI\n"+
-        "2. NO\n"+
-        "3. MENU PRINCIPAL","red");
-        p1_ = in.nextByte();
-        in.nextLine();
-
-                
-            }
+       
             
             
         String suscripcion="";
@@ -651,7 +622,7 @@ public class Main {
             }
 
         }
-        else if (p1_==3){
+        else if (p1_==0){
             return;
         }
         
