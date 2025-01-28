@@ -39,12 +39,7 @@ public class Obra implements Serializable{
     private float precio=0f;
 
 
-<<<<<<< Updated upstream
-/*     static{
-        funci_1.prueba();
-    } */
-=======
->>>>>>> Stashed changes
+
 
     public int getAudienciaEsperada() {
         return audienciaEsperada;

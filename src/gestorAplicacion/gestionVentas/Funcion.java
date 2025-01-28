@@ -23,11 +23,10 @@ public class Funcion implements Serializable{
     private boolean trabajador;
     static ArrayList <Funcion> funcionesCreadas= new ArrayList<>() ;
     static ArrayList <Funcion> funcionesALaVenta= new ArrayList<>();
-<<<<<<< Updated upstream
+
     private ArrayList <Cliente> asistentes = new ArrayList<>();
-=======
     private float precio=0f;
->>>>>>> Stashed changes
+
 
     public String tablaSillas(){
         String Nuevo="";
