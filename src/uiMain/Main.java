@@ -1141,12 +1141,19 @@ public class Main {
                     drut = rut; // Acepta si la cantidad es adecuada
                 }
             } while (!continuar);   
-
+            int cantFunciones = 0;
             for (int numeroFunciones = 0; numeroFunciones < drut; numeroFunciones++){
                 ArrayList<LocalDate> weekn = getWeek();
                 Funcion funcion = new Funcion(eleccion, weekn);
                 eleccion.addFuncion(funcion);
-                customPrint("Funcion creada\nHora:  " + funcion.getHorario() + "\nSala: " + funcion.getSala());
+                if (funcion.getSala() != null){
+                    customPrint("Funcion creada\nHora:  " + funcion.getHorario() + "\nSala: " + funcion.getSala());
+                    cantFunciones++;
+                }
+                else{
+                    customPrint("No queda espacio en las salas para esta función :(, creadas con éxito: "+ cantFunciones);
+                    break;
+                }
             }
 
              //Impresión del horario 
@@ -1175,8 +1182,10 @@ public class Main {
             ArrayList<Funcion> funcionesSala = new ArrayList<>();
             for (Funcion funcion : Teatro.getInstancia().getFuncionesCreadas()) {            
                 if (funcion.getObra() != null){
-                    if (funcion.getSala().equals(sala)) {
-                        funcionesSala.add(funcion);
+                    if (funcion.getSala() != null){
+                        if (funcion.getSala().equals(sala)) {
+                            funcionesSala.add(funcion);
+                        }
                     }
                 }
             }
@@ -1224,12 +1233,12 @@ public class Main {
                 for (Cliente cliente : Teatro.getInstancia().getClientes()){
                     if (cliente.getGeneroFavorito() != null){
                         if(eleccion.getGenero() == cliente.getGeneroFavorito()){
-                            listaCliente.add(cliente);
+                            listaClientes.add(cliente);
                         }
                     }
                 }
-                for (Cliente cliente : listaCliente){
-                    lista = lista + cliente.getNombre() + "/n";
+                for (Cliente cliente : listaClientes){
+                    lista = lista + cliente.getCorreo() + "/n";
                 }
             customPrint(lista);
             }
@@ -1967,17 +1976,24 @@ public class Main {
                                     double liquidacion = (Persona.calcularSueldo()*1.2) + Persona.getDeuda();
                                     Teatro.getInstancia().getTesoreria().getCuenta().transferencia(Persona.getCuenta(), liquidacion);
                                     customPrint("Se despidio a " + Persona.getNombre() + " y se le pago su respectiva liquidacion", "green");
-                                    if(Persona.getOcupacion() != "Aseador"){
-                                        if (Persona.getOcupacion() != "Seguridad"){
-                                            Teatro.getInstancia().getTipoProfesor().remove(Persona);
-                                        }
-                                        else{
-                                            Teatro.getInstancia().getTipoSeguridad().remove(Persona);
-                                        }
-                                    }
-                                    else{
-                                        Teatro.getInstancia().getTipoAseador().remove(Persona);
-                                    }
+                                    return true;
+                                }
+                                return false;
+                            });
+                            Teatro.getInstancia().getTipoAseador().removeIf(PersonaA ->{
+                                if(PersonaA.getId() == buscar_id){
+                                    return true;
+                                }
+                                return false;
+                            });
+                            Teatro.getInstancia().getTipoProfesor().removeIf(PersonaP ->{
+                                if(PersonaP.getId() == buscar_id){
+                                    return true;
+                                }
+                                return false;
+                            });
+                            Teatro.getInstancia().getTipoSeguridad().removeIf(PersonaS ->{
+                                if(PersonaS.getId() == buscar_id){
                                     return true;
                                 }
                                 return false;
@@ -2413,7 +2429,7 @@ public class Main {
                                             LocalDateTime inicioSiguiente = horarioSiguiente.get(0);
 
                                             //Verificar si el horario nuevo no se solapa
-                                            if(!(inicioNuevo.isAfter(finActual) && finNuevo.isBefore(inicioSiguiente))){
+                                            if(!(inicioNuevo.isAfter(finActual) || finNuevo.isBefore(inicioSiguiente))){
                                                 horarioValido = false;
                                                 break;
                                             }
@@ -2433,9 +2449,11 @@ public class Main {
                                         sublista.add(inicioNuevo);
                                         sublista.add(finNuevo);
                                         localTime.add(sublista);
-                                        Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                        if(Funciones.getSala() != null){
+                                            Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                            Funciones.getSala().setAseado(true);
+                                        }          
                                         funcionesLimpiadas.remove(i);
-                                        Funciones.getSala().setAseado(true);
                                         i--;
                                     }
                                 }
@@ -2452,8 +2470,10 @@ public class Main {
                                     // se agregan al localTime
                                     localTime.add(sublista);
                                     funcionesLimpiadas.remove(i);
-                                    Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
-                                    Funciones.getSala().setAseado(true);                                    
+                                    if(Funciones.getSala() != null){
+                                        Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                        Funciones.getSala().setAseado(true);
+                                    }                                                                        
                                     i--;
                                 }
                             }
@@ -2519,9 +2539,11 @@ public class Main {
                                 sublista.add(inicioNuevo);
                                 sublista.add(finNuevo);
                                 localTime.add(sublista);
-                                Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                if(Funciones.getSala() != null){
+                                    Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                    Funciones.getSala().setAseado(true);
+                                }          
                                 funcionesLimpiadas.remove(i);
-                                Funciones.getSala().setAseado(true);
                                 i--;
                                 break;
                             }
@@ -2535,7 +2557,7 @@ public class Main {
                     }                                
                 }
                 String msgBase = "";
-                for(Empleado Persona : Teatro.getInstancia().getTipoSeguridad()){
+                for(Empleado Persona : Teatro.getInstancia().getTipoAseador()){
                     if(Persona.getHorario().size() == 1){
                         msgBase = msgBase + String.format("%-10s %10s", Persona.getNombre() + " Limpiará: ", Persona.getHorario().size() + " vez\n");
                     }
@@ -2611,9 +2633,11 @@ public class Main {
                                         sublista.add(inicioNuevo);
                                         sublista.add(finNuevo);
                                         localTime.add(sublista);
-                                        Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                        if(Funciones.getSala() != null){
+                                            Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                            Funciones.getSala().setAseado(true);
+                                        }          
                                         funcionesLimpiadas.remove(i);
-                                        Funciones.getSala().setAseado(true);
                                         i--;
                                     }
                                 }
@@ -2630,8 +2654,10 @@ public class Main {
                                     // se agregan al localTime
                                     localTime.add(sublista);
                                     funcionesLimpiadas.remove(i);
-                                    Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
-                                    Funciones.getSala().setAseado(true);
+                                    if(Funciones.getSala() != null){
+                                        Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                        Funciones.getSala().setAseado(true);
+                                    }   
                                     funcionesLimpiadas.remove(i);
                                     i--;
                                 }
@@ -2700,9 +2726,11 @@ public class Main {
                                 sublista.add(inicioNuevo);
                                 sublista.add(finNuevo);
                                 localTime.add(sublista);
-                                Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                if(Funciones.getSala() != null){
+                                    Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                    Funciones.getSala().setAseado(true);
+                                }    
                                 funcionesLimpiadas.remove(i);
-                                Funciones.getSala().setAseado(true);
                                 i--;
                                 break;
                             }
@@ -2716,7 +2744,7 @@ public class Main {
                     }                                
                 }
                 String msgBase = "";
-                for(Empleado Persona : Teatro.getInstancia().getTipoSeguridad()){
+                for(Empleado Persona : Teatro.getInstancia().getTipoAseador()){
                     if(Persona.getHorario().size() == 1){
                         msgBase = msgBase + String.format("%-10s %10s", Persona.getNombre() + " Limpiará: ", Persona.getHorario().size() + " vez\n");
                     }

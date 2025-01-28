@@ -161,6 +161,7 @@ public class Obra implements Serializable{
         obras.add(this);
         Teatro.getInstancia().getObras().add(this);
     }
+
     public int funcionesRecomendadas(float promedioArt){
         if (calificacion < 2){
             return 3;
