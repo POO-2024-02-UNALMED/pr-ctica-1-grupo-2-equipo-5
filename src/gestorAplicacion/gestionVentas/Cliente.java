@@ -104,7 +104,7 @@ public class Cliente implements Serializable{
     //metodo para contratar actor y enviar dinero a tesorería
     public byte pagarContratoActor(Actor actor, long duracion, Tesoreria tesoreria){
 
-        if (!tipo.equals("Empresa") || this.cuentaBancaria.getSaldo() < actor.getPrecioContrato(duracion)){ return -1; }
+        if (!tipo.equals("Empresa")){ return -1; }
 
         if (!Main.isIn(this.historial, actor)){
             historial.add(actor);

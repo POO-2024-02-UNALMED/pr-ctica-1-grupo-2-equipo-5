@@ -1621,7 +1621,6 @@ public class Main {
 
                 for (int i = lastIdx+1; i < actorsForRental.size(); i++){
                     page += (i - lastIdx) + ". " + actorsForRental.get(i) + "\n\n";
-                    //System.out.println();
                     lastResidualIdx = i - lastIdx;
                     residualTimes ++;
                     
@@ -1652,14 +1651,9 @@ public class Main {
 
         customPrint("El actor escogido fue " + actorEscogido.getNombre() + " por un precio de " +  Actor.formatoPrecio(actorEscogido.getPrecioContrato(duracionContrato)));
         byte codigoCompra = empresa.pagarContratoActor(actorEscogido, duracionContrato, Teatro.getInstancia().getTesoreria());
-        if (codigoCompra == -1){
-            customPrint("Saldo insuficiente", true, "red");
-        } else{
-            customPrint("Pago recibido!", true, "green");
-            ArrayList<LocalDateTime> horarioFinal = new ArrayList<>(); horarioFinal.add(fechaInicio); horarioFinal.add(fechaFin);
-            actorEscogido.addHorario(horarioFinal);
-        }
-        customPrint("Saldo disponible: " + Actor.formatoPrecio(empresa.getCuentaBancaria().getSaldo()), true, "blue");
+        customPrint("Pago recibido!", true, "green");
+        ArrayList<LocalDateTime> horarioFinal = new ArrayList<>(); horarioFinal.add(fechaInicio); horarioFinal.add(fechaFin);
+        actorEscogido.addHorario(horarioFinal);
 
                 
         }
