@@ -248,24 +248,27 @@ public class Funcion implements Serializable{
     }
 public static boolean indiceFuncion(int i,String nombre){
     int in =0;
+    
     for (Funcion funcion : Teatro.getInstancia().getFuncionesCreadas()) {
+        if (funcion.obra!=null){
         if ((funcion.obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
             in++;
 
         }
-    }
+    }}
 
 return in >= i;
 }
 public static Funcion escogerFuncion(int i,String nombre){
     int in=0;
     for (Funcion funcion : Teatro.getInstancia().getFuncionesCreadas()) {
+        if (funcion.obra!=null){
         if ((funcion.obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
             in++;
             if (in==i){
                 return funcion;
             }
-            
+        }
             
         }
         
@@ -281,6 +284,14 @@ public static boolean calificacionVacia(Obra obra){
     return valor;
     
 
+}
+
+    public float getPrecio() {
+    return precio;
+}
+
+public void setPrecio(float precio) {
+    this.precio = precio;
 }
 
     public static float precioFuncion(Funcion funcion){
@@ -313,21 +324,23 @@ public static String imprimirFuncion(Funcion funcion){
 
 public static Funcion buscarFuncion(String nombre){
     for (Funcion funcion : Teatro.getInstancia().getFuncionesCreadas()) {
+        if (funcion.obra!=null){
         if ((funcion.obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
             return funcion;
         }
         
-    }
+    }}
     return null;
 
 
 }
 public static float mostrarPrecioFuncion(String nombre){
     for (Funcion funcion : Teatro.getInstancia().getFuncionesCreadas()) {
+        if (funcion.obra!=null){
         if ((funcion.obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
             return precioFuncion(funcion);
         }
-        
+    }
     }
     return 0;
 

@@ -35,7 +35,6 @@ public abstract class Artista implements Serializable{
         this.nombre = nombre;
         this.horario = new ArrayList<>();
         this.id = id;
-        this.cuenta = new CuentaBancaria(id, 0);
     }
     
     //GETTERS Y SETTERS
@@ -147,16 +146,7 @@ public abstract class Artista implements Serializable{
         this.calificaciones.add(calificacion);
     }
     
-    public boolean isDisponible(LocalDateTime inicio, LocalDateTime fin) {
-        for (ArrayList<LocalDateTime> evento : horario) {
-            if (inicio.isBefore(evento.get(1)) && fin.isAfter(evento.get(0))) {
-                System.out.println("ocupao");
-                return false; // Horario ocupado
-            }
-        }
-        System.out.println("disponivel");
-        return true; // Horario disponible
-    }
+    public abstract boolean isDisponible(LocalDateTime inicio, LocalDateTime fin);
 
     public static Artista buscarArtistaPorId(long id) {
         for (Artista artista : Teatro.getInstancia().getArtistas()) {

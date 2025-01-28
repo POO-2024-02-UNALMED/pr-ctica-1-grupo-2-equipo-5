@@ -8,6 +8,7 @@ import java.util.Locale;
 import baseDatos.Teatro;
 
 import java.text.NumberFormat;
+import java.time.LocalDateTime;
 
 import gestorAplicacion.gestionFinanciera.CuentaBancaria;
 import gestorAplicacion.herramientas.Aptitud;
@@ -30,6 +31,7 @@ public class Actor extends Artista{
     public static NumberFormat cop = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
     private ArrayList<Double> calificacionesAptitudes = new ArrayList<>(Arrays.asList(0.0, 0.0, 0.0, 0.0, 0.0)); // Calificaciones asociadas a las aptitudes
     private ArrayList<ArrayList<Double>> historialCalificaciones = new ArrayList<>();
+    private ArrayList<ArrayList<LocalDateTime>> tiempoActuado = new ArrayList<>();
 
     public Actor(String nombre, long id, int edad){ 
         super(nombre, id);
@@ -41,6 +43,7 @@ public class Actor extends Artista{
             historialCalificaciones.add(new ArrayList<>()); // Crear espacio para las calificaciones de esa aptitud
         }
         this.edad = edad;
+        this.cuenta = new CuentaBancaria(id, 999999999999999999999999999.9);
     }
 
     public Actor(String nombre, long id){
@@ -272,6 +275,15 @@ public class Actor extends Artista{
         // Crear una lista con el valor inicial para comparar
         ArrayList<Double> inicial = new ArrayList<>(Arrays.asList(0.0, 0.0, 0.0, 0.0, 0.0));
         return calificacionesAptitudes.equals(inicial); // Devuelve true si sigue igual
+    }
+    public boolean isDisponible(LocalDateTime inicio, LocalDateTime fin) {
+        for (ArrayList<LocalDateTime> evento : getHorario()) {
+            if (inicio.isBefore(evento.get(1)) && fin.isAfter(evento.get(0))) {
+                return false; // Horario ocupado
+            }
+        tiempoActuado.add(evento);        
+        }
+        return true; // Horario disponible
     }
 }
 

@@ -42,7 +42,6 @@ public class Teatro implements Serializable{
     
     //funciones
     private ArrayList <Funcion> funcionesCreadas= new ArrayList<>();
-    private ArrayList <Cliente> asistentes = new ArrayList<>();
 
     //salas
     private ArrayList <Sala> salas = new ArrayList<>();
