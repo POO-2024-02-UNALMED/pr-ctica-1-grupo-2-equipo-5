@@ -904,7 +904,7 @@ public class Main {
         }
     
         // Si obra1 no existe, se crea y se agrega al listado
-        if (obra1 == null) {
+        if (Teatro.getInstancia().getObras().size() == 0) {
             obra1 = new Obra(new Funcion(horarioEstObra1), Genero.EXPERIMENTAL,"NOTFORITE");
             Obra obra2 = new Obra(new Funcion(horarioEstObra2), Genero.DRAMA, "NOTFORITE");
             Obra obra3 = new Obra(new Funcion(horarioEstObra3), Genero.COMEDIA,"NOTFORITE");
@@ -924,8 +924,8 @@ public class Main {
         String menuObras = "";
         ArrayList<LocalDate> week = getWeek();
         if (!Teatro.getInstancia().getObras().isEmpty()){
-            for (Obra obra : Teatro.getInstancia().getObras()){   
-                if(obra.getNombre() != "NOTFORITE"){       
+            for (Obra obra : Teatro.getInstancia().getObras()){  
+                if(!obra.getNombre().equals("NOTFORITE")){   
                     i = i + 1;
                     String item = String.valueOf(i) + "." + obra.getNombre() + "\n";
                     menuObras = menuObras + item;
@@ -1084,7 +1084,7 @@ public class Main {
                         customPrint("oops, parece que no ingresaste un número entero, intenta de nuevo", "red");
                     }
                 }
-                customPrint("Director creado: \n" + eleccionDir, "green");
+                customPrint("Director seleccionado: \n" + eleccionDir, "green");
                 Director director = eleccionDir;
                 x = 0;
                 boolean continuarCostProdu = false;
@@ -1160,7 +1160,6 @@ public class Main {
                 eleccion.addFuncion(funcion);
                 customPrint("Funcion creada\nHora:  " + funcion.getHorario() + "\nSala: " + funcion.getSala());
             }
-            if (in.hasNextLine()) {in.nextLine();}
     }
 
     public static void ContratarActor(){

@@ -23,6 +23,8 @@ public class Director extends Artista{
         genero.anadirDirector(this);
         directors.add(this);
         getArtistas().add(this);
+        Teatro.getInstancia().getDirectors().add(this);
+        Teatro.getInstancia().getArtistas().add(this);
     }
 
     public Genero getGenero() {
