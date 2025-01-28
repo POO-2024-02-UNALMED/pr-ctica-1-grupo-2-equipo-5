@@ -493,12 +493,7 @@ public class Main {
                     customPrint("Iniciando sesion...");
                     cliente=Cliente.asignar(code);
                     
-                try {
-                    // Pausa de 2 segundos (2000 milisegundos)
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    customPrint("La pausa fue interrumpida.");
-                }
+                wait(2000);
                 customPrint("Sesion Iniciada","green");
         
                 salir = true;
@@ -539,18 +534,11 @@ public class Main {
                     
                     
                 }
-            case 3:
-                return;
+            
                 
             case 2:
                 customPrint("Creando Nuevo Codigo...");
-                try {
-                    // Pausa de 2 segundos (2000 milisegundos)
-                    Thread.sleep(2000);
-                } catch (Exception e) {
-                    customPrint("La pausa fue interrumpida.");
-                    
-                }
+               wait(2000);
                 
                 code= Cliente.IdRandom();
                 cliente = new Cliente(code,Suscripcion.Basica);
@@ -558,6 +546,9 @@ public class Main {
 
                 
                 salir = true;
+                break;
+            case 3:
+                return;
             
             
                 
@@ -798,13 +789,7 @@ public class Main {
                 Teatro.getInstancia().getTesoreria().setDineroEnCaja(Teatro.getInstancia().getTesoreria().getDineroEnCaja()+dineroTesoreria);
                 Teatro.getInstancia().getTesoreria().setTotal(Teatro.getInstancia().getTesoreria().getTotal()+dineroTesoreria);
                 
-            try {
-                // Pausa de 2 segundos (4000 milisegundos)
-                Thread.sleep(4000);
-            } catch (InterruptedException e) {
-                customPrint("La pausa fue interrumpida.");
-                
-            }
+            wait(2000);
             
         
         
@@ -839,13 +824,7 @@ public class Main {
             customPrint(tiquete.imprimirFactura(cliente,antiguof,precioTotalFuncion,precioFuncion,precioSus));
         }else{
             customPrint("Cancelando Compra...");
-            try {
-                // Pausa de 2 segundos (4000 milisegundos)
-                Thread.sleep(4000);
-            } catch (InterruptedException e) {
-                customPrint("La pausa fue interrumpida.");
-                
-            }
+            wait(2000);
             customPrint("Compra Cancelada");
             return;
         }
