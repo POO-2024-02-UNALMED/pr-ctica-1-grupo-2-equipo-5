@@ -1,4 +1,4 @@
-package test;
+/* package test;
 
 import java.time.Duration;
 
@@ -54,3 +54,4 @@ public class funci_1 {
 
 
 }}
+ */

@@ -7,7 +7,7 @@ import java.time.Duration;
 import java.time.LocalTime;
 
 import gestorAplicacion.herramientas.*;
-import test.funci_1;
+//import test.funci_1;
 import gestorAplicacion.gestionVentas.*;
 
 public class Obra implements Serializable{
@@ -34,9 +34,9 @@ public class Obra implements Serializable{
     private boolean repartoDisponible;
     private float Asistencia=0;
 
-    static{
+/*     static{
         funci_1.prueba();
-    }
+    } */
 
     public int getAudienciaEsperada() {
         return audienciaEsperada;

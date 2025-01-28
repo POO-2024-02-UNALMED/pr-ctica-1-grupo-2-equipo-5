@@ -20,6 +20,7 @@ public class Funcion implements Serializable{
     private boolean trabajador;
     static ArrayList <Funcion> funcionesCreadas= new ArrayList<>() ;
     static ArrayList <Funcion> funcionesALaVenta= new ArrayList<>();
+    private ArrayList <Cliente> asistentes = new ArrayList<>();
 
     public String tablaSillas(){
         String Nuevo="";
@@ -39,6 +40,7 @@ public class Funcion implements Serializable{
         }
         return Nuevo+"\n\n-ESCENARIO-";
     }
+
     public void eliminarSilla(Integer i){
         Silla sillaVacia = new Silla(88);
         ArrayList <Silla> s = this.getSala().getSillas();
@@ -170,7 +172,7 @@ public class Funcion implements Serializable{
                 for (LocalDate day : week){
                     LocalTime inicioFranjaITE = inicioFranja;
                     while (inicioFranjaITE.isBefore(this.obra.getFranjaHoraria().get(1))
-                    && inicioFranjaITE.plusSeconds(this.getObra().getDuracionFormatoS()).plusMinutes(20).isBefore(LocalTime.of(22,00)))
+                    && inicioFranjaITE.plusSeconds(this.getObra().getDuracionFormatoS()).isBefore(LocalTime.of(22,00)))
                     {
                         LocalDateTime i = LocalDateTime.of(day, inicioFranjaITE) ;
                         LocalDateTime v = i.plusSeconds(this.obra.getDuracionFormatoS());
@@ -369,6 +371,18 @@ public String asignarTipoSilla(long elemento){
     }
     return "";
 
+}
+public ArrayList<Silla> getSillas() {
+    return sillas;
+}
+public void setSillas(ArrayList<Silla> sillas) {
+    this.sillas = sillas;
+}
+public ArrayList<Cliente> getAsistentes() {
+    return asistentes;
+}
+public void setAsistentes(ArrayList<Cliente> asistentes) {
+    this.asistentes = asistentes;
 }
 }
 
