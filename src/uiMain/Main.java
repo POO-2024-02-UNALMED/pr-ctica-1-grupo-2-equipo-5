@@ -1215,7 +1215,6 @@ public class Main {
             customPrint(horarioToString);
             horarioToString = "";
         }
-        in.nextLine() = in.nextLine();
     } 
 
 
