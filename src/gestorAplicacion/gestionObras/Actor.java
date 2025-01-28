@@ -276,6 +276,12 @@ public class Actor extends Artista{
         ArrayList<Double> inicial = new ArrayList<>(Arrays.asList(0.0, 0.0, 0.0, 0.0, 0.0));
         return calificacionesAptitudes.equals(inicial); // Devuelve true si sigue igual
     }
+// The above Java code defines a method `isDisponible` that checks if a given time slot (defined by
+// `inicio` and `fin` LocalTime instances) is available or not based on the events stored in the
+// `horario` list. It iterates through each event in the `horario` list and checks if the given time
+// slot overlaps with any existing event. If an overlap is found, it returns `false` indicating that
+// the time slot is not available (i.e., the schedule is occupied). If no overlap is found with any
+// existing event, it returns `true` indicating
     public boolean isDisponible(LocalDateTime inicio, LocalDateTime fin) {
         for (ArrayList<LocalDateTime> evento : getHorario()) {
             if (inicio.isBefore(evento.get(1)) && fin.isAfter(evento.get(0))) {

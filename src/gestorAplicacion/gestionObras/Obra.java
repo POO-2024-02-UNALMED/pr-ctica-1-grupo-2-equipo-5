@@ -162,6 +162,16 @@ public class Obra implements Serializable{
         Teatro.getInstancia().getObras().add(this);
     }
 
+/**
+ * This Java function returns a recommended value based on a given floating-point parameter.
+ * 
+ * @param promedioArt It seems like there is a variable `calificacion` being used in the code snippet
+ * you provided, but it is not defined in the function `funcionesRecomendadas`. If `calificacion` is
+ * supposed to be a parameter of the function, you should add it to the function signature like
+ * @return a value based on the input parameter `calificacion`. If `calificacion` is less than 2, it
+ * returns 3. If `calificacion` is between 2 and 3, it returns 5. If `calificacion` is between 3 and 4,
+ * it returns 7. Otherwise, it returns 10.
+ */
     public int funcionesRecomendadas(float promedioArt){
         if (calificacion < 2){
             return 3;
@@ -177,11 +187,28 @@ public class Obra implements Serializable{
         }
     }
 
+/**
+ * The function calculates the expected audience based on a given rating by multiplying the rating by
+ * 12.
+ * 
+ * @param calificacion The parameter `calificacion` represents the rating or score given to a
+ * particular item or event. In the provided method `calcAudienciaEsperada`, this rating is used to
+ * calculate the expected audience by multiplying the rating by 12 and then setting the calculated
+ * value as the expected audience.
+ */
     public void calcAudienciaEsperada(float calificacion){
         int u;
         u = (int) calificacion * 12;
         this.setAudienciaEsperada(u);
     }
+/**
+ * This Java function calculates the average of a list of floating-point numbers and sets it as a class
+ * attribute.
+ * 
+ * @param calificaciones The method `calcularCalificacion` calculates the average of a list of grades
+ * stored in an ArrayList. It iterates over each grade in the list, sums them up, and then divides the
+ * total sum by the number of grades to get the average. Finally, it sets the calculated average as the
+ */
     public void calcularCalificacion(ArrayList<Float> calificaciones){
         float u;
         int t;
@@ -210,6 +237,15 @@ public class Obra implements Serializable{
     public void setCalificaciones(ArrayList<Float> calificaciones) {
         this.calificaciones = calificaciones;
     }
+ /**
+  * The `franjaHoraria` method iterates through a list of plays to find the time range of the main show
+  * for a specific genre.
+  * 
+  * @param genero The `genero` parameter in the `franjaHoraria` method represents the genre of a play
+  * or performance. This method is designed to find the time frame (franja horaria) during which
+  * performances of a specific genre are scheduled. The method iterates through all the plays in the
+  * theater
+  */
     public void franjaHoraria(Genero genero){
         Genero u;
         Funcion a = new Funcion(LocalDateTime.of(2024, 1, 02, 00, 00));
@@ -242,6 +278,13 @@ public class Obra implements Serializable{
         setFranjaHoraria(franja);
         }
     }
+/**
+ * The function `getDuracionFormato` converts a duration into a formatted string displaying hours and
+ * minutes.
+ * 
+ * @return The method `getDuracionFormato` returns a formatted string representing the duration in
+ * hours and minutes.
+ */
     public String getDuracionFormato() {
         long horas = duracion.toHours();
         long minutos = duracion.toMinutes() % 60;
@@ -260,6 +303,14 @@ public class Obra implements Serializable{
         this.duracion = duracion;
     }
 
+/**
+ * The `calcFuncionEstelar` method iterates through a list of `Funcion` objects to find the one with
+ * the highest number of tickets sold and sets it as the "Funcion Estelar".
+ * 
+ * @param funciones The `calcFuncionEstelar` method you provided seems to be trying to find the
+ * function with the highest number of tickets sold from a list of functions. However, there is a
+ * logical error in the code where you are assigning `d = s` instead of `s = d` when
+ */
     public void calcFuncionEstelar(ArrayList<Funcion> funciones){
         Funcion u = new Funcion();
         Funcion v = new Funcion();
@@ -310,6 +361,15 @@ public class Obra implements Serializable{
         this.papeles = papeles;
     }
 
+/**
+ * The function `createDuration` takes a long format representing hours, minutes, and seconds in a
+ * specific format and creates a Duration object in Java.
+ * 
+ * @param format The `format` parameter in the `createDuration` method represents a time value in the
+ * format of `HHmmss`, where:
+ * @return The method `createDuration` returns a `Duration` object representing the duration calculated
+ * from the input `format` value, which is in the format of `HHmmss` (hours, minutes, seconds).
+ */
     public Duration createDuration(long format){
         long horas = format / 10000;
         long minutos = (format % 10000) / 100;
@@ -323,6 +383,12 @@ public class Obra implements Serializable{
     public void setFuncionesRecomendadas(int funcionesRecomendadas) {
         this.funcionesRecomendadas = funcionesRecomendadas;
     }
+/**
+ * The function calculates the average of a list of grades stored in an ArrayList.
+ * 
+ * @return The method `promedioCalificacion` is returning the average of the calificaciones (grades)
+ * stored in the ArrayList `c`.
+ */
     public float promedioCalificacion(){
         float promedio=0;
         ArrayList<Float> c = this.getCalificaciones();
@@ -335,6 +401,15 @@ public class Obra implements Serializable{
         }
         return (promedio / c.size());
     }
+/**
+ * The function checks if an "Obra" object has any calificaciones and returns true if it does, false
+ * otherwise.
+ * 
+ * @param obra The method `calificacionVacia` takes an `Obra` object as a parameter. The `Obra` class
+ * likely has a method `getCalificaciones()` which returns a list of calificaciones (ratings or
+ * grades). The method checks if the list of calificaciones in the given `Ob
+ * @return The method `calificacionVacia` is returning a boolean value.
+ */
     public static boolean calificacionVacia(Obra obra){
         boolean valor = true;
         if (obra.getCalificaciones().size()==0) {
@@ -356,6 +431,17 @@ public class Obra implements Serializable{
     public void setPrecio(float precio) {
         this.precio = precio;
     }
+/**
+ * The function calculates the price of a work based on its average rating, attendance, and a base
+ * price.
+ * 
+ * @param obra The given code snippet is a Java method named `precioFuncion` that calculates the price
+ * of a work of art based on its average rating, attendance, and a base price. The method takes an
+ * object of type `Obra` as a parameter.
+ * @return The method `precioFuncion` is returning the calculated `precioBase` value, which represents
+ * the final price of a given `Obra` object based on its average rating, attendance, and a base price
+ * of 10000.
+ */
     public static float precioFuncion(Obra obra){
             float prom = obra.promedioCalificacion();
             float precioBase=10000;
@@ -424,6 +510,10 @@ public class Obra implements Serializable{
 
     }
 
+/**
+ * The function "actualizarEstadoCritico" creates a list of works in a critical state by iterating
+ * through all works in a theater and checking their critical state.
+ */
     public static void actualizarEstadoCritico() {
         estadoCriticoS = new ArrayList<Obra>();
         for (Obra obra : Teatro.getInstancia().getObras()) {
@@ -445,6 +535,16 @@ public class Obra implements Serializable{
         return obrasCriticas;
     }
 
+/**
+ * This Java function calculates the average rating of actors in a given ArrayList.
+ * 
+ * @param reparto The `calcPromedioArt` method calculates the average rating of actors in a given
+ * ArrayList. The parameter `reparto` is an ArrayList of Actor objects representing the cast or
+ * ensemble of a production. Each Actor object has a `calificacion` attribute that stores the rating of
+ * the actor.
+ * @return The method `calcPromedioArt` is returning the average rating of the actors in the `reparto`
+ * ArrayList.
+ */
     public float calcPromedioArt(ArrayList<Actor> reparto){
         int i = 0;
         float f = 0f;
@@ -473,6 +573,18 @@ public class Obra implements Serializable{
         this.repartoDisponible = repartoDisponible;
     }
 
+/**
+ * This Java function checks if all actors in a cast are available within a specified time frame and
+ * updates the availability status of the cast accordingly.
+ * 
+ * @param inicio The parameter `inicio` is a `LocalDateTime` object representing the start date and
+ * time for checking actor availability in a movie production.
+ * @param fin The parameter `fin` in the `isRepartoDisponible` method represents the end date and time
+ * for a particular event or activity. It is of type `LocalDateTime`, which is a class in Java that
+ * represents a date and time without a time zone. This parameter is used to check
+ * @return The method `isRepartoDisponible` is returning a boolean value - either `true` or `false`
+ * based on whether all actors in the cast are available for the specified time frame.
+ */
     public boolean isRepartoDisponible(LocalDateTime inicio, LocalDateTime fin){
         ArrayList<Actor> genteDisponibleFR = new ArrayList<>();
         for (Actor actor : this.getReparto()){
@@ -502,6 +614,14 @@ public class Obra implements Serializable{
     public void setAsistencia(float asistencia) {
         Asistencia = asistencia;
     }
+ /**
+  * The function generates a formatted table of theater plays excluding a specific one.
+  * 
+  * @return The `generarTabla` method is returning a formatted string that contains information about
+  * each play in the theater's collection. The information includes the play's name, genre, duration,
+  * and price formatted in a specific way. The method excludes any play with the name "NOTFORITE" from
+  * the table.
+  */
     public static String generarTabla(){
         String Nuevo="";
         

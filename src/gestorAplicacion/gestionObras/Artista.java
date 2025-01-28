@@ -106,6 +106,15 @@ public abstract class Artista implements Serializable{
     }
     
 
+/**
+ * The function calculates the average of a list of floating-point numbers and sets the result as a new
+ * value.
+ * 
+ * @param calificaciones The method `calcularCalificacion` calculates the average of a list of grades
+ * stored in an ArrayList of Float values named `calificaciones`. The method iterates through each
+ * grade in the list, sums them up, and then divides the total sum by the number of grades to obtain
+ * the average. Finally
+ */
     public void calcularCalificacion(ArrayList<Float> calificaciones){
         float u;
         int t;
@@ -148,6 +157,16 @@ public abstract class Artista implements Serializable{
     
     public abstract boolean isDisponible(LocalDateTime inicio, LocalDateTime fin);
 
+/**
+ * The function searches for an artist by their ID within a collection of artists and returns the
+ * artist if found, otherwise returns null.
+ * 
+ * @param id The `id` parameter is the unique identifier used to search for an artist in the list of
+ * artists. The method `buscarArtistaPorId` iterates through the list of artists and returns the artist
+ * whose ID matches the provided `id`. If no artist is found with the given ID, the
+ * @return The method `buscarArtistaPorId` returns an `Artista` object if an artist with the specified
+ * ID is found in the list of artists. If no artist is found with that ID, the method returns `null`.
+ */
     public static Artista buscarArtistaPorId(long id) {
         for (Artista artista : Teatro.getInstancia().getArtistas()) {
             if (artista.getId() == id) {
@@ -158,6 +177,14 @@ public abstract class Artista implements Serializable{
     }
 
     // Método para inicializar calificaciones del público
+/**
+ * The function initializes public ratings for an artist by generating 5 simulated ratings.
+ * 
+ * @param artista The parameter `artista` is an object of type `Artista`, which likely represents an
+ * artist in a system or application. The method `inicializarCalificacionesPublico` is a public method
+ * that initializes the public ratings for the artist by generating 5 simulated ratings and adding them
+ * to the
+ */
     public void inicializarCalificacionesPublico(Artista artista) {
         for (int i = 0; i < 5; i++) { // Generar 5 calificaciones simuladas
             artista.agregarCalificacionPublico((float) (Math.round(Math.random() * 50) / 10.0));
