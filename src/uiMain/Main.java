@@ -3236,9 +3236,9 @@ public class Main {
                                 wait(1000);
                                 customPrint("La edad tiene que estar entre 4 y 80 años", "red");
                             }
-                            
+
                             Actor nuevoActor = new Actor(nombreArtista, idArtista, edad);
-                            customPrint("Nuevo actor agregado: " + nombreArtista + " con ID " + idArtista, "green" + nuevoActor.getEdad());
+                            customPrint("Nuevo actor agregado: " + nombreArtista + " con ID " + idArtista + " y edad " + nuevoActor.getEdad(), "green");
                             artista = nuevoActor; // Asignar al artista actual
                             wait(2000);
                             break;
