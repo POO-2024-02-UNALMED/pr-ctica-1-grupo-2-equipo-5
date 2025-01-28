@@ -156,6 +156,19 @@ public class Sala implements Serializable{
         salas.add(this);
         Teatro.getInstancia().getSalas().add(this);
     }
+    
+    public Sala(ArrayList<Silla> sillas, int numeroSala, int metrosCuadrados, Boolean aseado, Boolean ocupado, ArrayList<ArrayList<LocalDateTime>> horario, int capacidad) {
+        this.sillas = sillas;
+        this.numeroSala = numeroSala;
+        this.metrosCuadrados = metrosCuadrados;
+        this.aseado = aseado;
+        this.ocupado = ocupado;
+        this.horario = horario;
+        this.capacidad = capacidad;
+    }
+    public Sala(){
+        salas.add(this);
+    }
 
     @Override
     public String toString() {
