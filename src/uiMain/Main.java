@@ -3229,11 +3229,14 @@ public class Main {
                             // Crear un nuevo actor
                             int edad;
                             while (true){
-                                edad = intAsk("Ingrese la edad del nuevo artista:");
+                                edad = intAsk("Ingrese la edad del nuevo artista:\n" + "\n" + "(La edad mínima del actor es de 4 años y máxima de 80 años)");
                                 if (edad >= 4 && edad <= 80) {
                                     break;
-                                }    
+                                }
+                                wait(1000);
+                                customPrint("La edad tiene que estar entre 4 y 80 años", "red");
                             }
+                            
                             Actor nuevoActor = new Actor(nombreArtista, idArtista, edad);
                             customPrint("Nuevo actor agregado: " + nombreArtista + " con ID " + idArtista, "green" + nuevoActor.getEdad());
                             artista = nuevoActor; // Asignar al artista actual
