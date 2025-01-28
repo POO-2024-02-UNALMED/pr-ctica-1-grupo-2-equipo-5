@@ -80,8 +80,7 @@ public class Actor extends Artista{
 
     public void setAptitudes(List<Aptitud> aptitudes){ this.aptitudes = aptitudes; }
     public List<Aptitud> getAptitudes(){ return this.aptitudes; }
-    public void addAptitud(Aptitud aptitud){ this.aptitudes.add(aptitud); }
-
+    
     public static long getTasa() {
         return TASA;
     }
