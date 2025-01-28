@@ -1,14 +1,20 @@
 /* package test;
 
+import java.io.File;
 import java.time.Duration;
 
+import baseDatos.Deserializador;
+import baseDatos.Serializador;
 import gestorAplicacion.gestionObras.Obra;
 import gestorAplicacion.gestionVentas.Funcion;
 import gestorAplicacion.gestionVentas.Sala;
 import gestorAplicacion.herramientas.Genero;
 
 public class funci_1 {
-    public static void prueba() {
+    public static void main(String[] args) {
+    String filename = "teatro.txt";
+    String path = "src" + File.separator + "baseDatos" + File.separator + "temp" + File.separator + filename;
+    Deserializador.loadState(path);
         
     
     Obra obra1 = new Obra("El gran show", Genero.CIRCO,Duration.ofHours(2).plusMinutes(30));
@@ -47,7 +53,7 @@ public class funci_1 {
         Funcion func5 = new Funcion(obra1,sala4);
         
         
-        
+        Serializador.saveState(path);
         
 
 
