@@ -9,6 +9,7 @@ import baseDatos.Teatro;
 
 import java.text.NumberFormat;
 
+import gestorAplicacion.gestionFinanciera.CuentaBancaria;
 import gestorAplicacion.herramientas.Aptitud;
 import gestorAplicacion.herramientas.Genero;
 
@@ -32,9 +33,8 @@ public class Actor extends Artista{
 
     public Actor(String nombre, long id){ 
         super(nombre, id);
-        actors.add(this); 
-        getArtistas().add(this);
-        Teatro.getInstancia().getActores().add(this);
+        Teatro.getInstancia().getActores().add(this); 
+        Teatro.getInstancia().getArtistas().add(this); 
         // Inicializar todas las aptitudes del enum Aptitud, ya que todos los actores tienen todas las aptitudes
         for (Aptitud aptitud : Aptitud.values()) {
             aptitudes.add(aptitud); 

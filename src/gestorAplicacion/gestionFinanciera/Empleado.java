@@ -8,16 +8,14 @@ import gestorAplicacion.herramientas.Aptitud;
 
 import java.util.ArrayList;
 
+import baseDatos.Teatro;
+
 public class Empleado implements Serializable{
-    private String nombre;
+    protected String nombre;
     private Long id;
     private final int salarioSeguridad = 6500;
     private final int salarioAseador = 5500;
     private final int salarioProfesor = 5500;
-    private static ArrayList<Empleado> empleadosPorRendimiento = new ArrayList<>();
-    private static ArrayList<Empleado> tipoSeguridad = new ArrayList<>();
-    private static ArrayList<Empleado> tipoAseador = new ArrayList<>();
-    private static ArrayList<Empleado> tipoProfesor = new ArrayList<>();
     private double TrabajoRealizado; //Es el total del trabajo realizado Pago
     private ArrayList<Boolean> trabajoCorrecto = new ArrayList<>();
     private int metaSemanal;
@@ -38,7 +36,7 @@ public class Empleado implements Serializable{
         this.ocupacion = ocupacion;
         this.deuda = 0;
         this.horario = new ArrayList<>(); //Lista donde se guarda el horario 
-        empleadosPorRendimiento.add(this);
+        Teatro.getInstancia().getEmpleadosPorRendimiento().add(this);
     }
 
     //Constructor para funcionalidad 4
@@ -166,39 +164,6 @@ public class Empleado implements Serializable{
 
     public void setTrabajos(ArrayList<Double> trabajos) {
         this.trabajos = trabajos;
-    }
-
-    //Empleados
-    public static ArrayList<Empleado> getEmpleadosPorRendimiento() {
-        return empleadosPorRendimiento;
-    }
-
-    public static void setEmpleadosPorRendimiento(ArrayList<Empleado> newEmpleadosPorRendimiento) {
-        empleadosPorRendimiento = newEmpleadosPorRendimiento;
-    }
-    
-    public static ArrayList<Empleado> getTipoSeguridad() {
-        return tipoSeguridad;
-    }
-
-    public static void setTipoSeguridad(ArrayList<Empleado> tipoSeguridad) {
-        Empleado.tipoSeguridad = tipoSeguridad;
-    }
-
-    public static ArrayList<Empleado> getTipoAseador() {
-        return tipoAseador;
-    }
-
-    public static void setTipoAseador(ArrayList<Empleado> tipoAseador) {
-        Empleado.tipoAseador = tipoAseador;
-    }
-
-    public static ArrayList<Empleado> getTipoProfesor() {
-        return tipoProfesor;
-    }
-
-    public static void setTipoProfesor(ArrayList<Empleado> tipoProfesor) {
-        Empleado.tipoProfesor = tipoProfesor;
     }
 
     //Horario

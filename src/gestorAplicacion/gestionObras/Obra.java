@@ -1,6 +1,9 @@
 package gestorAplicacion.gestionObras;
 
 import java.util.ArrayList;
+
+import baseDatos.Teatro;
+
 import java.time.LocalDateTime;
 import java.io.Serializable;
 import java.time.Duration;
@@ -426,7 +429,7 @@ public class Obra implements Serializable{
         ArrayList<Obra> obrasCriticas = new ArrayList<>();
     
         // Recopilar las obras en estado crítico
-        for (Obra obra : Obra.getObras()) {
+        for (Obra obra : Teatro.getInstancia().getObras()) {
             if (obra.promedioCalificacion() <= 2.0) { // Estado crítico definido como <= 2.0
                 obrasCriticas.add(obra);
             }

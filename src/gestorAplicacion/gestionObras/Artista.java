@@ -3,6 +3,8 @@ package gestorAplicacion.gestionObras;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+
+import baseDatos.Teatro;
 import gestorAplicacion.gestionClases.Clase;
 import gestorAplicacion.gestionFinanciera.CuentaBancaria;
 
@@ -24,7 +26,7 @@ public abstract class Artista implements Serializable{
         this.calificacion = calificacion;
         this.id = id;
         this.promedio = promedio;
-        this.cuenta = cuenta;
+        this.cuenta = new CuentaBancaria(id, 0);
         this.horario = new ArrayList<>(); //Lista donde se guarda el horario del artista
         this.clase = clase;
     }
@@ -33,6 +35,7 @@ public abstract class Artista implements Serializable{
         this.nombre = nombre;
         this.horario = new ArrayList<>();
         this.id = id;
+        this.cuenta = new CuentaBancaria(id, 0);
     }
     
     //GETTERS Y SETTERS
@@ -154,7 +157,7 @@ public abstract class Artista implements Serializable{
     }
 
     public static Artista buscarArtistaPorId(long id) {
-        for (Artista artista : Artista.getArtistas()) {
+        for (Artista artista : Teatro.getInstancia().getArtistas()) {
             if (artista.getId() == id) {
                 return artista; // Retorna el artista si coincide el ID
             }

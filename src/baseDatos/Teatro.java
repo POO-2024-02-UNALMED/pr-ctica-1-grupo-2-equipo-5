@@ -13,13 +13,14 @@ import gestorAplicacion.gestionFinanciera.Empleado;
 import gestorAplicacion.gestionObras.Director;
 import gestorAplicacion.gestionObras.Obra;
 import gestorAplicacion.gestionObras.Actor;
+import gestorAplicacion.gestionObras.Artista;
 
 
 public class Teatro implements Serializable{
     
     private final long serialVersionUID = 1L;
     private static Teatro instancia;
-    private Tesoreria tesoreria = new Tesoreria(0, 100);
+    private Tesoreria tesoreria = new Tesoreria(0, 5000000);
 
     private Sala sala1 = new Sala(1, 100, 24);
 
@@ -30,6 +31,7 @@ public class Teatro implements Serializable{
     private ArrayList<Empleado> tipoProfesor = new ArrayList<>();
     
     //artistas
+    private ArrayList<Artista> artistas = new ArrayList<>();
     private List<Actor> actores = new ArrayList<Actor>();
     private List<Director> directors = new ArrayList<Director>(); //lista que almacenará todos los actores creados
     
@@ -171,6 +173,14 @@ public class Teatro implements Serializable{
     public void setTiquetes(ArrayList<Tiquete> tiquetes) {
         this.tiquetes = tiquetes;
     }
-    
 
+    public ArrayList<Artista> getArtistas() {
+        return artistas;
+    }
+
+    public void setArtistas(ArrayList<Artista> artistas) {
+        this.artistas = artistas;
+    }
+    
+    
 }

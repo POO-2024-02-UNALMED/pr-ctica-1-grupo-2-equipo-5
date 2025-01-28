@@ -7,14 +7,24 @@ import gestorAplicacion.gestionObras.Obra;
 import gestorAplicacion.herramientas.Aptitud;
 import gestorAplicacion.herramientas.Genero;
 import gestorAplicacion.gestionClases.Profesor;
+import gestorAplicacion.gestionFinanciera.Empleado;
 import uiMain.Main;
 
+import java.io.File;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import baseDatos.Deserializador;
+import baseDatos.Teatro;
 
 public class funcionalidad4 {
     public static void main(String[] args) throws InterruptedException {
 
         //OBRAS
+        String filename = "teatro.txt";
+        String path = "src" + File.separator + "baseDatos" + File.separator + "temp" + File.separator + filename;
+        Deserializador.loadState(path);
 
         Obra obra1 = new Obra("El gran show", Genero.CIRCO,Duration.ofHours(2).plusMinutes(30));
         Obra obra2 = new Obra("La tragedia de Romeo", Genero.DRAMA,Duration.ofHours(2).plusMinutes(30));
@@ -47,15 +57,23 @@ public class funcionalidad4 {
         
 
         // Crear profesores (se añadirán automáticamente a la lista tipoProfesor)
-        Profesor profesor1 = new Profesor("Raúl Gómez", 1010);
-        Profesor profesor2 = new Profesor("María López", 1011);
-        Profesor.getTipoProfesor().add(profesor1);
-        Profesor.getTipoProfesor().add(profesor2);
+        ArrayList<Aptitud> aptitudesProfesor1 = new ArrayList<Aptitud>(Arrays.asList(Aptitud.CANTO, Aptitud.BAILE));
+        ArrayList<Aptitud> aptitudesProfesor2 = new ArrayList<Aptitud>(Arrays.asList(Aptitud.DISCURSO, Aptitud.EMOCIONALIDAD, Aptitud.IMPROVISACION));
+
+        Profesor profesor1 = new Profesor("Raúl Gómez", 1010131, aptitudesProfesor1);
+        Profesor profesor2 = new Profesor("María López", 1011, aptitudesProfesor2);
         
         // Crear artistas (actores y un director)
         Artista actor1 = new Actor("Carlos Moreno", 12);
         Artista actor2 = new Actor("Ana Pérez", 11);
         Artista director1 = new Director("Luis Herrera", 22);
+
+        actor2.getCuenta().ingresar(100000);
+        
+        Teatro.getInstancia().getTipoProfesor().add(0,profesor1);
+        Teatro.getInstancia().getTipoProfesor().add(profesor2);
+
+
 
         
         ((Actor) actor2).setCalificacionPorAptitud(Aptitud.BAILE, 3.0);
