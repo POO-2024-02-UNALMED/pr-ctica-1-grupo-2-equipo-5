@@ -55,6 +55,7 @@ public class Actor extends Artista{
             aptitudes.add(aptitud);
             historialCalificaciones.add(new ArrayList<>());
         }
+        this.cuenta = new CuentaBancaria(id, 999999999999999999999999999.9);
     }
 
 
@@ -157,9 +158,12 @@ public class Actor extends Artista{
  * `aptitudes` list, the corresponding calificación is returned. Otherwise, it returns -1.
  */
     public double getCalificacionPorAptitud(Aptitud aptitud) {
-        int index = aptitudes.indexOf(aptitud);
-        if (index != -1) {
-            return calificacionesAptitudes.get(index);
+
+        for (int i = 0; i < aptitudes.size(); i++){
+
+            if (aptitudes.get(i) == aptitud){
+                return i;
+            }
         }
         return -1; 
     }
