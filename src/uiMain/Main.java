@@ -479,13 +479,7 @@ public class Main {
         byte [] opciones_2 = {1,2,0};
         Cliente cliente= null;
         
-        customPrint(
-        "Ingrese la opcion correspondiente\n"+
-        "Eres cliente nuevo? \n"+ 
-        "1. SI\n"+
-        "2. NO\n"+
-        "0. MENU PRINCIPAL");
-        
+
 
         byte [] res= {1,2,0};
         int p_ =ask("Ingrese la opcion correspondiente\n"+
