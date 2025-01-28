@@ -3227,8 +3227,18 @@ public class Main {
                             break;
                         } else if (tipoArtista.equals("actor")) {
                             // Crear un nuevo actor
-                            Actor nuevoActor = new Actor(nombreArtista, idArtista);
-                            customPrint("Nuevo actor agregado: " + nombreArtista + " con ID " + idArtista, "green");
+                            int edad;
+                            while (true){
+                                edad = intAsk("Ingrese la edad del nuevo artista:\n" + "\n" + "(La edad mínima del actor es de 4 años y máxima de 80 años)");
+                                if (edad >= 4 && edad <= 80) {
+                                    break;
+                                }
+                                wait(1000);
+                                customPrint("La edad tiene que estar entre 4 y 80 años", "red");
+                            }
+                            
+                            Actor nuevoActor = new Actor(nombreArtista, idArtista, edad);
+                            customPrint("Nuevo actor agregado: " + nombreArtista + " con ID " + idArtista, "green" + nuevoActor.getEdad());
                             artista = nuevoActor; // Asignar al artista actual
                             wait(2000);
                             break;
@@ -3236,6 +3246,7 @@ public class Main {
                             customPrint("Tipo de artista no válido. Debe ser 'director' o 'actor'.", "red");
                         }
                     }
+                    break;
                 case 2:
                     ArrayList<Obra> obrasCritics = Obra.mostrarObrasCriticas();
                     // Mostrar todas las obras críticas
@@ -3265,9 +3276,9 @@ public class Main {
                                 }
                             }
                             wait(1500);
-                        }   
-                    }
-                    return;
+                        }  
+                        
+                    } 
                 }
         } else {
             customPrint("El artista ya existe en nuestra base de datos", "green");
