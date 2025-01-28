@@ -560,7 +560,7 @@ public class Main {
                 
             case 2:
                 customPrint("Creando Nuevo Codigo...");
-               wait(2000);
+                wait(2000);
                 
                 code= Cliente.IdRandom();
                 cliente = new Cliente(code,Suscripcion.Basica);
@@ -810,6 +810,7 @@ public class Main {
                 dineroTesoreria = ((Funcion.mostrarPrecioFuncion(inputF)*descuento)+precioSus);
                 Teatro.getInstancia().getTesoreria().setDineroEnCaja(Teatro.getInstancia().getTesoreria().getDineroEnCaja()+dineroTesoreria);
                 Teatro.getInstancia().getTesoreria().setTotal(Teatro.getInstancia().getTesoreria().getTotal()+dineroTesoreria);
+
                 
             wait(2000);
             
@@ -903,7 +904,7 @@ public class Main {
         }
     
         // Si obra1 no existe, se crea y se agrega al listado
-        if (obra1 == null) {
+        if (Teatro.getInstancia().getObras().size() == 0) {
             obra1 = new Obra(new Funcion(horarioEstObra1), Genero.EXPERIMENTAL,"NOTFORITE");
             Obra obra2 = new Obra(new Funcion(horarioEstObra2), Genero.DRAMA, "NOTFORITE");
             Obra obra3 = new Obra(new Funcion(horarioEstObra3), Genero.COMEDIA,"NOTFORITE");
@@ -923,8 +924,8 @@ public class Main {
         String menuObras = "";
         ArrayList<LocalDate> week = getWeek();
         if (!Teatro.getInstancia().getObras().isEmpty()){
-            for (Obra obra : Teatro.getInstancia().getObras()){   
-                if(obra.getNombre() != "NOTFORITE"){       
+            for (Obra obra : Teatro.getInstancia().getObras()){  
+                if(!obra.getNombre().equals("NOTFORITE")){   
                     i = i + 1;
                     String item = String.valueOf(i) + "." + obra.getNombre() + "\n";
                     menuObras = menuObras + item;
@@ -948,7 +949,7 @@ public class Main {
                 int f;
                 f = 0;
                 String actores = "";
-                for (Actor actor : Actor.getActors()){
+                for (Actor actor : Teatro.getInstancia().getActores()){
                     f = f + 1;
                     actores = actores + String.valueOf(f) + "."+ actor.getNombre();
                 }
@@ -969,12 +970,12 @@ public class Main {
                                 break;
 
                             }
-                            else if (s > Actor.getActors().size()){
+                            else if (s > Teatro.getInstancia().getActores().size()){
                                 customPrint("Opción fuera de rango, intenta de nuevo", "red");
                                 break;
                             }
                             else{
-                                Actor elegido = Actor.getActors().get(s - 1);
+                                Actor elegido = Teatro.getInstancia().getActores().get(s - 1);
                                 reparto.add(elegido);
                                 continuarSelAct = true;
                             }
@@ -1083,7 +1084,7 @@ public class Main {
                         customPrint("oops, parece que no ingresaste un número entero, intenta de nuevo", "red");
                     }
                 }
-                customPrint("Director creado: \n" + eleccionDir, "green");
+                customPrint("Director seleccionado: \n" + eleccionDir, "green");
                 Director director = eleccionDir;
                 x = 0;
                 boolean continuarCostProdu = false;
@@ -1159,7 +1160,6 @@ public class Main {
                 eleccion.addFuncion(funcion);
                 customPrint("Funcion creada\nHora:  " + funcion.getHorario() + "\nSala: " + funcion.getSala());
             }
-            if (in.hasNextLine()) {in.nextLine();}
     }
 
     public static void ContratarActor(){

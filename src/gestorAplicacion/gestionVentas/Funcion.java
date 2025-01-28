@@ -140,12 +140,11 @@ public class Funcion implements Serializable{
         ArrayList<Funcion> funcionesALaVenta = new ArrayList<>();
         if (!funcionesCreadas.isEmpty())
             for (Funcion funcion : funcionesCreadas){
-                System.out.println(funcion.getHorario());
                 if (funcion.getHorario().get(0).isAfter(LocalDateTime.now())){
                     funcionesALaVenta.add(funcion);
                 }
             }
-        return funcionesALaVenta;
+            return funcionesALaVenta;
     }
     public Funcion(Obra obra, ArrayList<LocalDate> week) {
         this.obra = obra;
