@@ -427,7 +427,7 @@ public class Main {
 
         while (task != 6){
 
-            customPrint("Teatro Carlos Mayolo", true);
+            customPrint("Teatro Escuela Carlos Mayolo", true);
 
             byte[] options = {1, 2, 3, 4, 5, 6};
             task = ask("Seleccione la tarea a realizar: \n1. Venta de tiquetes.\n2. Gestión de empleados.\n3. Gestión de obras.\n4. Gestión de clases.\n5. Contratación de actores.\n6. Cerrar el programa.", options, "");
@@ -896,7 +896,7 @@ public class Main {
         Sala sala3 = new Sala(3, 50, 16);
         Sala sala4 = new Sala(4, 150, 24);
         Obra obra1 = null;
-        for (Obra obra : Obra.getObras()) {
+        for (Obra obra : Teatro.getInstancia().getObras()) {
             if (obra.getNombre().trim().equals("NOTFORITE")) { 
                 obra1 = obra;
                 break;
@@ -923,8 +923,8 @@ public class Main {
         eleccion = null;
         String menuObras = "";
         ArrayList<LocalDate> week = getWeek();
-        if (!Obra.getObras().isEmpty()){
-            for (Obra obra : Obra.getObras()){   
+        if (!Teatro.getInstancia().getObras().isEmpty()){
+            for (Obra obra : Teatro.getInstancia().getObras()){   
                 if(obra.getNombre() != "NOTFORITE"){       
                     i = i + 1;
                     String item = String.valueOf(i) + "." + obra.getNombre() + "\n";
@@ -941,7 +941,7 @@ public class Main {
         String obraSel = ask("Por favor indique el número de su elección sin punto");
             if(canBeInt(obraSel)){
             if (Integer.parseInt(obraSel) <= i){
-                eleccion = Obra.getObras().get(Integer.parseInt(obraSel) - 1 + o);
+                eleccion = Teatro.getInstancia().getObras().get(Integer.parseInt(obraSel) - 1 + o);
                 continuarSelObra = true;
             }
             else if (Integer.parseInt(obraSel) > i){
@@ -3020,6 +3020,8 @@ public class Main {
             if(Persona.getMetaSemanal() < 0){
                 NuevaLista.remove(Persona);
                 Despedidos.add(Persona);
+                double liquidacion = (Persona.calcularSueldo()*1.2) + Persona.getDeuda();
+                Teatro.getInstancia().getTesoreria().getCuenta().transferencia(Persona.getCuenta(), liquidacion);
                 msgBase = msgBase + Persona.getNombre() + "\n";
             }
             continue;
