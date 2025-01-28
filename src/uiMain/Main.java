@@ -1086,8 +1086,18 @@ public class Main {
     
                 if (a + 2 < rut) {
                     customPrint("ALERTA, PUEDEN SER DEMASIADAS FUNCIONES PARA ESTA OBRA\n DESEA CONTINUAR?\n 1. Sí\n 2. No");
-                    byte sc = in.nextByte();
-    
+                    boolean continuarByteAlertaMax = false;
+                    byte sc = 0;
+                    while (!continuarByteAlertaMax){
+                        String stc = in.nextLine();
+                        if(canBeByte(stc)){
+                            sc = Byte.parseByte(stc);
+                            continuarByteAlertaMax = true;
+                        }
+                        else{
+                            customPrint("Opción inválida, intenta de nuevo");
+                        }
+                    }
                     switch (sc) {
                         case 1:
                             continuar = true; // Acepta y sale del ciclo
@@ -1103,7 +1113,18 @@ public class Main {
                 }
                 else if (a - 2 > rut){
                     customPrint("ALERTA, PUEDEN SER MUY POCAS FUNCIONES PARA ESTA OBRA\n DESEA CONTINUAR?\n 1. Sí\n 2. No");
-                    byte sc = in.nextByte();
+                    boolean continuarByteAlertaMin = false;
+                    byte sc = 0;
+                    while(!continuarByteAlertaMin){
+                        String stc = in.nextLine();
+                        if (canBeByte(stc)){
+                            sc = Byte.parseByte(stc);
+                            continuarByteAlertaMin = true;
+                        }
+                        else{
+                            customPrint("Opción no válida, intente nuevamente.")
+                        }
+                    }
     
                     switch (sc) {
                         case 1:
