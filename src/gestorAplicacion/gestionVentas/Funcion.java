@@ -324,21 +324,23 @@ public static String imprimirFuncion(Funcion funcion){
 
 public static Funcion buscarFuncion(String nombre){
     for (Funcion funcion : Teatro.getInstancia().getFuncionesCreadas()) {
+        if (funcion.obra!=null){
         if ((funcion.obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
             return funcion;
         }
         
-    }
+    }}
     return null;
 
 
 }
 public static float mostrarPrecioFuncion(String nombre){
     for (Funcion funcion : Teatro.getInstancia().getFuncionesCreadas()) {
+        if (funcion.obra!=null){
         if ((funcion.obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
             return precioFuncion(funcion);
         }
-        
+    }
     }
     return 0;
 
