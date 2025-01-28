@@ -1215,6 +1215,24 @@ public class Main {
             customPrint(horarioToString);
             horarioToString = "";
         }
+
+        //Impresión de lista de clientes
+
+        if (!Teatro.getInstancia().getClientes().isEmpty()){
+                ArrayList<Cliente> listaClientes = new ArrayList<>();
+                String lista = "";
+                for (Cliente cliente : Teatro.getInstancia().getClientes()){
+                    if (cliente.getGeneroFavorito() != null){
+                        if(eleccion.getGenero() == cliente.getGeneroFavorito()){
+                            listaCliente.add(cliente);
+                        }
+                    }
+                }
+                for (Cliente cliente : listaCliente){
+                    lista = lista + cliente.getNombre() + "/n";
+                }
+            customPrint(lista);
+            }
     } 
 
 
