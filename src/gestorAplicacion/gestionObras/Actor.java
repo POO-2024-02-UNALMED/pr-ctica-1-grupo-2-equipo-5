@@ -43,6 +43,18 @@ public class Actor extends Artista{
         this.edad = edad;
     }
 
+    public Actor(String nombre, long id){
+        super(nombre, id);
+        Teatro.getInstancia().getActores().add(this);
+        Teatro.getInstancia().getArtistas().add(this);
+
+        for (Aptitud aptitud : Aptitud.values()){
+            aptitudes.add(aptitud);
+            historialCalificaciones.add(new ArrayList<>());
+        }
+    }
+
+
     public String toString(){
         return super.getNombre() + "\nId: " + super.getId() + "\nEdad: " + this.edad + "\nCalificación: " + super.getCalificacion() + "\nPrecio de contratación: " +  formatoPrecio(this.precioContrato);
     }
@@ -130,6 +142,17 @@ public class Actor extends Artista{
         this.historialCalificaciones = historialCalificaciones;
     }
 
+/**
+ * This Java function retrieves the rating for a specific aptitude from a list of aptitudes and their
+ * corresponding ratings.
+ * 
+ * @param aptitud The `aptitud` parameter in the `getCalificacionPorAptitud` method represents an
+ * object of the `Aptitud` class. This method is designed to retrieve the calificación (rating)
+ * associated with a specific `aptitud` from the `calificacionesAptitudes` list
+ * @return The method `getCalificacionPorAptitud` returns a `double` value representing the
+ * calificación (rating) associated with the given `Aptitud` object. If the `aptitud` is found in the
+ * `aptitudes` list, the corresponding calificación is returned. Otherwise, it returns -1.
+ */
     public double getCalificacionPorAptitud(Aptitud aptitud) {
         int index = aptitudes.indexOf(aptitud);
         if (index != -1) {
@@ -146,6 +169,14 @@ public class Actor extends Artista{
         }
     }
     
+/**
+ * The function "obtenerAreasDeMejora" sorts a list of aptitudes based on their ratings and returns a
+ * list of aptitudes that have a rating of 3.0 or lower.
+ * 
+ * @return The method `obtenerAreasDeMejora()` returns a List of `Aptitud` objects that represent areas
+ * for improvement based on their ratings. The areas for improvement are determined by filtering out
+ * the `Aptitud` objects with a rating less than or equal to 3.0.
+ */
     public List<Aptitud> obtenerAreasDeMejora() {
         // Crear una lista de índices y ordenar según las calificaciones
         List<Integer> indicesOrdenados = new ArrayList<>();
@@ -172,6 +203,17 @@ public class Actor extends Artista{
         return index != -1 ? historialCalificaciones.get(index) : null;
     }
 
+/**
+ * The `registrarCalificacion` method registers a new rating for a specific skill in an actor's history
+ * of ratings.
+ * 
+ * @param aptitud `aptitud` is an object of type `Aptitud`, which represents a particular skill or
+ * ability. It is used to identify the specific aptitude for which a new rating is being registered in
+ * the `registrarCalificacion` method.
+ * @param calificacion The parameter `calificacion` in the `registrarCalificacion` method represents
+ * the numerical score or rating that is being assigned to a particular `Aptitud` (aptitude) for a
+ * specific actor. This score is added to the historical record of ratings for that aptitude.
+ */
     public void registrarCalificacion(Aptitud aptitud, double calificacion) {
         int index = aptitudes.indexOf(aptitud); // Busca la posición (índice) de la aptitud en la lista de aptitudes
         if (index != -1) { 
@@ -181,6 +223,15 @@ public class Actor extends Artista{
         }
     }
 
+/**
+ * The function "huboMejora" checks if there was an improvement in the aptitude based on the historical
+ * ratings.
+ * 
+ * @param aptitud Aptitud is an object representing the aptitude of a person or a system. It likely
+ * contains information about the performance or abilities of the individual or system.
+ * @return The method `huboMejora` returns a boolean value indicating whether there was an improvement
+ * in the aptitude based on the historical ratings.
+ */
     public boolean huboMejora(Aptitud aptitud) {
         ArrayList<Double> calificaciones = getHistorialCalificaciones(aptitud);
         if (calificaciones == null || calificaciones.size() < 2) return false;
@@ -188,6 +239,18 @@ public class Actor extends Artista{
         return calificaciones.get(n - 1) > calificaciones.get(n - 2);
     }
 
+/**
+ * The function checks if a certain aptitude has not improved in the last four attempts based on its
+ * historical ratings.
+ * 
+ * @param aptitud Aptitud is an object representing the fitness or performance level of a certain
+ * entity, such as a person, a machine, or a system. It typically contains information about the
+ * performance metrics or scores achieved by the entity in a certain task or context.
+ * @return The method `noHaMejoradoEnCuatroIntentos` returns a boolean value. It checks if the last
+ * four entries in the list of `calificaciones` are in non-decreasing order. If they are in
+ * non-decreasing order, it returns `true`, indicating that there has been no improvement in the last
+ * four attempts. Otherwise, it returns `false`.
+ */
     public boolean noHaMejoradoEnCuatroIntentos(Aptitud aptitud) {
         ArrayList<Double> calificaciones = getHistorialCalificaciones(aptitud);
         if (calificaciones == null || calificaciones.size() < 4) return false;
@@ -197,6 +260,14 @@ public class Actor extends Artista{
                 && calificaciones.get(n - 3) <= calificaciones.get(n - 4);
     }
     
+/**
+ * The Java function `sigueIgual()` checks if a list of aptitude scores is equal to a predefined
+ * initial list.
+ * 
+ * @return The method `sigueIgual()` is returning a boolean value. It returns `true` if the list
+ * `calificacionesAptitudes` is equal to the list `inicial`, which contains five elements with a value
+ * of 0.0.
+ */
     public boolean sigueIgual() {
         // Crear una lista con el valor inicial para comparar
         ArrayList<Double> inicial = new ArrayList<>(Arrays.asList(0.0, 0.0, 0.0, 0.0, 0.0));

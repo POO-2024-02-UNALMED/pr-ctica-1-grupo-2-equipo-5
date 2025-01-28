@@ -943,10 +943,16 @@ public class Main {
                             }
                             else{
                                 Actor elegido = Teatro.getInstancia().getActores().get(s - 1);
+                                if (!reparto.contains(elegido)){
                                 reparto.add(elegido);
                                 continuarSelAct = true;
+                                }
+                                else{
+                                    customPrint("Actor ya hace parte del reparto, por favor elige otro");
+                                    break;
+                                }
                             }
-                                byte[] listByte= {1, 2, 3, 4, 5};                
+                                byte[] listByte= {1, 32, 3, 4, 5};                
                                 byte u = ask("Por favor indica en qué se debe enfocar el actor \n (Solo puedes seleccionar una opción, sin embargo,\n varios actores pueden enfocarse en la misma opción) \nrecuerde digitar solo el número de la opción\n1. Canto\n2. Baile\n3. Discurso\n4. Emocionalidad\n5. Improvisación", listByte, "blue");
                                 switch (u){
                                     case 1:
@@ -1104,7 +1110,6 @@ public class Main {
                             drut = rut;
                             break;
                         case 2:
-                            System.out.println("¿Cuántas funciones te gustaría crear para esta obra?");
                             break; // Repite el ciclo para pedir de nuevo el dato
                         default:
                             System.out.println("Opción no válida, intente nuevamente.");
@@ -1132,7 +1137,6 @@ public class Main {
                             drut = rut;
                             break;
                         case 2:
-                            System.out.println("¿Cuántas funciones te gustaría crear para esta obra?");
                             break; // Repite el ciclo para pedir de nuevo el dato
                     }
                 }
@@ -1411,6 +1415,8 @@ public class Main {
                 actorsForRental.removeIf(actor -> !actor.getGeneros().contains(Genero.TERROR));
                 break;
         }
+
+        actorsForRental.removeIf(actor -> actor.isReevaluacion());
 
         byte[] five = {0, 1, 2, 3, 4, 5};
         byte aptitud = ask("¿En qué aptitud debería sobresalir el actor?\n1. Canto.\n2. Baile.\n3. Discurso.\n4. Emocionalidad\n5. Improvisación.", five, "");

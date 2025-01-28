@@ -150,9 +150,11 @@ public abstract class Artista implements Serializable{
     public boolean isDisponible(LocalDateTime inicio, LocalDateTime fin) {
         for (ArrayList<LocalDateTime> evento : horario) {
             if (inicio.isBefore(evento.get(1)) && fin.isAfter(evento.get(0))) {
+                System.out.println("ocupao");
                 return false; // Horario ocupado
             }
         }
+        System.out.println("disponivel");
         return true; // Horario disponible
     }
 

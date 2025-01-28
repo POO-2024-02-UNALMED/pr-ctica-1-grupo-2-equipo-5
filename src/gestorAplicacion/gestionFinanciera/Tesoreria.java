@@ -18,6 +18,13 @@ public class Tesoreria implements Serializable{
     }
 
     //Metodo Verificacion Meta:
+/**
+ * The function `verificacionMeta` checks if the total value is equal to the weekly goal and returns
+ * true if they are equal, otherwise returns false.
+ * 
+ * @return The method `verificacionMeta` is returning a boolean value. It returns `true` if the total
+ * is equal to the weekly goal (`metaSemanal`), and `false` otherwise.
+ */
     public boolean verificacionMeta(){
         if (this.total == this.metaSemanal) {
             return true;

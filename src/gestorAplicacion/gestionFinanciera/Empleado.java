@@ -186,6 +186,20 @@ public class Empleado implements Serializable{
         return this.salarioProfesor;
     }
     
+/**
+ * The `casting` function checks if an `Artista` is an instance of `Actor`, assigns random ratings to
+ * the actor based on aptitudes, and returns true if successful.
+ * 
+ * @param artista The `artista` parameter is of type `Artista`, which is a superclass for different
+ * types of artists. In this method, we are checking if the `artista` object is an instance of the
+ * `Actor` class before proceeding with the casting operation.
+ * @param profesores The `profesores` parameter is an ArrayList of Empleado objects, which represents a
+ * list of employees. In the context of the `casting` method, it is used to check if the list is not
+ * null and not empty before proceeding with the casting process for an Artista object.
+ * @return The method `casting` returns a boolean value. It returns `true` if the conditions for
+ * setting random ratings for an actor's aptitudes are met, and it returns `false` if the `artista` is
+ * not an instance of `Actor` or if the `profesores` list is null or empty.
+ */
     public static boolean casting(Artista artista, ArrayList<Empleado> profesores) {
         if (!(artista instanceof Actor)) {
         return false; // Solo aplicable a actores
