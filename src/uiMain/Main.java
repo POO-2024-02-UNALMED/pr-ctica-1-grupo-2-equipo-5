@@ -425,6 +425,14 @@ public class Main {
         Deserializador.loadState(path);
         // -----------------------------------------------------------------------//
 
+        //si no existen salas, hay que crearlas
+        if (Teatro.getInstancia().getSalas().size() == 0 ){
+        Sala sala1 = new Sala(1, 100, 24);
+        Sala sala2 = new Sala(2, 200, 48);
+        Sala sala3 = new Sala(3, 50, 16);
+        Sala sala4 = new Sala(4, 150, 24);
+        }
+        
         while (task != 6){
 
             customPrint("Teatro Escuela Carlos Mayolo", true);
@@ -459,12 +467,6 @@ public class Main {
                 break;
             }
         }
-
-        
-        Sala sala1 = new Sala(1, 100, 24);
-        Sala sala2 = new Sala(2, 200, 48);
-        Sala sala3 = new Sala(3, 50, 16);
-        Sala sala4 = new Sala(4, 150, 24);
     }
 
     public static void gestionVentas(){
@@ -862,10 +864,7 @@ public class Main {
         horarioEstObra7.add(LocalDateTime.of(2024,1,1,23,30));
         horarioEstObra8.add(LocalDateTime.of(2024, 1, 1, 10, 00));
         horarioEstObra8.add(LocalDateTime.of(2024,1,1,17,30));
-        Sala sala1 = new Sala(1, 100, 24);
-        Sala sala2 = new Sala(2, 200, 48);
-        Sala sala3 = new Sala(3, 50, 16);
-        Sala sala4 = new Sala(4, 150, 24);
+
         Obra obra1 = null;
         for (Obra obra : Teatro.getInstancia().getObras()) {
             if (obra.getNombre().trim().equals("NOTFORITE")) { 
