@@ -43,8 +43,7 @@ import gestorAplicacion.gestionObras.Director;
 public class Main {
 
     public static Scanner in = new Scanner(System.in);
-    //public static boolean supportsColor = (System.console() != null && System.getenv().get("TERM") != null);
-    public static boolean supportsColor = true;
+    public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, dd 'de' MMMM 'de' yyyy", new Locale("es"));
 
 
     //------------------HERRAMIENTAS-------------------------//
@@ -75,10 +74,18 @@ public class Main {
         customPrint(question);
         String input = in.nextLine();
 
+        if (input.equals("0")){
+            return null;
+        }
+
         while (!canBeTime(input)){
             customPrint("La respuesta introducida no está en el formato 24 horas (HH:MM). Intente de nuevo:", true, "red");
             customPrint(question);
             input = in.nextLine();     
+
+            if (input == "0"){
+                return null;
+            }
         }
 
         LocalTime answer = LocalTime.parse(input);
@@ -301,10 +308,6 @@ public class Main {
             chosenColor = reset; break;
         }
 
-        if(!supportsColor){
-            chosenColor = reset;
-        }
-
         System.out.println(chosenColor + "┌" + "─".repeat(LARGO_LINEAS) + "┐" + reset);
         String[] cadenas = cadena.split("\n");
 
@@ -323,8 +326,7 @@ public class Main {
         LocalDateTime fechaInicio = null;
         LocalDateTime fechaFin = null;
         LocalDate diaEscogido = null;
-        byte[] seven = {1, 2, 3, 4, 5, 6, 7};
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, dd 'de' MMMM 'de' yyyy", new Locale("es"));
+        byte[] seven = {0, 1, 2, 3, 4, 5, 6, 7};
 
         if(date){
             
@@ -336,6 +338,10 @@ public class Main {
             }
 
             byte dia = ask(preguntaCompleta, seven, "");
+            if (dia == 0){
+                customPrint("Saliendo...", "red");
+                return null;
+            }
             diaEscogido = getWeek().get( dia-1 );
 
         } else{
@@ -345,7 +351,18 @@ public class Main {
 
         while(true){
             inicioHorario = timeAsk("Introduzca horario de inicio (Responda en formato HH:MM).");
+
+            if (inicioHorario == null){
+                customPrint("Saliendo...", "red");
+                return null;
+            }
+
             finHorario = timeAsk("Introduzca horario de fin (Responda en formato HH:MM).");
+
+            if (finHorario == null){
+                customPrint("saliendo...", "red");
+                return null;
+            }
 
 
             if (inicioHorario.isBefore(horaMin) || finHorario.isAfter(horaMax) || finHorario.isBefore(inicioHorario) || inicioHorario.isAfter(finHorario)){
@@ -398,7 +415,7 @@ public class Main {
 // creación de salas
 //    Sala sala1 = new Sala(1, 100, 24);
 
-    public static void main(String args[]) throws InterruptedException {  
+    public static void main(String args[]){  
 
         byte task = -1;
 
@@ -406,7 +423,6 @@ public class Main {
         String filename = "teatro.txt";
         String path = "src" + File.separator + "baseDatos" + File.separator + "temp" + File.separator + filename;
         Deserializador.loadState(path);
-        //Teatro teatro = Teatro.getInstancia();
         // -----------------------------------------------------------------------//
 
         while (task != 6){
@@ -499,12 +515,7 @@ public class Main {
                     customPrint("Iniciando sesion...");
                     cliente=Cliente.asignar(code);
                     
-                try {
-                    // Pausa de 2 segundos (2000 milisegundos)
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    customPrint("La pausa fue interrumpida.");
-                }
+                wait(2000);
                 customPrint("Sesion Iniciada","green");
         
                 salir = true;
@@ -545,18 +556,11 @@ public class Main {
                     
                     
                 }
-            case 3:
-                return;
+            
                 
             case 2:
                 customPrint("Creando Nuevo Codigo...");
-                try {
-                    // Pausa de 2 segundos (2000 milisegundos)
-                    Thread.sleep(2000);
-                } catch (Exception e) {
-                    customPrint("La pausa fue interrumpida.");
-                    
-                }
+               wait(2000);
                 
                 code= Cliente.IdRandom();
                 cliente = new Cliente(code,Suscripcion.Basica);
@@ -564,6 +568,9 @@ public class Main {
 
                 
                 salir = true;
+                break;
+            case 3:
+                return;
             
             
                 
@@ -804,13 +811,7 @@ public class Main {
                 Teatro.getInstancia().getTesoreria().setDineroEnCaja(Teatro.getInstancia().getTesoreria().getDineroEnCaja()+dineroTesoreria);
                 Teatro.getInstancia().getTesoreria().setTotal(Teatro.getInstancia().getTesoreria().getTotal()+dineroTesoreria);
                 
-            try {
-                // Pausa de 2 segundos (4000 milisegundos)
-                Thread.sleep(4000);
-            } catch (InterruptedException e) {
-                customPrint("La pausa fue interrumpida.");
-                
-            }
+            wait(2000);
             
         
         
@@ -845,13 +846,7 @@ public class Main {
             customPrint(tiquete.imprimirFactura(cliente,antiguof,precioTotalFuncion,precioFuncion,precioSus));
         }else{
             customPrint("Cancelando Compra...");
-            try {
-                // Pausa de 2 segundos (4000 milisegundos)
-                Thread.sleep(4000);
-            } catch (InterruptedException e) {
-                customPrint("La pausa fue interrumpida.");
-                
-            }
+            wait(2000);
             customPrint("Compra Cancelada");
             return;
         }
@@ -1372,6 +1367,10 @@ public class Main {
 
         LocalDateTime[] horario = setSchedule(diasCadena, horaMin, horaMax, 4, 8, true, advertencia5);
 
+        if (horario == null){
+            return;
+        }
+
         LocalDateTime fechaInicio = horario[0];
         LocalDateTime fechaFin = horario[1]; 
 
@@ -1649,9 +1648,9 @@ public class Main {
             }
         }
 
-        customPrint("El actor escogido fue " + actorEscogido.getNombre() + " por un precio de " +  Actor.formatoPrecio(actorEscogido.getPrecioContrato(duracionContrato)));
-        byte codigoCompra = empresa.pagarContratoActor(actorEscogido, duracionContrato, Teatro.getInstancia().getTesoreria());
         customPrint("Pago recibido!", true, "green");
+        customPrint("El actor escogido fue " + actorEscogido.getNombre() + " por un precio de " +  Actor.formatoPrecio(actorEscogido.getPrecioContrato(duracionContrato)) + "\nLa contratación tendrá lugar el:\n" + fechaInicio.toLocalDate().format(formatter) + "\n(" + fechaInicio.toLocalTime() + "-" + fechaFin.toLocalTime() + ")", "green");
+        byte codigoCompra = empresa.pagarContratoActor(actorEscogido, duracionContrato, Teatro.getInstancia().getTesoreria());
         ArrayList<LocalDateTime> horarioFinal = new ArrayList<>(); horarioFinal.add(fechaInicio); horarioFinal.add(fechaFin);
         actorEscogido.addHorario(horarioFinal);
 
@@ -3303,6 +3302,11 @@ public class Main {
                     customPrint("Tenga en cuenta que el horario de clases inicia a las 10 am y terminan a las 10 pm.\n" + "Las clases tienen como duración mínima 2 horas y máxima 4 horas.", "blue");
 
                     LocalDateTime[] clases = setSchedule(preguntaClase, horaMin, horaMax, 2, 4, true, advertencia);
+
+                    if (clases == null){
+                        return;
+                    }
+
                     LocalDateTime inicio = clases[0];
                     LocalDateTime fin = clases[1];
                 
@@ -3418,6 +3422,11 @@ public class Main {
                                 LocalDateTime nuevoFin = null;
                                 while (true) {
                                     LocalDateTime[] clasesNuevas = setSchedule(preguntaClase, horaMin, horaMax, 2, 4, true, advertencia);
+                                    
+                                    if (clasesNuevas == null){
+                                        return;
+                                    }
+
                                     nuevoInicio = clasesNuevas[0];
                                     nuevoFin = clasesNuevas[1];
                                     if (nuevoInicio.isAfter(fin)) {
