@@ -248,24 +248,27 @@ public class Funcion implements Serializable{
     }
 public static boolean indiceFuncion(int i,String nombre){
     int in =0;
+    
     for (Funcion funcion : Teatro.getInstancia().getFuncionesCreadas()) {
+        if (funcion.obra!=null){
         if ((funcion.obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
             in++;
 
         }
-    }
+    }}
 
 return in >= i;
 }
 public static Funcion escogerFuncion(int i,String nombre){
     int in=0;
     for (Funcion funcion : Teatro.getInstancia().getFuncionesCreadas()) {
+        if (funcion.obra!=null){
         if ((funcion.obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
             in++;
             if (in==i){
                 return funcion;
             }
-            
+        }
             
         }
         
