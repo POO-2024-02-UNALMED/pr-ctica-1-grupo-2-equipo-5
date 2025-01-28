@@ -31,7 +31,7 @@ public class Actor extends Artista{
     private ArrayList<Double> calificacionesAptitudes = new ArrayList<>(Arrays.asList(0.0, 0.0, 0.0, 0.0, 0.0)); // Calificaciones asociadas a las aptitudes
     private ArrayList<ArrayList<Double>> historialCalificaciones = new ArrayList<>();
 
-    public Actor(String nombre, long id){ 
+    public Actor(String nombre, long id, int edad){ 
         super(nombre, id);
         Teatro.getInstancia().getActores().add(this); 
         Teatro.getInstancia().getArtistas().add(this); 
@@ -40,6 +40,7 @@ public class Actor extends Artista{
             aptitudes.add(aptitud); 
             historialCalificaciones.add(new ArrayList<>()); // Crear espacio para las calificaciones de esa aptitud
         }
+        this.edad = edad;
     }
 
     public String toString(){
