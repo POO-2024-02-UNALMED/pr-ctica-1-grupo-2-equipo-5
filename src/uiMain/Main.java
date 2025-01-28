@@ -2036,7 +2036,12 @@ public class Main {
         int base = 6;
         int totalFunciones = Teatro.getInstancia().getFuncionesCreadas().size();
         int totalTrabajadores_S = Teatro.getInstancia().getTipoSeguridad().size();
-        int funcion_por_trabajador = totalFunciones/totalTrabajadores_S;
+        int funcion_por_trabajador;
+        if(totalTrabajadores_S == 0){
+            funcion_por_trabajador = 0;
+        }else{
+            funcion_por_trabajador = totalFunciones/totalTrabajadores_S;
+        }
         ArrayList<Funcion> funcionesDisponibles = new ArrayList<>(Teatro.getInstancia().getFuncionesCreadas());
         //Se organiza la lista por fecha
         try{
@@ -2046,9 +2051,8 @@ public class Main {
         }
         catch(Exception e){}
 
-
         //Verificar si las listas no estan vacias
-        if(totalFunciones != 0 && totalTrabajadores_S != 0){
+        if(funcion_por_trabajador != 0){
             for(Empleado Persona : Teatro.getInstancia().getTipoSeguridad()){
                 if(Persona.getMetaSemanal() == base){
                     cant_trabajadores_principiantes += 1;
@@ -2350,10 +2354,10 @@ public class Main {
         //Por tanto imprime cuantas funciones quedaron sin asiganr
         if(funcionesDisponibles.size() != 0 ){
             if(funcionesDisponibles.size() == 1){
-                customPrint("Existen " + funcionesDisponibles.size() + " funcion sin posibilidad de seguridad");
+                customPrint("Existen " + funcionesDisponibles.size() + " funcion sin posibilidad de seguridad", "red");
             }
             else{
-                customPrint("Existen " + funcionesDisponibles.size() + " funciones sin posibilidad de seguridad");
+                customPrint("Existen " + funcionesDisponibles.size() + " funciones sin posibilidad de seguridad", "red");
             }
         }
 
@@ -2361,7 +2365,13 @@ public class Main {
         cant_trabajadores_principiantes = 0;
         int totalSalas = Sala.getSalas().size();
         int totalTrabajadores_A = Teatro.getInstancia().getTipoAseador().size();
-        int cant_a_limpiar = totalFunciones/totalTrabajadores_A;
+        int cant_a_limpiar;
+        if(totalTrabajadores_A == 0){
+            cant_a_limpiar = 0;
+        }
+        else{
+            cant_a_limpiar = totalFunciones/totalTrabajadores_A;
+        }
         ArrayList<Funcion> funcionesLimpiadas = new ArrayList<>(Teatro.getInstancia().getFuncionesCreadas()); 
         try{
             funcionesLimpiadas.sort((f1, f2) ->
@@ -2369,7 +2379,7 @@ public class Main {
             );
         }
         catch(Exception e){}
-        if(totalSalas != 0 && totalTrabajadores_A != 0){
+        if(cant_a_limpiar != 0){
             for(Empleado Persona : Teatro.getInstancia().getTipoAseador()){
                 if(Persona.getMetaSemanal() == base){
                     cant_trabajadores_principiantes += 1;
