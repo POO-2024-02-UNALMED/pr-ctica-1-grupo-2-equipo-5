@@ -1131,7 +1131,8 @@ public class Main {
                 customPrint("Funcion creada\nHora:  " + funcion.getHorario() + "\nSala: " + funcion.getSala());
             }
 
-            //Impresión del horario 
+             //Impresión del horario 
+            String horarioToString = "";
         ArrayList<LocalDateTime> dias = new ArrayList<>();
         LocalDateTime hoy = LocalDateTime.now();
         for (int pio = 1; pio <= 7; pio++) {
@@ -1144,7 +1145,7 @@ public class Main {
 
 
         for (Sala sala : Teatro.getInstancia().getSalas()) {
-            System.out.println("Horario para sala" + sala.getNumeroSala() + ":");
+            horarioToString = horarioToString + "Horario para sala" + sala.getNumeroSala() + ":\n";
             
             // Crear columnas para los 7 días
             ArrayList<ArrayList<String>> columnasDias = new ArrayList<>();
@@ -1154,9 +1155,11 @@ public class Main {
 
             // Filtrar y organizar las funciones de esta sala
             ArrayList<Funcion> funcionesSala = new ArrayList<>();
-            for (Funcion funcion : Teatro.getInstancia().getFuncionesCreadas()) {
-                if (funcion.getSala().equals(sala)) {
-                    funcionesSala.add(funcion);
+            for (Funcion funcion : Teatro.getInstancia().getFuncionesCreadas()) {            
+                if (funcion.getObra() != null){
+                    if (funcion.getSala().equals(sala)) {
+                        funcionesSala.add(funcion);
+                    }
                 }
             }
 
@@ -1168,7 +1171,7 @@ public class Main {
                     LocalDateTime finDia = inicioDia.plusDays(1);
 
                     if (funcion.getHorario().get(0).isAfter(inicioDia) && funcion.getHorario().get(0).isBefore(finDia)) {
-                        columnasDias.get(i).add(
+                        columnasDias.get(pou).add(
                             funcion.getObra().getNombre() + " (" + 
                             funcion.getHorario().get(0).format(formatoHora) + " - " + 
                             funcion.getHorario().get(1).format(formatoHora) + ")"
@@ -1177,18 +1180,25 @@ public class Main {
                     }
                 }
             }
-
+            for (ArrayList<String> diaFunciones : columnasDias) {
+                diaFunciones.sort((f1, f2) -> {
+                    LocalTime horaF1 = LocalTime.parse(f1.substring(f1.indexOf("(") + 1, f1.indexOf(" -")), formatoHora);
+                    LocalTime horaF2 = LocalTime.parse(f2.substring(f2.indexOf("(") + 1, f2.indexOf(" -")), formatoHora);
+                    return horaF1.compareTo(horaF2);
+                });
+            }
             //Imprimir el horario en columnas
             for (int coo = 0; coo < 7; coo++) {
-                System.out.println("Día " + dias.get(coo).format(formatoFecha) + ":");
+                horarioToString = horarioToString + "Día " + dias.get(coo).format(formatoFecha) + ":\n";
                 for (String detalleFuncion : columnasDias.get(coo)) {
-                    System.out.println("   " + detalleFuncion);
+                    horarioToString = horarioToString + "   " + detalleFuncion + "\n";
                 }
-                System.out.println();
             }
-            System.out.println("-----------------------------------");
+            customPrint(horarioToString);
+            horarioToString = "";
         }
-    }
+        in.nextLine() = in.nextLine();
+    } 
 
 
             

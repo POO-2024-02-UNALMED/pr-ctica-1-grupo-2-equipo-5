@@ -176,7 +176,7 @@ public class Funcion implements Serializable{
     public ArrayList<LocalDateTime> createHorario(ArrayList<LocalDate> week){
         ArrayList<LocalDateTime> horario = new ArrayList<>();
         LocalTime inicioFranja = this.obra.getFranjaHoraria().get(0);
-        for (Sala sala : Sala.getSalas()){
+        for (Sala sala : Teatro.getInstancia().getSalas()){
             if (sala.getCapacidad() > this.obra.getAudienciaEsperada()){
                 for (LocalDate day : week){
                     LocalTime inicioFranjaITE = inicioFranja;
