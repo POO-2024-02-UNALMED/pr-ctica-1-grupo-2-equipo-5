@@ -2397,6 +2397,7 @@ public class Main {
                             Funcion Funciones = funcionesLimpiadas.get(i);
                             //Verificar si la funcion tiene horario
                             if(!Funciones.getHorario().isEmpty()){
+                                System.out.println(Funciones.getHorario());
                                 if(localTime.size() != 0){
                                     boolean horarioValido = true;
                                     LocalDateTime inicioNuevo = Funciones.getHorario().get(1);
@@ -2413,7 +2414,7 @@ public class Main {
                                             LocalDateTime inicioSiguiente = horarioSiguiente.get(0);
 
                                             //Verificar si el horario nuevo no se solapa
-                                            if(!(inicioNuevo.isAfter(finActual) && finNuevo.isBefore(inicioSiguiente))){
+                                            if(!(inicioNuevo.isAfter(finActual) || finNuevo.isBefore(inicioSiguiente))){
                                                 horarioValido = false;
                                                 break;
                                             }
@@ -2433,9 +2434,11 @@ public class Main {
                                         sublista.add(inicioNuevo);
                                         sublista.add(finNuevo);
                                         localTime.add(sublista);
-                                        Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                        if(Funciones.getSala() != null){
+                                            Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                            Funciones.getSala().setAseado(true);
+                                        }          
                                         funcionesLimpiadas.remove(i);
-                                        Funciones.getSala().setAseado(true);
                                         i--;
                                     }
                                 }
@@ -2452,8 +2455,10 @@ public class Main {
                                     // se agregan al localTime
                                     localTime.add(sublista);
                                     funcionesLimpiadas.remove(i);
-                                    Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
-                                    Funciones.getSala().setAseado(true);                                    
+                                    if(Funciones.getSala() != null){
+                                        Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                        Funciones.getSala().setAseado(true);
+                                    }                                                                        
                                     i--;
                                 }
                             }
@@ -2519,9 +2524,11 @@ public class Main {
                                 sublista.add(inicioNuevo);
                                 sublista.add(finNuevo);
                                 localTime.add(sublista);
-                                Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                if(Funciones.getSala() != null){
+                                    Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                    Funciones.getSala().setAseado(true);
+                                }          
                                 funcionesLimpiadas.remove(i);
-                                Funciones.getSala().setAseado(true);
                                 i--;
                                 break;
                             }
@@ -2535,7 +2542,7 @@ public class Main {
                     }                                
                 }
                 String msgBase = "";
-                for(Empleado Persona : Teatro.getInstancia().getTipoSeguridad()){
+                for(Empleado Persona : Teatro.getInstancia().getTipoAseador()){
                     if(Persona.getHorario().size() == 1){
                         msgBase = msgBase + String.format("%-10s %10s", Persona.getNombre() + " Limpiará: ", Persona.getHorario().size() + " vez\n");
                     }
@@ -2611,9 +2618,11 @@ public class Main {
                                         sublista.add(inicioNuevo);
                                         sublista.add(finNuevo);
                                         localTime.add(sublista);
-                                        Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                        if(Funciones.getSala() != null){
+                                            Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                            Funciones.getSala().setAseado(true);
+                                        }          
                                         funcionesLimpiadas.remove(i);
-                                        Funciones.getSala().setAseado(true);
                                         i--;
                                     }
                                 }
@@ -2630,8 +2639,10 @@ public class Main {
                                     // se agregan al localTime
                                     localTime.add(sublista);
                                     funcionesLimpiadas.remove(i);
-                                    Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
-                                    Funciones.getSala().setAseado(true);
+                                    if(Funciones.getSala() != null){
+                                        Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                        Funciones.getSala().setAseado(true);
+                                    }   
                                     funcionesLimpiadas.remove(i);
                                     i--;
                                 }
@@ -2700,9 +2711,11 @@ public class Main {
                                 sublista.add(inicioNuevo);
                                 sublista.add(finNuevo);
                                 localTime.add(sublista);
-                                Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                if(Funciones.getSala() != null){
+                                    Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                    Funciones.getSala().setAseado(true);
+                                }    
                                 funcionesLimpiadas.remove(i);
-                                Funciones.getSala().setAseado(true);
                                 i--;
                                 break;
                             }
@@ -2716,7 +2729,7 @@ public class Main {
                     }                                
                 }
                 String msgBase = "";
-                for(Empleado Persona : Teatro.getInstancia().getTipoSeguridad()){
+                for(Empleado Persona : Teatro.getInstancia().getTipoAseador()){
                     if(Persona.getHorario().size() == 1){
                         msgBase = msgBase + String.format("%-10s %10s", Persona.getNombre() + " Limpiará: ", Persona.getHorario().size() + " vez\n");
                     }
