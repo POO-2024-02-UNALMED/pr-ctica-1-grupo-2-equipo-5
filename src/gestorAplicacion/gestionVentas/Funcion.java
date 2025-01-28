@@ -140,8 +140,13 @@ public class Funcion implements Serializable{
         ArrayList<Funcion> funcionesALaVenta = new ArrayList<>();
         if (!funcionesCreadas.isEmpty())
             for (Funcion funcion : funcionesCreadas){
-                if (funcion.getHorario().get(0).isAfter(LocalDateTime.now())){
+                if (!funcion.getHorario().isEmpty()){
+                    if (funcion.getHorario().get(0).isAfter(LocalDateTime.now())){
                     funcionesALaVenta.add(funcion);
+                    }
+                }
+                else{
+                    break;
                 }
             }
             return funcionesALaVenta;
@@ -155,7 +160,9 @@ public class Funcion implements Serializable{
         this.audienciaEsperada = obra.getAudienciaEsperada();
         funcionesCreadas.add(this);
         funcionesALaVenta = actualizarFuncionesVenta(funcionesCreadas);
+        if (this.sala != null){
         this.sillas = this.sala.getSillas();
+        }
         Teatro.getInstancia().getFuncionesCreadas().add(this);
     }
     public Funcion(){

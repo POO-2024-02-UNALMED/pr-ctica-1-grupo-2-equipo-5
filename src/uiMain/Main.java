@@ -1141,12 +1141,19 @@ public class Main {
                     drut = rut; // Acepta si la cantidad es adecuada
                 }
             } while (!continuar);   
-
+            int cantFunciones = 0;
             for (int numeroFunciones = 0; numeroFunciones < drut; numeroFunciones++){
                 ArrayList<LocalDate> weekn = getWeek();
                 Funcion funcion = new Funcion(eleccion, weekn);
                 eleccion.addFuncion(funcion);
-                customPrint("Funcion creada\nHora:  " + funcion.getHorario() + "\nSala: " + funcion.getSala());
+                if (funcion.getSala() != null){
+                    customPrint("Funcion creada\nHora:  " + funcion.getHorario() + "\nSala: " + funcion.getSala());
+                    cantFunciones++;
+                }
+                else{
+                    customPrint("No queda espacio en las salas para esta función :(, creadas con éxito: "+ cantFunciones);
+                    break;
+                }
             }
 
              //Impresión del horario 
@@ -1175,8 +1182,10 @@ public class Main {
             ArrayList<Funcion> funcionesSala = new ArrayList<>();
             for (Funcion funcion : Teatro.getInstancia().getFuncionesCreadas()) {            
                 if (funcion.getObra() != null){
-                    if (funcion.getSala().equals(sala)) {
-                        funcionesSala.add(funcion);
+                    if (funcion.getSala() != null){
+                        if (funcion.getSala().equals(sala)) {
+                            funcionesSala.add(funcion);
+                        }
                     }
                 }
             }
