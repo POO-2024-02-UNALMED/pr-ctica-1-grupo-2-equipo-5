@@ -41,6 +41,7 @@ public class Actor extends Artista{
             historialCalificaciones.add(new ArrayList<>()); // Crear espacio para las calificaciones de esa aptitud
         }
         this.edad = edad;
+        this.cuenta = new CuentaBancaria(id, 999999999999999999999999999.9);
     }
 
     public String toString(){

@@ -35,7 +35,6 @@ public abstract class Artista implements Serializable{
         this.nombre = nombre;
         this.horario = new ArrayList<>();
         this.id = id;
-        this.cuenta = new CuentaBancaria(id, 0);
     }
     
     //GETTERS Y SETTERS
