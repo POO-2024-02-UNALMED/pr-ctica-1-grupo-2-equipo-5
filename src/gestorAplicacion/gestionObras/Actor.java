@@ -281,7 +281,8 @@ public class Actor extends Artista{
 // `horario` list. It iterates through each event in the `horario` list and checks if the given time
 // slot overlaps with any existing event. If an overlap is found, it returns `false` indicating that
 // the time slot is not available (i.e., the schedule is occupied). If no overlap is found with any
-// existing event, it returns `true` indicating
+// existing event, it returns `true` indicating. In this context this is the implementation of an abstract 
+// method defined on Artista
     public boolean isDisponible(LocalDateTime inicio, LocalDateTime fin) {
         for (ArrayList<LocalDateTime> evento : getHorario()) {
             if (inicio.isBefore(evento.get(1)) && fin.isAfter(evento.get(0))) {

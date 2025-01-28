@@ -58,6 +58,7 @@ public class Director extends Artista{
  * interval overlaps with any existing event in the schedule (`getHorario()`), indicating that the time
  * slot is not available. It returns `true` if the time slot is available and does not overlap with any
  * existing event.
+ * This is an implementation of an abstract method
  */
     public boolean isDisponible(LocalDateTime inicio, LocalDateTime fin) {
         for (ArrayList<LocalDateTime> evento : getHorario()) {

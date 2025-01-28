@@ -237,7 +237,7 @@ public class Obra implements Serializable{
     public void setCalificaciones(ArrayList<Float> calificaciones) {
         this.calificaciones = calificaciones;
     }
- /**
+/**
   * The `franjaHoraria` method iterates through a list of plays to find the time range of the main show
   * for a specific genre.
   * 
@@ -307,9 +307,8 @@ public class Obra implements Serializable{
  * The `calcFuncionEstelar` method iterates through a list of `Funcion` objects to find the one with
  * the highest number of tickets sold and sets it as the "Funcion Estelar".
  * 
- * @param funciones The `calcFuncionEstelar` method you provided seems to be trying to find the
- * function with the highest number of tickets sold from a list of functions. However, there is a
- * logical error in the code where you are assigning `d = s` instead of `s = d` when
+ * @param funciones The `calcFuncionEstelar` find the
+ * function with the highest number of tickets sold from a list of functions. 
  */
     public void calcFuncionEstelar(ArrayList<Funcion> funciones){
         Funcion u = new Funcion();
@@ -321,7 +320,7 @@ public class Obra implements Serializable{
         for (Funcion funcion : funciones){
             d = funcion.getTiquetesVendidos();
             if (s < d){
-                d = s;
+                s = d;
                 v = funcion;
             }
         }
@@ -366,7 +365,7 @@ public class Obra implements Serializable{
  * specific format and creates a Duration object in Java.
  * 
  * @param format The `format` parameter in the `createDuration` method represents a time value in the
- * format of `HHmmss`, where:
+ * format of `HHmmss`
  * @return The method `createDuration` returns a `Duration` object representing the duration calculated
  * from the input `format` value, which is in the format of `HHmmss` (hours, minutes, seconds).
  */
@@ -406,7 +405,7 @@ public class Obra implements Serializable{
  * otherwise.
  * 
  * @param obra The method `calificacionVacia` takes an `Obra` object as a parameter. The `Obra` class
- * likely has a method `getCalificaciones()` which returns a list of calificaciones (ratings or
+ * has a method `getCalificaciones()` which returns a list of calificaciones (ratings or
  * grades). The method checks if the list of calificaciones in the given `Ob
  * @return The method `calificacionVacia` is returning a boolean value.
  */
