@@ -1967,17 +1967,24 @@ public class Main {
                                     double liquidacion = (Persona.calcularSueldo()*1.2) + Persona.getDeuda();
                                     Teatro.getInstancia().getTesoreria().getCuenta().transferencia(Persona.getCuenta(), liquidacion);
                                     customPrint("Se despidio a " + Persona.getNombre() + " y se le pago su respectiva liquidacion", "green");
-                                    if(Persona.getOcupacion() != "Aseador"){
-                                        if (Persona.getOcupacion() != "Seguridad"){
-                                            Teatro.getInstancia().getTipoProfesor().remove(Persona);
-                                        }
-                                        else{
-                                            Teatro.getInstancia().getTipoSeguridad().remove(Persona);
-                                        }
-                                    }
-                                    else{
-                                        Teatro.getInstancia().getTipoAseador().remove(Persona);
-                                    }
+                                    return true;
+                                }
+                                return false;
+                            });
+                            Teatro.getInstancia().getTipoAseador().removeIf(PersonaA ->{
+                                if(PersonaA.getId() == buscar_id){
+                                    return true;
+                                }
+                                return false;
+                            });
+                            Teatro.getInstancia().getTipoProfesor().removeIf(PersonaP ->{
+                                if(PersonaP.getId() == buscar_id){
+                                    return true;
+                                }
+                                return false;
+                            });
+                            Teatro.getInstancia().getTipoSeguridad().removeIf(PersonaS ->{
+                                if(PersonaS.getId() == buscar_id){
                                     return true;
                                 }
                                 return false;
@@ -2413,7 +2420,7 @@ public class Main {
                                             LocalDateTime inicioSiguiente = horarioSiguiente.get(0);
 
                                             //Verificar si el horario nuevo no se solapa
-                                            if(!(inicioNuevo.isAfter(finActual) && finNuevo.isBefore(inicioSiguiente))){
+                                            if(!(inicioNuevo.isAfter(finActual) || finNuevo.isBefore(inicioSiguiente))){
                                                 horarioValido = false;
                                                 break;
                                             }
@@ -2433,9 +2440,11 @@ public class Main {
                                         sublista.add(inicioNuevo);
                                         sublista.add(finNuevo);
                                         localTime.add(sublista);
-                                        Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                        if(Funciones.getSala() != null){
+                                            Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                            Funciones.getSala().setAseado(true);
+                                        }          
                                         funcionesLimpiadas.remove(i);
-                                        Funciones.getSala().setAseado(true);
                                         i--;
                                     }
                                 }
@@ -2452,8 +2461,10 @@ public class Main {
                                     // se agregan al localTime
                                     localTime.add(sublista);
                                     funcionesLimpiadas.remove(i);
-                                    Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
-                                    Funciones.getSala().setAseado(true);                                    
+                                    if(Funciones.getSala() != null){
+                                        Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                        Funciones.getSala().setAseado(true);
+                                    }                                                                        
                                     i--;
                                 }
                             }
@@ -2519,9 +2530,11 @@ public class Main {
                                 sublista.add(inicioNuevo);
                                 sublista.add(finNuevo);
                                 localTime.add(sublista);
-                                Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                if(Funciones.getSala() != null){
+                                    Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                    Funciones.getSala().setAseado(true);
+                                }          
                                 funcionesLimpiadas.remove(i);
-                                Funciones.getSala().setAseado(true);
                                 i--;
                                 break;
                             }
@@ -2535,7 +2548,7 @@ public class Main {
                     }                                
                 }
                 String msgBase = "";
-                for(Empleado Persona : Teatro.getInstancia().getTipoSeguridad()){
+                for(Empleado Persona : Teatro.getInstancia().getTipoAseador()){
                     if(Persona.getHorario().size() == 1){
                         msgBase = msgBase + String.format("%-10s %10s", Persona.getNombre() + " Limpiará: ", Persona.getHorario().size() + " vez\n");
                     }
@@ -2611,9 +2624,11 @@ public class Main {
                                         sublista.add(inicioNuevo);
                                         sublista.add(finNuevo);
                                         localTime.add(sublista);
-                                        Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                        if(Funciones.getSala() != null){
+                                            Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                            Funciones.getSala().setAseado(true);
+                                        }          
                                         funcionesLimpiadas.remove(i);
-                                        Funciones.getSala().setAseado(true);
                                         i--;
                                     }
                                 }
@@ -2630,8 +2645,10 @@ public class Main {
                                     // se agregan al localTime
                                     localTime.add(sublista);
                                     funcionesLimpiadas.remove(i);
-                                    Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
-                                    Funciones.getSala().setAseado(true);
+                                    if(Funciones.getSala() != null){
+                                        Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                        Funciones.getSala().setAseado(true);
+                                    }   
                                     funcionesLimpiadas.remove(i);
                                     i--;
                                 }
@@ -2700,9 +2717,11 @@ public class Main {
                                 sublista.add(inicioNuevo);
                                 sublista.add(finNuevo);
                                 localTime.add(sublista);
-                                Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                if(Funciones.getSala() != null){
+                                    Persona.getTrabajos().add(Funciones.getSala().getMetrosCuadrados());
+                                    Funciones.getSala().setAseado(true);
+                                }    
                                 funcionesLimpiadas.remove(i);
-                                Funciones.getSala().setAseado(true);
                                 i--;
                                 break;
                             }
@@ -2716,7 +2735,7 @@ public class Main {
                     }                                
                 }
                 String msgBase = "";
-                for(Empleado Persona : Teatro.getInstancia().getTipoSeguridad()){
+                for(Empleado Persona : Teatro.getInstancia().getTipoAseador()){
                     if(Persona.getHorario().size() == 1){
                         msgBase = msgBase + String.format("%-10s %10s", Persona.getNombre() + " Limpiará: ", Persona.getHorario().size() + " vez\n");
                     }
@@ -3185,27 +3204,29 @@ public class Main {
                 case 1:
                     String nombreArtista = ask("Ingrese el nombre del nuevo artista:");
                     wait(1000);
-                    String tipoArtista = ask("Ingrese el tipo de artista (director/actor)");
-                    wait(1000);
-        
-                    if (tipoArtista.equals("director")) {
-                        // Crear un nuevo director
-                        new Director(nombreArtista, idArtista);
-                        customPrint("Nuevo director agregado: " + nombreArtista + " con ID " + idArtista, "green");
-                        wait(2000);
-                        customPrint("Los directores no reciben clases.", "yellow");
-                    } else if (tipoArtista.equals("actor")) {
-                        // Crear un nuevo actor
-                        Actor nuevoActor = new Actor(nombreArtista, idArtista);
-                        customPrint("Nuevo actor agregado: " + nombreArtista + " con ID " + idArtista, "green");
-                        artista = nuevoActor; // Asignar al artista actual
-                        wait(2000);
-                    } else {
-                        customPrint("Tipo de artista no válido. Debe ser 'director' o 'actor'.", "red");
-                        return; // Salir si el tipo es inválido
+
+                    while (true) {
+                        String tipoArtista = ask("Ingrese el tipo de artista (director/actor)");
+                        wait(1000);
+                        
+                        if (tipoArtista.equals("director")) {
+                            // Crear un nuevo director
+                            new Director(nombreArtista, idArtista);
+                            customPrint("Nuevo director agregado: " + nombreArtista + " con ID " + idArtista, "green");
+                            wait(2000);
+                            customPrint("Los directores no reciben clases.", "yellow");
+                            break;
+                        } else if (tipoArtista.equals("actor")) {
+                            // Crear un nuevo actor
+                            Actor nuevoActor = new Actor(nombreArtista, idArtista);
+                            customPrint("Nuevo actor agregado: " + nombreArtista + " con ID " + idArtista, "green");
+                            artista = nuevoActor; // Asignar al artista actual
+                            wait(2000);
+                            break;
+                        } else {
+                            customPrint("Tipo de artista no válido. Debe ser 'director' o 'actor'.", "red");
+                        }
                     }
-                    break;
-        
                 case 2:
                     ArrayList<Obra> obrasCritics = Obra.mostrarObrasCriticas();
                     // Mostrar todas las obras críticas

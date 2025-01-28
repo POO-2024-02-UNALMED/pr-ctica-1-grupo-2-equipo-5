@@ -437,7 +437,7 @@ public class Obra implements Serializable{
     
         // Recopilar las obras en estado crítico
         for (Obra obra : Teatro.getInstancia().getObras()) {
-            if (obra.promedioCalificacion() <= 2.0) { // Estado crítico definido como <= 2.0
+            if (obra.promedioCalificacion() <= 2.0 && !obra.getNombre().trim().equals("NOTFORITE")) { // Estado crítico definido como <= 2.0
                 obrasCriticas.add(obra);
             }
         }
