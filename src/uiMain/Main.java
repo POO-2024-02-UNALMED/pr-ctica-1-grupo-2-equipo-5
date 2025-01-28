@@ -2390,10 +2390,10 @@ public class Main {
                     Persona.setHorario(localTime);
                 }
                 if(funcionesSinHorarios == 1){
-                    customPrint("Hay 1 Funcion sin horarios", "red");
+                    customPrint("Hay 1 Funcion sin horarios validos para limpiar", "red");
                 }
                 else if(funcionesSinHorarios > 1){
-                    customPrint("Hay " + funcionesSinHorarios + " Funciones sin horarios, invalidas para limpiar", "red");
+                    customPrint("Hay " + funcionesSinHorarios + " Funciones sin horarios validos para limpiar", "red");
                 }
                 if(funcionesLimpiadas.size() != 0){
                     for(Empleado Persona : Teatro.getInstancia().getTipoAseador()){
@@ -2656,10 +2656,10 @@ public class Main {
 
         if(funcionesLimpiadas.size() != 0 ){
             if(funcionesLimpiadas.size() == 1){
-                customPrint("Existen " + funcionesLimpiadas.size() + " funcion donde no es posible limpiar", "red");
+                customPrint("Existen " + funcionesLimpiadas.size() + " funcion donde no es posible limpiar la sala", "red");
             }
             else if(funcionesLimpiadas.size() > 1){
-                customPrint("Existen " + funcionesLimpiadas.size() + " funciones donde no es posible limpiar", "red");
+                customPrint("Existen " + funcionesLimpiadas.size() + " funciones donde no es posible limpiar la sala", "red");
             }
         }
 
