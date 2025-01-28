@@ -113,7 +113,7 @@ public abstract class Artista implements Serializable{
  * @param calificaciones The method `calcularCalificacion` calculates the average of a list of grades
  * stored in an ArrayList of Float values named `calificaciones`. The method iterates through each
  * grade in the list, sums them up, and then divides the total sum by the number of grades to obtain
- * the average. Finally
+ * the average. Finally it sets the Artista's calificacion with the average it got
  */
     public void calcularCalificacion(ArrayList<Float> calificaciones){
         float u;

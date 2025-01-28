@@ -17,7 +17,7 @@ import baseDatos.Serializador;
 public class funcionalidad5 {
 
     public static Scanner in = new Scanner(System.in);
-       public static void main(String[] args){
+        public static void main(String[] args){
 
             String filename = "teatro.txt";
             String path = "src" + File.separator + "baseDatos" + File.separator + "temp" + File.separator + filename;
