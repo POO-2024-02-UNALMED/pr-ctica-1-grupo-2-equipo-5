@@ -427,7 +427,7 @@ public class Main {
 
         while (task != 6){
 
-            customPrint("Teatro Carlos Mayolo", true);
+            customPrint("Teatro Escuela Carlos Mayolo", true);
 
             byte[] options = {1, 2, 3, 4, 5, 6};
             task = ask("Seleccione la tarea a realizar: \n1. Venta de tiquetes.\n2. Gestión de empleados.\n3. Gestión de obras.\n4. Gestión de clases.\n5. Contratación de actores.\n6. Cerrar el programa.", options, "");
