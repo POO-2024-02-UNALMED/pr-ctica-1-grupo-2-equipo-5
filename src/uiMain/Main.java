@@ -3019,6 +3019,8 @@ public class Main {
             if(Persona.getMetaSemanal() < 0){
                 NuevaLista.remove(Persona);
                 Despedidos.add(Persona);
+                double liquidacion = (Persona.calcularSueldo()*1.2) + Persona.getDeuda();
+                Teatro.getInstancia().getTesoreria().getCuenta().transferencia(Persona.getCuenta(), liquidacion);
                 msgBase = msgBase + Persona.getNombre() + "\n";
             }
             continue;
