@@ -2,6 +2,9 @@ package gestorAplicacion.gestionVentas;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+
+import baseDatos.Teatro;
+
 import java.time.LocalTime;
 import java.io.Serializable;
 import java.time.Duration;
@@ -20,7 +23,11 @@ public class Funcion implements Serializable{
     private boolean trabajador;
     static ArrayList <Funcion> funcionesCreadas= new ArrayList<>() ;
     static ArrayList <Funcion> funcionesALaVenta= new ArrayList<>();
+<<<<<<< Updated upstream
     private ArrayList <Cliente> asistentes = new ArrayList<>();
+=======
+    private float precio=0f;
+>>>>>>> Stashed changes
 
     public String tablaSillas(){
         String Nuevo="";
@@ -60,7 +67,7 @@ public class Funcion implements Serializable{
         this.sala = sala;
         this.obra=obra;
         funcionesCreadas.add((this));
-        
+        Teatro.getInstancia().getFuncionesCreadas().add(this);
 
 
     }
@@ -151,17 +158,21 @@ public class Funcion implements Serializable{
         funcionesCreadas.add(this);
         funcionesALaVenta = actualizarFuncionesVenta(funcionesCreadas);
         this.sillas = this.sala.getSillas();
+        Teatro.getInstancia().getFuncionesCreadas().add(this);
     }
     public Funcion(){
+        Teatro.getInstancia().getFuncionesCreadas().add(this);
 
     }
     public Funcion(LocalDateTime hora){
         horario.add(hora);
         horario.add(hora);
+        Teatro.getInstancia().getFuncionesCreadas().add(this);
     }
 
     public Funcion(ArrayList<LocalDateTime> horario){
         this.horario = horario;
+        Teatro.getInstancia().getFuncionesCreadas().add(this);
     }
     
     public ArrayList<LocalDateTime> createHorario(ArrayList<LocalDate> week){
@@ -217,7 +228,7 @@ public class Funcion implements Serializable{
         int in=0;
         String Nuevo="";
         String string ="";
-        for (Funcion funcion : funcionesCreadas) {
+        for (Funcion funcion : Teatro.getInstancia().getFuncionesCreadas()) {
             if ((funcion.obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
                 in++;
                 string = in+String.format("%20s %30s",funcion.obra.getNombre(),"horario");
@@ -234,7 +245,7 @@ public class Funcion implements Serializable{
 }
 public static boolean indiceFuncion(int i,String nombre){
     int in =0;
-    for (Funcion funcion : funcionesCreadas) {
+    for (Funcion funcion : Teatro.getInstancia().getFuncionesCreadas()) {
         if ((funcion.obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
             in++;
 
@@ -245,7 +256,7 @@ return in >= i;
 }
 public static Funcion escogerFuncion(int i,String nombre){
     int in=0;
-    for (Funcion funcion : funcionesCreadas) {
+    for (Funcion funcion : Teatro.getInstancia().getFuncionesCreadas()) {
         if ((funcion.obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
             in++;
             if (in==i){
@@ -298,7 +309,7 @@ public static String imprimirFuncion(Funcion funcion){
     
 
 public static Funcion buscarFuncion(String nombre){
-    for (Funcion funcion : funcionesCreadas) {
+    for (Funcion funcion : Teatro.getInstancia().getFuncionesCreadas()) {
         if ((funcion.obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
             return funcion;
         }
@@ -309,7 +320,7 @@ public static Funcion buscarFuncion(String nombre){
 
 }
 public static float mostrarPrecioFuncion(String nombre){
-    for (Funcion funcion : funcionesCreadas) {
+    for (Funcion funcion : Teatro.getInstancia().getFuncionesCreadas()) {
         if ((funcion.obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
             return precioFuncion(funcion);
         }
@@ -323,7 +334,7 @@ public static float mostrarPrecioFuncion(String nombre){
 
 public static boolean nombres(String nombre){
     ArrayList<String> listaNombres=new ArrayList<>();
-    for (Funcion a : funcionesCreadas) {
+    for (Funcion a : Teatro.getInstancia().getFuncionesCreadas()) {
         listaNombres.add(a.obra.getNombre().toLowerCase());
         
     }

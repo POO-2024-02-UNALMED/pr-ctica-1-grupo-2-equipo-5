@@ -36,10 +36,15 @@ public class Obra implements Serializable{
     private float promedioArt;
     private boolean repartoDisponible;
     private float Asistencia=0;
+    private float precio=0f;
 
+
+<<<<<<< Updated upstream
 /*     static{
         funci_1.prueba();
     } */
+=======
+>>>>>>> Stashed changes
 
     public int getAudienciaEsperada() {
         return audienciaEsperada;
@@ -115,6 +120,7 @@ public class Obra implements Serializable{
         this.tiquetesTotales = tiquetesTotales;
         this.estadoCriticoA = estadoCriticoA;
         obras.add(this);
+        Teatro.getInstancia().getObras().add(this);
     }
 
     public Obra(String nombre, ArrayList<Actor> reparto, ArrayList<Aptitud> papeles, Director director, float costoProduccion, Genero genero, 
@@ -139,12 +145,14 @@ public class Obra implements Serializable{
         funcionesRecomendadas = funcionesRecomendadas(promedioArt);
         obras.add(this);
         this.franjaHoraria(genero);
+        Teatro.getInstancia().getObras().add(this);
     }
     public Obra(String nombre,Genero genero,Duration duracion){
         this.nombre=nombre;
         this.genero=genero;
         this.duracion=duracion;
         obras.add(this);
+        Teatro.getInstancia().getObras().add(this);
 
 
     }
@@ -156,6 +164,7 @@ public class Obra implements Serializable{
         this.franjaHoraria(genero);
         this.duracion = Duration.between(funcionEstelar.getHorario().get(0), funcionEstelar.getHorario().get(1));
         obras.add(this);
+        Teatro.getInstancia().getObras().add(this);
     }
     public int funcionesRecomendadas(float promedioArt){
         if (calificacion < 2){
@@ -212,7 +221,7 @@ public class Obra implements Serializable{
         franja.add(LocalTime.of(00,00));
         franja.add(LocalTime.of(23,59));
         ArrayList<Obra> obrasGenero = new ArrayList<>();
-        for (Obra obra : obras){
+        for (Obra obra : Teatro.getInstancia().getObras()){
             u = obra.getGenero();
             if (u == genero){
                 obrasGenero.add(obra);
@@ -241,12 +250,6 @@ public class Obra implements Serializable{
         long horas = duracion.toHours();
         long minutos = duracion.toMinutes() % 60;
         return String.valueOf(horas) +":"+ String.valueOf(minutos);
-    }
-    public static ArrayList<Obra> getObras() {
-        return obras;
-    }
-    public void setObras(ArrayList<Obra> obras) {
-        Obra.obras = obras;
     }
     public ArrayList<LocalTime> getFranjaHoraria() {
         return franjaHoraria;
@@ -350,6 +353,13 @@ public class Obra implements Serializable{
     
 
     }
+    
+    public float getPrecio() {
+        return precio;
+    }
+    public void setPrecio(float precio) {
+        this.precio = precio;
+    }
     public static float precioFuncion(Obra obra){
             float prom = obra.promedioCalificacion();
             float precioBase=10000;
@@ -365,6 +375,8 @@ public class Obra implements Serializable{
             }else{
                 precioBase = (precioBase +(prom*100+ad));
             }
+            obra.setPrecio(precioBase);
+
             
             
     
@@ -378,7 +390,7 @@ public class Obra implements Serializable{
         
 
     public static Obra buscarObra(String nombre){
-        for (Obra obra : obras) {
+        for (Obra obra : Teatro.getInstancia().getObras()) {
             if ((obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
                 return obra;
             }
@@ -389,7 +401,7 @@ public class Obra implements Serializable{
 
     }
     public static float precioObra(String nombre){
-        for (Obra obra : obras) {
+        for (Obra obra : Teatro.getInstancia().getObras()) {
             if ((obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
                 return precioFuncion(obra);
             }
@@ -403,7 +415,7 @@ public class Obra implements Serializable{
 
     public static boolean nombres(String nombre){
         ArrayList<String> listaNombres=new ArrayList<>();
-        for (Obra a : Obra.obras) {
+        for (Obra a : Teatro.getInstancia().getObras()) {
             listaNombres.add(a.getNombre().toLowerCase());
             
         }
@@ -418,7 +430,7 @@ public class Obra implements Serializable{
 
     public static void actualizarEstadoCritico() {
         estadoCriticoS = new ArrayList<Obra>();
-        for (Obra obra : obras) {
+        for (Obra obra : Teatro.getInstancia().getObras()) {
             if (obra.checkEstadoCritico()) {
                 estadoCriticoS.add(obra);
             }
@@ -497,7 +509,7 @@ public class Obra implements Serializable{
     public static String generarTabla(){
         String Nuevo="";
         
-        for (Obra obra : obras) {
+        for (Obra obra : Teatro.getInstancia().getObras()) {
             String string = String.format("%30s %20s %20s %20s",obra.getNombre(),obra.getGenero(),obra.getDuracionFormato(),String.format("$%,.2f",precioObra(obra.nombre))+"\n");
         Nuevo = Nuevo +string;
 
