@@ -621,7 +621,10 @@ public class Main {
         else if (p1_==0){
             return;
         }
-        
+        if (Obra.generarTabla()==""){
+            customPrint("No hay obras disponibles");
+            return;
+        }
         customPrint("Estas son las Obras disponibles\n\n"+String.format("%30s %22s %22s %15s", "Nombre Obra", "Genero", "Duracion","Precio")+"\n\n"+Obra.generarTabla());
             customPrint("Que Obra desea comprar? \n");
             String inputF = in.nextLine().toLowerCase();

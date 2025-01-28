@@ -227,8 +227,10 @@ public class Funcion implements Serializable{
         String Nuevo="";
         String string ="";
         for (Funcion funcion : Teatro.getInstancia().getFuncionesCreadas()) {
+            
+            if (funcion.obra != null && funcion.obra.getNombre() != null) {
             if ((funcion.obra.getNombre().toLowerCase()).equals(nombre.toLowerCase())){
-                if(!funcion.obra.getNombre().equals("NOTFORITE")){
+                if(!funcion.getObra().getNombre().equals("NOTFORITE")){
                 in++;
                 string = in+String.format("%20s %30s",funcion.obra.getNombre(),funcion.getHorario().get(0));
                 Nuevo = Nuevo +"\n"+string;
@@ -236,7 +238,7 @@ public class Funcion implements Serializable{
             }
             
         }
-        
+    }
 
         
     
