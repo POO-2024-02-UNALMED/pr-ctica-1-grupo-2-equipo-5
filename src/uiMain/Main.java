@@ -43,8 +43,7 @@ import gestorAplicacion.gestionObras.Director;
 public class Main {
 
     public static Scanner in = new Scanner(System.in);
-    //public static boolean supportsColor = (System.console() != null && System.getenv().get("TERM") != null);
-    public static boolean supportsColor = true;
+    public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, dd 'de' MMMM 'de' yyyy", new Locale("es"));
 
 
     //------------------HERRAMIENTAS-------------------------//
@@ -301,10 +300,6 @@ public class Main {
             chosenColor = reset; break;
         }
 
-        if(!supportsColor){
-            chosenColor = reset;
-        }
-
         System.out.println(chosenColor + "┌" + "─".repeat(LARGO_LINEAS) + "┐" + reset);
         String[] cadenas = cadena.split("\n");
 
@@ -324,7 +319,6 @@ public class Main {
         LocalDateTime fechaFin = null;
         LocalDate diaEscogido = null;
         byte[] seven = {1, 2, 3, 4, 5, 6, 7};
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, dd 'de' MMMM 'de' yyyy", new Locale("es"));
 
         if(date){
             
@@ -1649,9 +1643,9 @@ public class Main {
             }
         }
 
-        customPrint("El actor escogido fue " + actorEscogido.getNombre() + " por un precio de " +  Actor.formatoPrecio(actorEscogido.getPrecioContrato(duracionContrato)));
-        byte codigoCompra = empresa.pagarContratoActor(actorEscogido, duracionContrato, Teatro.getInstancia().getTesoreria());
         customPrint("Pago recibido!", true, "green");
+        customPrint("El actor escogido fue " + actorEscogido.getNombre() + " por un precio de " +  Actor.formatoPrecio(actorEscogido.getPrecioContrato(duracionContrato)) + "\nLa contratación tendrá lugar el:\n" + fechaInicio.toLocalDate().format(formatter) + "\n(" + fechaInicio.toLocalTime() + "-" + fechaFin.toLocalTime() + ")", "green");
+        byte codigoCompra = empresa.pagarContratoActor(actorEscogido, duracionContrato, Teatro.getInstancia().getTesoreria());
         ArrayList<LocalDateTime> horarioFinal = new ArrayList<>(); horarioFinal.add(fechaInicio); horarioFinal.add(fechaFin);
         actorEscogido.addHorario(horarioFinal);
 
