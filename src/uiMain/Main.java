@@ -1967,23 +1967,24 @@ public class Main {
                                     double liquidacion = (Persona.calcularSueldo()*1.2) + Persona.getDeuda();
                                     Teatro.getInstancia().getTesoreria().getCuenta().transferencia(Persona.getCuenta(), liquidacion);
                                     customPrint("Se despidio a " + Persona.getNombre() + " y se le pago su respectiva liquidacion", "green");
-                                    if(Persona.getOcupacion() != "Aseador"){
-                                        if (Persona.getOcupacion() != "Seguridad"){
-                                            Teatro.getInstancia().getTipoProfesor().remove(Persona);
-                                        }
-                                        else{
-                                            Teatro.getInstancia().getTipoSeguridad().remove(Persona);
-                                        }
-                                    }
-                                    else{
-                                        for(int i = 0; i < Teatro.getInstancia().getTipoAseador().size(); i++){
-                                            Empleado buscar = Teatro.getInstancia().getTipoAseador().get(i);
-                                            if(buscar.getId() == buscar_id){
-                                                Teatro.getInstancia().getTipoAseador().remove(i);
-                                                break;
-                                            }
-                                        }
-                                    }
+                                    return true;
+                                }
+                                return false;
+                            });
+                            Teatro.getInstancia().getTipoAseador().removeIf(PersonaA ->{
+                                if(PersonaA.getId() == buscar_id){
+                                    return true;
+                                }
+                                return false;
+                            });
+                            Teatro.getInstancia().getTipoProfesor().removeIf(PersonaP ->{
+                                if(PersonaP.getId() == buscar_id){
+                                    return true;
+                                }
+                                return false;
+                            });
+                            Teatro.getInstancia().getTipoSeguridad().removeIf(PersonaS ->{
+                                if(PersonaS.getId() == buscar_id){
                                     return true;
                                 }
                                 return false;
