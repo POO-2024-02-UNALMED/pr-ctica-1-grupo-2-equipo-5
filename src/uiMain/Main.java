@@ -1976,7 +1976,13 @@ public class Main {
                                         }
                                     }
                                     else{
-                                        Teatro.getInstancia().getTipoAseador().remove(Persona);
+                                        for(int i = 0; i < Teatro.getInstancia().getTipoAseador().size(); i++){
+                                            Empleado buscar = Teatro.getInstancia().getTipoAseador().get(i);
+                                            if(buscar.getId() == buscar_id){
+                                                Teatro.getInstancia().getTipoAseador().remove(i);
+                                                break;
+                                            }
+                                        }
                                     }
                                     return true;
                                 }
@@ -2397,7 +2403,6 @@ public class Main {
                             Funcion Funciones = funcionesLimpiadas.get(i);
                             //Verificar si la funcion tiene horario
                             if(!Funciones.getHorario().isEmpty()){
-                                System.out.println(Funciones.getHorario());
                                 if(localTime.size() != 0){
                                     boolean horarioValido = true;
                                     LocalDateTime inicioNuevo = Funciones.getHorario().get(1);
