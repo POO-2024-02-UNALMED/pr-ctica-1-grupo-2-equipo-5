@@ -2837,6 +2837,7 @@ public class Main {
                     customPrint(msg);
                     customPrint("Se realizo el pago a " + Cuentas_Pagadas.size() + " cuentas en total");
                     customPrint("Saldo disponible " + Teatro.getInstancia().getTesoreria().getCuenta().getSaldo());
+                    Cuentas_Pagadas = null;
                 }
                 else{
                     //Verificacion fondos Bonificacion
@@ -2928,11 +2929,9 @@ public class Main {
                             //Verificacion Metas Personales
                             for(Empleado Persona : Teatro.getInstancia().getEmpleadosPorRendimiento()){
                                 if(Persona.verificacionMeta() != true){
-                                    Persona.setMetaSemanal(Persona.getMetaSemanal());
                                     totalSaldos = totalSaldos + (Persona.calcularSueldo() + Persona.getDeuda());
                                 }
                                 else{
-                                    Persona.setMetaSemanal(Persona.getMetaSemanal()); 
                                     totalSaldos = totalSaldos + ((Persona.calcularSueldo() * 1.15) + Persona.getDeuda());
                                 }
                             }
