@@ -86,6 +86,18 @@ public class Sala implements Serializable{
         this.capacidad = capacidad;
     }
 
+/**
+ * The function calculates the capacity by counting the number of elements in an ArrayList of Silla
+ * objects.
+ * 
+ * @param sillas The method `calcCapacidad` is designed to calculate the capacity based on the number
+ * of elements in the `ArrayList` of `Silla` objects provided as input. However, there seems to be a
+ * logical error in the for loop condition.
+ * @return The method is intended to calculate the capacity of a given ArrayList of Silla objects.
+ * However, there is a logical error in the for loop condition. The loop will not execute as expected
+ * because the condition `i == sillas.size()` is incorrect. It should be `i < sillas.size()` to iterate
+ * over all elements in the ArrayList.
+ */
     public int calcCapacidad(ArrayList<Silla> sillas){
         int u;
         u = 0;
@@ -102,6 +114,18 @@ public class Sala implements Serializable{
         setHorario(y);
     }
 
+/**
+ * The function `createSillas` generates a list of `Silla` objects with different seat types based on a
+ * given capacity.
+ * 
+ * @param capacidad The `createSillas` method you provided seems to be creating a list of `Silla`
+ * objects based on the given `capacidad` parameter. However, the calculation of `u` might not be
+ * accurate as it is dividing an integer by another integer, which could result in a truncated value
+ * @return This method `createSillas` returns an ArrayList of Silla objects. The Silla objects are
+ * created based on the input `capacidad` and are added to the ArrayList based on different seat types
+ * (Asiento.GOLD, Asiento.PREMIUM, Asiento.COMFORT, Asiento.BASICO) and seat numbers. The method
+ * ensures that the total number of Silla objects
+ */
     public ArrayList<Silla> createSillas(int capacidad){
         float u = capacidad / 16;
         int f = 0;
