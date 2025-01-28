@@ -276,6 +276,14 @@ public static boolean calificacionVacia(Obra obra){
 
 }
 
+    public float getPrecio() {
+    return precio;
+}
+
+public void setPrecio(float precio) {
+    this.precio = precio;
+}
+
     public static float precioFuncion(Funcion funcion){
         float prom = funcion.obra.promedioCalificacion();
         float precioBase=10000;
