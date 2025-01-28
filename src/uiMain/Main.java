@@ -1122,7 +1122,7 @@ public class Main {
                             continuarByteAlertaMin = true;
                         }
                         else{
-                            customPrint("Opción no válida, intente nuevamente.")
+                            customPrint("Opción no válida, intente nuevamente.");
                         }
                     }
     
