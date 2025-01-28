@@ -1549,7 +1549,7 @@ public class Main {
     
                 }
     
-                contadores.removeIf(contador -> ((Integer)contador.get(1)) < 2);
+                contadores.removeIf(contador -> ((Integer)contador.get(1)) < 1);
     
                 if (contadores.size() == 0){
                     customPrint("No se encontraron actores que se ajusten bien a las características.", true, "red"); return;}
@@ -1563,7 +1563,7 @@ public class Main {
                 actorsForRental = advancedList;
                 advancedList = null;
                 
-                customPrint(actorsForRental.size() + " actor/es se ajustaron a dos o más características avanzadas.", true, "green");
+                customPrint(actorsForRental.size() + " actor/es se ajustaron a una o más características avanzadas.", true, "green");
         }
 
         long duracionContrato = Duration.between(fechaInicio, fechaFin).toHours();
