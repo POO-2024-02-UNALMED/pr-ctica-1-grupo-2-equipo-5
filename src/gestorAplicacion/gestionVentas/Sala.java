@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import baseDatos.Teatro;
 import gestorAplicacion.herramientas.Asiento;
 public class Sala implements Serializable{
     private static ArrayList <Sala> salas = new ArrayList<>();
@@ -100,18 +101,6 @@ public class Sala implements Serializable{
         y.add(a);
         setHorario(y);
     }
-    public Sala(ArrayList<Silla> sillas, int numeroSala, int metrosCuadrados, Boolean aseado, Boolean ocupado, ArrayList<ArrayList<LocalDateTime>> horario, int capacidad) {
-        this.sillas = sillas;
-        this.numeroSala = numeroSala;
-        this.metrosCuadrados = metrosCuadrados;
-        this.aseado = aseado;
-        this.ocupado = ocupado;
-        this.horario = horario;
-        this.capacidad = capacidad;
-    }
-    public Sala(){
-        salas.add(this);
-    }
 
     public ArrayList<Silla> createSillas(int capacidad){
         float u = capacidad / 16;
@@ -164,6 +153,20 @@ public class Sala implements Serializable{
         ocupado = false;
         horario = new ArrayList<>();
         this.capacidad = capacidad;
+        salas.add(this);
+        Teatro.getInstancia().getSalas().add(this);
+    }
+    
+    public Sala(ArrayList<Silla> sillas, int numeroSala, int metrosCuadrados, Boolean aseado, Boolean ocupado, ArrayList<ArrayList<LocalDateTime>> horario, int capacidad) {
+        this.sillas = sillas;
+        this.numeroSala = numeroSala;
+        this.metrosCuadrados = metrosCuadrados;
+        this.aseado = aseado;
+        this.ocupado = ocupado;
+        this.horario = horario;
+        this.capacidad = capacidad;
+    }
+    public Sala(){
         salas.add(this);
     }
 

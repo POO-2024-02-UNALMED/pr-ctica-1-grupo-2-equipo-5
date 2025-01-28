@@ -505,10 +505,11 @@ public class Obra implements Serializable{
         String Nuevo="";
         
         for (Obra obra : Teatro.getInstancia().getObras()) {
+            if (!obra.getNombre().equals("NOTFORITE")){
             String string = String.format("%30s %20s %20s %20s",obra.getNombre(),obra.getGenero(),obra.getDuracionFormato(),String.format("$%,.2f",precioObra(obra.nombre))+"\n");
         Nuevo = Nuevo +string;
 
-        
+            }
     }
     return Nuevo;
 }

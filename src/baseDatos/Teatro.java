@@ -22,8 +22,6 @@ public class Teatro implements Serializable{
     private static Teatro instancia;
     private Tesoreria tesoreria = new Tesoreria(0, 5000000);
 
-    private Sala sala1 = new Sala(1, 100, 24);
-
     //empleados
     private ArrayList<Empleado> empleadosPorRendimiento = new ArrayList<>();
     private ArrayList<Empleado> tipoSeguridad = new ArrayList<>();
@@ -70,14 +68,6 @@ public class Teatro implements Serializable{
 
     public void setTesoreria(Tesoreria tesoreria) {
         this.tesoreria = tesoreria;
-    }
-
-    public Sala getSala1() {
-        return sala1;
-    }
-
-    public void setSala1(Sala sala1) {
-        this.sala1 = sala1;
     }
 
     public ArrayList<Empleado> getEmpleadosPorRendimiento() {
