@@ -1,5 +1,6 @@
 package gestorAplicacion.gestionObras;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,5 +46,13 @@ public class Director extends Artista{
     
     public String toString(){
         return "Nombre: " + this.nombre + "\n" + "Identificación: " + this.id + "\n" + "Género: " + this.genero;
+    }
+    public boolean isDisponible(LocalDateTime inicio, LocalDateTime fin) {
+        for (ArrayList<LocalDateTime> evento : getHorario()) {
+            if (inicio.isBefore(evento.get(1)) && fin.isAfter(evento.get(0))) {
+                return false; // Horario ocupado
+            }
+        }
+        return true; // Horario disponible
     }
 }

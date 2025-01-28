@@ -146,14 +146,7 @@ public abstract class Artista implements Serializable{
         this.calificaciones.add(calificacion);
     }
     
-    public boolean isDisponible(LocalDateTime inicio, LocalDateTime fin) {
-        for (ArrayList<LocalDateTime> evento : horario) {
-            if (inicio.isBefore(evento.get(1)) && fin.isAfter(evento.get(0))) {
-                return false; // Horario ocupado
-            }
-        }
-        return true; // Horario disponible
-    }
+    public abstract boolean isDisponible(LocalDateTime inicio, LocalDateTime fin);
 
     public static Artista buscarArtistaPorId(long id) {
         for (Artista artista : Teatro.getInstancia().getArtistas()) {
