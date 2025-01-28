@@ -560,7 +560,7 @@ public class Main {
                 
             case 2:
                 customPrint("Creando Nuevo Codigo...");
-               wait(2000);
+                wait(2000);
                 
                 code= Cliente.IdRandom();
                 cliente = new Cliente(code,Suscripcion.Basica);
@@ -810,6 +810,7 @@ public class Main {
                 dineroTesoreria = ((Funcion.mostrarPrecioFuncion(inputF)*descuento)+precioSus);
                 Teatro.getInstancia().getTesoreria().setDineroEnCaja(Teatro.getInstancia().getTesoreria().getDineroEnCaja()+dineroTesoreria);
                 Teatro.getInstancia().getTesoreria().setTotal(Teatro.getInstancia().getTesoreria().getTotal()+dineroTesoreria);
+
                 
             wait(2000);
             
@@ -948,7 +949,7 @@ public class Main {
                 int f;
                 f = 0;
                 String actores = "";
-                for (Actor actor : Actor.getActors()){
+                for (Actor actor : Teatro.getInstancia().getActores()){
                     f = f + 1;
                     actores = actores + String.valueOf(f) + "."+ actor.getNombre();
                 }
@@ -969,12 +970,12 @@ public class Main {
                                 break;
 
                             }
-                            else if (s > Actor.getActors().size()){
+                            else if (s > Teatro.getInstancia().getActores().size()){
                                 customPrint("Opción fuera de rango, intenta de nuevo", "red");
                                 break;
                             }
                             else{
-                                Actor elegido = Actor.getActors().get(s - 1);
+                                Actor elegido = Teatro.getInstancia().getActores().get(s - 1);
                                 reparto.add(elegido);
                                 continuarSelAct = true;
                             }
