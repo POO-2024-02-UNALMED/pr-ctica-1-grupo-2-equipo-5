@@ -1207,7 +1207,7 @@ public class Main {
             }
 
             if (!idFlag){
-                customPrint("El número de identificación no existe en la base de datos.", true, "red"); return;
+                customPrint("El número de identificación no existe en la base de datos de empresa.\nRevise si el cliente es de tipo Empresa o si se digitó correctamente.", true, "red"); return;
             }
 
         case 2: //Empresa nueva

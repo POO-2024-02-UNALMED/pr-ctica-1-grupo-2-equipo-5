@@ -230,6 +230,7 @@ public class Cliente implements Serializable{
         this.id = id;
         this.suscripcion=suscripcion;
         this.cuentaBancaria = new CuentaBancaria(id, 0);
+        this.tipo = "Persona";
         Teatro.getInstancia().getClientes().add(this);
     }
 
