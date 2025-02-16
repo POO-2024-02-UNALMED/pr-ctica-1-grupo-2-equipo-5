@@ -1253,6 +1253,8 @@ public class Main {
 
     public static void ContratarActor(){
 
+   
+
     byte[] two = {0, 1, 2};
     byte menuLog = ask("Seleccione:\n1. Empresa registrada.\n2. Empresa nueva.", two, "");
     byte ACTORES_POR_PAGINA = 5;
@@ -1449,6 +1451,7 @@ public class Main {
                 break;
 
         }  
+        
 
         //PREGUNTA NO. 3, 4, 5 (HORARIOS)
         String diasCadena = "¿Para qué día se necesita la contratación?\n";
@@ -1466,6 +1469,9 @@ public class Main {
         LocalDateTime fechaFin = horario[1]; 
 
         actorsForRental.removeIf(actor -> !actor.isDisponible(fechaInicio, fechaFin));
+
+        
+        
 
         //preseleccionados
 
