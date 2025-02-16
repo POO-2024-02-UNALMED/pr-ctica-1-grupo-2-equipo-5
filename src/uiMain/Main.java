@@ -918,7 +918,7 @@ public class Main {
                 String actores = "";
                 for (Actor actor : Teatro.getInstancia().getActores()){
                     f = f + 1;
-                    actores = actores + String.valueOf(f) + "."+ actor.getNombre();
+                    actores = actores + String.valueOf(f) + "."+ actor.getNombre() + "\n";
                 }
                 customPrint(actores);
                 int s;
@@ -952,7 +952,7 @@ public class Main {
                                     break;
                                 }
                             }
-                                byte[] listByte= {1, 32, 3, 4, 5};                
+                                byte[] listByte= {1, 2, 3, 4, 5};                
                                 byte u = ask("Por favor indica en qué se debe enfocar el actor \n (Solo puedes seleccionar una opción, sin embargo,\n varios actores pueden enfocarse en la misma opción) \nrecuerde digitar solo el número de la opción\n1. Canto\n2. Baile\n3. Discurso\n4. Emocionalidad\n5. Improvisación", listByte, "blue");
                                 switch (u){
                                     case 1:
